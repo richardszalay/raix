@@ -6,5 +6,6 @@ package rx.tests.operators
 	{
 		public var empty : EmptyFixture;
 		public var never : NeverFixture;
+		public var fromEvent : FromEventFixture;
 	}
 }

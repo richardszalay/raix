@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="rx.Subject"/>
+    <classEntry path="rx.scheduling.IScheduler"/>
+    <classEntry path="rx.impl.ClosureObservable"/>
+    <classEntry path="rx.ISubscription"/>
+    <classEntry path="rx.impl.ClosureScheduledAction"/>
+    <classEntry path="rx.IObservable"/>
+    <classEntry path="rx.scheduling.Scheduler"/>
+    <classEntry path="rx.joins.Pattern"/>
+    <classEntry path="rx.AbsObservable"/>
+    <classEntry path="rx.Observable"/>
+    <classEntry path="rx.impl.ClosureSubscription"/>
+    <classEntry path="rx.TimeStamped"/>
+    <classEntry path="rx.IObserver"/>
+    <classEntry path="rx.impl.ClosureObserver"/>
+    <classEntry path="rx.scheduling.ImmediateScheduler"/>
+    <classEntry path="rx.IDisposable"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

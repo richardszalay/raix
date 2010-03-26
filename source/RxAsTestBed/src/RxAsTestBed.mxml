@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:samples="samples.*"
+	frameRate="40"
+	creationComplete="init()">
+
+	<mx:Script>
+		<![CDATA[
+			import rx.AbsObservable;
+			import samples.AbsSample;
+			import mx.events.ItemClickEvent;
+			
+			private function init() : void
+			{
+				currentSample = sampleStack.selectedChild as AbsSample;
+			}
+			
+			private function itemClickHandler(event : ItemClickEvent) : void
+			{
+				teardown();
+				
+				sampleStack.selectedIndex = event.index;
+				
+				currentSample = sampleStack.selectedChild as AbsSample;
+			}
+			
+			private function setup():void
+			{
+				running = true;
+				currentSample.setup();
+			}
+			
+			private function teardown():void
+			{
+				running = false;
+				currentSample.teardown();
+			}
+			
+			private function toggleCode() : void
+			{
+				currentSample.showCode = !currentSample.showCode;
+			}
+			
+			[Bindable]
+			private var running : Boolean = false;
+			
+			[Bindable]
+			private var currentSample : AbsSample;
+		]]>
+	</mx:Script>
+
+	<mx:VBox width="100%" height="100%">
+	
+		<mx:ButtonBar itemClick="itemClickHandler(event)">
+			<mx:dataProvider>
+				<mx:Array>
+					<mx:String>Events and Where</mx:String>
+					<mx:String>Delay</mx:String>
+					<mx:String>BufferWithCount</mx:String>
+					<mx:String>Concat</mx:String>
+					<mx:String>Throttle</mx:String>
+					<mx:String>SelectMany</mx:String>
+					<mx:String>Zip</mx:String>
+					<mx:String>Uncaught Errors (FP10.1)</mx:String>
+				</mx:Array>
+			</mx:dataProvider>
+		</mx:ButtonBar>
+		
+		<mx:VBox width="100%" height="100%">
+		
+			<mx:VBox width="100%">
+				<mx:HBox>
+					<mx:Button id="startButton" label="Start" click="setup()" enabled="{!running}" />
+					<mx:Button id="stopButton" label="Stop" click="teardown()" enabled="{running}" />
+					<mx:Button label="Show / Hide Code" click="toggleCode()" />
+				</mx:HBox>
+			</mx:VBox>
+		
+			<mx:ViewStack id="sampleStack" creationPolicy="all" selectedIndex="0" width="100%" height="100%">
+				<samples:SimpleMouseMove width="100%" height="100%" />
+				<samples:TimeFlies width="100%" height="100%" />
+				<samples:BufferWithCount width="100%" height="100%" />
+				<samples:Concat width="100%" height="100%" />
+				<samples:Throttle width="100%" height="100%" />
+				<samples:SelectMany width="100%" height="100%" />
+				<samples:Zip width="100%" height="100%" />
+				<samples:UncaughtErrors width="100%" height="100%" />
+			</mx:ViewStack>
+		
+		</mx:VBox>
+	</mx:VBox>
+
+</mx:Application>

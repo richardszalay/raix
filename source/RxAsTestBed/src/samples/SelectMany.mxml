@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import rx.IObserver;
+			import mx.events.FlexEvent;
+			import rx.ISubscription;
+			import rx.IObservable;
+			import rx.Observable;
+			
+			private var subscription : ISubscription;
+			
+			public override function setup() : void
+			{
+				// Filter mouse movement events so that they are ignored within the top 50x50 box
+				var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
+				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
+				var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
+				
+				var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
+				
+				var obs : IObservable = md
+					.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
+				
+				subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+				{
+					var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
+
+					moveBox.x = pnt.x;
+					moveBox.y = pnt.y;
+				});
+			}
+			
+			public override function teardown() : void
+			{
+				if (subscription != null)
+				{
+					subscription.unsubscribe();
+				}
+				
+				moveBox.x = 0;
+				moveBox.y = 0;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:Canvas width="100%" height="100%" borderColor="#000000" id="trackContainer">
+			<mx:Box id="moveBox" width="150" height="150" backgroundColor="#0000FF" />
+		</mx:Canvas>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+// Filter mouse movement events so that they are ignored within the top 50x50 box
+var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
+var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
+var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
+
+var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
+
+var obs : IObservable = md
+	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
+
+subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+{
+	var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
+
+	moveBox.x = pnt.x;
+	moveBox.y = pnt.y;
+});
+]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

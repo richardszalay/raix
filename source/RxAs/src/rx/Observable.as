@@ -56,7 +56,10 @@ package rx
 					});
 				};
 				
-				eventDispatcher.addEventListener(type, listener, useCapture, priority);
+				scheduler.schedule(function():void
+				{
+					eventDispatcher.addEventListener(type, listener, useCapture, priority);
+				});
 				
 				return new ClosureSubscription(function():void
 				{
@@ -69,7 +72,7 @@ package rx
 		{
 			scheduler = scheduler || ImmediateScheduler.instance;
 			
-			return new ClosureObservable(function(obs:IObserver, subscribeSched:IScheduler) : ISubscription
+			return new ClosureObservable(function(obs:IObserver) : ISubscription
 			{
 				scheduler.schedule(obs.onCompleted);
 				
@@ -82,9 +85,7 @@ package rx
 		 */		
 		public static function never() : IObservable
 		{
-			
-			
-			return new ClosureObservable(function(obs:IObserver, subscribeSched:IScheduler) : ISubscription
+			return new ClosureObservable(function(obs:IObserver) : ISubscription
 			{
 				return new ClosureSubscription(function():void{});
 			});

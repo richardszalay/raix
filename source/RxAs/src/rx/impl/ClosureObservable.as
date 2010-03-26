@@ -14,12 +14,12 @@ package rx.impl
 			_observeFunc = observeFunc;
 		}
 		
-		public override function subscribe(observer : IObserver, scheduler : IScheduler = null) : ISubscription 
+		public override function subscribe(observer : IObserver) : ISubscription 
 		{
 			// TODO: Here would be a good place to implement
 			// a safety wrapper for the execution order of 
 			// third party IObservables as mentioned on a channel9 vid (CITE?)
-			return ISubscription(_observeFunc(observer, scheduler));
+			return ISubscription(_observeFunc(observer));
 		}
 	}
 }

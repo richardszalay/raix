@@ -5,7 +5,10 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.ISubscription;
 	import rx.Observable;
+	import rx.impl.ClosureScheduledAction;
+	import rx.scheduling.IScheduledAction;
 	import rx.scheduling.IScheduler;
+	import rx.tests.mocks.ClosureScheduler;
 	import rx.tests.mocks.NullScheduler;
 	
 	[TestCase]
@@ -44,31 +47,34 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function subscription_scheduler_is_not_used() : void
-		{
-			var obs : IObservable = Observable.empty();
-			
-			var completed : Boolean = false;
-			
-			var sched : IScheduler = new NullScheduler();
-			
-			obs.subscribeFunc(null, function():void
-			{
-				completed = true;	
-			}, null, sched);
-			
-			Assert.assertTrue(completed);
-		}
-		
-		[Test]
 		public function unsubscribing_does_not_throw_an_error() : void
 		{
 			var obs : IObservable = Observable.empty();
 			
-			var completed : Boolean = false;
-			
-			var subscription : ISubscription = obs.subscribeFunc(null, function():void {});
+			var subscription : ISubscription = obs.subscribeFunc(null);
 			subscription.unsubscribe();
 		}
+		
+		[Test(description = "This is known to fail")]
+        public function schedule_is_cancelled_when_completed() : void
+        {
+            var disposed : Boolean = false;
+
+            var scheduler : ClosureScheduler = new ClosureScheduler(function(action:Function, dueTime:uint) : IScheduledAction
+            {
+            	action();
+            	
+            	return new ClosureScheduledAction(function():void
+            	{
+            		disposed = true;
+            	});
+            });
+
+            var obs : IObservable = Observable.empty(scheduler);
+
+           var subscription : ISubscription = obs.subscribeFunc(null);
+
+            Assert.assertTrue("This is known to fail", disposed);
+        }
 	}
 }

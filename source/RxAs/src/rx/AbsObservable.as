@@ -14,10 +14,18 @@ package rx
 		{
 		}
 		
-		public function subscribe(observer : IObserver, scheduler : IScheduler = null) : ISubscription
+		public function subscribe(observer : IObserver) : ISubscription
 		{
 			// Abstract methods not supported by AS3
 			throw new IllegalOperationError("subscribe() must be overriden");
+		}
+		
+		public function subscribeFunc(onNext : Function, onComplete : Function = null, 
+			onError : Function = null) : ISubscription
+		{
+			var observer : IObserver = new ClosureObserver(onNext, onComplete, onError);
+			
+			return subscribe(observer);
 		}
 
 		public function aggregate(accumulator:Function):IObservable
@@ -413,14 +421,6 @@ package rx
 		public function skipWhile(predicate:Function):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");
-		}
-		
-		public function subscribeFunc(onNext : Function, onComplete : Function = null, 
-			onError : Function = null, scheduler : IScheduler = null) : ISubscription
-		{
-			var observer : IObserver = new ClosureObserver(onNext, onComplete, onError);
-			
-			return subscribe(observer, scheduler);
 		}
 
 		public function sum():Number

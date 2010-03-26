@@ -10,18 +10,17 @@ package rx
 		 * @param onNext Function to be called for every payload. Signature is function(payload : T) : void
 		 * @param onComplete Optional. Function to be called when the sequence completes. Signature is function():void
 		 * @param onError Optional. Function to be called when an error occurs in the sequence. Signature is function(err:Error):void
-		 * @param scheduler Optional. The schduler to use
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
 		function subscribeFunc(onNext : Function, onComplete : Function = null, 
-			onError : Function = null, scheduler : IScheduler = null) : ISubscription;
+			onError : Function = null) : ISubscription;
 		
 		/**
 		 * Subscribes to this observable using the supplied observer 
 		 * @param scheduler Optional. The schduler to use
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
-		function subscribe(observer : IObserver, scheduler : IScheduler = null) : ISubscription;
+		function subscribe(observer : IObserver) : ISubscription;
 		
 		function aggregate(accumulator : Function) : IObservable;
 		

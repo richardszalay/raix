@@ -55,7 +55,7 @@ package rx.tests.operators
 			subscription.unsubscribe();
 		}
 		
-		[Test(description = "This is known to fail")]
+		[Test]
         public function schedule_is_cancelled_when_completed() : void
         {
             var disposed : Boolean = false;
@@ -74,7 +74,7 @@ package rx.tests.operators
 
            var subscription : ISubscription = obs.subscribeFunc(null);
 
-            Assert.assertTrue("This is known to fail", disposed);
+            Assert.assertTrue(disposed);
         }
 	}
 }

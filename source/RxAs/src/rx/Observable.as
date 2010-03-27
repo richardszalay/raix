@@ -74,9 +74,9 @@ package rx
 			
 			return new ClosureObservable(function(obs:IObserver) : ISubscription
 			{
-				scheduler.schedule(obs.onCompleted);
-				
-				return new ClosureSubscription(function():void{});
+				return new ScheduledActionSubscription(
+					scheduler.schedule(obs.onCompleted)
+				);
 			});
 		}
 		

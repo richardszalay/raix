@@ -297,10 +297,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var countSoFar : uint = 0;
 				
 				var subscription : ISubscription;
@@ -310,7 +308,7 @@ package rx
 					{
 						value = selector(value);
 						
-						scheduler.schedule(function():void { observer.onNext(value); });
+						observer.onNext(value);
 					},
 					function () : void { observer.onCompleted(); },
 					function (error : Error) : void { observer.onError(error); }

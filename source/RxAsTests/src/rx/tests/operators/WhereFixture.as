@@ -6,34 +6,38 @@ package rx.tests.operators
 	import rx.tests.mocks.ManualObservable;
 	
 	[TestCase]
-	public class SelectFixture extends AbsDecoratorOperatorFixture
+	public class WhereFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.select(function(pl:Object) : Object { return pl; });
+			return source.where(function(pl:Object) : Boolean { return true; });
 		}
 		
 		[Test]
-		public function maps_value_using_function() : void
+		public function values_are_filtered_by_predicate() : void
 		{
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var index : int = 0;
-			
-			var obs : IObservable = manObs.select(function(pl:Object) : int
+			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{
-				return index++;
+				return (pl % 2) == 0;
 			});
+			
+			var expectedValues : Array = [0, 2, 4, 6, 8];
+			var nextCount : uint = 0;
 			
 			obs.subscribeFunc(function(pl:int):void
 			{
-				Assert.assertEquals(index-1, pl);	
+				nextCount++;
+				Assert.assertEquals(expectedValues.shift(), pl);
 			});
 			
 			for (var i:int=0; i<10; i++)
 			{
-				manObs.onNext(Math.random());
+				manObs.onNext(i);
 			}
+			
+			Assert.assertEquals(5, nextCount);
 		}
 		
 		[Test]
@@ -41,7 +45,7 @@ package rx.tests.operators
 		{
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var obs : IObservable = manObs.select(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{
 				throw new Error();
 			});
@@ -66,7 +70,7 @@ package rx.tests.operators
 		{
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var obs : IObservable = manObs.select(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{
 				return true;
 			});

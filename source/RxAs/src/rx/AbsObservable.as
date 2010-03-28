@@ -306,7 +306,15 @@ package rx
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						value = selector(value);
+						try
+						{
+							value = selector(value);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+							return;
+						}
 						
 						observer.onNext(value);
 					},
@@ -600,15 +608,15 @@ package rx
 							try
 							{
 								result = predicate(value);
-								
-								if (result)
-								{
-									observer.onNext(value);
-								}
 							}
-							catch(error : Error)
+							catch(err : Error)
 							{
-								observer.onError(error);
+								observer.onError(err);
+							}
+								
+							if (result)
+							{
+								observer.onNext(value);
 							}
 						});
 					},

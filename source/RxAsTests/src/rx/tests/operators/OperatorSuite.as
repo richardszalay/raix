@@ -8,5 +8,6 @@ package rx.tests.operators
 		public var never : NeverFixture;
 		public var fromEvent : FromEventFixture;
 		public var select : SelectFixture;
+		public var where : WhereFixture;
 	}
 }

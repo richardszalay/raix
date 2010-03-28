@@ -7,6 +7,7 @@ package rx
 	import rx.impl.ClosureSubscription;
 	import rx.joins.Pattern;
 	import rx.scheduling.IScheduler;
+	import rx.util.ComparerUtil;
 	
 	public class AbsObservable implements IObservable
 	{
@@ -145,6 +146,50 @@ package rx
 				{
 					subscription.unsubscribe();
 				});
+			});
+		}
+		
+		public function contains(value : Object, comparer : Function = null) : IObservable
+		{
+			var source : IObservable = this;
+			
+			var defaultComparer : Function = function(a:Object, b:Object) : Boolean { return a == b; }
+			
+			comparer = (comparer == null)
+				? defaultComparer
+				: ComparerUtil.normalizeComaparer(comparer);
+			
+			return new ClosureObservable(function(observer : IObserver) : ISubscription
+			{
+				return source.subscribeFunc(
+					function(pl:Object) : void
+					{
+						var result : Boolean = false
+						
+						try
+						{
+							result = (comparer(pl, value) == true);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+							return;
+						}
+						
+						if (result)
+						{
+							observer.onNext(true);
+							observer.onCompleted();
+						}
+					},
+					
+					function():void
+					{
+						observer.onNext(false);
+						observer.onCompleted();
+					},
+					function(e : Error):void { observer.onError(e); }
+				);
 			});
 		}
 		
@@ -438,10 +483,10 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var countSoFar : uint = 0;
 				
 				var subscription : ISubscription;
@@ -457,8 +502,8 @@ package rx
 							scheduler.schedule(function():void { observer.onCompleted(); });
 						}
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
+					function () : void { scheduler.schedule(function():void { observer.onCompleted(); }); },
+					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
 					);
 				
 				subscription = source.subscribe(decoratorObserver);
@@ -520,7 +565,39 @@ package rx
 		
 		public function takeWhile(predicate:Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			{
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(value);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+						}
+							
+						if (result)
+						{
+							observer.onNext(value);
+						}
+						else
+						{
+							observer.onCompleted();
+						}
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return source.subscribe(decoratorObserver);
+			});
 		}
 		
 		public function throttle(dueTimeMs:int, scheduler:IScheduler=null):IObservable
@@ -594,31 +671,26 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						scheduler.schedule(function():void
+						var result : Boolean = false;
+						
+						try
 						{
-							var result : Boolean = false;
+							result = predicate(value);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+						}
 							
-							try
-							{
-								result = predicate(value);
-							}
-							catch(err : Error)
-							{
-								observer.onError(err);
-							}
-								
-							if (result)
-							{
-								observer.onNext(value);
-							}
-						});
+						if (result)
+						{
+							observer.onNext(value);
+						}
 					},
 					function () : void { observer.onCompleted(); },
 					function (error : Error) : void { observer.onError(error); }

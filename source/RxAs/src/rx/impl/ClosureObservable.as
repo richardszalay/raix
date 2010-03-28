@@ -30,7 +30,8 @@ package rx.impl
 	import rx.ISubscription;
 	
 // a safety wrapper for the execution order of 
-// third party IObservables as mentioned on a channel9 vid (CITE?)
+// third party IObservables as mentioned on the channel 9 video:
+// Reactive Extensions API in depth: Contract (02:10)
 class SafetyObserver implements IObserver
 {
 	private var _innerObserver : IObserver;

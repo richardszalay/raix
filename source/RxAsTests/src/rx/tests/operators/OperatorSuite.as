@@ -9,5 +9,9 @@ package rx.tests.operators
 		public var fromEvent : FromEventFixture;
 		public var select : SelectFixture;
 		public var where : WhereFixture;
+		public var contains : ContainsFixture;
+		public var take : TakeFixture;
+		public var takeWhile : TakeWhileFixture;
+		public var throttleFixture : ThrottleFixture;
 	}
 }

@@ -41,7 +41,7 @@ package rx
 		
 		function concat(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable;
 		
-		// static contains(value : Object, comparer : Function) : Boolean;
+		function contains(value : Object, comparer : Function = null) : IObservable
 		
 		function count() : int;
 		

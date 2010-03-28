@@ -6,7 +6,7 @@ package rx.tests.operators
 	import rx.tests.mocks.ManualObservable;
 	
 	[TestCase]
-	public class TimestampFixture extends AbsDecoratorOperatorFixture
+	public class RemoveTimestampFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
@@ -18,7 +18,7 @@ package rx.tests.operators
 		{
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var obs : IObservable = manObs.timestamp();
+			var obs : IObservable = manObs.timestamp().removeTimestamp();
 			
 			var expectedValues : Array = [1, 2, 3, 4];
 			

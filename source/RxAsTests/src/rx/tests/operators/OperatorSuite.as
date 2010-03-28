@@ -1,5 +1,7 @@
 package rx.tests.operators
 {
+	import rx.TimeStamped;
+	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
@@ -12,6 +14,7 @@ package rx.tests.operators
 		public var contains : ContainsFixture;
 		public var take : TakeFixture;
 		public var takeWhile : TakeWhileFixture;
-		public var throttleFixture : ThrottleFixture;
+		public var throttle : ThrottleFixture;
+		public var timestamp : TimestampFixture;
 	}
 }

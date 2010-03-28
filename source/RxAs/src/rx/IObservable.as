@@ -106,6 +106,8 @@ package rx
 		
 		// static function repeatValue(value : Object, repeatCount : int = 0) : IObservable;
 		
+		function removeTimestamp() : IObservable;
+		
 		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;
 		
 		// TODO: ??

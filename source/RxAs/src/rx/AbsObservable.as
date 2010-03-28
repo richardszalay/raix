@@ -323,6 +323,14 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function removeTimestamp() : IObservable
+		{
+			return this.select(function(ts:TimeStamped):Object
+			{
+				return ts.value;
+			});
+		}
+		
 		public function repeat(repeatCount:int=0, scheduler:IScheduler=null):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");
@@ -340,7 +348,14 @@ package rx
 		
 		public function select(selector:Function):IObservable
 		{
+			return selectInternal(selector);
+		}
+		
+		private function selectInternal(selector:Function, scheduler : IScheduler = null):IObservable
+		{
 			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(function (observer : IObserver) : ISubscription
 			{
@@ -361,10 +376,10 @@ package rx
 							return;
 						}
 						
-						observer.onNext(value);
+						scheduler.schedule(function():void { observer.onNext(value); });
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
+					function () : void { scheduler.schedule(observer.onCompleted); },
+					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
 					);
 				
 				subscription = source.subscribe(decoratorObserver);
@@ -604,10 +619,10 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var lastValueTimestamp : Number = 0;
 				
 				var subscription : ISubscription;
@@ -624,8 +639,8 @@ package rx
 							scheduler.schedule(function():void { observer.onNext(value.value); });
 						}
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
+					function () : void { scheduler.schedule(function():void { observer.onCompleted(); }); },
+					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
 					);
 				
 				subscription = source.timestamp().subscribe(decoratorObserver);
@@ -656,10 +671,10 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
-			return select(function(value : Object) : TimeStamped
+			return selectInternal(function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, new Date().getTime());
-			});
+			}, scheduler);
 		}
 		
 		public function toAsync(func:Function):IObservable

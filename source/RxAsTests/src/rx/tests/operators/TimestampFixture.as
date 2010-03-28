@@ -4,82 +4,85 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
+	import rx.TimeStamped;
 	import rx.tests.mocks.ManualObservable;
 	import rx.tests.mocks.ManualScheduler;
 	
 	[TestCase]
-	public class ThrottleFixture extends AbsDecoratorOperatorFixture
+	public class TimestampFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.throttle(0);
+			return source.timestamp();
 		}
 		
 		[Test(async)]
-		public function values_are_throttled_within_specified_timeframe() : void
+		public function timestamp_is_applied_to_values() : void
 		{
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var obs : IObservable = manObs.throttle(50);
+			var obs : IObservable = manObs.timestamp();
 			
-			var nextCount : uint = 0;
+			var nextValues : Array = new Array();
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribeFunc(function(pl:TimeStamped):void
 			{
-				nextCount++;
+				nextValues.push(pl);
 			});
 			
-			manObs.onNext(1); // piped
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			
-			Assert.assertEquals(1, nextCount);
+			manObs.onNext(5);
 			
 			// Wait past the throttle timeframe (+5ms to be sure)
 			Async.asyncHandler(this, function():void{}, 55, null, function():void
 			{
-				manObs.onNext(1); // piped
-				manObs.onNext(2); // ignored
+				manObs.onNext(10);
 			
-				Assert.assertEquals(2, nextCount);
+				Assert.assertEquals(2, nextValues.length);
+				
+				var tsA : TimeStamped = nextValues[0];
+				var tsB : TimeStamped = nextValues[1];
+				
+				Assert.assertEquals(5, tsA.value);
+				Assert.assertEquals(10, tsB.value);
+				
+				Assert.assertTrue(tsB.timestamp > tsA.timestamp); 
 			});
 		}
 		
 		[Test(async)]
-		public function scheduler_is_used() : void
+		public function timestamp_is_applied_at_time_of_scheduling() : void
 		{
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var manObs : ManualObservable = new ManualObservable();
 			
-			var obs : IObservable = manObs.throttle(50, scheduler);
+			var obs : IObservable = manObs.timestamp(scheduler);
 			
-			var nextCount : uint = 0;
+			var nextValues : Array = new Array();
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribeFunc(function(pl:TimeStamped):void
 			{
-				nextCount++;
+				nextValues.push(pl);
 			});
 			
-			manObs.onNext(1); // piped
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			
-			Assert.assertEquals(0, nextCount);
+			manObs.onNext(5);
 			
 			// Wait past the throttle timeframe (+5ms to be sure)
 			Async.asyncHandler(this, function():void{}, 55, null, function():void
 			{
-				scheduler.runNext();
-				Assert.assertEquals(1, nextCount);
-				
-				manObs.onNext(1); // piped
-				
-				scheduler.runNext();
+				manObs.onNext(10);
 			
-				Assert.assertEquals(2, nextCount);
+				Assert.assertEquals(0, nextValues.length);
+				
+				scheduler.runAll();
+				Assert.assertEquals(2, nextValues.length);
+				
+				var tsA : TimeStamped = nextValues[0];
+				var tsB : TimeStamped = nextValues[1];
+				
+				var diffMs : Number = tsB.timestamp - tsA.timestamp;
+				
+				Assert.assertTrue(diffMs > 50); 
 			});
 		}
 

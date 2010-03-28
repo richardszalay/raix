@@ -6,6 +6,7 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
+		public var bufferWithCount : BufferWithCountFixture;
 		public var contains : ContainsFixture;
 		public var empty : EmptyFixture;
 		public var fromEvent : FromEventFixture;

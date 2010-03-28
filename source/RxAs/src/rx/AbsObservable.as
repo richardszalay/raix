@@ -56,6 +56,11 @@ package rx
 				throw new IllegalOperationError("Not implemented");
 			}
 			
+			if (count == 0)
+			{
+				throw new ArgumentError("count must be > 0");
+			}
+			
 			var source : IObservable = this;
 			
 			return new ClosureObservable(function(observer : IObserver, obsSched:IScheduler=null):ISubscription

@@ -5,6 +5,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.tests.mocks.ManualObservable;
+	import rx.tests.mocks.ManualScheduler;
 	
 	[TestCase]
 	public class ThrottleFixture extends AbsDecoratorOperatorFixture
@@ -40,6 +41,42 @@ package rx.tests.operators
 			{
 				manObs.onNext(1); // piped
 				manObs.onNext(2); // ignored
+			
+				Assert.assertEquals(2, nextCount);
+			});
+		}
+		
+		public function scheduler_is_used() : void
+		{
+			var scheduler : ManualScheduler = new ManualScheduler();
+			
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.throttle(50);
+			
+			var nextCount : uint = 0;
+			
+			obs.subscribeFunc(function(pl:int):void
+			{
+				nextCount++;
+			});
+			
+			manObs.onNext(1); // piped
+			manObs.onNext(1); // ignored
+			manObs.onNext(1); // ignored
+			manObs.onNext(1); // ignored
+			
+			Assert.assertEquals(0, nextCount);
+			
+			// Wait past the throttle timeframe (+5ms to be sure)
+			Async.asyncHandler(this, function():void{}, 55, null, function():void
+			{
+				scheduler.runNext();
+				Assert.assertEquals(1, nextCount);
+				
+				manObs.onNext(1); // piped
+				
+				scheduler.runNext();
 			
 				Assert.assertEquals(2, nextCount);
 			});

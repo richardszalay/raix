@@ -143,8 +143,6 @@ package rx
 		
 		function throttle(dueTimeMs : int, scheduler : IScheduler = null) : IObservable;
 		
-		function throwError(error : Error) : IObservable;
-		
 		function timeInterval(scheduler : IScheduler = null) : IObservable;
 		
 		function timeout(timeoutMs : int, other : IObservable = null, scheduler : IScheduler = null) : IObservable;

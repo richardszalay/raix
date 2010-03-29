@@ -111,6 +111,21 @@ package rx
 			}
 		}
 		
+		public static function throwError(error : Error) : IObservable
+		{
+			if (error == null)
+			{
+				throw new ArgumentError("error cannot be null");
+			}
+			
+			return new ClosureObservable(function(obs:IObserver) : ISubscription
+			{
+				obs.onError(error);
+				
+				return new ClosureSubscription(function():void{});
+			});
+		}
+		
 		public static function resolveScheduler(scheduler : IScheduler) : IScheduler
 		{
 			return scheduler || Scheduler.defaultScheduler;

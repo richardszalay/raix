@@ -16,6 +16,7 @@ package rx.tests.operators
 		public var take : TakeFixture;
 		public var takeWhile : TakeWhileFixture;
 		public var throttle : ThrottleFixture;
+		public var throwError : ThrowErrorFixture;
 		public var timestamp : TimestampFixture;
 		public var where : WhereFixture;
 	}

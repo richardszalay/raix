@@ -57,6 +57,15 @@ namespace RxAs.Rx2.ProofTests.Operators
             subB.Dispose();
             Assert.IsFalse(ev.HasSubscriptions);
 		}
+
+        [Test]
+        [ExpectedException(typeof(Exception))]
+        public void exceptions_thrown_from_onnext_are_not_converted_to_onerror_calls()
+        {
+            var sub = obs.Subscribe(x => { throw new Exception(); }, ex => { });
+
+            ev.Fire();
+        }
 		
 		[Test]
 		public void events_are_pushed_to_onNext() 

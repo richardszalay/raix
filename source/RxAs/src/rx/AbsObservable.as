@@ -51,14 +51,15 @@ package rx
 		
 		public function bufferWithCount(count:int, skip:int=0):IObservable
 		{
-			if (skip != 0)
-			{
-				throw new IllegalOperationError("Not implemented");
-			}
-			
 			if (count == 0)
 			{
 				throw new ArgumentError("count must be > 0");
+			}
+			
+			// skip == count and skip == 0 are functionally equivalent
+			if (skip == count)
+			{
+				skip = 0;
 			}
 			
 			var source : IObservable = this;
@@ -69,10 +70,18 @@ package rx
 				
 				var buffer : Array = new Array();
 				
+				var valuesToSkip : uint = 0;
+				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
 					{
 						buffer.push(pl);
+						
+						while(buffer.length > 0 && valuesToSkip > 0)
+						{
+							buffer.shift();
+							valuesToSkip--;
+						}
 						
 						if (buffer.length == count)
 						{
@@ -81,11 +90,40 @@ package rx
 								return function():void { observer.onNext(b); }
 							})(buffer));
 							
-							buffer = new Array();
+							if (skip == 0)
+							{
+								buffer = [];
+							}
+							else
+							{
+								valuesToSkip = skip;
+								
+								while(buffer.length > 0 && valuesToSkip > 0)
+								{
+									buffer.shift();
+									valuesToSkip--;
+								}
+							}
 						}
 					},
-					function () : void { scheduler.schedule(function():void{observer.onCompleted();}); },
-					function (error : Error) : void { scheduler.schedule(function():void{observer.onError(error);}); });
+					function () : void
+					{
+						if (buffer.length > 0)
+						{
+							scheduler.schedule(function():void{observer.onNext(buffer);});
+							buffer = [];
+						}
+						scheduler.schedule(function():void{observer.onCompleted();});
+					},
+					function (error : Error) : void
+					{
+						if (buffer.length > 0)
+						{
+							scheduler.schedule(function():void{observer.onNext(buffer);});
+							buffer = [];
+						}
+						scheduler.schedule(function():void{observer.onError(error);});
+					});
 					
 				return source.subscribe(dec);
 			});

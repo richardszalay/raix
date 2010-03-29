@@ -72,6 +72,7 @@
     <Compile Include="Mock\ClosureDisposable.cs" />
     <Compile Include="Mock\ClosureScheduler.cs" />
     <Compile Include="Mock\ManualScheduler.cs" />
+    <Compile Include="Operators\BufferWithCountFixture.cs" />
     <Compile Include="Operators\NeverEventFixture.cs" />
     <Compile Include="Operators\EmptyEventFixture.cs" />
     <Compile Include="Operators\FromEventFixture.cs" />

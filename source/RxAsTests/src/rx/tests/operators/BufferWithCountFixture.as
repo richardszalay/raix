@@ -25,17 +25,7 @@ package rx.tests.operators
 				[3, 4, 5]
 				];
 				
-			var nextCount : uint = 0;
-			
-			obs.subscribeFunc(function(pl:Array):void
-			{
-				var expectedArr : Array = expectedValues.shift();
-				
-				Assert.assertEquals(expectedArr[0], pl[0]);
-				Assert.assertEquals(expectedArr[1], pl[1]);
-				Assert.assertEquals(expectedArr[2], pl[2]);
-
-			});
+			testBufferResults(obs, expectedValues);
 			
 			manObs.onNext(0);
 			manObs.onNext(1);
@@ -43,12 +33,143 @@ package rx.tests.operators
 			manObs.onNext(3);
 			manObs.onNext(4);
 			manObs.onNext(5);
+			manObs.onCompleted();
 		}
 		
 		[Test]
-		public function skip_value_is_honoured() : void
+		public function skip_value_is_honoured_when_less_than_count() : void
 		{
-			Assert.fail("Test not implemented. Need to see how this reacts in Rx.Net");
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.bufferWithCount(2, 1);
+			
+			var expectedValues : Array = [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3]
+				];
+				
+			testBufferResults(obs, expectedValues);
+			
+			manObs.onNext(0);
+			manObs.onNext(1);
+			manObs.onNext(2);
+			manObs.onNext(3);
+			manObs.onCompleted();
+		}
+		
+		[Test]
+		public function skip_value_is_honoured_when_equal_to_count() : void
+		{
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.bufferWithCount(2, 2);
+			
+			var expectedValues : Array = [
+				[0, 1],
+				[2, 3],
+				];
+				
+			testBufferResults(obs, expectedValues);
+			
+			manObs.onNext(0);
+			manObs.onNext(1);
+			manObs.onNext(2);
+			manObs.onNext(3);
+			manObs.onCompleted();
+		}
+		
+		[Test]
+		public function skip_value_is_honoured_when_greater_than_count() : void
+		{
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.bufferWithCount(2, 3);
+			
+			var expectedValues : Array = [
+				[0, 1],
+				[3],
+				];
+				
+			testBufferResults(obs, expectedValues);
+			
+			manObs.onNext(0);
+			manObs.onNext(1);
+			manObs.onNext(2);
+			manObs.onNext(3);
+			manObs.onCompleted();
+		}
+		
+		[Test]
+		public function remaining_items_are_released_on_completed() : void
+		{
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.bufferWithCount(2);
+			
+			var expectedValues : Array = [
+				[0, 1],
+				[2]
+				];
+				
+			testBufferResults(obs, expectedValues);
+			
+			manObs.onNext(0);
+			manObs.onNext(1);
+			manObs.onNext(2);
+			manObs.onCompleted();
+		}
+		
+		[Test]
+		public function remaining_items_are_released_on_error() : void
+		{
+			var manObs : ManualObservable = new ManualObservable();
+			
+			var obs : IObservable = manObs.bufferWithCount(2);
+			
+			var expectedValues : Array = [
+				[0, 1],
+				[2]
+				];
+			
+			testBufferResults(obs, expectedValues);
+			
+			manObs.onNext(0);
+			manObs.onNext(1);
+			manObs.onNext(2);
+			manObs.onError(new Error());
+		}
+		
+		private function testBufferResults(obs : IObservable, expectedValues : Array) : void
+		{
+			var nextCount : int = 0;
+			
+			var expectedValueCount : int = expectedValues.length;
+			
+			obs.subscribeFunc(
+				function(pl:Array):void
+				{
+					nextCount++;
+					
+					var expectedArr : Array = expectedValues.shift();
+					
+					Assert.assertEquals(expectedArr.length, pl.length);
+					
+					for (var i:int=0; i<pl.length; i++)
+					{
+						Assert.assertEquals(expectedArr[i], expectedArr[i]);
+					}
+				},
+				function():void
+				{
+					Assert.assertEquals("incorrect number of values", expectedValueCount, nextCount);
+				},
+				function(e:Error):void
+				{
+					Assert.assertEquals("incorrect number of values", expectedValueCount, nextCount);
+				}
+			);
 		}
 		
 		[Test(expects="ArgumentError")]

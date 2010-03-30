@@ -38,14 +38,13 @@ package rx.tests.operators
 			Assert.assertEquals(1, statsB.nextCalled);
 			Assert.assertEquals(5, statsB.nextValues[0]);
 		}
-
-/*
+		
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
 			var manObs : ManualObservable = new ManualObservable(int);
 			
-			var obs : IObservable = manObs.take(3);
+			var obs : IObservable = Observable.defer(int, function():IObservable { return manObs; });
 			
 			obs.subscribeFunc(
 				function(pl:int):void { throw new Error(); },
@@ -55,6 +54,22 @@ package rx.tests.operators
 
 			manObs.onNext(0);
 		}
-*/
+
+		[Test(expects="Error")]
+		public function errors_thrown_by_observable_factory_are_bubbled() : void
+		{
+			var manObs : ManualObservable = new ManualObservable(int);
+			
+			var obs : IObservable = Observable.defer(int, function():IObservable
+			{
+				throw new Error();
+			});
+			
+			obs.subscribeFunc(
+				function(pl:int):void { },
+				function():void { },
+				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
+			);
+		}
 	}
 }

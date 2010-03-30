@@ -10,6 +10,7 @@ package rx.tests.operators
 		public var contains : ContainsFixture;
 		public var empty : EmptyFixture;
 		public var fromEvent : FromEventFixture;
+		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;

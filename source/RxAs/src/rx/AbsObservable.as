@@ -5,6 +5,9 @@ package rx
 	import rx.impl.ClosureObservable;
 	import rx.impl.ClosureObserver;
 	import rx.impl.ClosureSubscription;
+	import rx.impl.OnCompleted;
+	import rx.impl.OnError;
+	import rx.impl.OnNext;
 	import rx.joins.Pattern;
 	import rx.scheduling.IScheduler;
 	import rx.util.ComparerUtil;
@@ -338,7 +341,17 @@ package rx
 		
 		public function materialize():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void { observer.onNext(new OnNext(pl)); },
+					function () : void { observer.onNext(new OnCompleted()); observer.onCompleted(); },
+					function (error : Error) : void { observer.onNext(new OnError(error)); observer.onCompleted(); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function merge(sources:Array, scheduler:IScheduler=null):IObservable

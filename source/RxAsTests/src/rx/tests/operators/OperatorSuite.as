@@ -6,12 +6,17 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
+		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
 		public var contains : ContainsFixture;
 		public var dematerialize : DematerializeFixture;
 		public var defer : DeferFixture;
 		public var empty : EmptyFixture;
+		public var first : FirstFixture;
+		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
+		public var last : LastFixture;
+		public var lastOrDefault : LastOrDefaultFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
 		public var range : RangeFixture;

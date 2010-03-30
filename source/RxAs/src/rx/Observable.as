@@ -148,7 +148,7 @@ package rx
 				
 				for (var i:int = start; i<end; i++)
 				{
-					(function(value:int)
+					(function(value:int):void
 					{
 						scheduledActions.push(scheduler.schedule(function():void { obs.onNext(value); }));
 					})(i);

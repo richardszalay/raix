@@ -319,12 +319,44 @@ package rx
 		
 		public function first():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						observer.onNext(pl);
+						observer.onCompleted();
+					},
+					function () : void { observer.onError(new Error("The sequence contained no values")); },
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function firstOrDefault():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						observer.onNext(pl);
+						observer.onCompleted();
+					},
+					function () : void
+					{
+						observer.onNext(null);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function forkJoin(sources:Array):IObservable
@@ -334,7 +366,12 @@ package rx
 		
 		public function asObservable():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return Observable.defer(source.type, function():IObservable
+			{
+				return source;
+			});
 		}
 		
 		public function distinctUntilChanged(comparer:Function):IObservable
@@ -349,12 +386,69 @@ package rx
 		
 		public function last():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var lastValue : Object = null;
+				var hasValue : Boolean = false;
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						lastValue = pl;
+						hasValue = true;
+					},
+					function () : void
+					{
+						if (hasValue)
+						{
+							observer.onNext(lastValue);
+							observer.onCompleted();
+						}
+						else
+						{
+							observer.onError(new Error("The sequence contained no values"));
+						}
+					},
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function lastOrDefault():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var lastValue : Object = null;
+				var hasValue : Boolean = false;
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						lastValue = pl;
+						hasValue = true;
+					},
+					function () : void
+					{
+						if (hasValue)
+						{
+							observer.onNext(lastValue);
+						}
+						else
+						{
+							observer.onNext(null);
+						}
+						
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function latest():Array

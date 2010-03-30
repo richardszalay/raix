@@ -136,6 +136,36 @@ package rx
 			}
 		}
 		
+		public static function range(start : int, count : uint, scheduler : IScheduler = null) : IObservable
+		{
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(int, function(obs:IObserver) : ISubscription
+			{
+				var end : int = start + count;
+				
+				var scheduledActions : Array = new Array();
+				
+				for (var i:int = start; i<end; i++)
+				{
+					(function(value:int)
+					{
+						scheduledActions.push(scheduler.schedule(function():void { obs.onNext(value); }));
+					})(i);
+				}
+				
+				scheduledActions.push(scheduler.schedule(function():void { obs.onCompleted(); }));
+				
+				return new ClosureSubscription(function():void
+				{
+					while (scheduledActions.length > 0)
+					{
+						IScheduledAction(scheduledActions.shift()).cancel();
+					}
+				});
+			});
+		}
+		
 		public static function throwError(error : Error, observableType : Class = null) : IObservable
 		{
 			if (error == null)

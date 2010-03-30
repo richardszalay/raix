@@ -14,6 +14,7 @@ package rx.tests.operators
 		public var fromEvent : FromEventFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
+		public var range : RangeFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
 		public var take : TakeFixture;

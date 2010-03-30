@@ -19,7 +19,14 @@ package rx.tests.mocks
 			
 			return new ClosureScheduledAction(function():void
 			{
-				throw new Error("Not supported");
+				for (var i:int=0; i<_buffer.length; i++)
+				{
+					if (_buffer[i] == action)
+					{
+						_buffer.splice(i, 1);
+						break;
+					}
+				}
 			});
 		}
 		

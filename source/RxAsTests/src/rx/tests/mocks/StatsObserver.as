@@ -33,13 +33,13 @@ package rx.tests.mocks
 			_nextCount++;
 		}
 		
-		public function get nextCount() { return _nextCount; }
-		public function get errorCount() { return _errorCount; }
-		public function get completedCount() { return _completedCount; }
+		public function get nextCount() : int { return _nextCount; }
+		public function get errorCount() : int { return _errorCount; }
+		public function get completedCount() : int { return _completedCount; }
 		
-		public function get nextCalled() { return _nextCount > 0; }
-		public function get errorCalled() { return _errorCount > 0; }
-		public function get completedCalled() { return _completedCount > 0; }
+		public function get nextCalled() : Boolean { return _nextCount > 0; }
+		public function get errorCalled() : Boolean { return _errorCount > 0; }
+		public function get completedCalled() : Boolean { return _completedCount > 0; }
 		
 		public function get nextValues() : Array { return _nextValues; }
 		

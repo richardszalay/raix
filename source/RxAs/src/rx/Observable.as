@@ -15,6 +15,26 @@ package rx
 			throw new IllegalOperationError("This class is static and cannot be instantiated. Create an IObservable by using one of Observable's static methods");
 		}
 		
+		public static function defer(type : Class, observableFactory:Function):IObservable
+		{
+			if (observableFactory == null)
+			{
+				throw new ArgumentError("observableFactory cannot be null");
+			}
+			
+			return new ClosureObservable(type, function(observer : IObserver):ISubscription
+			{
+				var observable : IObservable = observableFactory();
+				
+				if (observable.type != type)
+				{
+					throw new ArgumentError("Deffered observable type must match type given to defer"); 
+				}
+				
+				return observable.subscribe(observer);
+			});
+		}
+		
 		public static function interval(intervalMs : uint):IObservable
 		{
 			return new ClosureObservable(int, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription

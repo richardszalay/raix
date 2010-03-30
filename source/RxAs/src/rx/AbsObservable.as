@@ -249,18 +249,13 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function defer(observableFactory:Function):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function delay(delayMs:int, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
-				scheduler = scheduler || Observable.resolveScheduler(obsSched);
+				scheduler = scheduler || Observable.resolveScheduler(scheduler);
 				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void

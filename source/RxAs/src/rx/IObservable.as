@@ -48,17 +48,13 @@ package rx
 		function count() : int;
 		
 		// static create(subscribe : Function) : IObservable;
-		
-		function defer(observableFactory : Function) : IObservable;
-		
+
 		function delay(delayMs : int, scheduler : IScheduler = null) : IObservable;
 		function delayUntil(dt : Date, scheduler : IScheduler = null) : IObservable;
 		
 		function dematerialize(type : Class):IObservable;
 		
 		function doAction(action : Function) : IObservable;
-		
-		// static function empty(scheduler : IScheduler = null) : IObservable;
 		
 		function finallyAction(finallyAction : Function) : IObservable;
 		

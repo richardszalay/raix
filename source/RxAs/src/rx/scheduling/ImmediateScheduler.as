@@ -4,6 +4,7 @@ package rx.scheduling
 	import flash.utils.Timer;
 	
 	import rx.impl.ClosureScheduledAction;
+	import rx.impl.TimerPool;
 	
 	public class ImmediateScheduler implements IScheduler
 	{
@@ -11,9 +12,21 @@ package rx.scheduling
 		{
 			if (dueTime != 0)
 			{
-				var timer : Timer = new Timer(dueTime, 1);
-				timer.addEventListener(TimerEvent.TIMER, action);
-				timer.start()
+				var timer : Timer = TimerPool.instance.obtain();
+				timer.repeatCount = 1;
+				timer.delay = dueTime;
+				
+				var handler : Function = function():void
+				{
+					timer.stop();
+					timer.removeEventListener(TimerEvent.TIMER, handler);
+					TimerPool.instance.release(timer);
+					
+					action();
+				};
+				
+				timer.addEventListener(TimerEvent.TIMER, handler);
+				timer.start();
 			}
 			else
 			{

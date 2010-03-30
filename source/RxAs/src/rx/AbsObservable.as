@@ -18,6 +18,11 @@ package rx
 		{
 		}
 		
+		public function get type() : Class
+		{
+			return Object;
+		}
+		
 		public function subscribe(observer : IObserver) : ISubscription
 		{
 			// Abstract methods not supported by AS3
@@ -67,7 +72,7 @@ package rx
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
 			{
 				var scheduler : IScheduler = Observable.resolveScheduler(obsSched);
 				
@@ -146,7 +151,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
 			{
 				var currentSource : IObservable = source;
 			
@@ -205,7 +210,7 @@ package rx
 				? defaultComparer
 				: ComparerUtil.normalizeComaparer(comparer);
 			
-			return new ClosureObservable(function(observer : IObserver) : ISubscription
+			return new ClosureObservable(Boolean, function(observer : IObserver) : ISubscription
 			{
 				return source.subscribeFunc(
 					function(pl:Object) : void
@@ -253,7 +258,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
 			{
 				scheduler = scheduler || Observable.resolveScheduler(obsSched);
 				
@@ -274,9 +279,37 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function dematerialize():IObservable
+		public function dematerialize(type : Class):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			if (source.type != Notification)
+			{
+				throw new ArgumentError("dematerialize can only be called on IObservable of " +
+					"Notification, which is returned by materialize");
+			}
+			
+			return new ClosureObservable(type, function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Notification) : void
+					{
+						switch(pl.kind)
+						{
+							case NotificationKind.ON_NEXT:
+								observer.onNext(pl.value);
+								break;
+							case NotificationKind.ON_COMPLETED:
+								observer.onCompleted();
+								break;
+							case NotificationKind.ON_ERROR:
+								observer.onError(pl.error);
+								break;
+						}
+					});
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function doAction(action:Function):IObservable
@@ -343,7 +376,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer : IObserver):ISubscription
+			return new ClosureObservable(Notification, function(observer : IObserver):ISubscription
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void { observer.onNext(new OnNext(pl)); },
@@ -379,9 +412,9 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function removeTimestamp() : IObservable
+		public function removeTimestamp(type : Class) : IObservable
 		{
-			return this.select(function(ts:TimeStamped):Object
+			return this.select(type, function(ts:TimeStamped):Object
 			{
 				return ts.value;
 			});
@@ -402,18 +435,18 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function select(selector:Function):IObservable
+		public function select(result : Class, selector:Function):IObservable
 		{
-			return selectInternal(selector);
+			return selectInternal(result, selector);
 		}
 		
-		private function selectInternal(selector:Function, scheduler : IScheduler = null):IObservable
+		private function selectInternal(type : Class, selector:Function, scheduler : IScheduler = null):IObservable
 		{
 			var source : IObservable = this;
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			return new ClosureObservable(type, function (observer : IObserver) : ISubscription
 			{
 				var countSoFar : uint = 0;
 				
@@ -444,11 +477,11 @@ package rx
 			});
 		}
 		
-		public function selectMany(selector:Function):IObservable
+		public function selectMany(type : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
 			{
 				var scheduler : IScheduler = Observable.resolveScheduler(obsSched);
 				
@@ -509,7 +542,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				
@@ -556,7 +589,7 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
 				var countSoFar : uint = 0;
 				
@@ -587,7 +620,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				
@@ -638,7 +671,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -677,7 +710,7 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
 				var lastValueTimestamp : Number = 0;
 				
@@ -727,7 +760,7 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
-			return selectInternal(function(value : Object) : TimeStamped
+			return selectInternal(Number, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, new Date().getTime());
 			}, scheduler);
@@ -742,7 +775,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -771,11 +804,11 @@ package rx
 			});
 		}
 		
-		public function zip(rightSource:IObservable, selector:Function):IObservable
+		public function zip(resultType : Class, rightSource:IObservable, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(resultType, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				

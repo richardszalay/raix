@@ -10,15 +10,15 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.timestamp().removeTimestamp();
+			return source.timestamp().removeTimestamp(source.type);
 		}
 		
 		[Test]
 		public function original_values_are_used() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
-			var obs : IObservable = manObs.timestamp().removeTimestamp();
+			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
 			
 			var expectedValues : Array = [1, 2, 3, 4];
 			
@@ -38,7 +38,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.throttle(5);
 			

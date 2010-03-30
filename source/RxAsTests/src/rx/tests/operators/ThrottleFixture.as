@@ -18,7 +18,7 @@ package rx.tests.operators
 		[Test(async)]
 		public function values_are_throttled_within_specified_timeframe() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.throttle(50);
 			
@@ -51,7 +51,7 @@ package rx.tests.operators
 		{
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.throttle(50, scheduler);
 			
@@ -86,7 +86,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.throttle(5);
 			

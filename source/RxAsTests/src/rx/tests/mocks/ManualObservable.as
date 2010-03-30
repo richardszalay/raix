@@ -11,8 +11,16 @@ package rx.tests.mocks
 		
 		private var _observers : Array = new Array();
 		
-		public function ManualObservable()
+		private var _type : Class;
+		
+		public function ManualObservable(type : Class)
 		{
+			_type= type;
+		}
+		
+		public override function get type() : Class
+		{
+			return _type;
 		}
 		
 		public override function subscribe(observer:IObserver):ISubscription

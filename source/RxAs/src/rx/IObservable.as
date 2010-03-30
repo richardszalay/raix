@@ -5,6 +5,8 @@ package rx
 	
 	public interface IObservable
 	{
+		function get type() : Class;
+		
 		/**
 		 * Subscribes to this observable using the supplied functions 
 		 * @param onNext Function to be called for every payload. Signature is function(payload : T) : void
@@ -52,7 +54,7 @@ package rx
 		function delay(delayMs : int, scheduler : IScheduler = null) : IObservable;
 		function delayUntil(dt : Date, scheduler : IScheduler = null) : IObservable;
 		
-		function dematerialize() : IObservable
+		function dematerialize(type : Class):IObservable;
 		
 		function doAction(action : Function) : IObservable;
 		
@@ -106,7 +108,7 @@ package rx
 		
 		// static function repeatValue(value : Object, repeatCount : int = 0) : IObservable;
 		
-		function removeTimestamp() : IObservable;
+		function removeTimestamp(type : Class) : IObservable;
 		
 		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;
 		
@@ -117,9 +119,9 @@ package rx
 		
 		function returnValue(value : Object) : IObservable;
 		
-		function select(selector : Function) : IObservable;
+		function select(result : Class, selector:Function):IObservable;
 		
-		function selectMany(selector : Function) : IObservable;
+		function selectMany(type : Class, selector : Function) : IObservable;
 		
 		function single() : IObservable;
 		function singleOrDefault() : IObservable;
@@ -158,6 +160,6 @@ package rx
 		
 		function where(predicate : Function) : IObservable;
 		
-		function zip(rightSource : IObservable, selector : Function) : IObservable;
+		function zip(resultType : Class, rightSource : IObservable, selector : Function) : IObservable;
 	}
 }

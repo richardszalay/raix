@@ -10,17 +10,17 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.select(function(pl:Object) : Object { return pl; });
+			return source.select(source.type, function(pl:Object) : Object { return pl; });
 		}
 		
 		[Test]
 		public function maps_value_using_function() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
-			var obs : IObservable = manObs.select(function(pl:Object) : int
+			var obs : IObservable = manObs.select(int, function(pl:Object) : int
 			{
 				return index++;
 			});
@@ -39,9 +39,9 @@ package rx.tests.operators
 		[Test]
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
-			var obs : IObservable = manObs.select(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.select(Object, function(pl:uint) : Boolean
 			{
 				throw new Error();
 			});
@@ -64,9 +64,9 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
-			var obs : IObservable = manObs.select(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
 			{
 				return true;
 			});

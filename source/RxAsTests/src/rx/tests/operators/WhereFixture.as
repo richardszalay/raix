@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function values_are_filtered_by_predicate() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{
@@ -43,7 +43,7 @@ package rx.tests.operators
 		[Test]
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{
@@ -68,7 +68,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
 			{

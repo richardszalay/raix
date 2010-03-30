@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_completed() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
@@ -34,7 +34,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_error() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
@@ -52,7 +52,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_unsubscribe() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
@@ -70,7 +70,7 @@ package rx.tests.operators
 		[Test]
 		public function is_normalized_for_oncompleted() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
@@ -96,7 +96,7 @@ package rx.tests.operators
 		[Test]
 		public function is_normalized_for_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			

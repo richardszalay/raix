@@ -18,10 +18,8 @@
 				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
 				var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
 				
-				var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
-				
 				var obs : IObservable = md
-					.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
+					.selectMany(MouseEvent, function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
 				
 				subscription = obs.subscribeFunc(function(me : MouseEvent) : void
 				{

@@ -8,6 +8,7 @@ package rx.tests.operators
 	{
 		public var bufferWithCount : BufferWithCountFixture;
 		public var contains : ContainsFixture;
+		public var dematerialize : DematerializeFixture;
 		public var empty : EmptyFixture;
 		public var fromEvent : FromEventFixture;
 		public var materialize : MaterializeFixture;

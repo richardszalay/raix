@@ -34,7 +34,7 @@ package rx.tests.operators
 		{
 			var sched : IScheduler = new NullScheduler();
 			
-			var obs : IObservable = Observable.empty(sched);
+			var obs : IObservable = Observable.empty(Object, sched);
 			
 			var completed : Boolean = false;
 			
@@ -70,7 +70,7 @@ package rx.tests.operators
             	});
             });
 
-            var obs : IObservable = Observable.empty(scheduler);
+            var obs : IObservable = Observable.empty(Object, scheduler);
 
            var subscription : ISubscription = obs.subscribeFunc(null);
 

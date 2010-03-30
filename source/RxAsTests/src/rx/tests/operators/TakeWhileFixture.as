@@ -17,7 +17,7 @@ package rx.tests.operators
 		[Test]
 		public function values_are_returned_until_predicate_returns_false() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{
@@ -42,7 +42,7 @@ package rx.tests.operators
 		[Test]
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{
@@ -67,7 +67,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable();
+			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{

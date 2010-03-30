@@ -17,7 +17,7 @@ package rx
 		
 		public static function interval(intervalMs : uint):IObservable
 		{
-			return new ClosureObservable(function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(int, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				
@@ -42,9 +42,11 @@ package rx
 			});
 		}
 		
-		public static function fromEvent(eventDispatcher:IEventDispatcher, type:String, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):IObservable
+		public static function fromEvent(eventDispatcher:IEventDispatcher, type:String, eventType : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
-			return new ClosureObservable(function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			eventType = eventType || Event;
+			
+			return new ClosureObservable(eventType, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				
@@ -68,11 +70,12 @@ package rx
 			});
 		}
 		
-		public static function empty(scheduler : IScheduler = null) : IObservable
+		public static function empty(observableType : Class = null, scheduler : IScheduler = null) : IObservable
 		{
+			observableType = observableType || Object;
 			scheduler = scheduler || ImmediateScheduler.instance;
 			
-			return new ClosureObservable(function(obs:IObserver) : ISubscription
+			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
 			{
 				return new ScheduledActionSubscription(
 					scheduler.schedule(obs.onCompleted)
@@ -83,9 +86,11 @@ package rx
 		/**
 		 * Returns an IObservable that never completes
 		 */		
-		public static function never() : IObservable
+		public static function never(observableType : Class = null) : IObservable
 		{
-			return new ClosureObservable(function(obs:IObserver) : ISubscription
+			observableType = observableType || Object;
+			
+			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
 			{
 				return new ClosureSubscription(function():void{});
 			});
@@ -111,14 +116,16 @@ package rx
 			}
 		}
 		
-		public static function throwError(error : Error) : IObservable
+		public static function throwError(error : Error, observableType : Class = null) : IObservable
 		{
 			if (error == null)
 			{
 				throw new ArgumentError("error cannot be null");
 			}
 			
-			return new ClosureObservable(function(obs:IObserver) : ISubscription
+			observableType = observableType || Object;
+			
+			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
 			{
 				obs.onError(error);
 				

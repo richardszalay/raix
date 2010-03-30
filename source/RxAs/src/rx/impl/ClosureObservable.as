@@ -7,10 +7,12 @@ package rx.impl
 	public class ClosureObservable extends AbsObservable
 	{
 		private var _observeFunc : Function;
+		private var _type : Class;
 		
-		public function ClosureObservable(observeFunc : Function)
+		public function ClosureObservable(type : Class, observeFunc : Function)
 		{
 			_observeFunc = observeFunc;
+			_type = type;
 		}
 		
 		public override function subscribe(observer : IObserver) : ISubscription 
@@ -23,6 +25,11 @@ package rx.impl
 			safetyObserver.setSubscription(subscription);
 			
 			return subscription; 
+		}
+		
+		public override function get type() : Class
+		{
+			return _type;
 		}
 	}
 }

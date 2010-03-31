@@ -13,6 +13,7 @@ package rx.tests.operators
 		public var dematerialize : DematerializeFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
+		public var doAction : DoActionFixture;
 		public var empty : EmptyFixture;
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;

@@ -330,7 +330,36 @@ package rx
 		
 		public function doAction(next:Function, complete:Function = null, error:Function = null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						try
+						{
+							if (next != null) next(pl);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+						}
+						
+						observer.onNext(pl);
+						
+					},
+					function () : void
+					{
+						observer.onError(new Error("The sequence contained no values"));
+					},
+					function (error : Error) : void
+					{
+						observer.onError(error);
+					});
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function finallyAction(finallyAction:Function):IObservable

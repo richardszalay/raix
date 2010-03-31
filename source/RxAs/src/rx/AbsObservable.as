@@ -328,7 +328,7 @@ package rx
 			});
 		}
 		
-		public function doAction(action:Function):IObservable
+		public function doAction(next:Function, complete:Function = null, error:Function = null):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");
 		}
@@ -395,9 +395,49 @@ package rx
 			});
 		}
 		
-		public function distinctUntilChanged(comparer:Function):IObservable
+		public function distinctUntilChanged(comparer:Function = null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			var defaultComparer : Function = function(a:Object, b:Object) : Boolean { return a == b; }
+			
+			comparer = (comparer == null)
+				? defaultComparer
+				: ComparerUtil.normalizeComaparer(comparer);
+			
+			return new ClosureObservable(Boolean, function(observer : IObserver) : ISubscription
+			{
+				var lastValue : Object = null;
+				var hasValue : Boolean = false;
+				
+				return source.subscribeFunc(
+					function(pl:Object) : void
+					{
+						var result : Boolean = false
+						
+						try
+						{
+							result = (comparer(lastValue, pl) == true);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+							return;
+						}
+						
+						if (!(result && hasValue))
+						{
+							hasValue = true;
+							lastValue = pl;
+							
+							observer.onNext(pl);
+						}
+					},
+					
+					function():void { observer.onCompleted(); },
+					function(e : Error):void { observer.onError(e); }
+				);
+			});
 		}
 		
 		public function join(plans:Array):IObservable

@@ -56,7 +56,7 @@ package rx
 		
 		function dematerialize(type : Class):IObservable;
 		
-		function doAction(action : Function) : IObservable;
+		function doAction(next:Function, complete:Function = null, error:Function = null):IObservable;
 		
 		function finallyAction(finallyAction : Function) : IObservable;
 		
@@ -74,7 +74,7 @@ package rx
 		
 		function asObservable() : IObservable;
 		
-		function distinctUntilChanged(comparer : Function) : IObservable;
+		function distinctUntilChanged(comparer : Function = null) : IObservable;
 		
 		function join(plans : Array/*.<Plan>*/) : IObservable;
 		

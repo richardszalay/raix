@@ -1,6 +1,7 @@
 package rx
 {
 	import flash.errors.IllegalOperationError;
+	import flash.utils.getQualifiedClassName;
 	
 	import rx.impl.ClosureObservable;
 	import rx.impl.ClosureObserver;
@@ -9,6 +10,7 @@ package rx
 	import rx.impl.OnError;
 	import rx.impl.OnNext;
 	import rx.joins.Pattern;
+	import rx.scheduling.IScheduledAction;
 	import rx.scheduling.IScheduler;
 	import rx.util.ComparerUtil;
 	
@@ -71,11 +73,9 @@ package rx
 			}
 			
 			var source : IObservable = this;
-			
-			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
-				var scheduler : IScheduler = Observable.resolveScheduler(obsSched);
-				
 				var buffer : Array = new Array();
 				
 				var valuesToSkip : uint = 0;
@@ -93,10 +93,7 @@ package rx
 						
 						if (buffer.length == count)
 						{
-							scheduler.schedule((function(b:Array):Function
-							{
-								return function():void { observer.onNext(b); }
-							})(buffer));
+							observer.onNext(buffer);
 							
 							if (skip == 0)
 							{
@@ -118,19 +115,19 @@ package rx
 					{
 						if (buffer.length > 0)
 						{
-							scheduler.schedule(function():void{observer.onNext(buffer);});
+							observer.onNext(buffer);
 							buffer = [];
 						}
-						scheduler.schedule(function():void{observer.onCompleted();});
+						observer.onCompleted();
 					},
 					function (error : Error) : void
 					{
 						if (buffer.length > 0)
 						{
-							scheduler.schedule(function():void{observer.onNext(buffer);});
+							observer.onNext(buffer);
 							buffer = [];
 						}
-						scheduler.schedule(function():void{observer.onError(error);});
+						observer.onError(error);
 					});
 					
 				return source.subscribe(dec);
@@ -142,6 +139,30 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function cast(type : Class) : IObservable
+		{
+			return this.select(type, function(x:Object):Object
+			{
+				if (x != null)
+				{
+					var obj : Object = x as type;
+					
+					if (obj == null)
+					{
+						var fromType : String = getQualifiedClassName(x);
+						var toType : String = getQualifiedClassName(type);
+						
+						throw new TypeError(
+							"Error #1034: Type Coercion failed: cannot convert " +
+							fromType + " to " + toType
+						);
+					}
+				}
+				
+				return x;
+			});
+		}
+		
 		public function combineLatest(right:IObservable, selector:Function):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");
@@ -151,15 +172,15 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
 				var currentSource : IObservable = source;
 			
 				var subscription : ISubscription = null;
 				
 				var remainingSources : Array = [].concat(sources);
-				
-				scheduler = scheduler || Observable.resolveScheduler(obsSched);
 				
 				var dec : IObserver = null;
 				
@@ -486,9 +507,39 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function observeOn(scheduler:IScheduler=null):IObservable
+		public function ofType(type : Class) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return this.where(function(x:Object):Boolean
+			{
+				return x is type;
+			});
+		}
+		
+		public function observeOn(scheduler:IScheduler):IObservable
+		{
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var subscription : ISubscription = null;
+				
+				var scheduledAction : IScheduledAction = scheduler.schedule(function():void
+				{
+					subscription = source.subscribe(observer);
+				});
+				
+				return new ClosureSubscription(function():void
+				{
+					if (subscription == null)
+					{
+						scheduledAction.cancel();
+					}
+					else
+					{
+						subscription.unsubscribe();
+					}
+				});
+			});
 		}
 				
 		public function onErrorResumeNext(sources:Array, scheduler:IScheduler=null):IObservable
@@ -570,10 +621,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(type, function(observer : IObserver, obsSched:IScheduler=null):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver):ISubscription
 			{
-				var scheduler : IScheduler = Observable.resolveScheduler(obsSched);
-				
 				var subscriptions : Array = new Array();
 				
 				var unsubscribeAll : Function = function():void
@@ -594,7 +643,7 @@ package rx
 						observer.onNext(pl);
 					},
 					function () : void { },
-					function (error : Error) : void { scheduler.schedule(function():void{observer.onError(error);}); }
+					function (error : Error) : void { observer.onError(error); }
 					);
 				
 				var dec : IObserver = new ClosureObserver(
@@ -607,8 +656,8 @@ package rx
 						var subscription : ISubscription = result.subscribe(selectedObserver);
 						subscriptions.push(subscription);
 					},
-					function () : void { unsubscribeAll(); scheduler.schedule(function():void{observer.onCompleted();}); },
-					function (error : Error) : void { unsubscribeAll(); scheduler.schedule(function():void{observer.onError(error);}); }
+					function () : void { unsubscribeAll(); observer.onCompleted(); },
+					function (error : Error) : void { unsubscribeAll(); observer.onError(error); }
 					);
 					
 				subscriptions.push(source.subscribe(dec));
@@ -631,10 +680,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var skippedSoFar : uint = 0;
 				
 				var subscription : ISubscription;
@@ -644,7 +691,7 @@ package rx
 					{
 						if (++skippedSoFar > count)
 						{
-							scheduler.schedule(function():void { observer.onNext(value); });
+							observer.onNext(value);
 						}
 					},
 					function () : void { observer.onCompleted(); },
@@ -709,10 +756,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var subscription : ISubscription;
 				
 				var primarySubscription : ISubscription;
@@ -737,7 +782,7 @@ package rx
 					function (value : Object) : void
 					{
 						trace("takeUntil :: onNext");
-						scheduler.schedule(function():void { observer.onNext(value); });
+						observer.onNext(value);
 					},
 					function () : void { observer.onCompleted(); },
 					function (error : Error) : void { observer.onError(error); }
@@ -897,10 +942,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(resultType, function (observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(resultType, function (observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var leftValues : Array = new Array();
 				var rightValues : Array = new Array();
 				
@@ -931,7 +974,7 @@ package rx
 						{
 							value = selector(value, rightValues.shift());
 							
-							scheduler.schedule(function():void { observer.onNext(value); });
+							observer.onNext(value);
 						}
 						else
 						{
@@ -951,7 +994,7 @@ package rx
 						{
 							value = selector(leftValues.shift(), value);
 							
-							scheduler.schedule(function():void { observer.onNext(value); });
+							observer.onNext(value);
 						}
 						else
 						{

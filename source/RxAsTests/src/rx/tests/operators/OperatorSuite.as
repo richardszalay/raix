@@ -8,6 +8,7 @@ package rx.tests.operators
 	{
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
+		public var cast : CastFixture;
 		public var contains : ContainsFixture;
 		public var dematerialize : DematerializeFixture;
 		public var defer : DeferFixture;
@@ -15,8 +16,11 @@ package rx.tests.operators
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
+		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
+		public var observeOn : ObserveOnFixture;
+		public var ofType : OfTypeFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
 		public var range : RangeFixture;

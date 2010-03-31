@@ -36,6 +36,8 @@ package rx
 		
 		function bufferWithTime(timeMs : int, timeShiftMs : int = 0, scheduler : IScheduler = null) : IObservable;
 		
+		function cast(type : Class) : IObservable;
+		
 		// TODO: ??
 		// function catchError();
 		
@@ -90,8 +92,10 @@ package rx
 		
 		function mostRecent(initialValue : Object) : IObservable;
 		//function mostRecentValue(initialValue : Object) : IPropertyGetter;
-		 
-		function observeOn(scheduler : IScheduler = null) : IObservable;
+		
+		function ofType(type : Class) : IObservable;
+
+		function observeOn(scheduler : IScheduler) : IObservable;
 		
 		function onErrorResumeNext(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable; 
 		 

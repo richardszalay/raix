@@ -15,6 +15,7 @@ package rx.tests.operators
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var doAction : DoActionFixture;
 		public var empty : EmptyFixture;
+		public var finallyAction : FinallyActionFixture;
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
@@ -28,6 +29,7 @@ package rx.tests.operators
 		public var range : RangeFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
+		public var skip : SkipFixture;
 		public var take : TakeFixture;
 		public var takeWhile : TakeWhileFixture;
 		public var throttle : ThrottleFixture;

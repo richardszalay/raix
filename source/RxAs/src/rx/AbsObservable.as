@@ -364,7 +364,19 @@ package rx
 		
 		public function finallyAction(finallyAction:Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			if (finallyAction == null) throw new ArgumentError("finallyAction");
+			
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void { observer.onNext(pl); },
+					function () : void { finallyAction(); observer.onCompleted(); },
+					function (error : Error) : void { finallyAction(); observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function first():IObservable

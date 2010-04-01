@@ -88,13 +88,13 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function value_is_used_if_comparer_returns_zero() : void
+		public function value_is_not_used_if_comparer_returns_zero() : void
 		{
 			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
-			var obs : IObservable = manObs.distinctUntilChanged(function():Boolean
+			var obs : IObservable = manObs.distinctUntilChanged(function():int
 			{
 				return 0;
 			});	
@@ -106,26 +106,30 @@ package rx.tests.operators
 			manObs.onNext(0);
 			manObs.onNext(0);
 			
-			Assert.assertEquals(3, stats.nextCount);
+			Assert.assertEquals(1, stats.nextCount);
 			Assert.assertEquals(0, stats.nextValues[0]);
 		}
 		
 		[Test]
-		public function value_is_not_used_if_comparer_returns_non_zero() : void
+		public function value_is_used_if_comparer_returns_non_zero() : void
 		{
 			var manObs : ManualObservable = new ManualObservable(int);
 			
 			var index : int = 0;
 			
-			var obs : IObservable = manObs.distinctUntilChanged(function():Boolean
+			var obs : IObservable = manObs.distinctUntilChanged(function():int
 			{
 				return 1;
-			});	
+			});
 			
 			var stats : StatsObserver = new StatsObserver();			
 			obs.subscribe(stats);
 			
-			Assert.assertEquals(0, stats.nextCount);
+			manObs.onNext(0);
+			manObs.onNext(0);
+			manObs.onNext(0);
+			
+			Assert.assertEquals(3, stats.nextCount);
 		}
 		
 		[Test]

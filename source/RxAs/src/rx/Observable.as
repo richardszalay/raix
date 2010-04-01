@@ -234,6 +234,11 @@ package rx
 			});
 		}
 		
+		public static function repeatValue(type : Class, value : Object, scheduler : IScheduler) : void
+		{
+			throw new IllegalOperationError("subscribe() must be overriden");
+		}
+		
 		public static function throwError(error : Error, observableType : Class = null) : IObservable
 		{
 			if (error == null)
@@ -248,6 +253,26 @@ package rx
 				obs.onError(error);
 				
 				return new ClosureSubscription(function():void{});
+			});
+		}
+		
+		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null) : IObservable
+		{
+			scheduler = resolveScheduler(scheduler);
+			
+			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			{
+				var valueScheduledAction : IScheduledAction = 
+					scheduler.schedule(function():void { obs.onNext(value); });
+					
+				var completeScheduledAction : IScheduledAction =
+					scheduler.schedule(function():void { obs.onCompleted(); });
+				
+				return new ClosureSubscription(function():void
+				{
+					valueScheduledAction.cancel();
+					completeScheduledAction.cancel();
+				});
 			});
 		}
 		

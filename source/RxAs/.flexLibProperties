@@ -2,25 +2,26 @@
 <flexLibProperties version="1">
   <includeClasses>
     <classEntry path="rx.Subject"/>
-    <classEntry path="rx.scheduling.IScheduler"/>
-    <classEntry path="rx.impl.ClosureObservable"/>
     <classEntry path="rx.ISubscription"/>
+    <classEntry path="rx.impl.ClosureObservable"/>
+    <classEntry path="rx.scheduling.IScheduler"/>
     <classEntry path="rx.impl.ClosureScheduledAction"/>
     <classEntry path="rx.IObservable"/>
     <classEntry path="rx.scheduling.Scheduler"/>
     <classEntry path="rx.impl.TimerPool"/>
-    <classEntry path="rx.joins.Pattern"/>
+    <classEntry path="rx.Observer"/>
     <classEntry path="rx.AbsObservable"/>
+    <classEntry path="rx.joins.Pattern"/>
     <classEntry path="rx.Observable"/>
     <classEntry path="rx.impl.ClosureSubscription"/>
-    <classEntry path="rx.TimeStamped"/>
     <classEntry path="rx.IObserver"/>
+    <classEntry path="rx.TimeStamped"/>
     <classEntry path="rx.Notification"/>
     <classEntry path="rx.impl.ClosureObserver"/>
     <classEntry path="rx.NotificationKind"/>
     <classEntry path="rx.impl.OnNext"/>
-    <classEntry path="rx.scheduling.ImmediateScheduler"/>
     <classEntry path="rx.IDisposable"/>
+    <classEntry path="rx.scheduling.ImmediateScheduler"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

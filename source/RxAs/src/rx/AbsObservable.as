@@ -739,7 +739,57 @@ package rx
 		
 		public function repeat(repeatCount:int=0, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var isInfinite : Boolean = (repeatCount == 0);
+				var iterationsRemaining : int = repeatCount;
+				
+				var scheduledAction : IScheduledAction = null;
+				
+				var subscription : ISubscription = null;				
+				var recursiveObserver : IObserver = null;
+				
+				recursiveObserver = new ClosureObserver(
+					function(pl:Object) : void { observer.onNext(pl); },
+					function():void
+					{
+						if (isInfinite || iterationsRemaining-- > 0)
+						{
+							scheduledAction = scheduler.schedule(function():void
+							{
+								subscription = source.subscribe(recursiveObserver);
+							});
+						}
+						else
+						{
+							observer.onCompleted();
+						}
+					},
+					function(e:Error) : void { observer.onError(e); }
+					);
+				
+				scheduledAction = scheduler.schedule(function():void
+				{
+					subscription = source.subscribe(recursiveObserver);
+				});
+				
+				return new ClosureSubscription(function():void
+				{
+					if (scheduledAction != null)
+					{
+						scheduledAction.cancel()
+					}
+					
+					if (subscription != null)
+					{
+						subscription.unsubscribe();
+					}
+				});
+			});
 		}
 		
 		public function retry(retryCount:int, scheduler:IScheduler=null):IObservable

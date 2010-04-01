@@ -8,6 +8,9 @@ package rx.scheduling
 	
 	public class ImmediateScheduler implements IScheduler
 	{
+		private var _runningAction : Boolean = false;
+		private var _pendingActions : Array = new Array();
+		
 		public function schedule(action : Function, dueTime : int = 0) : IScheduledAction
 		{
 			if (dueTime != 0)
@@ -30,7 +33,33 @@ package rx.scheduling
 			}
 			else
 			{
-				action();
+				if (_runningAction)
+				{
+					_pendingActions.push(action);
+				}
+				else
+				{
+					_runningAction = true;
+					
+					_pendingActions.push(action);
+					
+					try
+					{
+						while (_pendingActions.length > 0)
+						{
+							(_pendingActions.shift())();
+						}
+					}
+					catch(err : Error)
+					{
+						_pendingActions = [];
+						throw err;
+					}
+					finally
+					{
+						_runningAction = false;
+					}
+				}
 			}
 			
 			return ClosureScheduledAction.empty();

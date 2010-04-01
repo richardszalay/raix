@@ -163,6 +163,70 @@ package rx
 			});
 		}
 		
+		public function catchError(second : IObservable, scheduler : IScheduler = null) : IObservable
+		{
+			return Observable.catchErrors([this, second], scheduler);
+		}
+		
+		public function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			if (deferFunc == null)
+			{
+				throw new ArgumentError("deferFunc");
+			}
+			
+			errorType = errorType || Error;
+			
+			return new ClosureObservable(source.type, function(obs:IObserver) : ISubscription
+			{
+				var subscription : ISubscription = null;
+				
+				subscription = source.subscribeFunc(
+					function(pl:Object) : void { obs.onNext(pl); },
+					function() : void { obs.onCompleted(); },
+					function(e : Error) : void
+					{
+						if (e is errorType)
+						{
+							var catchObservable : IObservable = null;
+							
+							try
+							{
+								catchObservable = IObservable(deferFunc(e));
+							}
+							catch(funcErr : Error)
+							{
+								obs.onError(funcErr);
+								return;
+							}
+							
+							if (catchObservable == null)
+							{
+								obs.onError(e);
+							}
+							else
+							{
+								subscription = catchObservable.subscribe(obs);
+							} 
+						}
+						else
+						{
+							obs.onError(e);
+						}
+					});
+				
+				return new ClosureSubscription(function():void
+				{
+					if (subscription != null)
+					{
+						subscription.unsubscribe();
+					}
+				});
+			});
+		}
+		
 		public function combineLatest(right:IObservable, selector:Function):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");

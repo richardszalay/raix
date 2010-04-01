@@ -8,6 +8,8 @@ package rx.tests.operators
 	{
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
+		public var catchError : CatchErrorFixture;
+		public var catchErrorDefered : CatchErrorDeferedFixture;
 		public var cast : CastFixture;
 		public var contains : ContainsFixture;
 		public var count : CountFixture;

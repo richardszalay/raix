@@ -38,8 +38,9 @@ package rx
 		
 		function cast(type : Class) : IObservable;
 		
-		// TODO: ??
-		// function catchError();
+		function catchError(second : IObservable, scheduler : IScheduler = null) : IObservable;
+		
+		function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable;
 		
 		function combineLatest(right : IObservable, selector : Function) : IObservable;
 		

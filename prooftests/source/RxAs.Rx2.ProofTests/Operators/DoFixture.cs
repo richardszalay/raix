@@ -53,12 +53,38 @@ namespace RxAs.Rx2.ProofTests.Operators
         }
 
         [Test]
-        public void exception_thrown_in_next_action_sent_to_onerror()
+        public void exception_thrown_in_next_action_sent_to_onerror_when_only_next_action_is_used()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
 
             Observable.Range(0, 2)
                 .Do(x => { throw new Exception(); })
+                .Subscribe(stats);
+
+            Assert.IsFalse(stats.NextCalled);
+            Assert.IsTrue(stats.ErrorCalled);
+        }
+
+        [Test, ExpectedException(typeof(ApplicationException))]
+        public void exception_thrown_in_next_action_bubbles_when_error_action_is_specifid()
+        {
+            StatsObserver<int> stats = new StatsObserver<int>();
+
+            Observable.Range(0, 2)
+                .Do(x => { throw new ApplicationException(); }, e => { })
+                .Subscribe(stats);
+
+            Assert.IsFalse(stats.NextCalled);
+            Assert.IsTrue(stats.ErrorCalled);
+        }
+
+        [Test]
+        public void exception_thrown_in_next_action_bubbles_when_complete_action_is_specifid()
+        {
+            StatsObserver<int> stats = new StatsObserver<int>();
+
+            Observable.Range(0, 2)
+                .Do(x => { throw new Exception(); }, e => {},  () => { })
                 .Subscribe(stats);
 
             Assert.IsFalse(stats.NextCalled);

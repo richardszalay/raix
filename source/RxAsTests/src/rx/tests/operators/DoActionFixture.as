@@ -3,6 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
+	import rx.Observable;
 	import rx.tests.mocks.ManualObservable;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -69,20 +70,57 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function error_thrown_in_next_action_is_sent_to_on_error() : void
+		public function error_thrown_in_next_action_is_sent_to_on_error_if_only_next_is_specified() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
-			
-			var actionCalled : Boolean = false;
-			var observerCalled : Boolean = false; 
-			
 			var stats : StatsObserver = new StatsObserver();
 			
-			manObs
+			Observable.range(0, 3)
 				.doAction(function(pl:Object):void { throw new Error(); })
 				.subscribe(stats)
 			
-			manObs.onNext(0);
+			Assert.assertTrue(stats.errorCalled);
+		}
+		
+		[Test(expects="Error")]
+		public function error_thrown_in_next_action_is_bubbled_if_next_and_complete_is_specified() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			Observable.range(0, 3)
+				.doAction(
+					function(pl:Object):void { throw new Error(); }, 
+					function():void{})
+				.subscribe(stats)
+			
+			Assert.assertTrue(stats.errorCalled);
+		}
+		
+		[Test(expects="Error")]
+		public function error_thrown_in_next_action_is_bubbled_if_next_and_error_is_specified() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			Observable.range(0, 3)
+				.doAction(
+					function(pl:Object):void { throw new Error(); }, 
+					null, 
+					function(e:Error):void{})
+				.subscribe(stats)
+			
+			Assert.assertTrue(stats.errorCalled);
+		}
+		
+		[Test(expects="Error")]
+		public function error_thrown_in_next_action_is_bubbled_if_all_actions_are_specified() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			Observable.range(0, 3)
+				.doAction(
+					function(pl:Object):void { throw new Error(); }, 
+					function():void{}, 
+					function(e:Error):void{})
+				.subscribe(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
 		}

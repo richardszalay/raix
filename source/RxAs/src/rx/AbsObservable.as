@@ -328,7 +328,7 @@ package rx
 			});
 		}
 		
-		public function doAction(next:Function, complete:Function = null, error:Function = null):IObservable
+		public function doAction(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -339,11 +339,18 @@ package rx
 					{
 						try
 						{
-							if (next != null) next(pl);
+							if (nextAction != null) nextAction(pl);
 						}
 						catch(err : Error)
 						{
-							observer.onError(err);
+							if (completeAction == null && errorAction == null)
+							{
+								observer.onError(err);
+							}
+							else
+							{
+								throw err;
+							}
 						}
 						
 						observer.onNext(pl);
@@ -351,10 +358,20 @@ package rx
 					},
 					function () : void
 					{
-						observer.onError(new Error("The sequence contained no values"));
+						if (completeAction != null)
+						{
+							completeAction();
+						}
+						
+						observer.onCompleted();
 					},
 					function (error : Error) : void
 					{
+						if (errorAction != null)
+						{
+							errorAction(error);
+						}
+						
 						observer.onError(error);
 					});
 					

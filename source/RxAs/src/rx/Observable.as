@@ -103,6 +103,74 @@ package rx
 			});
 		}
 		
+		public static function onErrorResumeNext(sources:Array, scheduler:IScheduler=null):IObservable
+		{
+			if (sources == null || sources.length == 0)
+			{
+				throw new ArgumentError("sources");
+			}
+			
+			scheduler = resolveScheduler(scheduler);
+			
+			// Make internally immutable
+			sources = new Array().concat(sources);
+			
+			return new ClosureObservable(sources[0].type, function(obs:IObserver) : ISubscription
+			{
+				var remainingSources : Array = new Array().concat(sources);
+				
+				var subscription : ISubscription = null;
+				var scheduledAction : IScheduledAction = null;
+				
+				var moveNextFunc : Function = null;
+				
+				moveNextFunc = function():void
+				{
+					var currentSource : IObservable = remainingSources.shift();
+						
+					subscription = currentSource.subscribeFunc(
+						function(pl:Object) : void { obs.onNext(pl); },
+						function() : void
+						{
+							if (remainingSources.length > 0)
+							{
+								scheduledAction = scheduler.schedule(moveNextFunc);
+							}
+							else
+							{
+								obs.onCompleted();
+							}
+						},
+						function(e:Error) : void
+						{
+							if (remainingSources.length > 0)
+							{
+								scheduledAction = scheduler.schedule(moveNextFunc);
+							}
+							else
+							{
+								obs.onError(e);
+							}
+						});
+				};
+				
+				scheduledAction = scheduler.schedule(moveNextFunc);
+				
+				return new ClosureSubscription(function():void
+				{
+					if (scheduledAction != null)
+					{
+						scheduledAction.cancel();
+					}
+					
+					if (subscription != null)
+					{
+						subscription.unsubscribe();
+					}
+				});
+			});
+		}
+		
 		/**
 		 * Returns an IObservable that never completes
 		 */		

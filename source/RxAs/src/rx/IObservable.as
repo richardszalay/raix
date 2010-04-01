@@ -98,7 +98,7 @@ package rx
 
 		function observeOn(scheduler : IScheduler) : IObservable;
 		
-		function onErrorResumeNext(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable; 
+		function onErrorResumeNext(second:IObservable, scheduler:IScheduler=null):IObservable; 
 		 
 		// TODO: ??
 		//function prune (scheduler : IScheduler = null)

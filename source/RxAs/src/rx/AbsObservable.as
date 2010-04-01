@@ -719,9 +719,9 @@ package rx
 			});
 		}
 				
-		public function onErrorResumeNext(sources:Array, scheduler:IScheduler=null):IObservable
+		public function onErrorResumeNext(second:IObservable, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return Observable.onErrorResumeNext([this, second], scheduler);
 		}
 		
 		public function publish(scheduler:IScheduler=null):Subject

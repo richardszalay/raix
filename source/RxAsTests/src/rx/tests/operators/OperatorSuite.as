@@ -26,6 +26,7 @@ package rx.tests.operators
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
 		public var observeOn : ObserveOnFixture;
+		public var onErrorResumeNext : OnErrorResumeNextFixture;
 		public var ofType : OfTypeFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;

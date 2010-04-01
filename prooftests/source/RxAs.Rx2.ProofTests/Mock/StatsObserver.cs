@@ -45,7 +45,7 @@ namespace RxAs.Rx2.ProofTests.Mock
 		public bool ErrorCalled { get { return _errorCount > 0; } }
 		public bool CompletedCalled { get { return _completedCount > 0; } }
 		
-		public ICollection<T> NextValues { get { return _nextValues; } }
+		public IList<T> NextValues { get { return _nextValues; } }
 
         public Exception Error { get { return _error; } }
 	}

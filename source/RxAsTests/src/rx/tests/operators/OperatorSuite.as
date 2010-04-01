@@ -10,6 +10,7 @@ package rx.tests.operators
 		public var bufferWithCount : BufferWithCountFixture;
 		public var cast : CastFixture;
 		public var contains : ContainsFixture;
+		public var count : CountFixture;
 		public var dematerialize : DematerializeFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;

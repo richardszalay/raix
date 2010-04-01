@@ -265,19 +265,34 @@ package rx
 			});
 		}
 		
-		public function count():int
+		public function count():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(uint, function(observer : IObserver):ISubscription
+			{
+				var count : uint = 0;
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						count++;
+					},
+					function () : void { observer.onNext(count); observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function delay(delayMs:int, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
 			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
-				scheduler = scheduler || Observable.resolveScheduler(scheduler);
-				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
 					{

@@ -47,7 +47,7 @@ package rx
 		
 		function contains(value : Object, comparer : Function = null) : IObservable
 		
-		function count() : int;
+		function count() : IObservable;
 		
 		// static create(subscribe : Function) : IObservable;
 

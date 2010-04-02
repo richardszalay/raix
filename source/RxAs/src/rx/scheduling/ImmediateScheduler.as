@@ -21,19 +21,30 @@ package rx.scheduling
 					timer.stop();
 					timer.removeEventListener(TimerEvent.TIMER, handler);
 					TimerPool.instance.release(timer);
+					timer = null;
 					
 					action();
 				};
 				
 				timer.addEventListener(TimerEvent.TIMER, handler);
 				timer.start();
+				
+				return new ClosureScheduledAction(function():void
+				{
+					if (timer != null)
+					{
+						timer.stop();
+						timer.removeEventListener(TimerEvent.TIMER, handler);
+						TimerPool.instance.release(timer);
+					}
+				});
 			}
 			else
 			{
 				action();
+				
+				return ClosureScheduledAction.empty();
 			}
-			
-			return ClosureScheduledAction.empty();
 		}
 		
 		private static var _instance : ImmediateScheduler = new ImmediateScheduler();

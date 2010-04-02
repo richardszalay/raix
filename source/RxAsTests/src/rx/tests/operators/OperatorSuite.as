@@ -11,6 +11,7 @@ package rx.tests.operators
 		public var cast : CastFixture;
 		public var contains : ContainsFixture;
 		public var dematerialize : DematerializeFixture;
+		public var delay : DelayFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var doAction : DoActionFixture;
@@ -27,11 +28,13 @@ package rx.tests.operators
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
 		public var range : RangeFixture;
+		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
 		public var skip : SkipFixture;
 		public var take : TakeFixture;
 		public var takeWhile : TakeWhileFixture;
+		public var timeInterval : TimeIntervalFixture;
 		public var throttle : ThrottleFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timestamp : TimestampFixture;

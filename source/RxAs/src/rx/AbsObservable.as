@@ -278,15 +278,37 @@ package rx
 			{
 				scheduler = scheduler || Observable.resolveScheduler(scheduler);
 				
-				var dec : IObserver = new ClosureObserver(
+				var nextScheduledAction : IScheduledAction = null;
+				var completeScheduledAction : IScheduledAction = null;
+				
+				var subscription : ISubscription = source.subscribeFunc(
 					function(pl : Object) : void
 					{
-						scheduler.schedule(function():void { observer.onNext(pl); }, delayMs);
+						nextScheduledAction = 
+							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs);
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); });
+					function () : void
+					{
+						completeScheduledAction = 
+							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs);
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
 					
-				return source.subscribe(dec);
+				return new ClosureSubscription(function():void
+				{
+					if (nextScheduledAction != null)
+					{
+						nextScheduledAction.cancel();
+					}
+					
+					if (completeScheduledAction != null)
+					{
+						completeScheduledAction.cancel();
+					}
+					
+					subscription.unsubscribe();
+				});
 			});
 		}
 		
@@ -650,8 +672,28 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function removeTimeInterval(type : Class) : IObservable
+		{
+			if (this.type != TimeInterval)
+			{
+				throw new IllegalOperationError("Cannot remove timeInterval from observable that is of type " +
+					getQualifiedClassName(this.type));
+			}
+			
+			return this.select(type, function(ts:TimeInterval):Object
+			{
+				return ts.value;
+			});
+		}
+		
 		public function removeTimestamp(type : Class) : IObservable
 		{
+			if (this.type != TimeStamped)
+			{
+				throw new IllegalOperationError("Cannot remove timestamp from observable that is of type " +
+					getQualifiedClassName(this.type));
+			}
+			
 			return this.select(type, function(ts:TimeStamped):Object
 			{
 				return ts.value;
@@ -977,7 +1019,35 @@ package rx
 		
 		public function timeInterval(scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ISubscription
+			{
+				var lastTimeMs : Number = -1;
+				
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						var now : Number = (new Date()).time;
+						var interval : Number = (lastTimeMs == -1)
+							? 0
+							: now - lastTimeMs;
+							
+						lastTimeMs = now;
+							
+						var intervalValue : TimeInterval = new TimeInterval(value, interval);
+							
+						scheduler.schedule(
+							function():void { observer.onNext(intervalValue); });
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return source.subscribe(decoratorObserver);
+			});
 		}
 		
 		public function timeout(timeoutMs:int, other:IObservable=null, scheduler:IScheduler=null):IObservable
@@ -992,7 +1062,7 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
-			return selectInternal(Number, function(value : Object) : TimeStamped
+			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, new Date().getTime());
 			}, scheduler);

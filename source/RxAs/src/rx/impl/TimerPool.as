@@ -32,7 +32,7 @@ package rx.impl
 			}
 			else
 			{
-				return null;
+				return new Timer(0);
 			}
 		}
 		

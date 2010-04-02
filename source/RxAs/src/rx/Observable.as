@@ -35,12 +35,12 @@ package rx
 			});
 		}
 		
-		public static function interval(intervalMs : uint):IObservable
+		public static function interval(intervalMs : uint, scheduler : IScheduler = null):IObservable
 		{
-			return new ClosureObservable(int, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(int, function(observer : IObserver) : ISubscription
 			{
-				scheduler = Observable.resolveScheduler(scheduler);
-				
 				var intervalIndex : uint = 0;
 				
 				var listener : Function = function(event : Event) : void
@@ -162,6 +162,26 @@ package rx
 					{
 						IScheduledAction(scheduledActions.shift()).cancel();
 					}
+				});
+			});
+		}
+		
+		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null):IObservable
+		{
+			scheduler = scheduler || resolveScheduler(scheduler);
+			
+			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			{
+				var nextScheduledAction : IScheduledAction = 
+					scheduler.schedule(function():void{obs.onNext(value);});
+					
+				var completeScheduledAction : IScheduledAction = 
+					scheduler.schedule(function():void{obs.onCompleted();});
+					
+				return new ClosureSubscription(function():void
+				{
+					nextScheduledAction.cancel();
+					completeScheduledAction.cancel();
 				});
 			});
 		}

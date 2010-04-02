@@ -106,8 +106,7 @@ package rx
 		
 		// static function range(start : int, count : int, scheduler : IScheduler = null) : IObservable;
 		
-		// static function repeatValue(value : Object, repeatCount : int = 0) : IObservable;
-		
+		function removeTimeInterval(type : Class) : IObservable;
 		function removeTimestamp(type : Class) : IObservable;
 		
 		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;

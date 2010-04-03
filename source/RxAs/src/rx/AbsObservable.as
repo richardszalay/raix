@@ -278,43 +278,91 @@ package rx
 			{
 				scheduler = scheduler || Observable.resolveScheduler(scheduler);
 				
+				var scheduledActions : Array = [];
 				var nextScheduledAction : IScheduledAction = null;
 				var completeScheduledAction : IScheduledAction = null;
 				
 				var subscription : ISubscription = source.subscribeFunc(
 					function(pl : Object) : void
 					{
-						nextScheduledAction = 
-							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs);
+						scheduledActions.push( 
+							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs)
+						);
 					},
 					function () : void
 					{
-						completeScheduledAction = 
-							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs);
+						scheduledActions.push( 
+							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs)
+						);
 					},
 					function (error : Error) : void { observer.onError(error); }
 					);
 					
 				return new ClosureSubscription(function():void
 				{
-					if (nextScheduledAction != null)
+					while (scheduledActions.length > 0)
 					{
-						nextScheduledAction.cancel();
+						scheduledActions.shift().cancel();
 					}
-					
-					if (completeScheduledAction != null)
-					{
-						completeScheduledAction.cancel();
-					}
-					
-					subscription.unsubscribe();
 				});
 			});
 		}
 		
 		public function delayUntil(dt:Date, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			var dtValue : Number = dt.time;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				scheduler = scheduler || Observable.resolveScheduler(scheduler);
+				
+				var isPastDate : Boolean = (new Date().time >= dtValue);
+				var scheduledActions : Array = [];
+				
+				var subscription : ISubscription = source.materialize().subscribeFunc(
+					function(pl : Notification) : void
+					{
+						var now : Number = 0;
+						
+						if (!isPastDate)
+						{
+							now = new Date().time;
+							
+							if (now >= dtValue)
+							{							
+								isPastDate = true;
+							}
+						}
+						
+						if (isPastDate)
+						{
+							scheduledActions.push(
+								scheduler.schedule(function():void { pl.accept(observer); })
+							);
+						}
+						else
+						{
+							var delayMs : Number = dtValue - now;
+							
+							scheduledActions.push( 
+								scheduler.schedule(function():void { pl.accept(observer); }, delayMs)
+							);
+						}
+					}
+					);
+					
+				return new ClosureSubscription(function():void
+				{
+					while(scheduledActions.length > 0)
+					{
+						scheduledActions.shift().cancel();
+					}
+					
+					subscription.unsubscribe();
+				});
+			});
 		}
 		
 		public function dematerialize(type : Class):IObservable

@@ -12,6 +12,7 @@ package rx.tests.operators
 		public var contains : ContainsFixture;
 		public var dematerialize : DematerializeFixture;
 		public var delay : DelayFixture;
+		public var delayUntil : DelayUntilFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var doAction : DoActionFixture;

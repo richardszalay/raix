@@ -4,22 +4,24 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
 	import rx.Observable;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
-	public class DelayFixture
+	public class DelayUntilFixture
 	{
 		[Test(async)]
 		public function action_is_executed_after_delay() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
+			var untilDate : Date = new Date(new Date().time + 200);
+			trace(new Date().time - untilDate.time);
+			
 			Observable.returnValue(int, 1)
-				.delay(200)
+				.delayUntil(untilDate)
 				.subscribe(stats);
-					
+	
 			Assert.assertFalse(stats.nextCalled);
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
@@ -28,15 +30,31 @@ package rx.tests.operators
 			});
 		}
 		
+		[Test]
+		public function action_is_immediately_if_date_is_past() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			var untilDate : Date = new Date(new Date().time - 200);
+			
+			Observable.returnValue(int, 1)
+				.delayUntil(untilDate)
+				.subscribe(stats);
+					
+			Assert.assertTrue(stats.nextCalled);
+		}
+		
 		[Test(async)]
 		public function delay_is_cancelled_on_unsubscribe() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
+			var untilDate : Date = new Date(new Date().time + 200);
+			
 			Observable.returnValue(int, 1)
-				.delay(100)
+				.delayUntil(untilDate)
 				.subscribe(stats)
-				.unsubscribe();
+				.unsubscribe();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
 			{
@@ -49,8 +67,10 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
+			var untilDate : Date = new Date(new Date().time + 200);
+			
 			Observable.range(0, 2)
-				.delay(200)
+				.delayUntil(untilDate)
 				.subscribe(stats)
 				.unsubscribe();				
 
@@ -65,7 +85,9 @@ package rx.tests.operators
 		{
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
-			var obs : IObservable = Observable.returnValue(int, 1).delay(50, scheduler);
+			var untilDate : Date = new Date(new Date().time + 200);
+			
+			var obs : IObservable = Observable.returnValue(int, 1).delayUntil(untilDate, scheduler);
 			
 			obs.subscribeFunc(
 				function(pl:int):void { throw new Error(); },

@@ -8,6 +8,7 @@ package rx.tests.operators
 	{
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
+		public var bufferWithTime : BufferWithTimeFixture;
 		public var cast : CastFixture;
 		public var contains : ContainsFixture;
 		public var dematerialize : DematerializeFixture;
@@ -32,8 +33,12 @@ package rx.tests.operators
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
+		public var single : SingleFixture;
+		public var singleOrDefault : SingleOrDefaultFixture;
 		public var skip : SkipFixture;
+		public var skipUntil : SkipUntilFixture;
 		public var take : TakeFixture;
+		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;
 		public var timeInterval : TimeIntervalFixture;
 		public var throttle : ThrottleFixture;

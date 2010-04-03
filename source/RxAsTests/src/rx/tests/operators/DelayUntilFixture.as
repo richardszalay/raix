@@ -16,7 +16,6 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			var untilDate : Date = new Date(new Date().time + 200);
-			trace(new Date().time - untilDate.time);
 			
 			Observable.returnValue(int, 1)
 				.delayUntil(untilDate)

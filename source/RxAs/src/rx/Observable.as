@@ -164,11 +164,11 @@ package rx
 					}
 				});
 			});
-		}
+		}		
 		
 		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null):IObservable
 		{
-			scheduler = scheduler || resolveScheduler(scheduler);
+			scheduler = resolveScheduler(scheduler);
 			
 			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
 			{

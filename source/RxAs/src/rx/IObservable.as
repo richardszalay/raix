@@ -133,6 +133,8 @@ package rx
 		
 		//static function start(func : Function, scheduler : IScheduler = null) : IObservable;
 		
+		function startWith(value : Object) : IObservable;
+		
 		// TODO: ??
 		function sum() : Number;
 		

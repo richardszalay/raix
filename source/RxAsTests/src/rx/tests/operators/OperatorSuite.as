@@ -37,10 +37,12 @@ package rx.tests.operators
 		public var singleOrDefault : SingleOrDefaultFixture;
 		public var skip : SkipFixture;
 		public var skipUntil : SkipUntilFixture;
+		public var skipWhile : SkipWhileFixture;
 		public var take : TakeFixture;
 		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;
 		public var timeInterval : TimeIntervalFixture;
+		public var timeout : TimeoutFixture;
 		public var throttle : ThrottleFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timestamp : TimestampFixture;

@@ -1092,7 +1092,38 @@ package rx
 		
 		public function skipWhile(predicate:Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			{
+				var skipping : Boolean = true;
+				
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						if (skipping)
+						{
+							try
+							{
+								skipping &= predicate(value);
+							}
+							catch(err : Error)
+							{
+								observer.onError(err);
+							}
+						}
+						
+						if (!skipping)
+						{
+							observer.onNext(value);
+						}
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return source.subscribe(decoratorObserver);
+			});
 		}
 		
 		public function startWith(value : Object) : IObservable
@@ -1290,7 +1321,50 @@ package rx
 		
 		public function timeout(timeoutMs:int, other:IObservable=null, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			{
+				var subscription : ISubscription = null;
+				
+				var timeout : Function = function():void
+				{
+					if (other == null)
+					{
+						observer.onError(new TimeoutError("Sequence timed out"));
+					}
+					else
+					{
+						subscription.unsubscribe();
+						subscription = other.subscribe(observer);
+					}
+				};
+				
+				var timeoutAction : IScheduledAction = scheduler.schedule(timeout, timeoutMs);
+				
+				subscription = source.subscribeFunc(
+					function (value : Object) : void
+					{
+						timeoutAction.cancel();
+						timeoutAction = scheduler.schedule(timeout, timeoutMs);
+						
+						observer.onNext(value);
+					},
+					function () : void
+					{
+						timeoutAction.cancel();
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return new ClosureSubscription(function():void
+				{
+					subscription.unsubscribe();
+				});
+			});
 		}
 		
 		public function timer(dueTimeMs:int):IObservable

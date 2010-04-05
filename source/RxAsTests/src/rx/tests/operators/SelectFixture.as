@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	[TestCase]
 	public class SelectFixture extends AbsDecoratorOperatorFixture
@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function maps_value_using_function() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -39,7 +39,7 @@ package rx.tests.operators
 		[Test]
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.select(Object, function(pl:uint) : Boolean
 			{
@@ -64,7 +64,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
 			{

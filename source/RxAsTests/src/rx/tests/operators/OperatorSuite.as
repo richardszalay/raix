@@ -6,6 +6,7 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
+		public var amb : AmbFixture;
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
 		public var bufferWithTime : BufferWithTimeFixture;
@@ -33,6 +34,7 @@ package rx.tests.operators
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
+		public var selectMany : SelectManyFixture;
 		public var single : SingleFixture;
 		public var singleOrDefault : SingleOrDefaultFixture;
 		public var skip : SkipFixture;

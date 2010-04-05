@@ -6,6 +6,7 @@ package rx
 	import rx.impl.ClosureObservable;
 	import rx.impl.ClosureObserver;
 	import rx.impl.ClosureSubscription;
+	import rx.impl.CompositeSubscription;
 	import rx.impl.OnCompleted;
 	import rx.impl.OnError;
 	import rx.impl.OnNext;
@@ -40,11 +41,6 @@ package rx
 		}
 
 		public function aggregate(accumulator:Function):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
-		public function amb(sources:Array):IObservable
 		{
 			throw new IllegalOperationError("Not implemented");
 		}
@@ -741,9 +737,9 @@ package rx
 			});
 		}
 		
-		public function merge(sources:Array, scheduler:IScheduler=null):IObservable
+		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return Observable.merge(this.type, sources.startWith(this), scheduler);
 		}
 		
 		public function mostRecent(initialValue:Object):IObservable
@@ -885,49 +881,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(type, function(observer : IObserver):ISubscription
-			{
-				var subscriptions : Array = new Array();
-				
-				var unsubscribeAll : Function = function():void
-				{
-					for each(var subscription : ISubscription in subscriptions)
-					{
-						subscription.unsubscribe();
-					}
-					
-					subscriptions = [];
-				};
-				
-				var selectedObserver : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						trace("selectMany :: child onNext");
-						
-						observer.onNext(pl);
-					},
-					function () : void { },
-					function (error : Error) : void { observer.onError(error); }
-					);
-				
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						var result : IObservable = selector(pl);
-						
-						trace("selectMany :: origin onNext");
-						
-						var subscription : ISubscription = result.subscribe(selectedObserver);
-						subscriptions.push(subscription);
-					},
-					function () : void { unsubscribeAll(); observer.onCompleted(); },
-					function (error : Error) : void { unsubscribeAll(); observer.onError(error); }
-					);
-					
-				subscriptions.push(source.subscribe(dec));
-				
-				return new ClosureSubscription(unsubscribeAll);
-			});
+			return Observable.merge(type, this.select(IObservable, selector)); 
 		}
 		
 		public function single():IObservable

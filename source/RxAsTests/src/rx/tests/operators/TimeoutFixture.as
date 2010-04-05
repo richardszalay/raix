@@ -5,7 +5,7 @@ package rx.tests.operators
 	
 	import rx.ISubscription;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class TimeoutFixture
@@ -45,7 +45,7 @@ package rx.tests.operators
 		[Test]
 		public function other_observable_is_not_subscribed_to_until_timeout() : void
 		{
-			var otherObs : ManualObservable = new ManualObservable(int);
+			var otherObs : Subject = new Subject(int);
 			
 			var stats : StatsObserver = new StatsObserver();
 			

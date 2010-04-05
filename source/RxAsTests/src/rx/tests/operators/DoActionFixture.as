@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -18,7 +18,7 @@ package rx.tests.operators
 		[Test]
 		public function next_action_is_called_before_observer() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -36,7 +36,7 @@ package rx.tests.operators
 		[Test]
 		public function complete_action_is_called_before_observer() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -54,7 +54,7 @@ package rx.tests.operators
 		[Test]
 		public function error_action_is_called_before_observer() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -128,7 +128,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
 			{

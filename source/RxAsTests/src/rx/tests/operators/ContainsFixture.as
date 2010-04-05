@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	[TestCase]
 	public class ContainsFixture extends AbsDecoratorOperatorFixture
@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function next_is_only_called_once() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -41,7 +41,7 @@ package rx.tests.operators
 		[Test]
 		public function next_is_raised_with_true_when_objects_are_equal() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -93,7 +93,7 @@ package rx.tests.operators
 		
 		private function testWithComparer(comparerReturnValue : Object, complete : Boolean, expectCall : Boolean, expectMatch : Boolean) : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.contains(1, 
 				function(a:Object,b:Object) : Object { return comparerReturnValue; });
@@ -119,7 +119,7 @@ package rx.tests.operators
 		[Test]
 		public function next_is_not_raised_when_source_ends_with_error() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.contains(1);
 			
@@ -137,7 +137,7 @@ package rx.tests.operators
 		[Test]
 		public function errors_thrown_by_comparer_are_sent_to_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.contains(0, function(a:int,b:int) : Boolean
 			{
@@ -162,7 +162,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.contains(0, function(a:int,b:int) : Boolean
 			{

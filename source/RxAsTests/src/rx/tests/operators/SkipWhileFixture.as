@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -18,7 +18,7 @@ package rx.tests.operators
 		[Test]
 		public function values_are_returned_until_predicate_returns_false() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = Observable
 				.range(0, 10)

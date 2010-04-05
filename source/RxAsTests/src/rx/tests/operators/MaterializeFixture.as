@@ -6,7 +6,7 @@ package rx.tests.operators
 	import rx.ISubscription;
 	import rx.Notification;
 	import rx.NotificationKind;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	[TestCase]
 	public class MaterializeFixture
@@ -19,7 +19,7 @@ package rx.tests.operators
 		[Test]
 		public function notification_is_applied_to_onnext() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize();
 			
@@ -41,7 +41,7 @@ package rx.tests.operators
 		[Test]
 		public function complete_is_sent_as_next_and_completed() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize();
 			
@@ -66,7 +66,7 @@ package rx.tests.operators
 		[Test]
 		public function error_is_sent_as_next_and_completed() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize();
 			
@@ -97,7 +97,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_completed() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -115,7 +115,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_error() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -133,7 +133,7 @@ package rx.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_unsubscribe() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			
@@ -151,7 +151,7 @@ package rx.tests.operators
 		[Test]
 		public function is_normalized_for_oncompleted() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(Object);
+			var manObs : Subject = new Subject(Object);
 			
 			var index : int = 0;
 			
@@ -179,7 +179,7 @@ package rx.tests.operators
 		[Test]
 		public function is_normalized_for_onerror() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var index : int = 0;
 			

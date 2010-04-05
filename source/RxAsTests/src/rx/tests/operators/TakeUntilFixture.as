@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -18,8 +18,8 @@ package rx.tests.operators
 		[Test]
 		public function values_are_returned_until_other_observer_raises_value() : void
 		{
-			var primaryObs : ManualObservable = new ManualObservable(int);
-			var otherObs : ManualObservable = new ManualObservable(int);
+			var primaryObs : Subject = new Subject(int);
+			var otherObs : Subject = new Subject(int);
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -43,8 +43,8 @@ package rx.tests.operators
 		[Test]
 		public function values_are_returned_until_other_observer_completes() : void
 		{
-			var primaryObs : ManualObservable = new ManualObservable(int);
-			var otherObs : ManualObservable = new ManualObservable(int);
+			var primaryObs : Subject = new Subject(int);
+			var otherObs : Subject = new Subject(int);
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -68,8 +68,8 @@ package rx.tests.operators
 		[Test]
 		public function values_are_returned_until_other_observer_raises_error() : void
 		{
-			var primaryObs : ManualObservable = new ManualObservable(int);
-			var otherObs : ManualObservable = new ManualObservable(int);
+			var primaryObs : Subject = new Subject(int);
+			var otherObs : Subject = new Subject(int);
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -94,7 +94,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.takeUntil(Observable.never(int));
 			

@@ -26,8 +26,6 @@ package rx
 		
 		function aggregate(accumulator : Function) : IObservable;
 		
-		function amb(sources : Array/*.<IObservable>*/) : IObservable;
-		
 		function and(right : IObservable) : Pattern;
 		
 		function asynchronous() : IObservable;
@@ -88,7 +86,7 @@ package rx
 		
 		function materialize() : IObservable;
 		
-		function merge(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable;
+		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
 		
 		function mostRecent(initialValue : Object) : IObservable;
 		//function mostRecentValue(initialValue : Object) : IPropertyGetter;

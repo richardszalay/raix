@@ -15,6 +15,42 @@ package rx
 			throw new IllegalOperationError("This class is static and cannot be instantiated. Create an IObservable by using one of Observable's static methods");
 		}
 		
+		public static function amb(sources : Array/*.<IObservable>*/) : IObservable
+		{
+			sources = new Array().concat(sources);
+			
+			return new ClosureObservable(int, function(observer : IObserver) : ISubscription
+			{
+				var subscription : CompositeSubscription = new CompositeSubscription([])
+			
+				for each(var source : IObservable in sources)
+				{
+					(function(obs:IObservable):void
+					{
+						var futureSubscription : FutureSubscription = new FutureSubscription();
+						subscription.add(futureSubscription);
+					
+						futureSubscription.innerSubscription = obs.subscribeFunc(
+							function(pl:Object) : void
+							{
+								var newSubscriptions : CompositeSubscription = 
+									new CompositeSubscription(subscription.subscriptions);
+									
+								newSubscriptions.remove(futureSubscription);
+								newSubscriptions.unsubscribe();
+								
+								observer.onNext(pl);
+							},
+							function():void { observer.onCompleted(); },
+							function(e:Error):void { observer.onError(e); }
+							);
+					})(source);
+				}
+				
+				return subscription;
+			});
+		}
+		
 		public static function defer(type : Class, observableFactory:Function):IObservable
 		{
 			if (observableFactory == null)
@@ -208,6 +244,64 @@ package rx
 			return scheduler || Scheduler.defaultScheduler;
 		}
 		
-		
+		public static function merge(type : Class, source : IObservable, scheduler : IScheduler = null) : IObservable
+		{
+			if (source.type != IObservable)
+			{
+				throw new ArgumentError("merge can only merge an IObservable of IObservables");
+			}
+			
+			scheduler = resolveScheduler(scheduler);
+			
+			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			{
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				
+				var sourceComplete : Boolean = false;
+				
+				subscription.add(source.subscribeFunc(
+					function(innerSource:IObservable) : void
+					{
+						if (innerSource == null)
+						{
+							throw new IllegalOperationError("Cannot merge null IObservable");
+						}
+						
+						var innerSubscription : FutureSubscription = new FutureSubscription();
+						subscription.add(innerSubscription);
+						
+						innerSubscription.innerSubscription = innerSource.subscribeFunc(
+							function(pl:Object) : void
+							{
+								obs.onNext(pl);
+							},
+							function() : void
+							{
+								innerSubscription.unsubscribe();
+								subscription.remove(innerSubscription);
+								
+								if (sourceComplete && subscription.count == 1)
+								{
+									obs.onCompleted();
+								}
+							},
+							function(e:Error) : void { obs.onError(e); }
+						);
+					},
+					function() : void
+					{
+						sourceComplete = true;
+						
+						if (subscription.count == 1)
+						{
+							obs.onCompleted();
+						}
+					},
+					function(e:Error) : void { obs.onError(e); }
+					));
+				
+				return subscription;
+			});
+		}
 	}
 }

@@ -5,7 +5,7 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.ISubscription;
 	import rx.scheduling.ImmediateScheduler;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -19,7 +19,7 @@ package rx.tests.operators
 		[Test]
 		public function subscriptions_go_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -37,7 +37,7 @@ package rx.tests.operators
 		[Test]
 		public function cancelling_before_subscription_cancels_schedule() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -55,7 +55,7 @@ package rx.tests.operators
 		[Test]
 		public function cancelling_after_subscription_unsubscribes_from_source() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -74,7 +74,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

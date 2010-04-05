@@ -3,17 +3,9 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
-	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureObserver;
-	import rx.impl.ClosureSubscription;
-	import rx.impl.CompositeSubscription;
-	import rx.impl.OnCompleted;
-	import rx.impl.OnError;
-	import rx.impl.OnNext;
-	import rx.joins.Pattern;
-	import rx.scheduling.IScheduledAction;
-	import rx.scheduling.IScheduler;
-	import rx.util.ComparerUtil;
+	import rx.impl.*;
+	import rx.scheduling.*;
+	import rx.util.*;
 	
 	public class AbsObservable implements IObservable
 	{
@@ -45,9 +37,82 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function and(right:IObservable):Pattern
+		public function any(predicate : Function = null) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			predicate = predicate || function(o:Object):Boolean { return true; }
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				return source.subscribeFunc(
+					function(pl : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(pl);
+						}
+						catch(error : Error)
+						{
+							observer.onError(error);
+							return;
+						}
+						
+						if (result)
+						{
+							observer.onNext(true);
+							observer.onCompleted();
+						}
+					},
+					function () : void
+					{
+						observer.onNext(false);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+			});
+		}
+		
+		public function all(predicate : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			predicate = predicate || function(o:Object):Boolean { return true; }
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				return source.subscribeFunc(
+					function(pl : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(pl);
+						}
+						catch(error : Error)
+						{
+							observer.onError(error);
+							return;
+						}
+						
+						if (!result)
+						{
+							observer.onNext(false);
+							observer.onCompleted();
+						}
+					},
+					function () : void
+					{
+						observer.onNext(true);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+			});
 		}
 		
 		public function asynchronous():IObservable

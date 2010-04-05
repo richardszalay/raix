@@ -1,6 +1,5 @@
 package rx
 {
-	import rx.joins.Pattern;
 	import rx.scheduling.IScheduler;
 	
 	public interface IObservable
@@ -26,7 +25,9 @@ package rx
 		
 		function aggregate(accumulator : Function) : IObservable;
 		
-		function and(right : IObservable) : Pattern;
+		function any(predicate : Function = null) : IObservable;
+		
+		function all(predicate : Function) : IObservable;
 		
 		function asynchronous() : IObservable;
 		
@@ -74,7 +75,7 @@ package rx
 		
 		function distinctUntilChanged(comparer : Function = null) : IObservable;
 		
-		function join(plans : Array/*.<Plan>*/) : IObservable;
+		//function join(plans : Array/*.<Plan>*/) : IObservable;
 		
 		function last() : IObservable;
 		function lastOrDefault() : IObservable;
@@ -153,9 +154,6 @@ package rx
 		function timestamp(scheduler : IScheduler = null) : IObservable;
 		
 		function toAsync(func : Function) : IObservable;
-		
-		// TODO: ??
-		// function using
 		
 		function where(predicate : Function) : IObservable;
 		

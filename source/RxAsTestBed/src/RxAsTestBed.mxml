@@ -23,6 +23,22 @@
 				currentSample = sampleStack.selectedChild as AbsSample;
 			}
 			
+			private function treeItemChanged(event : Event) : void
+			{
+				var selectedNode : XML = Tree(event.target).selectedItem as XML;
+				
+				if (selectedNode.@sampleID.toString() != "")
+				{
+					var sampleID : String = selectedNode.@sampleID.toString();
+					
+					teardown();
+					
+					currentSample = this[sampleID];
+					
+					sampleStack.selectedChild = currentSample;
+				}
+			}
+			
 			private function setup():void
 			{
 				running = true;
@@ -50,6 +66,7 @@
 
 	<mx:VBox width="100%" height="100%">
 	
+	<!--
 		<mx:ButtonBar itemClick="itemClickHandler(event)">
 			<mx:dataProvider>
 				<mx:Array>
@@ -64,29 +81,52 @@
 				</mx:Array>
 			</mx:dataProvider>
 		</mx:ButtonBar>
-		
-		<mx:VBox width="100%" height="100%">
-		
-			<mx:VBox width="100%">
-				<mx:HBox>
-					<mx:Button id="startButton" label="Start" click="setup()" enabled="{!running}" />
-					<mx:Button id="stopButton" label="Stop" click="teardown()" enabled="{running}" />
-					<mx:Button label="Show / Hide Code" click="toggleCode()" />
-				</mx:HBox>
+	-->
+		<mx:HDividedBox width="100%" height="100%">
+			<mx:Box width="30%" height="100%">
+				<mx:Tree dataProvider="{treeData}" showRoot="false"
+					change="treeItemChanged(event)" labelField="@label"
+					width="100%" height="100%" />
+			</mx:Box>
+			
+			<mx:VBox width="100%" height="100%">
+				<mx:VBox width="100%">
+					<mx:HBox>
+						<mx:Button id="startButton" label="Subscribe" click="setup()" enabled="{!running}" />
+						<mx:Button id="stopButton" label="Unsubscribe" click="teardown()" enabled="{running}" />
+						<mx:Button label="Show / Hide Code" click="toggleCode()" />
+					</mx:HBox>
+				</mx:VBox>
+				<mx:ViewStack id="sampleStack" creationPolicy="auto" selectedIndex="0" width="100%" height="100%">
+					<samples:SimpleMouseMove width="100%" height="100%" id="simpleMouseMove" />
+					<samples:TimeFlies width="100%" height="100%" id="timeFlies" />
+					<samples:BufferWithCount width="100%" height="100%" id="bufferWithCount" />
+					<samples:Concat width="100%" height="100%" id="concat" />
+					<samples:Throttle width="100%" height="100%" id="throttle" />
+					<samples:SelectMany width="100%" height="100%" id="selectMany" />
+					<samples:Zip width="100%" height="100%" id="zip" />
+					<samples:UncaughtErrors width="100%" height="100%" id="uncaughtErrors" />
+				</mx:ViewStack>
 			</mx:VBox>
 		
-			<mx:ViewStack id="sampleStack" creationPolicy="all" selectedIndex="0" width="100%" height="100%">
-				<samples:SimpleMouseMove width="100%" height="100%" />
-				<samples:TimeFlies width="100%" height="100%" />
-				<samples:BufferWithCount width="100%" height="100%" />
-				<samples:Concat width="100%" height="100%" />
-				<samples:Throttle width="100%" height="100%" />
-				<samples:SelectMany width="100%" height="100%" />
-				<samples:Zip width="100%" height="100%" />
-				<samples:UncaughtErrors width="100%" height="100%" />
-			</mx:ViewStack>
+		</mx:HDividedBox>
 		
-		</mx:VBox>
+		
 	</mx:VBox>
+	
+	<mx:XMLList id="treeData">
+		<node label="root">
+			<node label="Operators">
+				<node label="fromEvent" sampleID="simpleMouseMove" />
+				<node label="delay" sampleID="timeFlies" />
+				<node label="bufferWithCount" sampleID="bufferWithCount" />
+				<node label="concat" sampleID="concat" />
+				<node label="throttle" sampleID="throttle" />
+				<node label="selectMany" sampleID="selectMany" />
+				<node label="zip" sampleID="zip" />
+				<node label="uncaughtErrors" sampleID="uncaughtErrors" />
+			</node>
+		</node>
+	</mx:XMLList>
 
 </mx:Application>

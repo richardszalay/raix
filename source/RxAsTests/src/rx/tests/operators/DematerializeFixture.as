@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -17,7 +17,7 @@ package rx.tests.operators
 		[Test]
 		public function original_values_are_preserved() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
@@ -36,7 +36,7 @@ package rx.tests.operators
 		[Test]
 		public function completed_does_not_raise_next() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
@@ -52,7 +52,7 @@ package rx.tests.operators
 		[Test]
 		public function error_raises_error() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
@@ -69,7 +69,7 @@ package rx.tests.operators
 		[Test]
 		public function error_does_not_raise_next() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
@@ -84,7 +84,7 @@ package rx.tests.operators
 		[Test]
 		public function error_does_not_raise_completed() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
@@ -99,7 +99,7 @@ package rx.tests.operators
 		[Test(expects="ArgumentError")]
 		public function error_is_thrown_if_source_is_not_notification() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.dematerialize(int);
 		}
@@ -107,7 +107,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
 			{

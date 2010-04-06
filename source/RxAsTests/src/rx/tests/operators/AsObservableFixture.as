@@ -6,7 +6,7 @@ package rx.tests.operators
 	import org.hamcrest.object.equalTo;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	public class AsObservableFixture extends AbsDecoratorOperatorFixture
 	{
@@ -18,7 +18,7 @@ package rx.tests.operators
 		[Test]
 		public function does_not_return_original_instance() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.asObservable();
 			
@@ -28,7 +28,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.asObservable();
 			

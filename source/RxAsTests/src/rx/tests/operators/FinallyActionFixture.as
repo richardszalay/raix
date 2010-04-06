@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	public class FinallyActionFixture extends AbsDecoratorOperatorFixture
 	{

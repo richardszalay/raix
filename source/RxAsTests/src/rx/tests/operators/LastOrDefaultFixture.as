@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class LastOrDefaultFixture extends AbsDecoratorOperatorFixture
@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function returns_last_value_and_completes() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.last();
 			
@@ -36,7 +36,7 @@ package rx.tests.operators
 		[Test]
 		public function returns_default_if_no_values() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.lastOrDefault();
 			
@@ -54,7 +54,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.asObservable();
 			
@@ -70,7 +70,7 @@ package rx.tests.operators
 		[Test]
 		public override function is_normalized_for_oncompleted() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

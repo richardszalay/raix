@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -20,7 +20,7 @@ package rx.tests.operators
 		[Test]
 		public function sends_current_observable_as_function_argument() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			manObs.let(function(x:IObservable) : IObservable
 			{
@@ -33,8 +33,8 @@ package rx.tests.operators
 		[Test]
 		public function returns_function_result_as_observable() : void
 		{
-			var manObsA : ManualObservable = new ManualObservable(int);
-			var manObsB: ManualObservable = new ManualObservable(int);
+			var manObsA : Subject = new Subject(int);
+			var manObsB: Subject = new Subject(int);
 			
 			var obs : IObservable = manObsA.let(function(x:IObservable) : IObservable
 			{
@@ -56,7 +56,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

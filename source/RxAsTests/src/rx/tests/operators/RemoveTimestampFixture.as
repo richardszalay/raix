@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	
 	[TestCase]
 	public class RemoveTimestampFixture extends AbsDecoratorOperatorFixture
@@ -16,7 +16,7 @@ package rx.tests.operators
 		[Test]
 		public function original_values_are_used() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
 			
@@ -38,9 +38,9 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.throttle(5);
+			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
 			
 			obs.subscribeFunc(
 				function(pl:int):void { throw new Error(); },

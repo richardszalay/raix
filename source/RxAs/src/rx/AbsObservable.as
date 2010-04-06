@@ -3,16 +3,9 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
-	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureObserver;
-	import rx.impl.ClosureSubscription;
-	import rx.impl.OnCompleted;
-	import rx.impl.OnError;
-	import rx.impl.OnNext;
-	import rx.joins.Pattern;
-	import rx.scheduling.IScheduledAction;
-	import rx.scheduling.IScheduler;
-	import rx.util.ComparerUtil;
+	import rx.impl.*;
+	import rx.scheduling.*;
+	import rx.util.*;
 	
 	public class AbsObservable implements IObservable
 	{
@@ -44,14 +37,82 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function amb(sources:Array):IObservable
+		public function any(predicate : Function = null) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			predicate = predicate || function(o:Object):Boolean { return true; }
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				return source.subscribeFunc(
+					function(pl : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(pl);
+						}
+						catch(error : Error)
+						{
+							observer.onError(error);
+							return;
+						}
+						
+						if (result)
+						{
+							observer.onNext(true);
+							observer.onCompleted();
+						}
+					},
+					function () : void
+					{
+						observer.onNext(false);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+			});
 		}
 		
-		public function and(right:IObservable):Pattern
+		public function all(predicate : Function) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			predicate = predicate || function(o:Object):Boolean { return true; }
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				return source.subscribeFunc(
+					function(pl : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(pl);
+						}
+						catch(error : Error)
+						{
+							observer.onError(error);
+							return;
+						}
+						
+						if (!result)
+						{
+							observer.onNext(false);
+							observer.onCompleted();
+						}
+					},
+					function () : void
+					{
+						observer.onNext(true);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+			});
 		}
 		
 		public function asynchronous():IObservable
@@ -136,7 +197,83 @@ package rx
 		
 		public function bufferWithTime(timeMs:int, timeShiftMs:int=0, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			if (timeMs == 0)
+			{
+				throw new ArgumentError("timeMs must be > 0");
+			}
+			
+			// skip == count and skip == 0 are functionally equivalent
+			if (timeShiftMs == timeMs)
+			{
+				timeShiftMs = 0;
+			}
+			
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var buffer : Array = new Array();
+				var startTime : Number = new Date().time;
+				
+				var flushBuffer : Function = function():void
+				{
+					if (buffer.length > 0)
+					{
+						var outBuffer : Array = new Array(buffer.length);
+						
+						for (var i:int =0; i<buffer.length; i++)
+						{
+							outBuffer[i] = buffer[i].value;
+						}
+						
+						observer.onNext(outBuffer);
+						
+						buffer = [];
+					}
+					
+					
+				};
+				
+				var intervalSubscription : ISubscription = Observable.interval(timeMs, scheduler)
+					.subscribeFunc(function(i:int):void
+					{
+						while(buffer.length > 0 && buffer[0].timestamp < startTime)
+						{
+							buffer.shift();
+						}
+						
+						flushBuffer();
+						
+						startTime += timeShiftMs;
+					});
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						buffer.push(pl);
+					},
+					function () : void
+					{
+						flushBuffer();
+						observer.onCompleted();
+					},
+					function (error : Error) : void
+					{
+						flushBuffer();
+						observer.onError(error);
+					});
+					
+				var subscription : ISubscription = 
+					source.timestamp(scheduler).subscribe(dec);
+				
+				return new ClosureSubscription(function():void 
+				{
+					subscription.unsubscribe();
+					intervalSubscription.unsubscribe();
+				});
+			});
 		}
 		
 		public function cast(type : Class) : IObservable
@@ -353,25 +490,95 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
-			
 			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
-				var dec : IObserver = new ClosureObserver(
+				scheduler = scheduler || Observable.resolveScheduler(scheduler);
+				
+				var scheduledActions : Array = [];
+				var nextScheduledAction : IScheduledAction = null;
+				var completeScheduledAction : IScheduledAction = null;
+				
+				var subscription : ISubscription = source.subscribeFunc(
 					function(pl : Object) : void
 					{
-						scheduler.schedule(function():void { observer.onNext(pl); }, delayMs);
+						scheduledActions.push( 
+							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs)
+						);
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); });
+					function () : void
+					{
+						scheduledActions.push( 
+							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs)
+						);
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
 					
-				return source.subscribe(dec);
+				return new ClosureSubscription(function():void
+				{
+					while (scheduledActions.length > 0)
+					{
+						scheduledActions.shift().cancel();
+					}
+				});
 			});
 		}
 		
 		public function delayUntil(dt:Date, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			var dtValue : Number = dt.time;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				scheduler = scheduler || Observable.resolveScheduler(scheduler);
+				
+				var isPastDate : Boolean = (new Date().time >= dtValue);
+				var scheduledActions : Array = [];
+				
+				var subscription : ISubscription = source.materialize().subscribeFunc(
+					function(pl : Notification) : void
+					{
+						var now : Number = 0;
+						
+						if (!isPastDate)
+						{
+							now = new Date().time;
+							
+							if (now >= dtValue)
+							{							
+								isPastDate = true;
+							}
+						}
+						
+						if (isPastDate)
+						{
+							scheduledActions.push(
+								scheduler.schedule(function():void { pl.accept(observer); })
+							);
+						}
+						else
+						{
+							var delayMs : Number = dtValue - now;
+							
+							scheduledActions.push( 
+								scheduler.schedule(function():void { pl.accept(observer); }, delayMs)
+							);
+						}
+					}
+					);
+					
+				return new ClosureSubscription(function():void
+				{
+					while(scheduledActions.length > 0)
+					{
+						scheduledActions.shift().cancel();
+					}
+					
+					subscription.unsubscribe();
+				});
+			});
 		}
 		
 		public function dematerialize(type : Class):IObservable
@@ -674,9 +881,9 @@ package rx
 			});
 		}
 		
-		public function merge(sources:Array, scheduler:IScheduler=null):IObservable
+		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return Observable.merge(this.type, sources.startWith(this), scheduler);
 		}
 		
 		public function mostRecent(initialValue:Object):IObservable
@@ -729,8 +936,28 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function removeTimeInterval(type : Class) : IObservable
+		{
+			if (this.type != TimeInterval)
+			{
+				throw new IllegalOperationError("Cannot remove timeInterval from observable that is of type " +
+					getQualifiedClassName(this.type));
+			}
+			
+			return this.select(type, function(ts:TimeInterval):Object
+			{
+				return ts.value;
+			});
+		}
+		
 		public function removeTimestamp(type : Class) : IObservable
 		{
+			if (this.type != TimeStamped)
+			{
+				throw new IllegalOperationError("Cannot remove timestamp from observable that is of type " +
+					getQualifiedClassName(this.type));
+			}
+			
 			return this.select(type, function(ts:TimeStamped):Object
 			{
 				return ts.value;
@@ -848,59 +1075,80 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(type, function(observer : IObserver):ISubscription
-			{
-				var subscriptions : Array = new Array();
-				
-				var unsubscribeAll : Function = function():void
-				{
-					for each(var subscription : ISubscription in subscriptions)
-					{
-						subscription.unsubscribe();
-					}
-					
-					subscriptions = [];
-				};
-				
-				var selectedObserver : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						trace("selectMany :: child onNext");
-						
-						observer.onNext(pl);
-					},
-					function () : void { },
-					function (error : Error) : void { observer.onError(error); }
-					);
-				
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						var result : IObservable = selector(pl);
-						
-						trace("selectMany :: origin onNext");
-						
-						var subscription : ISubscription = result.subscribe(selectedObserver);
-						subscriptions.push(subscription);
-					},
-					function () : void { unsubscribeAll(); observer.onCompleted(); },
-					function (error : Error) : void { unsubscribeAll(); observer.onError(error); }
-					);
-					
-				subscriptions.push(source.subscribe(dec));
-				
-				return new ClosureSubscription(unsubscribeAll);
-			});
+			return Observable.merge(type, this.select(IObservable, selector)); 
 		}
 		
 		public function single():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var hasValue : Boolean = false;
+				var value : Object = null;
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						if (hasValue)
+						{
+							observer.onError(new Error("The sequence contained more than one value"));
+						}
+						else
+						{
+							value = pl;
+							hasValue = true;
+						}
+					},
+					function () : void
+					{
+						if (hasValue)
+						{
+							observer.onNext(value);
+							observer.onCompleted();
+						}
+						else
+						{
+							observer.onError(new Error("The sequence contained no values"));
+						}
+					},
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function singleOrDefault():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var hasValue : Boolean = false;
+				var value : Object = null;
+				
+				var dec : IObserver = new ClosureObserver(
+					function(pl : Object) : void
+					{
+						if (hasValue)
+						{
+							observer.onError(new Error("The sequence contained more than one value"));
+						}
+						else
+						{
+							value = pl;
+							hasValue = true;
+						}
+					},
+					function () : void
+					{
+						observer.onNext(value);
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); });
+					
+				return source.subscribe(dec);
+			});
 		}
 		
 		public function skip(count:int):IObservable
@@ -933,12 +1181,102 @@ package rx
 		
 		public function skipUntil(other:IObservable):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			{
+				var subscription : ISubscription;
+				
+				var pastSkip : Boolean = false;
+				
+				var primarySubscription : ISubscription;
+				var otherSubscription : ISubscription;
+				
+				primarySubscription = source.subscribeFunc(
+					function (value : Object) : void
+					{
+						if (pastSkip)
+						{
+							observer.onNext(value);
+						}
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+					
+				otherSubscription = other.subscribeFunc(
+					function (value : Object) : void
+					{
+						pastSkip = true;
+						if (otherSubscription != null)
+						{
+							otherSubscription.unsubscribe();
+						}
+					},
+					function () : void  { },
+					function (error : Error) : void  { observer.onError(error); }
+					);
+				
+				if (pastSkip)
+				{
+					otherSubscription.unsubscribe();
+					otherSubscription = null;
+				}
+				
+				return new ClosureSubscription(function():void
+				{
+					if (primarySubscription != null)
+					{
+						primarySubscription.unsubscribe();
+					}
+					
+					if (otherSubscription != null)
+					{
+						otherSubscription.unsubscribe();
+					}
+				});
+			});
 		}
 		
 		public function skipWhile(predicate:Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			{
+				var skipping : Boolean = true;
+				
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						if (skipping)
+						{
+							try
+							{
+								skipping &= predicate(value);
+							}
+							catch(err : Error)
+							{
+								observer.onError(err);
+							}
+						}
+						
+						if (!skipping)
+						{
+							observer.onNext(value);
+						}
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return source.subscribe(decoratorObserver);
+			});
+		}
+		
+		public function startWith(value : Object) : IObservable
+		{
+			return Observable.returnValue(this.type, value).concat([this]);
 		}
 
 		public function sum():Number
@@ -990,10 +1328,23 @@ package rx
 				var primarySubscription : ISubscription;
 				var otherSubscription : ISubscription;
 				
-				var dispose : Function = function():void
-				{
-					trace("takeUntil :: Disposing");
+				primarySubscription = source.subscribeFunc(
+					function (value : Object) : void
+					{
+						observer.onNext(value);
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
 					
+				otherSubscription = other.subscribeFunc(
+					function (value : Object) : void { observer.onCompleted(); },
+					function () : void  { observer.onCompleted(); },
+					function (error : Error) : void  { observer.onError(error); }
+					);
+				
+				return new ClosureSubscription(function():void
+				{
 					if (primarySubscription != null)
 					{
 						primarySubscription.unsubscribe();
@@ -1003,28 +1354,7 @@ package rx
 					{
 						otherSubscription.unsubscribe();
 					}
-				};
-				
-				var primaryObserver : IObserver = new ClosureObserver(
-					function (value : Object) : void
-					{
-						trace("takeUntil :: onNext");
-						observer.onNext(value);
-					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
-					);
-					
-				var otherObserver : IObserver = new ClosureObserver(
-					function (value : Object) : void { dispose(); observer.onCompleted(); },
-					function () : void  { dispose(); observer.onCompleted(); },
-					function (error : Error) : void  { dispose(); observer.onError(error); }
-					);
-				
-				primarySubscription = source.subscribe(primaryObserver);
-				otherSubscription = other.subscribe(otherObserver);
-				
-				return new ClosureSubscription(dispose);
+				});
 			});
 		}
 		
@@ -1106,12 +1436,83 @@ package rx
 		
 		public function timeInterval(scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ISubscription
+			{
+				var lastTimeMs : Number = -1;
+				
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						var now : Number = (new Date()).time;
+						var interval : Number = (lastTimeMs == -1)
+							? 0
+							: now - lastTimeMs;
+							
+						lastTimeMs = now;
+							
+						var intervalValue : TimeInterval = new TimeInterval(value, interval);
+							
+						scheduler.schedule(
+							function():void { observer.onNext(intervalValue); });
+					},
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return source.subscribe(decoratorObserver);
+			});
 		}
 		
 		public function timeout(timeoutMs:int, other:IObservable=null, scheduler:IScheduler=null):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			{
+				var subscription : ISubscription = null;
+				
+				var timeout : Function = function():void
+				{
+					if (other == null)
+					{
+						observer.onError(new TimeoutError("Sequence timed out"));
+					}
+					else
+					{
+						subscription.unsubscribe();
+						subscription = other.subscribe(observer);
+					}
+				};
+				
+				var timeoutAction : IScheduledAction = scheduler.schedule(timeout, timeoutMs);
+				
+				subscription = source.subscribeFunc(
+					function (value : Object) : void
+					{
+						timeoutAction.cancel();
+						timeoutAction = scheduler.schedule(timeout, timeoutMs);
+						
+						observer.onNext(value);
+					},
+					function () : void
+					{
+						timeoutAction.cancel();
+						observer.onCompleted();
+					},
+					function (error : Error) : void { observer.onError(error); }
+					);
+				
+				return new ClosureSubscription(function():void
+				{
+					subscription.unsubscribe();
+				});
+			});
 		}
 		
 		public function timer(dueTimeMs:int):IObservable
@@ -1121,7 +1522,7 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
-			return selectInternal(Number, function(value : Object) : TimeStamped
+			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, new Date().getTime());
 			}, scheduler);

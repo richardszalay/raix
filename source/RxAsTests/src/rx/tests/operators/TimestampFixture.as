@@ -5,7 +5,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.TimeStamped;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	
 	[TestCase]
@@ -19,7 +19,7 @@ package rx.tests.operators
 		[Test(async)]
 		public function timestamp_is_applied_to_values() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.timestamp();
 			
@@ -54,7 +54,7 @@ package rx.tests.operators
 		{
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.timestamp(scheduler);
 			
@@ -89,7 +89,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.throttle(5);
 			

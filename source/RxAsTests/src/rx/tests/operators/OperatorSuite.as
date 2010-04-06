@@ -6,14 +6,20 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
+		public var all : AllFixture;
+		public var any : AnyFixture;
+		public var amb : AmbFixture;
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
+		public var bufferWithTime : BufferWithTimeFixture;
 		public var catchError : CatchErrorFixture;
 		public var catchErrorDefered : CatchErrorDeferedFixture;
 		public var cast : CastFixture;
 		public var contains : ContainsFixture;
 		public var count : CountFixture;
 		public var dematerialize : DematerializeFixture;
+		public var delay : DelayFixture;
+		public var delayUntil : DelayUntilFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var doAction : DoActionFixture;
@@ -32,11 +38,20 @@ package rx.tests.operators
 		public var never : NeverFixture;
 		public var repeat : RepeatFixture;
 		public var range : RangeFixture;
+		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
 		public var select : SelectFixture;
+		public var selectMany : SelectManyFixture;
+		public var single : SingleFixture;
+		public var singleOrDefault : SingleOrDefaultFixture;
 		public var skip : SkipFixture;
+		public var skipUntil : SkipUntilFixture;
+		public var skipWhile : SkipWhileFixture;
 		public var take : TakeFixture;
+		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;
+		public var timeInterval : TimeIntervalFixture;
+		public var timeout : TimeoutFixture;
 		public var throttle : ThrottleFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timestamp : TimestampFixture;

@@ -9,7 +9,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class CastFixture extends AbsDecoratorOperatorFixture
@@ -22,7 +22,7 @@ package rx.tests.operators
 		[Test]
 		public function allows_compatible_types() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(EventDispatcher);
+			var manObs : Subject = new Subject(EventDispatcher);
 			
 			var obs : IObservable = manObs.ofType(DisplayObject);
 			
@@ -44,7 +44,7 @@ package rx.tests.operators
 		[Test]
 		public function calls_onerror_for_incompatible_types() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(Event);
+			var manObs : Subject = new Subject(Event);
 			
 			var obs : IObservable = manObs.cast(MouseEvent);
 			
@@ -62,7 +62,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = createEmptyObservable(obs);
 			

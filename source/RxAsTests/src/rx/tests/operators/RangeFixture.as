@@ -5,7 +5,7 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.ISubscription;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -60,7 +60,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = Observable.range(0, 1);
 			
@@ -76,7 +76,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_observable_factory_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = Observable.defer(int, function():IObservable
 			{

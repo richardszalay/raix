@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -13,8 +13,8 @@ package rx.tests.operators
 		[Test]
 		public function defer_function_is_called_for_every_observable() : void
 		{
-			var manObsA : ManualObservable = new ManualObservable(int);
-			var manObsB : ManualObservable = new ManualObservable(int);
+			var manObsA : Subject = new Subject(int);
+			var manObsB : Subject = new Subject(int);
 			
 			var observables : Array = [manObsA, manObsB];
 			
@@ -42,7 +42,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = Observable.defer(int, function():IObservable { return manObs; });
 			
@@ -58,7 +58,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_observable_factory_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = Observable.defer(int, function():IObservable
 			{

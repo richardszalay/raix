@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	
 	[TestCase]
@@ -17,7 +17,7 @@ package rx.tests.operators
 		[Test]
 		public function complete_is_called_after_specified_values_taken() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.take(3);
 			
@@ -45,7 +45,7 @@ package rx.tests.operators
 		[Test]
 		public function next_is_raised_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var obs : IObservable = manObs.take(3, scheduler);
@@ -74,7 +74,7 @@ package rx.tests.operators
 		[Test]
 		public function completed_is_raised_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var obs : IObservable = manObs.take(3, scheduler);
@@ -98,7 +98,7 @@ package rx.tests.operators
 		[Test]
 		public function error_is_raised_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var obs : IObservable = manObs.take(3, scheduler);
@@ -123,7 +123,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.take(3);
 			

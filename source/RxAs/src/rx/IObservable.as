@@ -1,6 +1,5 @@
 package rx
 {
-	import rx.joins.Pattern;
 	import rx.scheduling.IScheduler;
 	
 	public interface IObservable
@@ -26,9 +25,9 @@ package rx
 		
 		function aggregate(accumulator : Function) : IObservable;
 		
-		function amb(sources : Array/*.<IObservable>*/) : IObservable;
+		function any(predicate : Function = null) : IObservable;
 		
-		function and(right : IObservable) : Pattern;
+		function all(predicate : Function) : IObservable;
 		
 		function asynchronous() : IObservable;
 		
@@ -77,7 +76,7 @@ package rx
 		
 		function distinctUntilChanged(comparer : Function = null) : IObservable;
 		
-		function join(plans : Array/*.<Plan>*/) : IObservable;
+		//function join(plans : Array/*.<Plan>*/) : IObservable;
 		
 		function last() : IObservable;
 		function lastOrDefault() : IObservable;
@@ -89,7 +88,7 @@ package rx
 		
 		function materialize() : IObservable;
 		
-		function merge(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable;
+		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
 		
 		function mostRecent(initialValue : Object) : IObservable;
 		//function mostRecentValue(initialValue : Object) : IPropertyGetter;
@@ -107,8 +106,7 @@ package rx
 		
 		// static function range(start : int, count : int, scheduler : IScheduler = null) : IObservable;
 		
-		// static function repeatValue(value : Object, repeatCount : int = 0) : IObservable;
-		
+		function removeTimeInterval(type : Class) : IObservable;
 		function removeTimestamp(type : Class) : IObservable;
 		
 		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;
@@ -135,6 +133,8 @@ package rx
 		
 		//static function start(func : Function, scheduler : IScheduler = null) : IObservable;
 		
+		function startWith(value : Object) : IObservable;
+		
 		// TODO: ??
 		function sum() : Number;
 		
@@ -155,9 +155,6 @@ package rx
 		function timestamp(scheduler : IScheduler = null) : IObservable;
 		
 		function toAsync(func : Function) : IObservable;
-		
-		// TODO: ??
-		// function using
 		
 		function where(predicate : Function) : IObservable;
 		

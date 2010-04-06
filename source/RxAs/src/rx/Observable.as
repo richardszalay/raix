@@ -156,6 +156,8 @@ package rx
 				var remainingSources : Array = new Array().concat(sources);
 				
 				var subscription : ISubscription = null;
+				var futureSubscription : FutureSubscription = new FutureSubscription();
+				
 				var scheduledAction : IScheduledAction = null;
 				
 				var moveNextFunc : Function = null;
@@ -163,7 +165,12 @@ package rx
 				moveNextFunc = function():void
 				{
 					var currentSource : IObservable = remainingSources.shift();
-						
+					
+					if (subscription != null)
+					{
+						subscription.unsubscribe();
+					}
+					
 					subscription = currentSource.subscribeFunc(
 						function(pl:Object) : void { obs.onNext(pl); },
 						function() : void
@@ -188,6 +195,8 @@ package rx
 								obs.onError(e);
 							}
 						});
+					
+					futureSubscription.innerSubscription = subscription;
 				};
 				
 				scheduledAction = scheduler.schedule(moveNextFunc);
@@ -199,9 +208,9 @@ package rx
 						scheduledAction.cancel();
 					}
 					
-					if (subscription != null)
+					if (futureSubscription != null)
 					{
-						subscription.unsubscribe();
+						futureSubscription.unsubscribe();
 					}
 				});
 			});
@@ -269,26 +278,6 @@ package rx
 				});
 			});
 		}		
-		
-		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null):IObservable
-		{
-			scheduler = resolveScheduler(scheduler);
-			
-			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
-			{
-				var nextScheduledAction : IScheduledAction = 
-					scheduler.schedule(function():void{obs.onNext(value);});
-					
-				var completeScheduledAction : IScheduledAction = 
-					scheduler.schedule(function():void{obs.onCompleted();});
-					
-				return new ClosureSubscription(function():void
-				{
-					nextScheduledAction.cancel();
-					completeScheduledAction.cancel();
-				});
-			});
-		}
 		
 		public static function throwError(error : Error, observableType : Class = null) : IObservable
 		{

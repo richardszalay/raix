@@ -6,7 +6,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.tests.mocks.ManualObservable;
+	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -46,7 +46,7 @@ package rx.tests.operators
 		[Test]
 		public function catch_with_observer_subscribes_to_first_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -66,7 +66,7 @@ package rx.tests.operators
 		[Test]
 		public function catch_with_observer_subscribes_to_next_through_scheduler() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -88,7 +88,7 @@ package rx.tests.operators
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : ManualObservable = new ManualObservable(int);
+			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.contains(0, function(a:int,b:int) : Boolean
 			{

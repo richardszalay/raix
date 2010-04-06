@@ -296,15 +296,20 @@ package rx
 			});
 		}
 		
-		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null) : IObservable
+		public static function returnValues(type : Class, values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = resolveScheduler(scheduler);
 			
 			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
 			{
-				var valueScheduledAction : IScheduledAction = 
-					scheduler.schedule(function():void { obs.onNext(value); });
-					
+				var valueScheduledAction : IScheduledAction = null;
+				
+				for each(var value : Object in values) 
+				{
+					valueScheduledAction = 
+						scheduler.schedule(function():void { obs.onNext(value); });
+				}
+				
 				var completeScheduledAction : IScheduledAction =
 					scheduler.schedule(function():void { obs.onCompleted(); });
 				
@@ -314,6 +319,11 @@ package rx
 					completeScheduledAction.cancel();
 				});
 			});
+		}
+		
+		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null) : IObservable
+		{
+			return returnValues(type, [value], scheduler); 
 		}
 		
 		public static function catchErrors(sources : Array, scheduler : IScheduler = null) : IObservable

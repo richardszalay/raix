@@ -41,23 +41,18 @@
 			
 			private function setup():void
 			{
-				running = true;
-				currentSample.setup();
+				currentSample.beginSetup();
 			}
 			
 			private function teardown():void
 			{
-				running = false;
-				currentSample.teardown();
+				currentSample.beginTeardown();
 			}
 			
 			private function toggleCode() : void
 			{
 				currentSample.showCode = !currentSample.showCode;
 			}
-			
-			[Bindable]
-			private var running : Boolean = false;
 			
 			[Bindable]
 			private var currentSample : AbsSample;
@@ -92,8 +87,8 @@
 			<mx:VBox width="100%" height="100%">
 				<mx:VBox width="100%">
 					<mx:HBox>
-						<mx:Button id="startButton" label="Subscribe" click="setup()" enabled="{!running}" />
-						<mx:Button id="stopButton" label="Unsubscribe" click="teardown()" enabled="{running}" />
+						<mx:Button id="startButton" label="Subscribe" click="setup()" enabled="{!currentSample.running}" />
+						<mx:Button id="stopButton" label="Unsubscribe" click="teardown()" enabled="{currentSample.running}" />
 						<mx:Button label="Show / Hide Code" click="toggleCode()" />
 					</mx:HBox>
 				</mx:VBox>

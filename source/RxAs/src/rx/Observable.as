@@ -306,8 +306,11 @@ package rx
 				
 				for each(var value : Object in values) 
 				{
-					valueScheduledAction = 
-						scheduler.schedule(function():void { obs.onNext(value); });
+					(function(value:Object)
+					{
+						valueScheduledAction = 
+							scheduler.schedule(function():void { obs.onNext(value); });
+					})(value);
 				}
 				
 				var completeScheduledAction : IScheduledAction =

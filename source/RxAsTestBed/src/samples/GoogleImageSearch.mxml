@@ -3,6 +3,8 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import mx.containers.Box;
+			import mx.collections.ArrayCollection;
 			import mx.controls.Image;
 			import mx.messaging.SubscriptionInfo;
 			import com.adobe.serialization.json.JSON;
@@ -15,20 +17,24 @@
 			
 			private function getObservableJSON(request : URLRequest) : IObservable
 			{
-				var loader : URLLoader = new URLLoader();
-				loader.load(request)
-				
-				try
+				return Observable.defer(Object, function():IObservable
 				{
-					return Observable.fromEvent(loader, Event.COMPLETE)
-						.select(Object, function(s:String):Object { return JSON.decode(loader.data); });
-				}
-				catch(error : Error)
-				{
-					return Observable.throwError(error, XML)
-				}
-				
-				return null; // Grr compiler
+					try
+					{
+						var loader : URLLoader = new URLLoader();
+						loader.load(request)
+						
+						return Observable.fromEvent(loader, Event.COMPLETE)
+							.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
+							.take(1);
+					}
+					catch(error : Error)
+					{
+						return Observable.throwError(error, XML)
+					}
+					
+					return null; // Grr compiler
+				});
 			}
 			
 			private function getGisUrlRequest(searchTerm : String) : URLRequest
@@ -42,18 +48,10 @@
 				return urlRequest;
 			}
 			
-			private function getImageObservable(searchTerm : String) : void
+			private function getImageObservable(searchTerm : String, thumbnails : Boolean) : IObservable
 			{
-				
-			}
-
-			public override function setup() : void
-			{
-				var jsonRequest : IObservable = getObservableJSON(
-					getGisUrlRequest("flower"));
-					
-				var imageRequest : IObservable = jsonRequest
-					.selectMany(Object, function(result:Object) : IObservable
+				 return getObservableJSON(getGisUrlRequest(searchTerm))
+				 	.selectMany(Object, function(result:Object) : IObservable
 					{
 						return Observable.returnValues(Object, result.responseData.results);
 					})
@@ -61,15 +59,50 @@
 					{
 						var image : Image = new Image();
 						image.toolTip = result.titleNoFormatting;
-						image.load(result.url);
+						
+						var url : String = thumbnails
+							? result.tbUrl
+							: result.url;
+						
+						image.load(url);
 						
 						return image;
 					});
+			}
+			
+			private function preloadImages(observable : IObservable) : IObservable
+			{
+				return observable
+					.selectMany(Image, function(image:Image) : IObservable
+					{
+						return Observable.fromEvent(image, Event.COMPLETE)
+							.select(Image, function():Image { return image; })
+							.take(1)
+							.timeout(3000)
+							.catchError(Observable.empty(Image));
+					});
+			}
+
+			public override function setup() : void
+			{
+				imageContainer.removeAllChildren();
+				
+				var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
+					useThumbnailsCheckbox.selected);
+				
+				if (preloadImagesCheckbox.selected)
+				{
+					imageRequest = preloadImages(imageRequest);
+				}
 				
 				gisSubscription = imageRequest.subscribeFunc(
 					function(image : Image):void
 					{
 						imageContainer.addChild(image);
+					},
+					function():void
+					{
+						running = false;
 					});
 			}
 			
@@ -81,12 +114,32 @@
 					gisSubscription = null;
 				}
 			}
+			
+			private var images : ArrayCollection = new ArrayCollection();
 		]]>
 	</mx:Script>
 	
 	<mx:VBox width="100%" height="100%">
-		<mx:VBox width="100%" height="100%" borderColor="#000000" id="imageContainer">
-		</mx:VBox>
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:TextInput id="searchTermInput" text="flowers" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:CheckBox id="preloadImagesCheckbox" label="Preload images"
+				toolTip="If checked images will appear in the order that they were loaded, not in their original order" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:CheckBox id="useThumbnailsCheckbox" label="Use thumbnails" />
+		</mx:HBox>
+	
+		<mx:HBox width="100%" height="100%" borderColor="#000000" id="imageContainer">
+			
+		</mx:HBox>
+		<!--
+		<mx:VBox id="imageContainer" width="100%" height="100%"/>
+-->		
 		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
 			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
 				<mx:htmlText>

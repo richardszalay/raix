@@ -15,37 +15,44 @@
 			
 			private var gisSubscription : ISubscription;
 			
-			private function getObservableJSON(request : URLRequest) : IObservable
+			public override function setup() : void
 			{
-				return Observable.defer(Object, function():IObservable
+				imageContainer.removeAllChildren();
+				
+				var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
+					useThumbnailsCheckbox.selected);
+				
+				if (preloadImagesCheckbox.selected)
 				{
-					try
+					imageRequest = preloadImages(imageRequest);
+				}
+				
+				gisSubscription = imageRequest.subscribeFunc(
+					function(image : Image):void
 					{
-						var loader : URLLoader = new URLLoader();
-						loader.load(request)
-						
-						return Observable.fromEvent(loader, Event.COMPLETE)
-							.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
-							.take(1);
-					}
-					catch(error : Error)
+						imageContainer.addChild(image);
+					},
+					function():void
 					{
-						return Observable.throwError(error, XML)
-					}
-					
-					return null; // Grr compiler
-				});
+						running = false;
+					},
+					function(e:Error):void
+					{
+						errorLabel.text = e.message;
+					});
 			}
 			
-			private function getGisUrlRequest(searchTerm : String) : URLRequest
+			private function preloadImages(observable : IObservable) : IObservable
 			{
-				var encodedSearchTerm : String = searchTerm; // TODO
-				
-				var urlRequest : URLRequest = new URLRequest();
-				urlRequest.url ="http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + 
-					encodedSearchTerm;
-					
-				return urlRequest;
+				return observable
+					.selectMany(Image, function(image:Image) : IObservable
+					{
+						return Observable.fromEvent(image, Event.COMPLETE)
+							.select(Image, function():Image { return image; })
+							.take(1)
+							.timeout(3000)
+							.catchError(Observable.empty(Image));
+					});
 			}
 			
 			private function getImageObservable(searchTerm : String, thumbnails : Boolean) : IObservable
@@ -70,40 +77,38 @@
 					});
 			}
 			
-			private function preloadImages(observable : IObservable) : IObservable
+			private function getObservableJSON(request : URLRequest) : IObservable
 			{
-				return observable
-					.selectMany(Image, function(image:Image) : IObservable
-					{
-						return Observable.fromEvent(image, Event.COMPLETE)
-							.select(Image, function():Image { return image; })
-							.take(1)
-							.timeout(3000)
-							.catchError(Observable.empty(Image));
-					});
-			}
-
-			public override function setup() : void
-			{
-				imageContainer.removeAllChildren();
-				
-				var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
-					useThumbnailsCheckbox.selected);
-				
-				if (preloadImagesCheckbox.selected)
+				return Observable.defer(Object, function():IObservable
 				{
-					imageRequest = preloadImages(imageRequest);
-				}
+					try
+					{
+						var loader : URLLoader = new URLLoader();
+						loader.load(request)
+						
+						return Observable.fromEvent(loader, Event.COMPLETE)
+							.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
+							.take(1);
+					}
+					catch(error : Error)
+					{
+						return Observable.throwError(error, Object)
+					}
+					
+					return null; // Grr compiler
+				});
+			}
+			
+			private function getGisUrlRequest(searchTerm : String) : URLRequest
+			{
+				var encodedSearchTerm : String = searchTerm; // TODO
 				
-				gisSubscription = imageRequest.subscribeFunc(
-					function(image : Image):void
-					{
-						imageContainer.addChild(image);
-					},
-					function():void
-					{
-						running = false;
-					});
+				var urlRequest : URLRequest = new URLRequest();
+				
+				urlRequest.url ="http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + 
+					encodedSearchTerm;
+					
+				return urlRequest;
 			}
 			
 			public override function teardown() : void
@@ -120,6 +125,7 @@
 	</mx:Script>
 	
 	<mx:VBox width="100%" height="100%">
+		<mx:Label id="errorLabel" text="" color="#FF0000" />
 		<mx:HBox>
 			<mx:Label text="Search term: " />
 			<mx:TextInput id="searchTermInput" text="flowers" />
@@ -144,18 +150,97 @@
 			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
 				<mx:htmlText>
 	<![CDATA[
-var interval : IObservable = Observable.interval(500);
-var bufferedInterval : IObservable = interval.bufferWithCount(5);
-
-intervalSub = interval.subscribeFunc(function(i:uint):void
+public override function setup() : void
 {
-	intervalLabel.text = i.toString();
-});
+	imageContainer.removeAllChildren();
+	
+	var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
+		useThumbnailsCheckbox.selected);
+	
+	if (preloadImagesCheckbox.selected)
+	{
+		imageRequest = preloadImages(imageRequest);
+	}
+	
+	gisSubscription = imageRequest.subscribeFunc(
+		function(image : Image):void
+		{
+			imageContainer.addChild(image);
+		},
+		function():void
+		{
+			running = false;
+		});
+}
 
-bufferedSub = bufferedInterval.subscribeFunc(function(indexes : Array):void
+private function preloadImages(observable : IObservable) : IObservable
 {
-	bufferedIntervalLabel.text = indexes.join(", ");
-});
+	return observable
+		.selectMany(Image, function(image:Image) : IObservable
+		{
+			return Observable.fromEvent(image, Event.COMPLETE)
+				.select(Image, function():Image { return image; })
+				.take(1)
+				.timeout(3000)
+				.catchError(Observable.empty(Image));
+		});
+}
+
+private function getImageObservable(searchTerm : String, thumbnails : Boolean) : IObservable
+{
+	 return getObservableJSON(getGisUrlRequest(searchTerm))
+	 	.selectMany(Object, function(result:Object) : IObservable
+		{
+			return Observable.returnValues(Object, result.responseData.results);
+		})
+		.select(Image, function(result:Object) : Image
+		{
+			var image : Image = new Image();
+			image.toolTip = result.titleNoFormatting;
+			
+			var url : String = thumbnails
+				? result.tbUrl
+				: result.url;
+			
+			image.load(url);
+			
+			return image;
+		});
+}
+
+private function getObservableJSON(request : URLRequest) : IObservable
+{
+	return Observable.defer(Object, function():IObservable
+	{
+		try
+		{
+			var loader : URLLoader = new URLLoader();
+			loader.load(request)
+			
+			return Observable.fromEvent(loader, Event.COMPLETE)
+				.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
+				.take(1);
+		}
+		catch(error : Error)
+		{
+			return Observable.throwError(error, Object)
+		}
+		
+		return null;
+	});
+}
+
+private function getGisUrlRequest(searchTerm : String) : URLRequest
+{
+	var encodedSearchTerm : String = searchTerm;
+	
+	var urlRequest : URLRequest = new URLRequest();
+	
+	urlRequest.url ="http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + 
+		encodedSearchTerm;
+		
+	return urlRequest;
+}
 	]]>
 				</mx:htmlText>
 			</mx:TextArea>

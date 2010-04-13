@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace RxAs.Rx4.ProofTests.Mock
 {
     public class EventOwner
     {
-        public event EventHandler<EventArgs> Event;
+        private int subscriberCount = 0;
+
+        private event EventHandler<EventArgs> internalEvent;
+
+        public event EventHandler<EventArgs> Event
+        {
+            add { Interlocked.Increment(ref subscriberCount); internalEvent += value; }
+            remove { Interlocked.Decrement(ref subscriberCount); internalEvent -= value; }
+        }
 
         public void Fire()
         {
-            var handler = Event;
+            var handler = internalEvent;
 
             if (handler != null)
             {
@@ -29,7 +38,12 @@ namespace RxAs.Rx4.ProofTests.Mock
 
         public bool HasSubscriptions
         {
-            get { return Event != null; }
+            get { return internalEvent != null; }
+        }
+
+        public int SubscriptionCount
+        {
+            get { return subscriberCount; }
         }
     }
 }

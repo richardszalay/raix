@@ -4,6 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Subject;
+	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
 	public class ContainsFixture extends AbsDecoratorOperatorFixture
@@ -98,12 +99,9 @@ package rx.tests.operators
 			var obs : IObservable = manObs.contains(1, 
 				function(a:Object,b:Object) : Object { return comparerReturnValue; });
 			
-			var nextCalled : Boolean = false;
-			var nextResult : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribeFunc(
-				function(pl:Boolean):void { nextCalled = true; nextResult = pl; }
-			);
+			obs.subscribe(stats);
 			
 			manObs.onNext(1);
 			
@@ -112,8 +110,12 @@ package rx.tests.operators
 				manObs.onCompleted();
 			}
 			
-			Assert.assertEquals(expectCall, nextCalled);
-			Assert.assertEquals(expectMatch, nextResult);
+			Assert.assertEquals(expectCall, stats.nextCalled);
+			
+			if (expectCall)
+			{
+				Assert.assertEquals(expectMatch, stats.nextValues[0]);
+			}
 		}
 		
 		[Test]
@@ -123,15 +125,13 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.contains(1);
 			
-			var nextCalled : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribeFunc(
-				function(pl:Boolean):void { nextCalled = true; }
-			);
+			obs.subscribe(stats);
 			
 			manObs.onError(new Error());
 			
-			Assert.assertFalse(nextCalled);
+			Assert.assertFalse(stats.nextCalled);
 		}
 		
 		[Test]
@@ -144,19 +144,14 @@ package rx.tests.operators
 				throw new Error();
 			});
 			
-			var nextCalled : Boolean = false;
-			var errorCalled : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribeFunc(
-				function(pl:int):void { nextCalled = true; },
-				function():void { },
-				function(e:Error):void { errorCalled = true; }
-			);
+			obs.subscribe(stats);
 
 			manObs.onNext(0);
 			
-			Assert.assertFalse(nextCalled);
-			Assert.assertTrue(errorCalled);
+			Assert.assertFalse(stats.nextCalled);
+			Assert.assertTrue(stats.errorCalled);
 		}
 		
 		[Test(expects="Error")]

@@ -22,9 +22,11 @@ namespace RxAs.Rx4.ProofTests.Operators
                 .BufferWithTime(TimeSpan.FromMilliseconds(50))
                 .Subscribe(stats);
 
-            Thread.Sleep(100);
+            Thread.Sleep(125);
 
             Assert.AreEqual(2, stats.NextCount);
+            Assert.AreEqual(0, stats.NextValues[0].Count);
+            Assert.AreEqual(0, stats.NextValues[1].Count);
         }
 
         [Test]
@@ -36,7 +38,7 @@ namespace RxAs.Rx4.ProofTests.Operators
                 .BufferWithTime(TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(50))
                 .Subscribe(stats);
 
-            Thread.Sleep(110);
+            Thread.Sleep(125);
 
             Assert.AreEqual(2, stats.NextCount);
         }
@@ -48,12 +50,11 @@ namespace RxAs.Rx4.ProofTests.Operators
 
             Observable.Range(0, 3)
                 .BufferWithTime(TimeSpan.FromMilliseconds(10), Scheduler.CurrentThread)
-                .Subscribe(
-                    x => { Trace.WriteLine("Next"); },
-                    () => { Trace.WriteLine("Complete"); }
-                );
+                .Subscribe(stats);
 
-            Assert.AreEqual(2, stats.NextCount);
+            // TODO: Test is not complete
+
+            Assert.AreEqual(1, stats.NextCount);
         }
     }
 }

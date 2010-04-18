@@ -73,22 +73,26 @@ namespace RxAs.Rx4.ProofTests.Operators
             Observable.Range(0, 2)
                 .Do(x => { throw new ApplicationException(); }, e => { })
                 .Subscribe(stats);
-
-            Assert.IsFalse(stats.NextCalled);
-            Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test]
+        [Test, ExpectedException(typeof(ApplicationException))]
         public void exception_thrown_in_next_action_bubbles_when_complete_action_is_specifid()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
 
             Observable.Range(0, 2)
-                .Do(x => { throw new Exception(); }, e => {},  () => { })
+                .Do(x => { throw new ApplicationException(); }, () => { })
                 .Subscribe(stats);
+        }
 
-            Assert.IsFalse(stats.NextCalled);
-            Assert.IsTrue(stats.ErrorCalled);
+        [Test, ExpectedException(typeof(ApplicationException))]
+        public void exception_thrown_in_next_action_bubbles_when_all_actions_are_specifid()
+        {
+            StatsObserver<int> stats = new StatsObserver<int>();
+
+            Observable.Range(0, 2)
+                .Do(x => { throw new ApplicationException(); }, e => { }, () => { })
+                .Subscribe(stats);
         }
 
         [Test]

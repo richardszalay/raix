@@ -5,6 +5,7 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.ISubscription;
 	import rx.Subject;
+	import rx.tests.mocks.StatsObserver;
 	
 	// Includes common tests for all decorator operators
 	public class AbsDecoratorOperatorFixture
@@ -22,9 +23,9 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(function(pl:int):void
-			{
-			});
+			var stats : StatsObserver = new StatsObserver();
+			
+			obs.subscribe(stats);
 			
 			manObs.onCompleted();
 			
@@ -40,9 +41,9 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(function(pl:int):void
-			{
-			});
+			var stats : StatsObserver = new StatsObserver();
+			
+			obs.subscribe(stats);
 			
 			manObs.onError(new Error());
 			
@@ -58,9 +59,9 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			var subs : ISubscription = obs.subscribeFunc(function(pl:int):void
-			{
-			});
+			var stats : StatsObserver = new StatsObserver();
+			
+			var subs : ISubscription = obs.subscribe(stats);
 			
 			subs.unsubscribe();
 			
@@ -76,21 +77,16 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			var nextCalled : Boolean = false;
-			var errorCalled : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ISubscription = obs.subscribeFunc(
-				function(pl:int):void { nextCalled = true; },
-				function():void { },
-				function(e:Error):void { errorCalled = true; }
-			);
+			var subs : ISubscription = obs.subscribe(stats);
 			
 			manObs.onCompleted();
 			manObs.onNext(new Object());
 			manObs.onError(new Error());
 			
-			Assert.assertFalse(nextCalled);
-			Assert.assertFalse(errorCalled);
+			Assert.assertFalse(stats.nextCalled);
+			Assert.assertFalse(stats.errorCalled);
 		}
 		
 		[Test]
@@ -102,21 +98,16 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			var nextCalled : Boolean = false;
-			var completedCalled : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ISubscription = obs.subscribeFunc(
-				function(pl:int):void { nextCalled = true; },
-				function():void { completedCalled = true; },
-				function(e:Error):void { }
-			);
+			var subs : ISubscription = obs.subscribe(stats);
 			
 			manObs.onError(new Error());
 			manObs.onNext(new Object());
 			manObs.onCompleted();
 			
-			Assert.assertFalse(nextCalled);
-			Assert.assertFalse(completedCalled);
+			Assert.assertFalse(stats.nextCalled);
+			Assert.assertFalse(stats.completedCalled);
 		}
 		
 		protected function createEmptyObservable(source : IObservable) : IObservable

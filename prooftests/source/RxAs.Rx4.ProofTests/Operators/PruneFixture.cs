@@ -300,9 +300,67 @@ namespace RxAs.Rx4.ProofTests.Operators
         }
 
         [Test]
-        public void selector_is_used()
+        public void selector_is_applied_to_last_value()
         {
-            Assert.Fail("Not implemented");
+            Subject<int> subject = new Subject<int>();
+
+            var stats = new StatsObserver<int>();
+
+            var obs = subject.Prune(x => x.Take(1));
+
+            obs.Subscribe(stats);
+
+            subject.OnNext(1);
+            subject.OnNext(2);
+            subject.OnNext(3);
+            subject.OnCompleted();
+
+            Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(3, stats.NextValues[0]);
+            Assert.IsTrue(stats.CompletedCalled);
+        }
+
+        [Test]
+        public void output_of_selector_is_used()
+        {
+            Subject<int> subject = new Subject<int>();
+
+            var stats = new StatsObserver<int>();
+
+            var obs = subject.Prune(x => x.Select(i => i+1));
+
+            obs.Subscribe(stats);
+
+            subject.OnNext(1);
+            subject.OnNext(2);
+            subject.OnNext(3);
+            subject.OnCompleted();
+
+            Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(4, stats.NextValues[0]);
+            Assert.IsTrue(stats.CompletedCalled);
+        }
+
+        [Test]
+        public void selector_can_be_used_to_return_multiple_values()
+        {
+            Subject<int> subject = new Subject<int>();
+
+            var stats = new StatsObserver<int>();
+
+            var obs = subject.Prune(x => Observable.Range(0, 2));
+
+            obs.Subscribe(stats);
+
+            subject.OnNext(1);
+            subject.OnNext(2);
+            subject.OnNext(3);
+            subject.OnCompleted();
+
+            Assert.AreEqual(2, stats.NextCount);
+            Assert.AreEqual(0, stats.NextValues[0]);
+            Assert.AreEqual(1, stats.NextValues[1]);
+            Assert.IsTrue(stats.CompletedCalled);
         }
     }
 }

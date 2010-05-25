@@ -28,6 +28,7 @@ package rx.tests.operators
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
+		public var interval : IntervalFixture;
 		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;

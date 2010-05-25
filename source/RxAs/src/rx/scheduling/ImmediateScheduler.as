@@ -26,7 +26,7 @@ package rx.scheduling
 					TimerPool.instance.release(timer);
 					timer = null;
 					
-					action();
+					schedule(action, 0);
 				};
 				
 				timer.addEventListener(TimerEvent.TIMER, handler);
@@ -75,6 +75,8 @@ package rx.scheduling
 				return ClosureScheduledAction.empty();
 			}
 		}
+		
+		public function get now() : Date { return new Date(); }
 		
 		private static var _instance : ImmediateScheduler = new ImmediateScheduler();
 		

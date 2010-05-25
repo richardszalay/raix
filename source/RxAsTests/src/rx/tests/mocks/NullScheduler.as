@@ -10,5 +10,10 @@ package rx.tests.mocks
 			return new NullScheduledAction();
 		}
 		
+		private var _now : Date = new Date();
+		
+		public function get now() : Date { return _now; }
+		public function set now(value : Date) : void { _now = value; }
+		
 	}
 }

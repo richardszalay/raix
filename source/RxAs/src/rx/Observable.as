@@ -79,21 +79,21 @@ package rx
 			{
 				var intervalIndex : uint = 0;
 				
-				var listener : Function = function(event : Event) : void
+				var scheduledAction : IScheduledAction = null;
+				
+				var recursiveAction : Function;
+				recursiveAction = function():void
 				{
-					scheduler.schedule(function():void
-					{
-						observer.onNext(++intervalIndex);
-					});
+					observer.onNext(++intervalIndex);
+					
+					scheduledAction = scheduler.schedule(recursiveAction, intervalMs);
 				};
 				
-				var timer : Timer = new Timer(intervalMs, 0);
-				timer.addEventListener(TimerEvent.TIMER, listener);
-				timer.start();
+				scheduledAction = scheduler.schedule(recursiveAction, intervalMs);
 				
 				return new ClosureSubscription(function():void
 				{
-					timer.stop();
+					scheduledAction.cancel();
 				});
 			});
 		}
@@ -101,6 +101,11 @@ package rx
 		public static function fromEvent(eventDispatcher:IEventDispatcher, type:String, eventType : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
 			eventType = eventType || Event;
+			
+			if (eventDispatcher == null)
+			{
+				throw new ArgumentError("eventDispatcher cannot be null");
+			}
 			
 			return new ClosureObservable(eventType, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
 			{
@@ -251,7 +256,7 @@ package rx
 		
 		public static function range(start : int, count : uint, scheduler : IScheduler = null) : IObservable
 		{
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(int, function(obs:IObserver) : ISubscription
 			{
@@ -259,22 +264,33 @@ package rx
 				
 				var scheduledActions : Array = new Array();
 				
-				for (var i:int = start; i<end; i++)
+				var scheduledAction : IScheduledAction = null;
+				
+				var i : int = start;
+				
+				var rescursiveAction : Function = null;
+				
+				rescursiveAction = function():void
 				{
-					(function(value:int):void
+					obs.onNext(i);
+					
+					i++;
+					
+					if (i < end)
 					{
-						scheduledActions.push(scheduler.schedule(function():void { obs.onNext(value); }));
-					})(i);
-				}
+						scheduledAction = scheduler.schedule(rescursiveAction);
+					}
+					else
+					{
+						obs.onCompleted();
+					}
+				};
 				
-				scheduledActions.push(scheduler.schedule(function():void { obs.onCompleted(); }));
-				
+				scheduledAction = scheduler.schedule(rescursiveAction);
+
 				return new ClosureSubscription(function():void
 				{
-					while (scheduledActions.length > 0)
-					{
-						IScheduledAction(scheduledActions.shift()).cancel();
-					}
+					scheduledAction.cancel();
 				});
 			});
 		}		
@@ -306,7 +322,7 @@ package rx
 				
 				for each(var value : Object in values) 
 				{
-					(function(value:Object)
+					(function(value:Object) : void
 					{
 						valueScheduledAction = 
 							scheduler.schedule(function():void { obs.onNext(value); });

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Button;
+			import mx.containers.HBox;
+			import rx.impl.ClosureObservable;
+			import rx.scheduling.GreenThreadScheduler;
+			import rx.scheduling.IScheduler;
+			import rx.impl.ClosureSubscription;
+			import rx.impl.FutureSubscription;
+			import mx.controls.Label;
+			import rx.scheduling.Scheduler;
+			import rx.impl.CompositeSubscription;
+			import samples.imageSearch.JsonService;
+			import rx.IObserver;
+			import mx.events.FlexEvent;
+			import rx.ISubscription;
+			import rx.IObservable;
+			import rx.Observable;
+			
+			private var subscription : CompositeSubscription;
+			
+			private var greenThreadScheduler : IScheduler;
+
+			private static const SEARCH_URL : String = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=";
+			
+			public override function setup() : void
+			{
+				subscription = new CompositeSubscription([]);
+				
+				subscription.add(getFpsObservable().subscribeFunc(
+					function(frames:int):void { fpsLabel.text = frames + " fps"; }));
+				
+				greenThreadScheduler = new GreenThreadScheduler(
+					Observable.fromEvent(stage, Event.ENTER_FRAME)
+					);
+			}
+			
+			public override function teardown() : void
+			{
+				if (subscription != null)
+				{
+					subscription.unsubscribe();
+				}
+			}
+			
+			private function addObservable(scheduler : IScheduler) : void
+			{
+				var labelContainer : HBox = new HBox();
+				
+				var label : Label = new Label();
+				labelContainer.addChild(label);
+				
+				var cancelButton : Button = new Button();
+				cancelButton.label = "Cancel";
+				labelContainer.addChild(cancelButton);
+				
+				container.addChild(labelContainer);
+				
+				var futureSubscription : FutureSubscription = new FutureSubscription();
+				
+				var subscriptionToAdd : ISubscription = new ClosureSubscription(function():void
+				{
+					container.removeChild(labelContainer);
+					futureSubscription.unsubscribe();
+				});
+				
+				cancelButton.addEventListener(MouseEvent.CLICK, function(e:Event):void
+				{
+					subscriptionToAdd.unsubscribe();
+				});
+				
+				var startTime : Number = new Date().time;
+				
+				var innerSubscription : ISubscription = 
+					Observable.range(0, 500000, scheduler).subscribeFunc(
+						function(i:int):void { label.text = i.toString(); },
+						function():void
+						{
+							cancelButton.label = "Remove";
+							label.text += " - completed in " + ((new Date().time - startTime) / 1000) + " seconds";
+						});
+						
+				futureSubscription.innerSubscription = innerSubscription;
+				
+				subscription.add(subscriptionToAdd);
+			}
+			
+			private function getFpsObservable() : IObservable
+			{
+				return new ClosureObservable(Number, function(obs : IObserver) : ISubscription
+				{
+					var subcription : CompositeSubscription = new CompositeSubscription([]);
+					
+					var frameCount : int = 0;
+					
+					subcription.add(Observable.fromEvent(stage, Event.ENTER_FRAME).subscribeFunc(
+						function(...args):void { frameCount++; }));
+						
+					subcription.add(Observable.interval(1000).subscribeFunc(
+						function(...args):void { obs.onNext(frameCount); frameCount = 0; }));	
+					
+					return subcription;
+				});
+			}
+			
+			private function addWithGreenThreadHandler() : void
+			{
+				addObservable(Scheduler.greenThread);
+			}
+			
+			private function addWithImmediateHandler() : void
+			{
+				// We're not going to render while this is happening, so update the UI now
+				fpsLabel.text = "0 fps";
+				
+				callLater(function():void
+				{
+					addObservable(Scheduler.immediate);
+				});
+			}
+			
+			private function get selectedContextSwitchTime() : Number 
+			{
+				return GreenThreadScheduler.instance.contextSwitchTime;
+			}
+			
+			private function contextSwitchTimeChangedHandler() : void 
+			{
+				GreenThreadScheduler.instance.contextSwitchTime = switchTimeSlider.value;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" borderColor="#000000" id="trackContainer">
+			<mx:HBox width="100%">
+				<mx:Button label="Add with GreenThreadScheduler" click="addWithGreenThreadHandler()" enabled="{running}" />
+				<mx:Button label="Add with ImmediateScheduler" click="addWithImmediateHandler()" enabled="{running}" />
+			</mx:HBox>
+			<mx:HBox width="100%">
+				<mx:Label text="Green Thread context switch time" />
+				<mx:HSlider id="switchTimeSlider" 
+					minimum="10" maximum="1000" value="{selectedContextSwitchTime}"
+					liveDragging="true" allowTrackClick="true" 
+					dataTipPlacement="top"  tickColor="black" 
+					labels="['0ms','1000ms']" 
+					change="contextSwitchTimeChangedHandler()" />
+			</mx:HBox>
+			
+			<mx:Label id="fpsLabel" text="" />
+			<mx:VBox id="container">
+				
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+// Filter mouse movement events so that they are ignored within the top 50x50 box
+var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
+var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
+var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
+
+var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
+
+var obs : IObservable = md
+	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
+
+subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+{
+	var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
+
+	moveBox.x = pnt.x;
+	moveBox.y = pnt.y;
+});
+]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

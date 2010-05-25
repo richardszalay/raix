@@ -215,25 +215,17 @@ package rx
 			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
 				var buffer : Array = new Array();
-				var startTime : Number = new Date().time;
+				var startTime : Number = scheduler.now;
 				
 				var flushBuffer : Function = function():void
 				{
 					if (buffer.length > 0)
 					{
-						var outBuffer : Array = new Array(buffer.length);
-						
-						for (var i:int =0; i<buffer.length; i++)
-						{
-							outBuffer[i] = buffer[i].value;
-						}
-						
+						var outBuffer : Array = new Array().concat(buffer);
 						observer.onNext(outBuffer);
 						
 						buffer = [];
 					}
-					
-					
 				};
 				
 				var intervalSubscription : ISubscription = Observable.interval(timeMs, scheduler)
@@ -534,7 +526,7 @@ package rx
 			{
 				scheduler = scheduler || Observable.resolveScheduler(scheduler);
 				
-				var isPastDate : Boolean = (new Date().time >= dtValue);
+				var isPastDate : Boolean = (scheduler.now.time >= dtValue);
 				var scheduledActions : Array = [];
 				
 				var subscription : ISubscription = source.materialize().subscribeFunc(
@@ -544,7 +536,7 @@ package rx
 						
 						if (!isPastDate)
 						{
-							now = new Date().time;
+							now = scheduler.now.time;
 							
 							if (now >= dtValue)
 							{							
@@ -1447,7 +1439,7 @@ package rx
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						var now : Number = (new Date()).time;
+						var now : Number = (scheduler.now).time;
 						var interval : Number = (lastTimeMs == -1)
 							? 0
 							: now - lastTimeMs;
@@ -1471,6 +1463,8 @@ package rx
 		{
 			var source : IObservable = this;
 			
+			other = other || Observable.throwError(new TimeoutError("Sequence timed out"), this.type);
+			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
@@ -1479,15 +1473,8 @@ package rx
 				
 				var timeout : Function = function():void
 				{
-					if (other == null)
-					{
-						observer.onError(new TimeoutError("Sequence timed out"));
-					}
-					else
-					{
-						subscription.unsubscribe();
-						subscription = other.subscribe(observer);
-					}
+					subscription.unsubscribe();
+					subscription = other.subscribe(observer);
 				};
 				
 				var timeoutAction : IScheduledAction = scheduler.schedule(timeout, timeoutMs);
@@ -1515,16 +1502,11 @@ package rx
 			});
 		}
 		
-		public function timer(dueTimeMs:int):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
 			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
-				return new TimeStamped(value, new Date().getTime());
+				return new TimeStamped(value, scheduler.now.time);
 			}, scheduler);
 		}
 		
@@ -1533,38 +1515,7 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function where(predicate:Function):IObservable
-		{
-			var source : IObservable = this;
-			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
-			{
-				var decoratorObserver : IObserver = new ClosureObserver(
-					function (value : Object) : void
-					{
-						var result : Boolean = false;
-						
-						try
-						{
-							result = predicate(value);
-						}
-						catch(err : Error)
-						{
-							observer.onError(err);
-						}
-							
-						if (result)
-						{
-							observer.onNext(value);
-						}
-					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
-					);
-				
-				return source.subscribe(decoratorObserver);
-			});
-		}
+		include "operators/include.as"
 		
 		public function zip(resultType : Class, rightSource:IObservable, selector:Function):IObservable
 		{

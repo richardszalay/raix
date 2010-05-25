@@ -1,11 +1,9 @@
 package rx.tests.operators
 {
 	import org.flexunit.Assert;
-	import org.flexunit.async.Async;
 	
-	import rx.IObservable;
 	import rx.Observable;
-	import rx.Subject;
+	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -16,16 +14,26 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.interval(50)
-				.bufferWithTime(120)
-				.take(3)
-				.subscribe(stats);
-				
+			var valueScheduler : ManualScheduler = new ManualScheduler();
+			var bufferScheduler : ManualScheduler = new ManualScheduler();
 			
-			Async.asyncHandler(this, function():void{}, 400, null, function():void	
-			{
-				Assert.assertEquals(3, stats.nextCount);
-			});
+			var startTime : Date = new Date();
+			
+			Observable.range(0, 5, valueScheduler)
+				.bufferWithTime(120, 0, bufferScheduler)
+				.subscribe(stats);
+			
+			Assert.assertFalse(stats.nextCalled);
+			
+			bufferScheduler.now = new Date(startTime.time + 10);
+			valueScheduler.runNext();
+			
+			bufferScheduler.now = new Date(startTime.time + 20);
+			valueScheduler.runNext();
+			
+			bufferScheduler.runNext();
+			
+			Assert.assertEquals(1, stats.nextCount);
 		}
 	}
 }

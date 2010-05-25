@@ -11,6 +11,5 @@ package rx.tests.mocks
 		public function cancel() : void
 		{
 		}
-
 	}
 }

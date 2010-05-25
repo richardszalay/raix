@@ -30,6 +30,11 @@ package rx.tests.mocks
 			});
 		}
 		
+		public function get queueSize() : int 
+		{
+			return _buffer.length;
+		}
+		
 		public function runNext() : void
 		{
 			if (_buffer.length > 0)
@@ -45,5 +50,10 @@ package rx.tests.mocks
 				(_buffer.shift() as Function)();
 			}
 		}
+		
+		private var _now : Date = new Date();
+		
+		public function get now() : Date { return _now; }
+		public function set now(value : Date) : void { _now = value; }
 	}
 }

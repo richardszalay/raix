@@ -39,7 +39,7 @@ package rx.tests.operators
 				.delay(100, scheduler)
 				.subscribe(stats);
 				
-			Assert.assertEquals(1, scheduler.queueSize);
+			Assert.assertEquals(2, scheduler.queueSize);
 			
 			subscription.unsubscribe();
 			Assert.assertEquals(0, scheduler.queueSize);

@@ -215,31 +215,34 @@ package rx
 			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
 				var buffer : Array = new Array();
-				var startTime : Number = scheduler.now;
+				var startTime : Number = scheduler.now.time;
 				
 				var flushBuffer : Function = function():void
 				{
-					if (buffer.length > 0)
-					{
-						var outBuffer : Array = new Array().concat(buffer);
-						observer.onNext(outBuffer);
+					var outBuffer : Array = new Array(buffer.length);
 						
-						buffer = [];
+					for (var i:int=0; i<buffer.length; i++)
+					{
+						outBuffer[i] = buffer[i].value;
+					}
+					
+					observer.onNext(outBuffer);
+				};
+				
+				var intervalFunc : Function = function(i:int):void
+				{
+					flushBuffer();
+					
+					startTime += timeShiftMs;
+					
+					while(buffer.length > 0 && buffer[0].timestamp <= startTime)
+					{
+						buffer.shift();
 					}
 				};
 				
 				var intervalSubscription : ISubscription = Observable.interval(timeMs, scheduler)
-					.subscribeFunc(function(i:int):void
-					{
-						while(buffer.length > 0 && buffer[0].timestamp < startTime)
-						{
-							buffer.shift();
-						}
-						
-						flushBuffer();
-						
-						startTime += timeShiftMs;
-					});
+					.subscribeFunc(intervalFunc);
 				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -371,7 +374,7 @@ package rx
 			{
 				var currentSource : IObservable = source;
 			
-				var subscription : ISubscription = null;
+				var subscription : FutureSubscription = new FutureSubscription();
 				
 				var remainingSources : Array = [].concat(sources);
 				
@@ -379,38 +382,29 @@ package rx
 				
 				var onNext : Function = function onNext(pl : Object) : void
 				{
-					scheduler.schedule(function():void { observer.onNext(pl); });
+					observer.onNext(pl);
 				};
 				
 				var onError : Function = function (error : Error) : void { observer.onError(error); };
 				
 				var onComplete : Function = function () : void
 				{
-					subscription.unsubscribe();
-					
 					if (remainingSources.length > 0)
 					{
-						trace("concat :: Move to next source");
-						
 						currentSource = IObservable(remainingSources.shift());
-						subscription = currentSource.subscribe(dec);
+						subscription.innerSubscription = currentSource.subscribe(dec);
 					}
 					else
 					{
-						trace("concat :: Completed");
-						
 						observer.onCompleted();
 					}
 				}
 				
 				dec = new ClosureObserver(onNext, onComplete, onError);
 
-				subscription = currentSource.subscribe(dec);
+				subscription.innerSubscription = currentSource.subscribe(dec);
 				
-				return new ClosureSubscription(function():void
-				{
-					subscription.unsubscribe();
-				});
+				return subscription;
 			});
 		}
 		
@@ -1026,11 +1020,9 @@ package rx
 			return selectInternal(result, selector);
 		}
 		
-		private function selectInternal(type : Class, selector:Function, scheduler : IScheduler = null):IObservable
+		private function selectInternal(type : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
-			
-			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(type, function (observer : IObserver) : ISubscription
 			{
@@ -1051,10 +1043,10 @@ package rx
 							return;
 						}
 						
-						scheduler.schedule(function():void { observer.onNext(value); });
+						observer.onNext(value);
 					},
-					function () : void { scheduler.schedule(observer.onCompleted); },
-					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
 					);
 				
 				subscription = source.subscribe(decoratorObserver);
@@ -1507,7 +1499,7 @@ package rx
 			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);
-			}, scheduler);
+			});
 		}
 		
 		public function toAsync(func:Function):IObservable

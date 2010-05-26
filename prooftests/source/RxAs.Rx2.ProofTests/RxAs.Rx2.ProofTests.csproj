@@ -76,6 +76,7 @@
     <Compile Include="Operators\BufferWithCountFixture.cs" />
     <Compile Include="Operators\CastFixture.cs" />
     <Compile Include="Operators\CatchFixture.cs" />
+    <Compile Include="Operators\BufferWithTimeFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\DoFixture.cs" />
     <Compile Include="Operators\MaterializeFixture.cs" />

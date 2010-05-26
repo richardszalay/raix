@@ -13,12 +13,15 @@ namespace RxAs.Rx2.ProofTests.Mock
 
         public DateTimeOffset Now
         {
-            get { throw new NotImplementedException(); }
+            get;
+            set;
         }
 
         public IDisposable Schedule(Action action, TimeSpan dueTime)
         {
-            throw new NotImplementedException();
+            actions.Enqueue(action);
+
+            return Disposable.Create(() => { });
         }
 
         public IDisposable Schedule(Action action)

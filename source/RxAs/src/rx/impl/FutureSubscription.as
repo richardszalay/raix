@@ -24,6 +24,12 @@ package rx.impl
 		
 		public function set innerSubscription(value : ISubscription) : void
 		{
+			if (_innerSubscription != null)
+			{
+				_innerSubscription.unsubscribe();
+				_innerSubscription = null;
+			}
+			
 			if (_unsubscribed)
 			{
 				value.unsubscribe();

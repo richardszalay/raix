@@ -476,10 +476,10 @@ package rx
 		{
 			var source : IObservable = this;
 			
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
 			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
 			{
-				scheduler = scheduler || Observable.resolveScheduler(scheduler);
-				
 				var scheduledActions : Array = [];
 				var nextScheduledAction : IScheduledAction = null;
 				var completeScheduledAction : IScheduledAction = null;
@@ -488,16 +488,24 @@ package rx
 					function(pl : Object) : void
 					{
 						scheduledActions.push( 
-							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs)
+							scheduler.schedule(function():void { scheduledActions.shift(); observer.onNext(pl); }, delayMs)
 						);
 					},
 					function () : void
 					{
 						scheduledActions.push( 
-							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs)
+							scheduler.schedule(function():void { scheduledActions.shift(); observer.onCompleted(); }, delayMs)
 						);
 					},
-					function (error : Error) : void { observer.onError(error); }
+					function (error : Error) : void
+					{
+						while (scheduledActions.length > 0)
+						{
+							scheduledActions.shift().cancel();
+						}
+						
+						observer.onError(error);
+					}
 					);
 					
 				return new ClosureSubscription(function():void
@@ -1496,6 +1504,8 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
+			scheduler = Observable.resolveScheduler(scheduler);
+			
 			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);

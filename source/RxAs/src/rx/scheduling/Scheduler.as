@@ -1,6 +1,6 @@
 package rx.scheduling
 {
-	import rx.ISubscription;
+	import rx.impl.ClosureScheduledAction;
 	
 	public class Scheduler
 	{
@@ -17,6 +17,24 @@ package rx.scheduling
 		public static function get defaultScheduler() : IScheduler
 		{
 			return immediate;
+		}
+		
+		public static function scheduleRecursive(scheduler : IScheduler, action : Function) : IScheduledAction
+		{
+			var reschedule : Function = null;
+			var scheduledAction : IScheduledAction = null;
+			
+			reschedule = function():void
+			{
+				scheduledAction = scheduler.schedule(function():void { action(reschedule); });
+			};
+			
+			reschedule();
+			
+			return new ClosureScheduledAction(function():void
+			{
+				scheduledAction.cancel();
+			});
 		}
 	}
 }

@@ -4,9 +4,10 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
-	import rx.TimeStamped;
 	import rx.Subject;
+	import rx.TimeStamped;
 	import rx.tests.mocks.ManualScheduler;
+	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
 	public class TimestampFixture extends AbsDecoratorOperatorFixture
@@ -16,76 +17,38 @@ package rx.tests.operators
 			return source.timestamp();
 		}
 		
-		[Test(async)]
+		[Test]
 		public function timestamp_is_applied_to_values() : void
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.timestamp();
-			
-			var nextValues : Array = new Array();
-			
-			obs.subscribeFunc(function(pl:TimeStamped):void
-			{
-				nextValues.push(pl);
-			});
-			
-			manObs.onNext(5);
-			
-			// Wait past the throttle timeframe (+5ms to be sure)
-			Async.asyncHandler(this, function():void{}, 55, null, function():void
-			{
-				manObs.onNext(10);
-			
-				Assert.assertEquals(2, nextValues.length);
-				
-				var tsA : TimeStamped = nextValues[0];
-				var tsB : TimeStamped = nextValues[1];
-				
-				Assert.assertEquals(5, tsA.value);
-				Assert.assertEquals(10, tsB.value);
-				
-				Assert.assertTrue(tsB.timestamp > tsA.timestamp); 
-			});
-		}
-		
-		[Test(async)]
-		public function timestamp_is_applied_at_time_of_scheduling() : void
-		{
 			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.timestamp(scheduler);
 			
 			var nextValues : Array = new Array();
 			
-			obs.subscribeFunc(function(pl:TimeStamped):void
-			{
-				nextValues.push(pl);
-			});
+			var startTime : Date = new Date();
 			
-			manObs.onNext(5);
+			var stats : StatsObserver = new StatsObserver();
 			
-			// Wait past the throttle timeframe (+5ms to be sure)
-			Async.asyncHandler(this, function():void{}, 55, null, function():void
-			{
-				manObs.onNext(10);
+			obs.subscribe(stats);
 			
-				Assert.assertEquals(0, nextValues.length);
-				
-				scheduler.runAll();
-				Assert.assertEquals(2, nextValues.length);
-				
-				var tsA : TimeStamped = nextValues[0];
-				var tsB : TimeStamped = nextValues[1];
-				
-				var diffMs : Number = tsB.timestamp - tsA.timestamp;
-				
-				Assert.assertTrue(diffMs > 50); 
-			});
+			scheduler.now = startTime;			
+			manObs.onNext(1);
+			
+			scheduler.now = new Date(startTime.time + 10);			
+			manObs.onNext(2);
+			
+			scheduler.now = new Date(startTime.time + 20);			
+			manObs.onNext(3);
+			
+			Assert.assertEquals(3, stats.nextCount);
+			Assert.assertEquals(startTime.time, stats.nextValues[0].timestamp);
+			Assert.assertEquals(startTime.time + 10, stats.nextValues[1].timestamp);
+			Assert.assertEquals(startTime.time + 20, stats.nextValues[2].timestamp);
 		}
-
+		
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{

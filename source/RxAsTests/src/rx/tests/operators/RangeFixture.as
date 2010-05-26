@@ -44,6 +44,8 @@ package rx.tests.operators
 			
 			var subscription : ISubscription = obs.subscribe(stats); 
 			
+			Assert.assertFalse(stats.nextCalled);
+			
 			scheduler.runNext();
 			scheduler.runNext();
 			scheduler.runNext();

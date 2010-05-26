@@ -3,7 +3,6 @@ package rx
 	import flash.display.LoaderInfo;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
-	import flash.utils.Timer;
 	
 	import rx.impl.*;
 	import rx.scheduling.*;
@@ -68,6 +67,66 @@ package rx
 				}
 				
 				return observable.subscribe(observer);
+			});
+		}
+		
+		public static function generate(type : Class, initialState : Object, predicate : Function, resultMap : Function, 
+			iterate : Function, scheduler : IScheduler = null) : IObservable
+		{
+			scheduler = resolveScheduler(scheduler);
+			
+			return new ClosureObservable(type, function(observer : IObserver) : ISubscription
+			{
+				var currentState : Object = initialState;
+				var firstIteration : Boolean = true;
+				
+				var recursiveAction : Function = function(reschedule : Function):void
+				{
+					var useValue : Boolean = false;
+					var outputValue : Object = resultMap;
+					
+					try
+					{
+						if (firstIteration)
+						{
+							firstIteration = !firstIteration;
+						}
+						else
+						{
+							currentState = iterate(currentState);
+						}
+						
+						useValue = predicate(currentState);
+						
+						if (useValue)
+						{
+							outputValue = resultMap(currentState);
+						}
+					}
+					catch(err : Error)
+					{
+						observer.onError(err);
+						return;
+					}
+					
+					if (useValue)
+					{
+						observer.onNext(outputValue);
+						reschedule();
+					}
+					else
+					{
+						observer.onCompleted();
+					}
+				};
+				
+				var scheduledAction : IScheduledAction = 
+					Scheduler.scheduleRecursive(scheduler, recursiveAction);
+				
+				return new ClosureSubscription(function():void
+				{
+					scheduledAction.cancel();
+				});
 			});
 		}
 		
@@ -258,6 +317,21 @@ package rx
 		{
 			scheduler = Observable.resolveScheduler(scheduler);
 			
+			if (count < 0)
+			{
+				throw new RangeError("count must be > 0");
+			}
+			
+			var end : int = start + count;
+			
+			return generate(int, start,
+				function(i:int):Boolean { return i<end; },
+				function(i:int):int { return i; },
+				function(i:int):int { return i+1; },
+				scheduler
+				);
+			
+			/*
 			return new ClosureObservable(int, function(obs:IObserver) : ISubscription
 			{
 				var end : int = start + count;
@@ -292,8 +366,8 @@ package rx
 				{
 					scheduledAction.cancel();
 				});
-			});
-		}		
+			});*/
+		}
 		
 		public static function throwError(error : Error, observableType : Class = null) : IObservable
 		{

@@ -19,20 +19,26 @@ package rx.scheduling
 			return immediate;
 		}
 		
-		public static function scheduleRecursive(scheduler : IScheduler, action : Function) : IScheduledAction
+		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : IScheduledAction
 		{
 			var reschedule : Function = null;
 			var scheduledAction : IScheduledAction = null;
 			
+			var cancelled : Boolean = false;
+			
 			reschedule = function():void
 			{
-				scheduledAction = scheduler.schedule(function():void { action(reschedule); });
+				if (!cancelled)
+				{
+					scheduledAction = scheduler.schedule(function():void { action(reschedule); }, dueTime);
+				}
 			};
 			
 			reschedule();
 			
 			return new ClosureScheduledAction(function():void
 			{
+				cancelled = true;
 				scheduledAction.cancel();
 			});
 		}

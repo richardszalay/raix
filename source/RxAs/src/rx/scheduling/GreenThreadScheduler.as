@@ -21,10 +21,6 @@ package rx.scheduling
 		public function GreenThreadScheduler(contextSwitchObservable : IObservable)
 		{
 			_contextSwitchObservable = contextSwitchObservable;
-			
-			_contextSwitchSubscription = _contextSwitchObservable.subscribeFunc(
-				executeGreenThread);
-				
 		}
 		
 		public function schedule(action : Function, dueTime : int = 0) : IScheduledAction
@@ -32,8 +28,10 @@ package rx.scheduling
 			if (dueTime != 0)
 			{
 				var timer : Timer = TimerPool.instance.obtain();
-				timer.repeatCount = 1;
+				//timer.repeatCount = 1;
 				timer.delay = dueTime;
+				
+				var immediateScheduledAction : IScheduledAction = null;
 				
 				var handler : Function = function():void
 				{
@@ -42,7 +40,7 @@ package rx.scheduling
 					TimerPool.instance.release(timer);
 					timer = null;
 					
-					_pendingActions.push(action);
+					immediateScheduledAction = schedule(action, 0);
 				};
 				
 				timer.addEventListener(TimerEvent.TIMER, handler);
@@ -56,11 +54,21 @@ package rx.scheduling
 						timer.removeEventListener(TimerEvent.TIMER, handler);
 						TimerPool.instance.release(timer);
 					}
+					else
+					{
+						immediateScheduledAction.cancel();
+					}
 				});
 			}
 			else
 			{
 				_pendingActions.push(action);
+				
+				if (_contextSwitchSubscription == null)
+				{
+					_contextSwitchSubscription = _contextSwitchObservable
+						.subscribeFunc(executeGreenThread);
+				}
 				
 				return new ClosureScheduledAction(function():void
 				{
@@ -83,21 +91,44 @@ package rx.scheduling
 			
 			try
 			{
+				var iterations : int = 0;
+				
 				while (_pendingActions.length > 0 && runTime < maxRunTime)
 				{
 					(_pendingActions.shift())();
 					
 					runTime = new Date().time - startTime;
+					
+					iterations++;
+				}
+				
+				trace(iterations + " iterations on green thread");
+				
+				if (_pendingActions.length == 0)
+				{
+					stopSwitching();
 				}
 			}
 			catch(err : Error)
 			{
 				_pendingActions = [];
+				
+				stopSwitching();
+				
 				throw err;
 			}
 			finally
 			{
 				_runningAction = false;
+			}
+		}
+		
+		private function stopSwitching() : void
+		{
+			if (_contextSwitchSubscription != null)
+			{
+				_contextSwitchSubscription.unsubscribe();
+				_contextSwitchSubscription = null;
 			}
 		}
 		

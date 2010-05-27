@@ -138,17 +138,13 @@ package rx
 			{
 				var intervalIndex : uint = 0;
 				
-				var scheduledAction : IScheduledAction = null;
-				
-				var recursiveAction : Function;
-				recursiveAction = function():void
-				{
-					observer.onNext(++intervalIndex);
-					
-					scheduledAction = scheduler.schedule(recursiveAction, intervalMs);
-				};
-				
-				scheduledAction = scheduler.schedule(recursiveAction, intervalMs);
+				var scheduledAction : IScheduledAction = Scheduler.scheduleRecursive(scheduler,
+					function(recurse : Function):void
+					{
+						observer.onNext(++intervalIndex);
+						
+						recurse();
+					}, intervalMs);
 				
 				return new ClosureSubscription(function():void
 				{

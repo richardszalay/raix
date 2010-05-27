@@ -22,8 +22,6 @@
 			
 			private var subscription : CompositeSubscription;
 			
-			private var greenThreadScheduler : IScheduler;
-
 			private static const SEARCH_URL : String = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=";
 			
 			public override function setup() : void
@@ -32,10 +30,6 @@
 				
 				subscription.add(getFpsObservable().subscribeFunc(
 					function(frames:int):void { fpsLabel.text = frames + " fps"; }));
-				
-				greenThreadScheduler = new GreenThreadScheduler(
-					Observable.fromEvent(stage, Event.ENTER_FRAME)
-					);
 			}
 			
 			public override function teardown() : void
@@ -75,12 +69,12 @@
 				var startTime : Number = new Date().time;
 				
 				var innerSubscription : ISubscription = 
-					Observable.range(0, 500000, scheduler).subscribeFunc(
+					Observable.range(0, 100000, scheduler).subscribeFunc(
 						function(i:int):void { label.text = i.toString(); },
 						function():void
 						{
 							cancelButton.label = "Remove";
-							label.text += " - completed in " + ((new Date().time - startTime) / 1000) + " seconds";
+							label.text += " - completed in " + ((new Date().time - startTime) / 1000) + " seconds @ " + fpsLabel.text;
 						});
 						
 				futureSubscription.innerSubscription = innerSubscription;

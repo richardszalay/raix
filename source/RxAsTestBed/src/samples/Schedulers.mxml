@@ -22,8 +22,6 @@
 			
 			private var subscription : CompositeSubscription;
 			
-			private static const SEARCH_URL : String = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=";
-			
 			public override function setup() : void
 			{
 				subscription = new CompositeSubscription([]);
@@ -153,23 +151,97 @@
 			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
 				<mx:htmlText>
 	<![CDATA[
-// Filter mouse movement events so that they are ignored within the top 50x50 box
-var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
-var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
-var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
-
-var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
-
-var obs : IObservable = md
-	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
-
-subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+public override function setup() : void
 {
-	var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
+	subscription = new CompositeSubscription([]);
+	
+	subscription.add(getFpsObservable().subscribeFunc(
+		function(frames:int):void { fpsLabel.text = frames + " fps"; }));
+}
 
-	moveBox.x = pnt.x;
-	moveBox.y = pnt.y;
-});
+public override function teardown() : void
+{
+	if (subscription != null)
+	{
+		subscription.unsubscribe();
+	}
+}
+
+private function addObservable(scheduler : IScheduler) : void
+{
+	var labelContainer : HBox = new HBox();
+	
+	var label : Label = new Label();
+	labelContainer.addChild(label);
+	
+	var cancelButton : Button = new Button();
+	cancelButton.label = "Cancel";
+	labelContainer.addChild(cancelButton);
+	
+	container.addChild(labelContainer);
+	
+	var futureSubscription : FutureSubscription = new FutureSubscription();
+	
+	var subscriptionToAdd : ISubscription = new ClosureSubscription(function():void
+	{
+		container.removeChild(labelContainer);
+		futureSubscription.unsubscribe();
+	});
+	
+	cancelButton.addEventListener(MouseEvent.CLICK, function(e:Event):void
+	{
+		subscriptionToAdd.unsubscribe();
+	});
+	
+	var startTime : Number = new Date().time;
+	
+	var innerSubscription : ISubscription = 
+		Observable.range(0, 100000, scheduler).subscribeFunc(
+			function(i:int):void { label.text = i.toString(); },
+			function():void
+			{
+				cancelButton.label = "Remove";
+				label.text += " - completed in " + ((new Date().time - startTime) / 1000) + " seconds @ " + fpsLabel.text;
+			});
+			
+	futureSubscription.innerSubscription = innerSubscription;
+	
+	subscription.add(subscriptionToAdd);
+}
+
+private function addWithGreenThreadHandler() : void
+{
+	addObservable(Scheduler.greenThread);
+}
+
+private function addWithImmediateHandler() : void
+{
+	// We're not going to render while this is happening, so update the UI now
+	fpsLabel.text = "0 fps";
+	
+	callLater(function():void
+	{
+		addObservable(Scheduler.immediate);
+	});
+}
+
+private function getFpsObservable() : IObservable
+{
+	return new ClosureObservable(Number, function(obs : IObserver) : ISubscription
+	{
+		var subcription : CompositeSubscription = new CompositeSubscription([]);
+		
+		var frameCount : int = 0;
+		
+		subcription.add(Observable.fromEvent(stage, Event.ENTER_FRAME).subscribeFunc(
+			function(...args):void { frameCount++; }));
+			
+		subcription.add(Observable.interval(1000).subscribeFunc(
+			function(...args):void { obs.onNext(frameCount); frameCount = 0; }));	
+		
+		return subcription;
+	});
+}
 ]]>
 				</mx:htmlText>
 			</mx:TextArea>

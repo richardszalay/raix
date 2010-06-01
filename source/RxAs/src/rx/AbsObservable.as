@@ -366,46 +366,9 @@ package rx
 		
 		public function concat(sources:Array, scheduler:IScheduler=null):IObservable
 		{
-			var source : IObservable = this;
+			sources = [this].concat(sources);
 			
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
-			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
-			{
-				var currentSource : IObservable = source;
-			
-				var subscription : FutureSubscription = new FutureSubscription();
-				
-				var remainingSources : Array = [].concat(sources);
-				
-				var dec : IObserver = null;
-				
-				var onNext : Function = function onNext(pl : Object) : void
-				{
-					observer.onNext(pl);
-				};
-				
-				var onError : Function = function (error : Error) : void { observer.onError(error); };
-				
-				var onComplete : Function = function () : void
-				{
-					if (remainingSources.length > 0)
-					{
-						currentSource = IObservable(remainingSources.shift());
-						subscription.innerSubscription = currentSource.subscribe(dec);
-					}
-					else
-					{
-						observer.onCompleted();
-					}
-				}
-				
-				dec = new ClosureObserver(onNext, onComplete, onError);
-
-				subscription.innerSubscription = currentSource.subscribe(dec);
-				
-				return subscription;
-			});
+			return Observable.concat(this.type, sources, scheduler);
 		}
 		
 		public function contains(value : Object, comparer : Function = null) : IObservable
@@ -1266,9 +1229,11 @@ package rx
 			});
 		}
 		
-		public function startWith(value : Object) : IObservable
+		public function startWith(value : Array, scheduler : IScheduler) : IObservable
 		{
-			return Observable.returnValue(this.type, value).concat([this]);
+			return Observable
+				.returnValues(this.type, values, scheduler)
+				.concat([this], scheduler);
 		}
 
 		public function sum():Number

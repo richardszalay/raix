@@ -16,7 +16,6 @@ package rx.scheduling
 			if (dueTime != 0)
 			{
 				var timer : Timer = TimerPool.instance.obtain();
-				//timer.repeatCount = 1;
 				timer.delay = dueTime;
 				
 				var handler : Function = function():void

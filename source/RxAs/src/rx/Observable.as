@@ -4,6 +4,9 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
 	
+	import mx.rpc.AsyncToken;
+	
+	import rx.flex.*;
 	import rx.impl.*;
 	import rx.scheduling.*;
 
@@ -45,6 +48,43 @@ package rx
 							);
 					})(source);
 				}
+				
+				return subscription;
+			});
+		}
+		
+		public static function concat(type : Class, sources : Array, scheduler:IScheduler=null) : IObservable
+		{
+			var source : IObservable = this;
+			
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			{
+				var currentSource : IObservable = source;
+			
+				var subscription : FutureSubscription = new FutureSubscription();
+				
+				var remainingSources : Array = [].concat(sources);
+				
+				var dec : IObserver = null;
+				
+				var onComplete : Function = function () : void
+				{
+					if (remainingSources.length > 0)
+					{
+						currentSource = IObservable(remainingSources.shift());
+						subscription.innerSubscription = currentSource.subscribe(dec);
+					}
+					else
+					{
+						observer.onCompleted();
+					}
+				}
+				
+				dec = new ClosureObserver(observer.onNext, onComplete, observer.onError);
+
+				subscription.innerSubscription = currentSource.subscribe(dec);
 				
 				return subscription;
 			});
@@ -537,6 +577,26 @@ package rx
 				
 				return subscription;
 			});
+		}
+		
+		FLEX public static function fromAsyncPattern(returnType : Class, asyncMethod : Function, 
+			args : Array) : IObservable 
+		{
+			return defer(returnType, function():IObservable
+			{
+				// TODO: Catch/rethrow type coercion error here?
+				var token : AsyncToken = asyncMethod.apply(NaN, args);
+				
+				var responder : IObservableResponder = responder(returnType);
+				token.addResponder(responder);
+				
+				return responder;
+			});
+		}
+		
+		FLEX public static function responder(type : Class) : IObservableResponder
+		{
+			return new ObservableResponder(type);
 		}
 	}
 }

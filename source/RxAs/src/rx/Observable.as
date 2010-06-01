@@ -55,13 +55,18 @@ package rx
 		
 		public static function concat(type : Class, sources : Array, scheduler:IScheduler=null) : IObservable
 		{
-			var source : IObservable = this;
+			if (sources == null || sources.length == 0)
+			{
+				throw new ArgumentError("");
+			}
+			
+			sources = new Array().concat(sources);
 			
 			scheduler = scheduler || Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver):ISubscription
 			{
-				var currentSource : IObservable = source;
+				var currentSource : IObservable = sources.shift();
 			
 				var subscription : FutureSubscription = new FutureSubscription();
 				
@@ -579,24 +584,55 @@ package rx
 			});
 		}
 		
-		FLEX public static function fromAsyncPattern(returnType : Class, asyncMethod : Function, 
-			args : Array) : IObservable 
+		public static function call(action : Function, type : Class = null, scheduler : IScheduler = null) : IObservable
 		{
-			return defer(returnType, function():IObservable
+			scheduler = resolveScheduler(scheduler);
+			
+			type = type || Unit;
+			
+			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
 			{
-				// TODO: Catch/rethrow type coercion error here?
-				var token : AsyncToken = asyncMethod.apply(NaN, args);
+				var scheduledAction : IScheduledAction = scheduler.schedule(function():void
+				{
+					try
+					{
+						var ret : Object = action();
+					}
+					catch(err : Error)
+					{
+						obs.onError(err);
+						return;
+					}
+					
+					obs.onNext(ret);
+					obs.onCompleted();
+				});
 				
-				var responder : IObservableResponder = responder(returnType);
-				token.addResponder(responder);
-				
-				return responder;
+				return new ScheduledActionSubscription(scheduledAction);
 			});
 		}
 		
-		FLEX public static function responder(type : Class) : IObservableResponder
+		CONFIG::FLEX
 		{
-			return new ObservableResponder(type);
+			public static function fromAsyncPattern(returnType : Class, asyncMethod : Function, 
+				args : Array) : IObservable 
+			{
+				return defer(returnType, function():IObservable
+				{
+					// TODO: Catch/rethrow type coercion error here?
+					var token : AsyncToken = asyncMethod.apply(NaN, args);
+					
+					var responder : IObservableResponder = responder(returnType);
+					token.addResponder(responder);
+					
+					return responder;
+				});
+			}
+			
+			public static function responder(type : Class) : IObservableResponder
+			{
+				return new ObservableResponder(type);
+			}
 		}
 	}
 }

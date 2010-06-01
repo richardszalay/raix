@@ -840,7 +840,7 @@ package rx
 		
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			return Observable.merge(this.type, sources.startWith(this), scheduler);
+			return Observable.merge(this.type, sources.startWith([this], scheduler), scheduler);
 		}
 		
 		public function mostRecent(initialValue:Object):IObservable
@@ -1229,7 +1229,7 @@ package rx
 			});
 		}
 		
-		public function startWith(value : Array, scheduler : IScheduler) : IObservable
+		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			return Observable
 				.returnValues(this.type, values, scheduler)

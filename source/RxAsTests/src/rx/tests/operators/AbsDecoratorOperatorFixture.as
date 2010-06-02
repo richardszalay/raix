@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -61,9 +61,9 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ISubscription = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribe(stats);
 			
-			subs.unsubscribe();
+			subs.cancel();
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
 		}
@@ -79,7 +79,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ISubscription = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribe(stats);
 			
 			manObs.onCompleted();
 			manObs.onNext(new Object());
@@ -100,7 +100,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ISubscription = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribe(stats);
 			
 			manObs.onError(new Error());
 			manObs.onNext(new Object());

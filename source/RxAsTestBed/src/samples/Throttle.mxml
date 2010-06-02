@@ -7,12 +7,12 @@
 			import mx.formatters.DateFormatter;
 			import mx.charts.DateTimeAxis;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var throttledSubscription : ISubscription; 
-			private var subscription : ISubscription; 
+			private var throttledSubscription : ICancelable; 
+			private var subscription : ICancelable; 
 			
 			public override function setup() : void
 			{
@@ -36,12 +36,12 @@
 			{
 				if (subscription != null)
 				{
-					subscription.unsubscribe();
+					subscription.cancel();
 				}
 				
 				if (throttledSubscription != null)
 				{
-					throttledSubscription.unsubscribe();
+					throttledSubscription.cancel();
 				}
 			}
 		]]>

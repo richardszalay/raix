@@ -53,7 +53,7 @@ package rx.tests.operators
 			Observable.returnValue(int, 1)
 				.delayUntil(untilDate)
 				.subscribe(stats)
-				.unsubscribe();				
+				.cancel();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
 			{
@@ -71,7 +71,7 @@ package rx.tests.operators
 			Observable.range(0, 2)
 				.delayUntil(untilDate)
 				.subscribe(stats)
-				.unsubscribe();				
+				.cancel();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
 			{

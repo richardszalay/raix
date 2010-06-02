@@ -1,38 +1,38 @@
 package rx.impl
 {
-	import rx.ISubscription;
+	import rx.ICancelable;
 	
-	public class FutureSubscription implements ISubscription
+	public class FutureSubscription implements ICancelable
 	{
 		private var _unsubscribed : Boolean = false;
-		private var _innerSubscription : ISubscription = null;
+		private var _innerSubscription : ICancelable = null;
 		
 		public function FutureSubscription()
 		{
 		}
 		
-		public function unsubscribe() : void
+		public function cancel() : void
 		{
 			_unsubscribed = true;
 			
 			if (_innerSubscription != null)
 			{
-				_innerSubscription.unsubscribe();
+				_innerSubscription.cancel();
 				_innerSubscription = null;
 			}
 		}
 		
-		public function set innerSubscription(value : ISubscription) : void
+		public function set innerSubscription(value : ICancelable) : void
 		{
 			if (_innerSubscription != null)
 			{
-				_innerSubscription.unsubscribe();
+				_innerSubscription.cancel();
 				_innerSubscription = null;
 			}
 			
 			if (_unsubscribed)
 			{
-				value.unsubscribe();
+				value.cancel();
 			}
 			else
 			{

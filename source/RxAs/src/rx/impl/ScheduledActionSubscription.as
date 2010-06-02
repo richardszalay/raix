@@ -1,18 +1,18 @@
 package rx.impl
 {
-	import rx.ISubscription;
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
+	import rx.ICancelable;
 	
-	public class ScheduledActionSubscription implements ISubscription
+	public class ScheduledActionSubscription implements ICancelable
 	{
-		private var _scheduledAction : IScheduledAction;
+		private var _scheduledAction : ICancelable;
 		
-		public function ScheduledActionSubscription(scheduledAction : IScheduledAction)
+		public function ScheduledActionSubscription(scheduledAction : ICancelable)
 		{
 			_scheduledAction = scheduledAction;
 		}
 		
-		public function unsubscribe() : void
+		public function cancel() : void
 		{
 			_scheduledAction.cancel();
 		}

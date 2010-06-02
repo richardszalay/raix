@@ -9,14 +9,14 @@
 			import mx.messaging.SubscriptionInfo;
 			import com.adobe.serialization.json.JSON;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
 			private var imageSearchService : GoogleImageSearchService = new GoogleImageSearchService();
 			private var imageLoaderService : ImageResultLoaderService = new ImageResultLoaderService();
 			
-			private var gisSubscription : ISubscription;
+			private var gisSubscription : ICancelable;
 
 			public override function setup() : void
 			{
@@ -45,7 +45,7 @@
 			{
 				if (gisSubscription != null)
 				{
-					gisSubscription.unsubscribe();
+					gisSubscription.cancel();
 					gisSubscription = null;
 				}
 			}

@@ -73,12 +73,14 @@
     <Compile Include="Mock\ClosureScheduler.cs" />
     <Compile Include="Mock\ManualScheduler.cs" />
     <Compile Include="Mock\StatsObserver.cs" />
+    <Compile Include="Mock\StatsSubject.cs" />
     <Compile Include="Operators\BufferWithCountFixture.cs" />
     <Compile Include="Operators\CastFixture.cs" />
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\BufferWithTimeFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\DoFixture.cs" />
+    <Compile Include="Operators\FinallyFixture.cs" />
     <Compile Include="Operators\MaterializeFixture.cs" />
     <Compile Include="Operators\NeverEventFixture.cs" />
     <Compile Include="Operators\EmptyEventFixture.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subjects\AsyncSubjectFixture.cs" />
     <Compile Include="Subjects\BehaviorSubjectFixture.cs" />
+    <Compile Include="Subjects\ConnectableObservableFixture.cs" />
     <Compile Include="Subjects\ReplaySubjectFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -21,7 +21,7 @@ package rx
 		{
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(int, function(observer : IObserver) : ISubscription
+			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
 			{
 				var subscription : CompositeSubscription = new CompositeSubscription([])
 			
@@ -39,7 +39,7 @@ package rx
 									new CompositeSubscription(subscription.subscriptions);
 									
 								newSubscriptions.remove(futureSubscription);
-								newSubscriptions.unsubscribe();
+								newSubscriptions.cancel();
 								
 								observer.onNext(pl);
 							},
@@ -64,7 +64,7 @@ package rx
 			
 			scheduler = scheduler || Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
 				var currentSource : IObservable = sources.shift();
 			
@@ -102,7 +102,7 @@ package rx
 				throw new ArgumentError("observableFactory cannot be null");
 			}
 			
-			return new ClosureObservable(type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
 				var observable : IObservable = observableFactory();
 				
@@ -120,7 +120,7 @@ package rx
 		{
 			scheduler = resolveScheduler(scheduler);
 			
-			return new ClosureObservable(type, function(observer : IObserver) : ISubscription
+			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
 			{
 				var currentState : Object = initialState;
 				var firstIteration : Boolean = true;
@@ -165,7 +165,7 @@ package rx
 					}
 				};
 				
-				var scheduledAction : IScheduledAction = 
+				var scheduledAction : ICancelable = 
 					Scheduler.scheduleRecursive(scheduler, recursiveAction);
 				
 				return new ClosureSubscription(function():void
@@ -179,11 +179,11 @@ package rx
 		{
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(int, function(observer : IObserver) : ISubscription
+			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
 			{
 				var intervalIndex : uint = 0;
 				
-				var scheduledAction : IScheduledAction = Scheduler.scheduleRecursive(scheduler,
+				var scheduledAction : ICancelable = Scheduler.scheduleRecursive(scheduler,
 					function(recurse : Function):void
 					{
 						observer.onNext(++intervalIndex);
@@ -207,7 +207,7 @@ package rx
 				throw new ArgumentError("eventDispatcher cannot be null");
 			}
 			
-			return new ClosureObservable(eventType, function(observer : IObserver, scheduler : IScheduler = null) : ISubscription
+			return new ClosureObservable(eventType, function(observer : IObserver, scheduler : IScheduler = null) : ICancelable
 			{
 				scheduler = Observable.resolveScheduler(scheduler);
 				
@@ -236,7 +236,7 @@ package rx
 			observableType = observableType || Object;
 			scheduler = scheduler || ImmediateScheduler.instance;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
 			{
 				return new ScheduledActionSubscription(
 					scheduler.schedule(obs.onCompleted)
@@ -256,14 +256,14 @@ package rx
 			// Make internally immutable
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(sources[0].type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(sources[0].type, function(obs:IObserver) : ICancelable
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
-				var subscription : ISubscription = null;
+				var subscription : ICancelable = null;
 				var futureSubscription : FutureSubscription = new FutureSubscription();
 				
-				var scheduledAction : IScheduledAction = null;
+				var scheduledAction : ICancelable = null;
 				
 				var moveNextFunc : Function = null;
 				
@@ -273,7 +273,7 @@ package rx
 					
 					if (subscription != null)
 					{
-						subscription.unsubscribe();
+						subscription.cancel();
 					}
 					
 					subscription = currentSource.subscribeFunc(
@@ -315,7 +315,7 @@ package rx
 					
 					if (futureSubscription != null)
 					{
-						futureSubscription.unsubscribe();
+						futureSubscription.cancel();
 					}
 				});
 			});
@@ -328,7 +328,7 @@ package rx
 		{
 			observableType = observableType || Object;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
 			{
 				return new ClosureSubscription(function():void{});
 			});
@@ -379,7 +379,7 @@ package rx
 				
 				var scheduledActions : Array = new Array();
 				
-				var scheduledAction : IScheduledAction = null;
+				var scheduledAction : ICancelable = null;
 				
 				var i : int = start;
 				
@@ -419,7 +419,7 @@ package rx
 			
 			observableType = observableType || Object;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
 			{
 				obs.onError(error);
 				
@@ -431,9 +431,9 @@ package rx
 		{
 			scheduler = resolveScheduler(scheduler);
 			
-			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
 			{
-				var valueScheduledAction : IScheduledAction = null;
+				var valueScheduledAction : ICancelable = null;
 				
 				for each(var value : Object in values) 
 				{
@@ -444,7 +444,7 @@ package rx
 					})(value);
 				}
 				
-				var completeScheduledAction : IScheduledAction =
+				var completeScheduledAction : ICancelable =
 					scheduler.schedule(function():void { obs.onCompleted(); });
 				
 				return new ClosureSubscription(function():void
@@ -472,12 +472,12 @@ package rx
 			// Make internally immutable
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(sources[0].type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(sources[0].type, function(obs:IObserver) : ICancelable
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
-				var subscription : ISubscription = null;
-				var scheduledAction : IScheduledAction = null;
+				var subscription : ICancelable = null;
+				var scheduledAction : ICancelable = null;
 				
 				var moveNextFunc : Function = null;
 				
@@ -512,7 +512,7 @@ package rx
 					
 					if (subscription != null)
 					{
-						subscription.unsubscribe();
+						subscription.cancel();
 					}
 				});
 			});
@@ -533,7 +533,7 @@ package rx
 			
 			scheduler = resolveScheduler(scheduler);
 			
-			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
 			{
 				var subscription : CompositeSubscription = new CompositeSubscription([]);
 				
@@ -557,7 +557,7 @@ package rx
 							},
 							function() : void
 							{
-								innerSubscription.unsubscribe();
+								innerSubscription.cancel();
 								subscription.remove(innerSubscription);
 								
 								if (sourceComplete && subscription.count == 1)
@@ -590,9 +590,9 @@ package rx
 			
 			type = type || Unit;
 			
-			return new ClosureObservable(type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
 			{
-				var scheduledAction : IScheduledAction = scheduler.schedule(function():void
+				var scheduledAction : ICancelable = scheduler.schedule(function():void
 				{
 					try
 					{

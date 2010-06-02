@@ -514,7 +514,7 @@ namespace RxAs.Rx2.ProofTests.Subjects
         }
 
         [Test]
-        public void values_can_be_replayed_out_of_order()
+        public void values_cannot_be_replayed_out_of_order()
         {
             ManualScheduler scheduler = new ManualScheduler();
 
@@ -536,6 +536,9 @@ namespace RxAs.Rx2.ProofTests.Subjects
 
             scheduler.RunNext();
             Assert.IsTrue(stats.NextValues.SequenceEqual(new int[] { 1, 2 }));
+
+            scheduler.RunNext();
+            Assert.IsTrue(stats.NextValues.SequenceEqual(new int[] { 1, 2, 3 }));
 
             subject.OnCompleted();
 

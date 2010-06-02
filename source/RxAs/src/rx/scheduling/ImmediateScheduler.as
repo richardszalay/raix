@@ -3,6 +3,7 @@ package rx.scheduling
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import rx.ICancelable;
 	import rx.impl.ClosureScheduledAction;
 	import rx.impl.TimerPool;
 	
@@ -11,7 +12,7 @@ package rx.scheduling
 		private var _runningAction : Boolean = false;
 		private var _pendingActions : Array = new Array();
 		
-		public function schedule(action : Function, dueTime : int = 0) : IScheduledAction
+		public function schedule(action : Function, dueTime : int = 0) : ICancelable
 		{
 			if (dueTime != 0)
 			{

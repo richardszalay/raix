@@ -6,10 +6,10 @@ package rx.tests.operators
 	
 	import org.flexunit.Assert;
 	
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.impl.ClosureScheduledAction;
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver; 
@@ -30,7 +30,7 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : IScheduledAction = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
@@ -56,19 +56,19 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : IScheduledAction = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ISubscription = 
+			var subscription : ICancelable = 
 				Observable.interval(intervalValue, scheduler).subscribe(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertEquals(1, scheduler.queueSize);
 			
-			subscription.unsubscribe();
+			subscription.cancel();
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertEquals(0, scheduler.queueSize);
@@ -81,7 +81,7 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : IScheduledAction = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
 			
 			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
 			Expect.call(scheduler.schedule(null, 0))
@@ -104,14 +104,14 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : IScheduledAction = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
 			
 			var calledScheduledAction : Boolean = false;
 			
 			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
 			Expect.call(scheduler.schedule(null, 0))
 				.constraints([Is.anything(), Is.equal(intervalValue)])
-				.doAction(function(action:Function, ...args) : IScheduledAction
+				.doAction(function(action:Function, ...args) : ICancelable
 				{
 					if (!calledScheduledAction)
 					{

@@ -16,21 +16,21 @@ package rx.scheduling
 		private var _pendingActions : Array = new Array();
 		
 		private var _contextSwitchObservable : IObservable;
-		private var _contextSwitchSubscription : ISubscription;
+		private var _contextSwitchSubscription : ICancelable;;
 		
 		public function GreenThreadScheduler(contextSwitchObservable : IObservable)
 		{
 			_contextSwitchObservable = contextSwitchObservable;
 		}
 		
-		public function schedule(action : Function, dueTime : int = 0) : IScheduledAction
+		public function schedule(action : Function, dueTime : int = 0) : ICancelable
 		{
 			if (dueTime != 0)
 			{
 				var timer : Timer = TimerPool.instance.obtain();
 				timer.delay = dueTime;
 				
-				var immediateScheduledAction : IScheduledAction = null;
+				var immediateScheduledAction : ICancelable = null;
 				
 				var handler : Function = function():void
 				{
@@ -126,7 +126,7 @@ package rx.scheduling
 		{
 			if (_contextSwitchSubscription != null)
 			{
-				_contextSwitchSubscription.unsubscribe();
+				_contextSwitchSubscription.cancel();
 				_contextSwitchSubscription = null;
 			}
 		}

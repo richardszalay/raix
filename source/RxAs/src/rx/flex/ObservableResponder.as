@@ -6,7 +6,7 @@ package rx.flex
 	
 	import rx.AbsObservable;
 	import rx.IObserver;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.impl.ClosureSubscription;
 	
 	public class ObservableResponder extends AbsObservable implements IObservableResponder
@@ -66,7 +66,7 @@ package rx.flex
 			return new Error((info||"").toString(), 0);
 		}
 		
-		public override function subscribe(observer:IObserver):ISubscription
+		public override function subscribe(observer:IObserver):ICancelable
 		{
 			_observers.push(observer);
 			

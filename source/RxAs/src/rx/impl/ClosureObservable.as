@@ -2,7 +2,7 @@ package rx.impl
 {
 	import rx.AbsObservable;
 	import rx.IObserver;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	
 	public class ClosureObservable extends AbsObservable
 	{
@@ -15,12 +15,12 @@ package rx.impl
 			_type = type;
 		}
 		
-		public override function subscribe(observer : IObserver) : ISubscription 
+		public override function subscribe(observer : IObserver) : ICancelable 
 		{
 			// TODO: What is observer is already a SafetyObserver (eg. select().first())?
 			var safetyObserver : SafetyObserver = new SafetyObserver(observer);
 			
-			var subscription : ISubscription = ISubscription(_observeFunc(safetyObserver));
+			var subscription : ICancelable = ICancelable(_observeFunc(safetyObserver));
 			
 			safetyObserver.setSubscription(subscription);
 			

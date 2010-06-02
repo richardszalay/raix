@@ -1,8 +1,8 @@
 package rx.impl
 {
-	import rx.ISubscription;
+	import rx.ICancelable;
 
-	public class CompositeSubscription implements ISubscription
+	public class CompositeSubscription implements ICancelable
 	{
 		private var _subscriptions : Array;
 		
@@ -11,12 +11,12 @@ package rx.impl
 			_subscriptions = new Array().concat(values);
 		}
 		
-		public function add(subscription : ISubscription) : void
+		public function add(subscription : ICancelable) : void
 		{
 			_subscriptions.push(subscription);
 		}
 		
-		public function remove(subscription : ISubscription) : void
+		public function remove(subscription : ICancelable) : void
 		{
 			for (var i:int=0; i<_subscriptions.length; i++)
 			{
@@ -33,11 +33,11 @@ package rx.impl
 			return _subscriptions.length;
 		}
 
-		public function unsubscribe():void
+		public function cancel():void
 		{
 			while(_subscriptions.length > 0)
 			{
-				_subscriptions.shift().unsubscribe();
+				_subscriptions.shift().cancel();
 			}
 		}
 		

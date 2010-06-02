@@ -1,8 +1,8 @@
 package rx.impl
 {
-	import rx.ISubscription;
+	import rx.ICancelable;
 	
-	public class ClosureSubscription implements ISubscription
+	public class ClosureSubscription implements ICancelable
 	{
 		private var _unsubscribeFunc : Function;
 		private var _isUnsubscribed : Boolean = false;
@@ -12,7 +12,7 @@ package rx.impl
 			_unsubscribeFunc = unsubscribeFunc;
 		}
 		
-		public function unsubscribe() : void
+		public function cancel() : void
 		{
 			if (!_isUnsubscribed)
 			{

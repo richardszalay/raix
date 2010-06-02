@@ -16,7 +16,7 @@
 			import samples.imageSearch.JsonService;
 			import rx.IObserver;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
@@ -34,7 +34,7 @@
 			{
 				if (subscription != null)
 				{
-					subscription.unsubscribe();
+					subscription.cancel();
 				}
 			}
 			
@@ -53,20 +53,20 @@
 				
 				var futureSubscription : FutureSubscription = new FutureSubscription();
 				
-				var subscriptionToAdd : ISubscription = new ClosureSubscription(function():void
+				var subscriptionToAdd : ICancelable = new ClosureSubscription(function():void
 				{
 					container.removeChild(labelContainer);
-					futureSubscription.unsubscribe();
+					futureSubscription.cancel();
 				});
 				
 				cancelButton.addEventListener(MouseEvent.CLICK, function(e:Event):void
 				{
-					subscriptionToAdd.unsubscribe();
+					subscriptionToAdd.cancel();
 				});
 				
 				var startTime : Number = new Date().time;
 				
-				var innerSubscription : ISubscription = 
+				var innerSubscription : ICancelable = 
 					Observable.range(0, 100000, scheduler).subscribeFunc(
 						function(i:int):void { label.text = i.toString(); },
 						function():void
@@ -82,7 +82,7 @@
 			
 			private function getFpsObservable() : IObservable
 			{
-				return new ClosureObservable(Number, function(obs : IObserver) : ISubscription
+				return new ClosureObservable(Number, function(obs : IObserver) : ICancelable
 				{
 					var subcription : CompositeSubscription = new CompositeSubscription([]);
 					
@@ -163,7 +163,7 @@ public override function teardown() : void
 {
 	if (subscription != null)
 	{
-		subscription.unsubscribe();
+		subscription.cancel();
 	}
 }
 
@@ -181,16 +181,15 @@ private function addObservable(scheduler : IScheduler) : void
 	container.addChild(labelContainer);
 	
 	var futureSubscription : FutureSubscription = new FutureSubscription();
-	
-	var subscriptionToAdd : ISubscription = new ClosureSubscription(function():void
+ICancelableriptionToAdd : ISubscription = new ClosureSubscription(function():void
 	{
 		container.removeChild(labelContainer);
-		futureSubscription.unsubscribe();
+		futureSubscription.cancel();
 	});
 	
 	cancelButton.addEventListener(MouseEvent.CLICK, function(e:Event):void
 	{
-		subscriptionToAdd.unsubscribe();
+		subscriptionToAdd.cancel();
 	});
 	
 	var startTime : Number = new Date().time;

@@ -11,15 +11,13 @@
     <classEntry path="rx.flex.IObservableResponder"/>
     <classEntry path="rx.AbsObservable"/>
     <classEntry path="rx.impl.SafetyObserver"/>
+    <classEntry path="rx.ICancelable"/>
     <classEntry path="rx.IObserver"/>
     <classEntry path="rx.NotificationKind"/>
     <classEntry path="rx.scheduling.ImmediateScheduler"/>
-    <classEntry path="rx.IDisposable"/>
     <classEntry path="rx.Subject"/>
     <classEntry path="rx.impl.ClosureObservable"/>
-    <classEntry path="rx.ISubscription"/>
     <classEntry path="rx.impl.ScheduledActionSubscription"/>
-    <classEntry path="rx.scheduling.IScheduledAction"/>
     <classEntry path="rx.util.ComparerUtil"/>
     <classEntry path="rx.scheduling.Scheduler"/>
     <classEntry path="rx.impl.TimerPool"/>

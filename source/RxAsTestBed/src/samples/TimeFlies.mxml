@@ -5,7 +5,7 @@
 			import rx.Observer;
 			import mx.controls.Label;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
@@ -30,7 +30,7 @@
 						
 						labels.push(label);						
 						
-						var sub : ISubscription = mm
+						var sub : ICancelable = mm
 							.delay(i * 100)
 							.subscribeFunc(function(me : MouseEvent):void
 							{
@@ -49,9 +49,9 @@
 			
 			public override function teardown() : void
 			{
-				for each(var subscription:ISubscription in subscriptions)
+				for each(var subscription:ICancelable in subscriptions)
 				{
-					subscription.unsubscribe();
+					subscription.cancel();
 				}
 				
 				while(labels.length > 0)
@@ -84,9 +84,7 @@ for (var i:int=0; i&lt;VALUE.length; i++)
 		label.text = VALUE.charAt(i);
 		trackContainer.addChild(label);
 		
-		labels.push(label);						
-		
-		var sub : ISubscription = mm
+		labels.push(label);						ICancelableub : ISubscription = mm
 			.delay(i * 100)
 			.subscribeFunc(function(me : MouseEvent):void
 			{

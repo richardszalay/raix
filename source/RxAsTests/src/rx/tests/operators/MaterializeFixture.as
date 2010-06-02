@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Notification;
 	import rx.NotificationKind;
 	import rx.Subject;
@@ -139,11 +139,11 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			var subs : ISubscription = obs.subscribeFunc(function(pl:int):void
+			var subs : ICancelable = obs.subscribeFunc(function(pl:int):void
 			{
 			});
 			
-			subs.unsubscribe();
+			subs.cancel();
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
 		}
@@ -161,7 +161,7 @@ package rx.tests.operators
 			var errorCalled : Boolean = false;
 			var completedCalled : int = 0;
 			
-			var subs : ISubscription = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribeFunc(
 				function(pl:int):void { nextCalled++; },
 				function():void { completedCalled++; },
 				function(e:Error):void { errorCalled = true; }
@@ -188,7 +188,7 @@ package rx.tests.operators
 			var nextCalled : int = 0;
 			var completedCalled : int = 0;
 			
-			var subs : ISubscription = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribeFunc(
 				function(pl:int):void { nextCalled++; },
 				function():void { completedCalled++; },
 				function(e:Error):void { }

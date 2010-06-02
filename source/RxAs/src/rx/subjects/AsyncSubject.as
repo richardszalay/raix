@@ -3,7 +3,7 @@ package rx.subjects
 	import rx.AbsObservable;
 	import rx.IObserver;
 	import rx.ISubject;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Notification;
 	import rx.Observable;
 	import rx.impl.ClosureSubscription;
@@ -11,7 +11,7 @@ package rx.subjects
 	import rx.impl.OnError;
 	import rx.impl.OnNext;
 	import rx.impl.ScheduledActionSubscription;
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 	
 	public class AsyncSubject extends AbsObservable implements ISubject
@@ -26,11 +26,11 @@ package rx.subjects
 			_scheduler = Observable.resolveScheduler(scheduler);
 		}
 		
-		public override function subscribe(observer:IObserver):ISubscription
+		public override function subscribe(observer:IObserver):ICancelable
 		{
 			if (_complete)
 			{
-				var scheduledAction : IScheduledAction = _scheduler.schedule(function():void
+				var scheduledAction : ICancelable = _scheduler.schedule(function():void
 				{
 					dispatch(observer);
 				});

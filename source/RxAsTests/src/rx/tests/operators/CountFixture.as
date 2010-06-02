@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
@@ -91,7 +91,7 @@ package rx.tests.operators
 			var nextCount : int = 0;
 			var errorCalled : Boolean = false;
 			
-			var subs : ISubscription = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribeFunc(
 				function(pl:int):void { nextCount++; },
 				function():void { },
 				function(e:Error):void { errorCalled = true; }

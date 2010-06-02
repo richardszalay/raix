@@ -1,7 +1,7 @@
 package rx.impl
 {
 	import rx.IObserver;
-	import rx.ISubscription;
+	import rx.ICancelable;
 
 	// a safety wrapper for the execution order of 
 	// third party IObservables as mentioned on the channel 9 video:
@@ -10,7 +10,7 @@ package rx.impl
 	{
 		private var _innerObserver : IObserver;
 		private var _active : Boolean;
-		private var _subscription : ISubscription;
+		private var _subscription : ICancelable;
 		
 		public function SafetyObserver(innerObserver : IObserver)
 		{
@@ -47,12 +47,12 @@ package rx.impl
 	    	
 	    	if (_subscription != null)
 	    	{
-	    		_subscription.unsubscribe();
+	    		_subscription.cancel();
 	    		_subscription = null;
 	    	}
 	    }
 	    
-	    public function setSubscription(subscription : ISubscription) : void
+	    public function setSubscription(subscription : ICancelable) : void
 	    {
 	    	if (_active)
 	    	{
@@ -60,7 +60,7 @@ package rx.impl
 	    	}
 	    	else
 	    	{
-	    		subscription.unsubscribe();
+	    		subscription.cancel();
 	    	}
     }
 	}

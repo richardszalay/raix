@@ -5,7 +5,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.Subject;
 	import rx.tests.mocks.StatsObserver;
@@ -83,7 +83,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -94,7 +94,7 @@ package rx.tests.operators
 			Assert.assertTrue(first.hasSubscriptions);
 			Assert.assertTrue(second.hasSubscriptions);
 			
-			subscription.unsubscribe();
+			subscription.cancel();
 
             Assert.assertFalse(source.hasSubscriptions);
 			Assert.assertFalse(first.hasSubscriptions);
@@ -114,7 +114,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -146,7 +146,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -178,7 +178,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -209,7 +209,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -238,7 +238,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 
@@ -267,7 +267,7 @@ package rx.tests.operators
             remaining.push(first);
             remaining.push(second);
 
-            var subscription : ISubscription = source
+            var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribe(stats);
 

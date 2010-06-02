@@ -28,7 +28,7 @@ package rx.subjects
 			_scheduler = Observable.resolveScheduler(scheduler);			
 		}
 		
-		public override function subscribe(observer:IObserver):ISubscription
+		public override function subscribe(observer:IObserver):ICancelable
 		{
 			removeInvalidValues();
 			
@@ -37,7 +37,7 @@ package rx.subjects
 			
 			_observerValues.push(observerValues);
 			
-			var scheduledAction : IScheduledAction = 
+			var scheduledAction : ICancelable = 
 				Scheduler.scheduleRecursive(_scheduler, function(recurse:Function):void
 			{
 				if (observerValues.length > 0)

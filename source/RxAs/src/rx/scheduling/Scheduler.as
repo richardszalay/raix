@@ -1,5 +1,7 @@
 package rx.scheduling
 {
+	import rx.ICancelable;
+	
 	import rx.impl.ClosureScheduledAction;
 	
 	public class Scheduler
@@ -19,10 +21,10 @@ package rx.scheduling
 			return immediate;
 		}
 		
-		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : IScheduledAction
+		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : ICancelable
 		{
 			var reschedule : Function = null;
-			var scheduledAction : IScheduledAction = null;
+			var scheduledAction : ICancelable = null;
 			
 			var cancelled : Boolean = false;
 			

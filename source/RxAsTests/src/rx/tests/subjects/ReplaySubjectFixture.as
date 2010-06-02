@@ -527,5 +527,41 @@ package rx.tests.subjects
             scheduler.runNext();
             Assert.assertTrue(stats.errorCalled);
         }
+        
+        [Test]
+        public function values_cannot_be_replayed_out_of_order() : void
+        {
+            var scheduler : ManualScheduler = new ManualScheduler();
+
+            var subject : ReplaySubject = new ReplaySubject(int, 0, 0, scheduler);
+
+            var stats : StatsObserver = new StatsObserver();
+
+            subject.onNext(1);
+            subject.onNext(2);
+
+            subject.subscribe(stats);
+
+            Assert.assertFalse(stats.nextCalled);
+
+            scheduler.runNext();
+            Assert.assertEquals(1, stats.nextValues[0]);
+
+            subject.onNext(3);
+
+            scheduler.runNext();
+            Assert.assertEquals(1, stats.nextValues[0]);
+            Assert.assertEquals(2, stats.nextValues[1]);
+
+            scheduler.runNext();
+            Assert.assertEquals(1, stats.nextValues[0]);
+            Assert.assertEquals(2, stats.nextValues[1]);
+            Assert.assertEquals(3, stats.nextValues[2]);
+
+            subject.onCompleted();
+            
+            scheduler.runNext();
+            Assert.assertTrue(stats.completedCalled);
+        }
 	}
 }

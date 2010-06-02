@@ -1,11 +1,11 @@
 package rx.tests.mocks
 {
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 
 	public class NullScheduler implements IScheduler
 	{
-		public function schedule(action:Function, dueTime:int=0):IScheduledAction
+		public function schedule(action:Function, dueTime:int=0):ICancelable
 		{
 			return new NullScheduledAction();
 		}

@@ -2,7 +2,7 @@ package rx
 {
 	import rx.AbsObservable;
 	import rx.IObserver;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.impl.ClosureSubscription;
 	
 	public class Subject extends AbsObservable implements IObserver
@@ -23,7 +23,7 @@ package rx
 			return _type;
 		}
 		
-		public override function subscribe(observer:IObserver):ISubscription
+		public override function subscribe(observer:IObserver):ICancelable
 		{
 			_subscriptionCount++;
 			

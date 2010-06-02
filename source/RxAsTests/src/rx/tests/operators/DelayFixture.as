@@ -4,7 +4,7 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
@@ -35,13 +35,13 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ISubscription = Observable.returnValue(int, 1)
+			var subscription : ICancelable = Observable.returnValue(int, 1)
 				.delay(100, scheduler)
 				.subscribe(stats);
 				
 			Assert.assertEquals(2, scheduler.queueSize);
 			
-			subscription.unsubscribe();
+			subscription.cancel();
 			Assert.assertEquals(0, scheduler.queueSize);
 		}
 		
@@ -53,7 +53,7 @@ package rx.tests.operators
 			Observable.range(0, 2)
 				.delay(200)
 				.subscribe(stats)
-				.unsubscribe();				
+				.cancel();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
 			{

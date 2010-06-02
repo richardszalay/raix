@@ -14,14 +14,14 @@ package rx
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
 		function subscribeFunc(onNext : Function, onComplete : Function = null, 
-			onError : Function = null) : ISubscription;
+			onError : Function = null) : ICancelable;
 		
 		/**
 		 * Subscribes to this observable using the supplied observer 
 		 * @param scheduler Optional. The schduler to use
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
-		function subscribe(observer : IObserver) : ISubscription;
+		function subscribe(observer : IObserver) : ICancelable;
 		
 		function aggregate(accumulator : Function) : IObservable;
 		

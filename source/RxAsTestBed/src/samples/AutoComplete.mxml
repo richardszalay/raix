@@ -6,11 +6,11 @@
 			import samples.imageSearch.JsonService;
 			import rx.IObserver;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var subscription : ISubscription;
+			private var subscription : ICancelable;
 			
 			private var jsonService : JsonService = new JsonService();
 			
@@ -46,7 +46,7 @@
 			{
 				if (subscription != null)
 				{
-					subscription.unsubscribe();
+					subscription.cancel();
 				}
 			}
 		]]>

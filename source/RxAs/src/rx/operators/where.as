@@ -1,8 +1,11 @@
+
+		import rx.ICancelable;
+		
 		public function where(predicate:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void

@@ -1,0 +1,179 @@
+package rx.tests.operators
+{
+	import org.flexunit.Assert;
+	
+	import rx.*;
+	import rx.subjects.*;
+	import rx.tests.mocks.StatsObserver;
+	
+	public class PublishFixture
+	{
+        [Test]
+        public function values_send_before_completion_are_ignored() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            source.onNext(0);
+            source.onCompleted();
+            source.onError(new Error());
+
+            Assert.assertFalse(stats.nextCalled);
+            Assert.assertFalse(stats.completedCalled);
+            Assert.assertFalse(stats.errorCalled);
+        }
+
+        [Test]
+        public function connecting_subscribes_to_source() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            Assert.assertFalse(source.hasSubscriptions);
+
+            connectable.connect();
+
+            Assert.assertTrue(source.hasSubscriptions);
+        }
+
+        [Test]
+        public function disconnecting_subscribes_to_source() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            Assert.assertFalse(source.hasSubscriptions);
+
+            connectable.connect().cancel();
+
+            Assert.assertFalse(source.hasSubscriptions);
+        }
+
+        [Test]
+        public function connecting_multiple_times_does_not_subscribe_to_source_multiple_times() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            connectable.connect();
+            connectable.connect();
+
+            Assert.assertEquals(1, source.subscriptionCount);
+        }
+
+        [Test]
+        public function disconnecting_last_of_multiple_connections_subscribes_to_source() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            Assert.assertFalse(source.hasSubscriptions);
+
+            connectable.connect();
+            connectable.connect().cancel();
+
+            Assert.assertFalse(source.hasSubscriptions);
+        }
+
+        [Test]
+        public function disconnecting_first_of_multiple_connections_subscribes_to_source() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            Assert.assertFalse(source.hasSubscriptions);
+
+            var connectionA : ICancelable = connectable.connect();
+            var connectionB : ICancelable = connectable.connect();
+
+            connectionA.cancel();
+
+            Assert.assertFalse(source.hasSubscriptions);
+        }
+
+        [Test]
+        public function operations_are_passed_on_once_connected() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            source.onNext(0);
+
+            connectable.connect();
+
+            source.onNext(1);
+
+            Assert.assertTrue(stats.nextCalled);
+            Assert.assertEquals(1, stats.nextValues[0]);
+            Assert.assertFalse(stats.completedCalled);
+            Assert.assertFalse(stats.errorCalled);
+        }
+
+        [Test]
+        public function operation_order_is_honoured_prior_to_connection() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var source : Subject = new Subject(int);
+            var subject : Subject = new Subject(int);
+
+            var connectable : IConnectableObservable = source.publish();
+
+            var sub : ICancelable = connectable.subscribe(stats);
+
+            source.onNext(0);
+            source.onCompleted();
+
+            connectable.connect();
+
+            source.onNext(1);
+
+            Assert.assertFalse(stats.nextCalled);
+            Assert.assertFalse(stats.completedCalled);
+            Assert.assertFalse(stats.errorCalled);
+        }
+
+	}
+}

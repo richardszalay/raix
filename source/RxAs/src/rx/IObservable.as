@@ -1,6 +1,7 @@
 package rx
 {
 	import rx.scheduling.IScheduler;
+	import rx.subjects.IConnectableObservable;
 	
 	public interface IObservable
 	{
@@ -99,10 +100,13 @@ package rx
 		
 		function onErrorResumeNext(second:IObservable, scheduler:IScheduler=null):IObservable; 
 		 
-		// TODO: ??
-		//function prune (scheduler : IScheduler = null)
+		function prune(scheduler : IScheduler = null) : IConnectableObservable;
 		
-		function publish(scheduler : IScheduler = null) : Subject;
+		function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable;
+		
+		function publish() : IConnectableObservable;
+		
+		function publishAndConnect(selector : Function) : IObservable;
 		
 		// static function range(start : int, count : int, scheduler : IScheduler = null) : IObservable;
 		

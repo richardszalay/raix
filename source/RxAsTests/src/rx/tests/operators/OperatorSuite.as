@@ -37,6 +37,8 @@ package rx.tests.operators
 		public var ofType : OfTypeFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
+		public var prune : PruneFixture;
+		public var publish : PublishFixture;
 		public var repeat : RepeatFixture;
 		public var range : RangeFixture;
 		public var removeTimeInterval : RemoveTimeIntervalFixture;

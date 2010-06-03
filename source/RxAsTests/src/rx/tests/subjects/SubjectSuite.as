@@ -7,6 +7,7 @@ package rx.tests.subjects
 	public class SubjectSuite
 	{
 		public var asyncSubject : AsyncSubjectFixture;
+		public var connectableObservable : ConnectableObservableFixture;
 		public var replaySubject : ReplaySubjectFixture;
 	}
 }

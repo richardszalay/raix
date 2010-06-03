@@ -1,12 +1,10 @@
 package rx
 {
-	import rx.AbsObservable;
-	import rx.IObserver;
-	import rx.ICancelable;
 	import rx.impl.ClosureSubscription;
 	
-	public class Subject extends AbsObservable implements IObserver
+	public class Subject extends AbsObservable implements ISubject
 	{
+		private var _isFinished : Boolean = false;
 		private var _subscriptionCount : uint = 0;
 		
 		private var _observers : Array = new Array();
@@ -46,29 +44,42 @@ package rx
 		
 		public function onNext(pl : Object) : void
 		{
-			for each(var obs : IObserver in _observers)
+			if (!_isFinished)
 			{
-				obs.onNext(pl);
+				for each(var obs : IObserver in _observers)
+				{
+					obs.onNext(pl);
+				}
 			}
 		}
 		
 		public function onCompleted() : void
 		{
-			var observers : Array = [].concat(_observers);
-			
-			for each(var obs : IObserver in observers)
+			if (!_isFinished)
 			{
-				obs.onCompleted();
+				_isFinished = true;
+				
+				var observers : Array = [].concat(_observers);
+				
+				for each(var obs : IObserver in observers)
+				{
+					obs.onCompleted();
+				}
 			}
 		}
 		
 		public function onError(error : Error) : void
 		{
-			var observers : Array = [].concat(_observers);
-			
-			for each(var obs : IObserver in observers)
+			if (!_isFinished)
 			{
-				obs.onError(error);
+				_isFinished = true;
+				
+				var observers : Array = [].concat(_observers);
+				
+				for each(var obs : IObserver in observers)
+				{
+					obs.onError(error);
+				}
 			}
 		}
 		
@@ -76,6 +87,10 @@ package rx
 		{
 			return _subscriptionCount > 0;
 		}
-
+		
+		public function get subscriptionCount() : int
+		{
+			return _subscriptionCount;
+		}
 	}
 }

@@ -5,14 +5,14 @@
     <classEntry path="rx.TimeInterval"/>
     <classEntry path="rx.subjects.ReplaySubject"/>
     <classEntry path="rx.impl.ClosureScheduledAction"/>
-    <classEntry path="rx.impl.CompositeSubscription"/>
     <classEntry path="rx.IObservable"/>
-    <classEntry path="rx.impl.FutureSubscription"/>
+    <classEntry path="rx.impl.CompositeSubscription"/>
     <classEntry path="rx.flex.IObservableResponder"/>
+    <classEntry path="rx.impl.FutureSubscription"/>
     <classEntry path="rx.AbsObservable"/>
     <classEntry path="rx.impl.SafetyObserver"/>
-    <classEntry path="rx.ICancelable"/>
     <classEntry path="rx.IObserver"/>
+    <classEntry path="rx.ICancelable"/>
     <classEntry path="rx.NotificationKind"/>
     <classEntry path="rx.scheduling.ImmediateScheduler"/>
     <classEntry path="rx.Subject"/>
@@ -20,20 +20,21 @@
     <classEntry path="rx.impl.ScheduledActionSubscription"/>
     <classEntry path="rx.util.ComparerUtil"/>
     <classEntry path="rx.scheduling.Scheduler"/>
-    <classEntry path="rx.impl.TimerPool"/>
     <classEntry path="rx.impl.OnCompleted"/>
+    <classEntry path="rx.impl.TimerPool"/>
     <classEntry path="rx.flex.ObservableResponder"/>
     <classEntry path="rx.Observer"/>
     <classEntry path="rx.Unit"/>
     <classEntry path="rx.TimeoutError"/>
-    <classEntry path="rx.impl.OnError"/>
-    <classEntry path="rx.Observable"/>
     <classEntry path="rx.subjects.AsyncSubject"/>
+    <classEntry path="rx.Observable"/>
+    <classEntry path="rx.impl.OnError"/>
     <classEntry path="rx.impl.ClosureSubscription"/>
     <classEntry path="rx.TimeStamped"/>
     <classEntry path="rx.Notification"/>
     <classEntry path="rx.impl.ClosureObserver"/>
     <classEntry path="rx.impl.OnNext"/>
+    <classEntry path="rx.subjects.ConnectableObservable"/>
     <classEntry path="rx.scheduling.GreenThreadScheduler"/>
   </includeClasses>
   <includeResources/>

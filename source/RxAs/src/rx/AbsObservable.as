@@ -1,11 +1,13 @@
 package rx
 {
 	import flash.errors.IllegalOperationError;
-	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 	
 	import rx.impl.*;
 	import rx.scheduling.*;
+	import rx.subjects.AsyncSubject;
+	import rx.subjects.ConnectableObservable;
+	import rx.subjects.IConnectableObservable;
 	import rx.util.*;
 	
 	public class AbsObservable implements IObservable
@@ -896,9 +898,44 @@ package rx
 			return Observable.onErrorResumeNext([this, second], scheduler);
 		}
 		
-		public function publish(scheduler:IScheduler=null):Subject
+		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return new ConnectableObservable(this, new AsyncSubject(this.type, scheduler));
+		}
+		
+		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
+		{
+			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			{
+				var connectable : IConnectableObservable = prune(scheduler);
+				
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				 
+				subscription.add( IConnectableObservable(selector(connectable)).subscribe(obs) );
+				subscription.add( connectable.connect() );
+				
+				return subscription;
+			});
+		}
+		
+		public function publish() : IConnectableObservable
+		{
+			return new ConnectableObservable(this, new Subject(this.type));
+		}
+		
+		public function publishAndConnect(selector : Function) : IObservable
+		{
+			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			{
+				var connectable : IConnectableObservable = publish();
+				
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				 
+				subscription.add( IConnectableObservable(selector(connectable)).subscribe(obs) );
+				subscription.add( connectable.connect() );
+				
+				return subscription;
+			});
 		}
 		
 		public function removeTimeInterval(type : Class) : IObservable
@@ -1518,8 +1555,6 @@ package rx
 				var leftObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						trace("zip :: left");
-						
 						if (rightValues.length > 0)
 						{
 							value = selector(value, rightValues.shift());
@@ -1538,8 +1573,6 @@ package rx
 				var rightObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						trace("zip :: right");
-						
 						if (leftValues.length > 0)
 						{
 							value = selector(leftValues.shift(), value);

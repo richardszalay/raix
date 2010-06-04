@@ -24,7 +24,7 @@ package rx
 		 */
 		function subscribe(observer : IObserver) : ICancelable;
 		
-		function aggregate(accumulator : Function) : IObservable;
+		function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
 		
 		function any(predicate : Function = null) : IObservable;
 		
@@ -122,6 +122,8 @@ package rx
 		
 		function returnValue(value : Object) : IObservable;
 		
+		function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
+		
 		function select(result : Class, selector:Function):IObservable;
 		
 		function selectMany(type : Class, selector : Function) : IObservable;
@@ -140,7 +142,7 @@ package rx
 		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
 		
 		// TODO: ??
-		function sum() : Number;
+		function sum() : IObservable;
 		
 		function take(count : int, scheduler : IScheduler = null) : IObservable;
 		

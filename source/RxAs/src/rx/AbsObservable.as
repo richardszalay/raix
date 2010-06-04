@@ -35,9 +35,9 @@ package rx
 			return subscribe(observer);
 		}
 
-		public function aggregate(accumulator:Function):IObservable
+		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return scan(accumulator, outputType, initialValue).last();
 		}
 		
 		public function any(predicate : Function = null) : IObservable
@@ -1031,6 +1031,53 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
+		{
+			var useInitialValue : Boolean = (outputType != null);
+			
+			if (!useInitialValue)
+			{
+				outputType = this.type; 
+			}
+			
+			var source : IObservable = this;
+			
+			return Observable.defer(outputType, function():IObservable
+			{
+				var skipFirst : Boolean = true;
+				var accumulatedValue : Object = null;
+				
+				if (useInitialValue)
+				{
+					skipFirst = false;
+					accumulatedValue = initialValue;
+				}
+				
+				return source.select(outputType, function(value:Object):Object
+				{
+					if (skipFirst) 
+					{
+						skipFirst = false;
+						
+						accumulatedValue = value;
+					}
+					else
+					{
+						accumulatedValue = accumulator(accumulatedValue, value);
+					}
+					
+					return accumulatedValue;
+				});
+			});
+			
+			return new ClosureObservable(outputType, function(obs:IObserver):ICancelable
+			{
+				var aggregate : Object = null;
+				
+				return 
+			});
+		}
+		
 		public function select(result : Class, selector:Function):IObservable
 		{
 			return selectInternal(result, selector);
@@ -1281,9 +1328,12 @@ package rx
 				.concat([this], scheduler);
 		}
 
-		public function sum():Number
+		public function sum():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return aggregate(function(x:Number, y:Number):Number
+			{
+				return x+y;
+			}, type, 0).catchError(Observable.returnValue(type, 0));
 		}
 		
 		public function take(count:int, scheduler:IScheduler=null):IObservable

@@ -32,6 +32,8 @@ package rx
 		
 		function asynchronous() : IObservable;
 		
+		function average():IObservable;
+		
 		function bufferWithCount(count : int, skip : int = 0) : IObservable;
 		
 		function bufferWithTime(timeMs : int, timeShiftMs : int = 0, scheduler : IScheduler = null) : IObservable;

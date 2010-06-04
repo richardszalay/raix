@@ -1,11 +1,20 @@
 package rx.scheduling
 {
 	import rx.ICancelable;
-	
 	import rx.impl.ClosureScheduledAction;
 	
 	public class Scheduler
 	{
+		public static function get synchronous() : IScheduler
+		{
+			return immediate;
+		}
+		
+		public static function get asynchronous() : IScheduler
+		{
+			return greenThread;
+		}
+		
 		public static function get immediate() : ImmediateScheduler
 		{
 			return ImmediateScheduler.instance;
@@ -18,7 +27,7 @@ package rx.scheduling
 		
 		public static function get defaultScheduler() : IScheduler
 		{
-			return immediate;
+			return synchronous;
 		}
 		
 		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : ICancelable

@@ -3,6 +3,7 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import rx.Observer;
 			import samples.imageSearch.JsonService;
 			import rx.IObserver;
 			import mx.events.FlexEvent;

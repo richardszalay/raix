@@ -1,7 +1,7 @@
 package rx.tests.mocks
 {
 	import rx.impl.ClosureScheduledAction;
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 	
 	public class ManualScheduler implements IScheduler
@@ -13,7 +13,7 @@ package rx.tests.mocks
 			_buffer = new Array();
 		}
 
-		public function schedule(action:Function, dueTime:int=0):IScheduledAction
+		public function schedule(action:Function, dueTime:int=0):ICancelable
 		{
 			_buffer.push(action);
 			
@@ -28,6 +28,11 @@ package rx.tests.mocks
 					}
 				}
 			});
+		}
+		
+		public function get queueSize() : int 
+		{
+			return _buffer.length;
 		}
 		
 		public function runNext() : void
@@ -45,5 +50,10 @@ package rx.tests.mocks
 				(_buffer.shift() as Function)();
 			}
 		}
+		
+		private var _now : Date = new Date();
+		
+		public function get now() : Date { return _now; }
+		public function set now(value : Date) : void { _now = value; }
 	}
 }

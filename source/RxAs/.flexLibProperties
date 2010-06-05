@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties version="1">
   <includeClasses>
-    <classEntry path="rx.Subject"/>
     <classEntry path="rx.scheduling.IScheduler"/>
-    <classEntry path="rx.impl.ClosureObservable"/>
-    <classEntry path="rx.ISubscription"/>
+    <classEntry path="rx.TimeInterval"/>
+    <classEntry path="rx.subjects.ReplaySubject"/>
     <classEntry path="rx.impl.ClosureScheduledAction"/>
     <classEntry path="rx.IObservable"/>
-    <classEntry path="rx.scheduling.Scheduler"/>
-    <classEntry path="rx.impl.TimerPool"/>
-    <classEntry path="rx.Observer"/>
+    <classEntry path="rx.impl.CompositeSubscription"/>
+    <classEntry path="rx.flex.IObservableResponder"/>
+    <classEntry path="rx.impl.FutureSubscription"/>
     <classEntry path="rx.AbsObservable"/>
+    <classEntry path="rx.impl.SafetyObserver"/>
+    <classEntry path="rx.IObserver"/>
+    <classEntry path="rx.ICancelable"/>
+    <classEntry path="rx.NotificationKind"/>
+    <classEntry path="rx.scheduling.ImmediateScheduler"/>
+    <classEntry path="rx.Subject"/>
+    <classEntry path="rx.impl.ClosureObservable"/>
+    <classEntry path="rx.impl.ScheduledActionSubscription"/>
+    <classEntry path="rx.util.ComparerUtil"/>
+    <classEntry path="rx.scheduling.Scheduler"/>
+    <classEntry path="rx.impl.OnCompleted"/>
+    <classEntry path="rx.impl.TimerPool"/>
+    <classEntry path="rx.flex.ObservableResponder"/>
+    <classEntry path="rx.Observer"/>
+    <classEntry path="rx.Unit"/>
+    <classEntry path="rx.TimeoutError"/>
+    <classEntry path="rx.subjects.AsyncSubject"/>
     <classEntry path="rx.Observable"/>
+    <classEntry path="rx.impl.OnError"/>
     <classEntry path="rx.impl.ClosureSubscription"/>
     <classEntry path="rx.TimeStamped"/>
-    <classEntry path="rx.IObserver"/>
     <classEntry path="rx.Notification"/>
     <classEntry path="rx.impl.ClosureObserver"/>
-    <classEntry path="rx.NotificationKind"/>
     <classEntry path="rx.impl.OnNext"/>
-    <classEntry path="rx.scheduling.ImmediateScheduler"/>
-    <classEntry path="rx.IDisposable"/>
+    <classEntry path="rx.subjects.ConnectableObservable"/>
+    <classEntry path="rx.scheduling.GreenThreadScheduler"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

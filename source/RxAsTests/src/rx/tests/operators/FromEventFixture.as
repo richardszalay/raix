@@ -6,7 +6,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.tests.mocks.ManualScheduler;
 	
@@ -33,7 +33,7 @@ package rx.tests.operators
 		[Test]
 		public function event_listener_is_added_after_subscrube() : void
 		{
-			var sub : ISubscription = obs.subscribeFunc(function():void{});
+			var sub : ICancelable = obs.subscribeFunc(function():void{});
 			
 			Assert.assertTrue(ev.hasEventListener(TEST_EVENT));
 		}
@@ -41,9 +41,9 @@ package rx.tests.operators
 		[Test]
 		public function event_listener_is_removed_on_unsubscribe() : void
 		{
-			var sub : ISubscription = obs.subscribeFunc(function():void{});
+			var sub : ICancelable = obs.subscribeFunc(function():void{});
 			
-			sub.unsubscribe();
+			sub.cancel();
 			
 			Assert.assertFalse(ev.hasEventListener(TEST_EVENT));
 		}
@@ -51,15 +51,15 @@ package rx.tests.operators
 		[Test]
 		public function multiple_subscribers_do_not_conflict() : void
 		{
-			var subA : ISubscription = obs.subscribeFunc(function():void{});
-			var subB : ISubscription = obs.subscribeFunc(function():void{});
+			var subA : ICancelable = obs.subscribeFunc(function():void{});
+			var subB : ICancelable = obs.subscribeFunc(function():void{});
 			
 			Assert.assertTrue(ev.hasEventListener(TEST_EVENT));
 			
-			subA.unsubscribe();
+			subA.cancel();
 			Assert.assertTrue(ev.hasEventListener(TEST_EVENT));
 			
-			subB.unsubscribe();
+			subB.cancel();
 			Assert.assertFalse(ev.hasEventListener(TEST_EVENT));
 		}
 		

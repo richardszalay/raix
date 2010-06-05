@@ -2,9 +2,9 @@ package rx.tests.operators
 {
 	import org.flexunit.Assert;
 	
-	import rx.IObservable;
-	import rx.Observable;
-	import rx.Subject;
+	import rx.*;
+	import rx.impl.*;
+	import rx.tests.mocks.StatsObserver;
 	
 	public class FinallyActionFixture extends AbsDecoratorOperatorFixture
 	{
@@ -14,36 +14,115 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function action_is_called_on_completed_before_observer() : void
-		{
-			var finallyCalled : Boolean = true;
-			var completedCalled : Boolean = true;
-			
-			Observable.empty(int)
-				.finallyAction(function():void { finallyCalled = true; })
-				.subscribeFunc(null, 
-					function():void { Assert.assertTrue(finallyCalled); completedCalled = true; } 
-					);
-					
-			Assert.assertTrue(finallyCalled);
-			Assert.assertTrue(completedCalled);
-		}
-		
-		[Test]
-		public function action_is_called_on_error_before_observer() : void
-		{
-			var finallyCalled : Boolean = true;
-			var errorCalled : Boolean = true;
-			
-			Observable.throwError(new Error(), int)
-				.finallyAction(function():void { finallyCalled = true; })
-				.subscribeFunc(null, null,
-					function(e:Error):void { Assert.assertTrue(finallyCalled); errorCalled = true; } 
-					);
-					
-			Assert.assertTrue(finallyCalled);
-			Assert.assertTrue(errorCalled);
-		}
+        public function finally_action_is_executed_on_complete() : void
+        {
+            var finallyCalled : Boolean = false;
+
+            var stats : StatsObserver = new StatsObserver();
+
+            Observable.empty(int)
+                .finallyAction(function():void
+                {
+                    finallyCalled = true;
+                })
+                .subscribe(stats);
+
+            Assert.assertTrue(finallyCalled);
+        }
+
+        [Test]
+        public function finally_action_is_executed_after_complete() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            Observable.empty(int)
+                .finallyAction(function():void
+                {
+                    Assert.assertTrue(stats.completedCalled);
+                })
+                .subscribe(stats);
+        }
+
+        [Test]
+        public function finally_action_is_executed_on_error() : void
+        {
+            var finallyCalled : Boolean = false;
+
+            var stats : StatsObserver = new StatsObserver();
+
+            Observable.throwError(new Error())
+            	.finallyAction(function():void
+            	{
+            		finallyCalled = true;
+            	})
+            	.subscribe(stats);
+
+            Assert.assertTrue(finallyCalled);
+        }
+
+        [Test]
+        public function finally_action_is_executed_after_error() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+            
+            Observable.throwError(new Error())
+            	.finallyAction(function():void
+            	{
+            		Assert.assertTrue(stats.errorCalled);
+            	})
+            	.subscribe(stats);
+        }
+
+        [Test]
+        public function finally_action_is_executed_after_source_subscription_is_disposed() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var sourceSubscriptionDisposed : Boolean = true;
+            
+            new ClosureObservable(int, function(obs : IObserver):ICancelable
+            	{
+            		return new ClosureSubscription(function():void
+            		{
+            			sourceSubscriptionDisposed = true;
+            		});
+            	})
+            	.finallyAction(function():void
+            	{
+            		Assert.assertTrue(sourceSubscriptionDisposed);
+            	})
+            	.subscribe(stats)
+            	.cancel();
+        }
+
+        [Test(expects="Error")]
+        public function finally_action_is_executed_if_disposition_source_subscription_throws_exception() : void
+        {
+            var stats : StatsObserver = new StatsObserver();
+
+            var finallyCalled : Boolean = true;
+
+            try
+            {
+            	new ClosureObservable(int, function(obs : IObserver):ICancelable
+            	{
+            		return new ClosureSubscription(function():void
+            		{
+            			throw new Error();
+            		});
+            	})
+            	.finallyAction(function():void
+            	{
+            		finallyCalled = true;
+            	})
+            	.subscribe(stats)
+            	.cancel();
+            }
+            finally
+            {
+                Assert.assertTrue(finallyCalled);
+            }
+        }
 		
 		[Test(expects="ArgumentError")]
 		public function error_is_thrown_if_action_is_null() : void

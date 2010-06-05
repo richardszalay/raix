@@ -5,6 +5,12 @@
      
      <mx:Script>
      	<![CDATA[
+     		import rx.flex.IObservableResponder;
+     		import mx.rpc.IResponder;
+     		import rx.IObservable;
+     		import mx.rpc.AsyncToken;
+     		import rx.Observable;
+     		import rx.tests.subjects.SubjectSuite;
      		import rx.tests.operators.OperatorSuite;
 			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.FlexUnitCore;
@@ -14,7 +20,7 @@
 			public function runMe():void {
 				core = new FlexUnitCore();
 				core.addListener(new UIListener(uiListener));
-				core.run( OperatorSuite );
+				core.run( OperatorSuite, SubjectSuite );
 			}
      	]]>
      </mx:Script>

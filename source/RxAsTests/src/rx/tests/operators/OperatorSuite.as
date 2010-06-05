@@ -6,6 +6,7 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
+		public var aggregaet : AggregateFixture;
 		public var all : AllFixture;
 		public var any : AnyFixture;
 		public var amb : AmbFixture;
@@ -28,6 +29,7 @@ package rx.tests.operators
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
+		public var interval : IntervalFixture;
 		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
@@ -36,10 +38,13 @@ package rx.tests.operators
 		public var ofType : OfTypeFixture;
 		public var materialize : MaterializeFixture;
 		public var never : NeverFixture;
+		public var prune : PruneFixture;
+		public var publish : PublishFixture;
 		public var repeat : RepeatFixture;
 		public var range : RangeFixture;
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
+		public var scan : ScanFixture;
 		public var select : SelectFixture;
 		public var selectMany : SelectManyFixture;
 		public var single : SingleFixture;
@@ -47,6 +52,7 @@ package rx.tests.operators
 		public var skip : SkipFixture;
 		public var skipUntil : SkipUntilFixture;
 		public var skipWhile : SkipWhileFixture;
+		public var sum : SumFixture;
 		public var take : TakeFixture;
 		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;

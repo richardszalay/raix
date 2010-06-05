@@ -4,44 +4,45 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class DelayFixture
 	{
-		[Test(async)]
+		[Test]
 		public function action_is_executed_after_delay() : void
 		{
+			var scheduler : ManualScheduler = new ManualScheduler();
+			
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.returnValue(int, 1)
-				.delay(200)
+				.delay(200, scheduler)
 				.subscribe(stats);
 					
 			Assert.assertFalse(stats.nextCalled);
-
-			Async.asyncHandler(this, function():void {}, 210, null, function():void
-			{
-				Assert.assertTrue(stats.nextCalled);
-			});
+			
+			scheduler.runNext();
+			Assert.assertTrue(stats.nextCalled);
 		}
 		
-		[Test(async)]
+		[Test]
 		public function delay_is_cancelled_on_unsubscribe() : void
 		{
+			var scheduler : ManualScheduler = new ManualScheduler();
+			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 1)
-				.delay(100)
-				.subscribe(stats)
-				.unsubscribe();
-
-			Async.asyncHandler(this, function():void {}, 210, null, function():void
-			{
-				Assert.assertFalse(stats.nextCalled);
-			});
+			var subscription : ICancelable = Observable.returnValue(int, 1)
+				.delay(100, scheduler)
+				.subscribe(stats);
+				
+			Assert.assertEquals(2, scheduler.queueSize);
+			
+			subscription.cancel();
+			Assert.assertEquals(0, scheduler.queueSize);
 		}
 		
 		[Test(async)]
@@ -52,7 +53,7 @@ package rx.tests.operators
 			Observable.range(0, 2)
 				.delay(200)
 				.subscribe(stats)
-				.unsubscribe();				
+				.cancel();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
 			{

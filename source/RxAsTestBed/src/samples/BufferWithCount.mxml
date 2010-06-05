@@ -4,12 +4,12 @@
 	<mx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
+			import rx.ICancelable;
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var intervalSub : ISubscription;
-			private var bufferedSub : ISubscription;
+			private var intervalSub : ICancelable;
+			private var bufferedSub : ICancelable;
 			
 			public override function setup() : void
 			{
@@ -31,13 +31,13 @@
 			{
 				if (intervalSub != null)
 				{
-					intervalSub.unsubscribe();
+					intervalSub.cancel();
 					intervalSub = null;
 				}
 				
 				if (bufferedSub != null)
 				{
-					bufferedSub.unsubscribe();
+					bufferedSub.cancel();
 					bufferedSub = null;
 				}
 			}

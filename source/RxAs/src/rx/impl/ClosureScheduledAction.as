@@ -1,8 +1,8 @@
 package rx.impl
 {
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	
-	public class ClosureScheduledAction implements IScheduledAction
+	public class ClosureScheduledAction implements ICancelable
 	{
 		private var _cancelFunc : Function;
 		private var _isCancelled : Boolean = false;
@@ -21,7 +21,7 @@ package rx.impl
 			}
 		}
 		
-		public static function empty() : IScheduledAction
+		public static function empty() : ICancelable
 		{
 			return new ClosureScheduledAction(function():void{});
 		}

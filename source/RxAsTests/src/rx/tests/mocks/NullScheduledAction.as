@@ -1,8 +1,8 @@
 package rx.tests.mocks
 {
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	
-	public class NullScheduledAction implements IScheduledAction
+	public class NullScheduledAction implements ICancelable
 	{
 		public function NullScheduledAction()
 		{
@@ -11,6 +11,5 @@ package rx.tests.mocks
 		public function cancel() : void
 		{
 		}
-
 	}
 }

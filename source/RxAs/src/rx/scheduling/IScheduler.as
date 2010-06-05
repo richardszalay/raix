@@ -1,9 +1,11 @@
 package rx.scheduling
 {
-	import rx.ISubscription;
+	import rx.ICancelable;
 	
 	public interface IScheduler
 	{
-		function schedule(action : Function, dueTime : int = 0) : IScheduledAction;
+		function schedule(action : Function, dueTime : int = 0) : ICancelable;
+		
+		function get now() : Date;
 	}
 }

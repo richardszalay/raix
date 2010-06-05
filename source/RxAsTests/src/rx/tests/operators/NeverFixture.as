@@ -4,7 +4,7 @@ package rx.tests.operators
 	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.NullScheduler;

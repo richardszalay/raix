@@ -5,6 +5,9 @@ package rx
 	
 	import rx.impl.*;
 	import rx.scheduling.*;
+	import rx.subjects.AsyncSubject;
+	import rx.subjects.ConnectableObservable;
+	import rx.subjects.IConnectableObservable;
 	import rx.util.*;
 	
 	public class AbsObservable implements IObservable
@@ -18,23 +21,23 @@ package rx
 			return Object;
 		}
 		
-		public function subscribe(observer : IObserver) : ISubscription
+		public function subscribe(observer : IObserver) : ICancelable
 		{
 			// Abstract methods not supported by AS3
 			throw new IllegalOperationError("subscribe() must be overriden");
 		}
 		
 		public function subscribeFunc(onNext : Function, onComplete : Function = null, 
-			onError : Function = null) : ISubscription
+			onError : Function = null) : ICancelable
 		{
 			var observer : IObserver = new ClosureObserver(onNext, onComplete, onError);
 			
 			return subscribe(observer);
 		}
 
-		public function aggregate(accumulator:Function):IObservable
+		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return scan(accumulator, outputType, initialValue).last();
 		}
 		
 		public function any(predicate : Function = null) : IObservable
@@ -43,7 +46,7 @@ package rx
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				return source.subscribeFunc(
 					function(pl : Object) : void
@@ -82,7 +85,7 @@ package rx
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				return source.subscribeFunc(
 					function(pl : Object) : void
@@ -135,7 +138,7 @@ package rx
 			
 			var source : IObservable = this;
 
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -212,42 +215,37 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var buffer : Array = new Array();
-				var startTime : Number = new Date().time;
+				var startTime : Number = scheduler.now.time;
 				
 				var flushBuffer : Function = function():void
 				{
-					if (buffer.length > 0)
+					var outBuffer : Array = new Array(buffer.length);
+						
+					for (var i:int=0; i<buffer.length; i++)
 					{
-						var outBuffer : Array = new Array(buffer.length);
-						
-						for (var i:int =0; i<buffer.length; i++)
-						{
-							outBuffer[i] = buffer[i].value;
-						}
-						
-						observer.onNext(outBuffer);
-						
-						buffer = [];
+						outBuffer[i] = buffer[i].value;
 					}
 					
-					
+					observer.onNext(outBuffer);
 				};
 				
-				var intervalSubscription : ISubscription = Observable.interval(timeMs, scheduler)
-					.subscribeFunc(function(i:int):void
+				var intervalFunc : Function = function(i:int):void
+				{
+					flushBuffer();
+					
+					startTime += timeShiftMs;
+					
+					while(buffer.length > 0 && buffer[0].timestamp <= startTime)
 					{
-						while(buffer.length > 0 && buffer[0].timestamp < startTime)
-						{
-							buffer.shift();
-						}
-						
-						flushBuffer();
-						
-						startTime += timeShiftMs;
-					});
+						buffer.shift();
+					}
+				};
+				
+				var intervalSubscription : ICancelable = Observable.interval(timeMs, scheduler)
+					.subscribeFunc(intervalFunc);
 				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -265,13 +263,13 @@ package rx
 						observer.onError(error);
 					});
 					
-				var subscription : ISubscription = 
+				var subscription : ICancelable = 
 					source.timestamp(scheduler).subscribe(dec);
 				
 				return new ClosureSubscription(function():void 
 				{
-					subscription.unsubscribe();
-					intervalSubscription.unsubscribe();
+					subscription.cancel();
+					intervalSubscription.cancel();
 				});
 			});
 		}
@@ -316,9 +314,9 @@ package rx
 			
 			errorType = errorType || Error;
 			
-			return new ClosureObservable(source.type, function(obs:IObserver) : ISubscription
+			return new ClosureObservable(source.type, function(obs:IObserver) : ICancelable
 			{
-				var subscription : ISubscription = null;
+				var subscription : ICancelable = null;
 				
 				subscription = source.subscribeFunc(
 					function(pl:Object) : void { obs.onNext(pl); },
@@ -358,7 +356,7 @@ package rx
 				{
 					if (subscription != null)
 					{
-						subscription.unsubscribe();
+						subscription.cancel();
 					}
 				});
 			});
@@ -371,55 +369,9 @@ package rx
 		
 		public function concat(sources:Array, scheduler:IScheduler=null):IObservable
 		{
-			var source : IObservable = this;
+			sources = [this].concat(sources);
 			
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
-			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
-			{
-				var currentSource : IObservable = source;
-			
-				var subscription : ISubscription = null;
-				
-				var remainingSources : Array = [].concat(sources);
-				
-				var dec : IObserver = null;
-				
-				var onNext : Function = function onNext(pl : Object) : void
-				{
-					scheduler.schedule(function():void { observer.onNext(pl); });
-				};
-				
-				var onError : Function = function (error : Error) : void { observer.onError(error); };
-				
-				var onComplete : Function = function () : void
-				{
-					subscription.unsubscribe();
-					
-					if (remainingSources.length > 0)
-					{
-						trace("concat :: Move to next source");
-						
-						currentSource = IObservable(remainingSources.shift());
-						subscription = currentSource.subscribe(dec);
-					}
-					else
-					{
-						trace("concat :: Completed");
-						
-						observer.onCompleted();
-					}
-				}
-				
-				dec = new ClosureObserver(onNext, onComplete, onError);
-
-				subscription = currentSource.subscribe(dec);
-				
-				return new ClosureSubscription(function():void
-				{
-					subscription.unsubscribe();
-				});
-			});
+			return Observable.concat(this.type, sources, scheduler);
 		}
 		
 		public function contains(value : Object, comparer : Function = null) : IObservable
@@ -432,7 +384,7 @@ package rx
 				? defaultComparer
 				: ComparerUtil.normalizeComaparer(comparer);
 			
-			return new ClosureObservable(Boolean, function(observer : IObserver) : ISubscription
+			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
 			{
 				return source.subscribeFunc(
 					function(pl:Object) : void
@@ -470,7 +422,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(uint, function(observer : IObserver):ISubscription
+			return new ClosureObservable(uint, function(observer : IObserver):ICancelable
 			{
 				var count : uint = 0;
 				
@@ -490,28 +442,36 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
-				scheduler = scheduler || Observable.resolveScheduler(scheduler);
-				
 				var scheduledActions : Array = [];
-				var nextScheduledAction : IScheduledAction = null;
-				var completeScheduledAction : IScheduledAction = null;
+				var nextScheduledAction : ICancelable = null;
+				var completeScheduledAction : ICancelable = null;
 				
-				var subscription : ISubscription = source.subscribeFunc(
+				var subscription : ICancelable = source.subscribeFunc(
 					function(pl : Object) : void
 					{
 						scheduledActions.push( 
-							scheduler.schedule(function():void { observer.onNext(pl); }, delayMs)
+							scheduler.schedule(function():void { scheduledActions.shift(); observer.onNext(pl); }, delayMs)
 						);
 					},
 					function () : void
 					{
 						scheduledActions.push( 
-							scheduler.schedule(function():void { observer.onCompleted(); }, delayMs)
+							scheduler.schedule(function():void { scheduledActions.shift(); observer.onCompleted(); }, delayMs)
 						);
 					},
-					function (error : Error) : void { observer.onError(error); }
+					function (error : Error) : void
+					{
+						while (scheduledActions.length > 0)
+						{
+							scheduledActions.shift().cancel();
+						}
+						
+						observer.onError(error);
+					}
 					);
 					
 				return new ClosureSubscription(function():void
@@ -530,21 +490,21 @@ package rx
 			
 			var dtValue : Number = dt.time;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				scheduler = scheduler || Observable.resolveScheduler(scheduler);
 				
-				var isPastDate : Boolean = (new Date().time >= dtValue);
+				var isPastDate : Boolean = (scheduler.now.time >= dtValue);
 				var scheduledActions : Array = [];
 				
-				var subscription : ISubscription = source.materialize().subscribeFunc(
+				var subscription : ICancelable = source.materialize().subscribeFunc(
 					function(pl : Notification) : void
 					{
 						var now : Number = 0;
 						
 						if (!isPastDate)
 						{
-							now = new Date().time;
+							now = scheduler.now.time;
 							
 							if (now >= dtValue)
 							{							
@@ -576,7 +536,7 @@ package rx
 						scheduledActions.shift().cancel();
 					}
 					
-					subscription.unsubscribe();
+					subscription.cancel();
 				});
 			});
 		}
@@ -591,7 +551,7 @@ package rx
 					"Notification, which is returned by materialize");
 			}
 			
-			return new ClosureObservable(type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Notification) : void
@@ -618,7 +578,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -665,20 +625,27 @@ package rx
 			});
 		}
 		
-		public function finallyAction(finallyAction:Function):IObservable
+		public function finallyAction(action:Function):IObservable
 		{
-			if (finallyAction == null) throw new ArgumentError("finallyAction");
+			if (action == null) throw new ArgumentError("finallyAction");
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Object) : void { observer.onNext(pl); },
-					function () : void { finallyAction(); observer.onCompleted(); },
-					function (error : Error) : void { finallyAction(); observer.onError(error); });
-					
-				return source.subscribe(dec);
+				var subscription : ICancelable = source.subscribe(observer);
+				
+				return new ClosureSubscription(function():void
+				{
+					try
+					{
+						subscription.cancel()						
+					}
+					finally
+					{
+						action();
+					}
+				});
 			});
 		}
 		
@@ -686,7 +653,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -705,7 +672,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -749,7 +716,7 @@ package rx
 				? defaultComparer
 				: ComparerUtil.normalizeComaparer(comparer);
 			
-			return new ClosureObservable(Boolean, function(observer : IObserver) : ISubscription
+			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -793,7 +760,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -826,7 +793,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -870,7 +837,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(Notification, function(observer : IObserver):ISubscription
+			return new ClosureObservable(Notification, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void { observer.onNext(new OnNext(pl)); },
@@ -883,7 +850,7 @@ package rx
 		
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			return Observable.merge(this.type, sources.startWith(this), scheduler);
+			return Observable.merge(this.type, sources.startWith([this], scheduler), scheduler);
 		}
 		
 		public function mostRecent(initialValue:Object):IObservable
@@ -903,11 +870,11 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
-				var subscription : ISubscription = null;
+				var subscription : ICancelable = null;
 				
-				var scheduledAction : IScheduledAction = scheduler.schedule(function():void
+				var scheduledAction : ICancelable = scheduler.schedule(function():void
 				{
 					subscription = source.subscribe(observer);
 				});
@@ -920,7 +887,7 @@ package rx
 					}
 					else
 					{
-						subscription.unsubscribe();
+						subscription.cancel();
 					}
 				});
 			});
@@ -931,9 +898,44 @@ package rx
 			return Observable.onErrorResumeNext([this, second], scheduler);
 		}
 		
-		public function publish(scheduler:IScheduler=null):Subject
+		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return new ConnectableObservable(this, new AsyncSubject(this.type, scheduler));
+		}
+		
+		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
+		{
+			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			{
+				var connectable : IConnectableObservable = prune(scheduler);
+				
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				 
+				subscription.add( IConnectableObservable(selector(connectable)).subscribe(obs) );
+				subscription.add( connectable.connect() );
+				
+				return subscription;
+			});
+		}
+		
+		public function publish() : IConnectableObservable
+		{
+			return new ConnectableObservable(this, new Subject(this.type));
+		}
+		
+		public function publishAndConnect(selector : Function) : IObservable
+		{
+			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			{
+				var connectable : IConnectableObservable = publish();
+				
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				 
+				subscription.add( IConnectableObservable(selector(connectable)).subscribe(obs) );
+				subscription.add( connectable.connect() );
+				
+				return subscription;
+			});
 		}
 		
 		public function removeTimeInterval(type : Class) : IObservable
@@ -970,14 +972,14 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (repeatCount == 0);
 				var iterationsRemaining : int = repeatCount;
 				
-				var scheduledAction : IScheduledAction = null;
+				var scheduledAction : ICancelable = null;
 				
-				var subscription : ISubscription = null;				
+				var subscription : ICancelable = null;				
 				var recursiveObserver : IObserver = null;
 				
 				recursiveObserver = new ClosureObserver(
@@ -1013,7 +1015,7 @@ package rx
 					
 					if (subscription != null)
 					{
-						subscription.unsubscribe();
+						subscription.cancel();
 					}
 				});
 			});
@@ -1029,22 +1031,67 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
+		{
+			var useInitialValue : Boolean = (outputType != null);
+			
+			if (!useInitialValue)
+			{
+				outputType = this.type; 
+			}
+			
+			var source : IObservable = this;
+			
+			return Observable.defer(outputType, function():IObservable
+			{
+				var skipFirst : Boolean = true;
+				var accumulatedValue : Object = null;
+				
+				if (useInitialValue)
+				{
+					skipFirst = false;
+					accumulatedValue = initialValue;
+				}
+				
+				return source.select(outputType, function(value:Object):Object
+				{
+					if (skipFirst) 
+					{
+						skipFirst = false;
+						
+						accumulatedValue = value;
+					}
+					else
+					{
+						accumulatedValue = accumulator(accumulatedValue, value);
+					}
+					
+					return accumulatedValue;
+				});
+			});
+			
+			return new ClosureObservable(outputType, function(obs:IObserver):ICancelable
+			{
+				var aggregate : Object = null;
+				
+				return 
+			});
+		}
+		
 		public function select(result : Class, selector:Function):IObservable
 		{
 			return selectInternal(result, selector);
 		}
 		
-		private function selectInternal(type : Class, selector:Function, scheduler : IScheduler = null):IObservable
+		private function selectInternal(type : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			scheduler = Observable.resolveScheduler(scheduler);
-			
-			return new ClosureObservable(type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(type, function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -1059,10 +1106,10 @@ package rx
 							return;
 						}
 						
-						scheduler.schedule(function():void { observer.onNext(value); });
+						observer.onNext(value);
 					},
-					function () : void { scheduler.schedule(observer.onCompleted); },
-					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
+					function () : void { observer.onCompleted(); },
+					function (error : Error) : void { observer.onError(error); }
 					);
 				
 				subscription = source.subscribe(decoratorObserver);
@@ -1082,7 +1129,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1122,7 +1169,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ISubscription
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1155,11 +1202,11 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var skippedSoFar : uint = 0;
 				
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -1183,14 +1230,14 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
 				var pastSkip : Boolean = false;
 				
-				var primarySubscription : ISubscription;
-				var otherSubscription : ISubscription;
+				var primarySubscription : ICancelable;
+				var otherSubscription : ICancelable;
 				
 				primarySubscription = source.subscribeFunc(
 					function (value : Object) : void
@@ -1210,7 +1257,7 @@ package rx
 						pastSkip = true;
 						if (otherSubscription != null)
 						{
-							otherSubscription.unsubscribe();
+							otherSubscription.cancel();
 						}
 					},
 					function () : void  { },
@@ -1219,7 +1266,7 @@ package rx
 				
 				if (pastSkip)
 				{
-					otherSubscription.unsubscribe();
+					otherSubscription.cancel();
 					otherSubscription = null;
 				}
 				
@@ -1227,12 +1274,12 @@ package rx
 				{
 					if (primarySubscription != null)
 					{
-						primarySubscription.unsubscribe();
+						primarySubscription.cancel();
 					}
 					
 					if (otherSubscription != null)
 					{
-						otherSubscription.unsubscribe();
+						otherSubscription.cancel();
 					}
 				});
 			});
@@ -1242,7 +1289,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var skipping : Boolean = true;
 				
@@ -1274,14 +1321,19 @@ package rx
 			});
 		}
 		
-		public function startWith(value : Object) : IObservable
+		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
-			return Observable.returnValue(this.type, value).concat([this]);
+			return Observable
+				.returnValues(this.type, values, scheduler)
+				.concat([this], scheduler);
 		}
 
-		public function sum():Number
+		public function sum():IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return aggregate(function(x:Number, y:Number):Number
+			{
+				return x+y;
+			}, type, 0).catchError(Observable.returnValue(type, 0));
 		}
 		
 		public function take(count:int, scheduler:IScheduler=null):IObservable
@@ -1290,11 +1342,11 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -1303,7 +1355,7 @@ package rx
 						
 						if (++countSoFar == count)
 						{
-							subscription.unsubscribe();
+							subscription.cancel();
 							scheduler.schedule(function():void { observer.onCompleted(); });
 						}
 					},
@@ -1321,12 +1373,12 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
-				var primarySubscription : ISubscription;
-				var otherSubscription : ISubscription;
+				var primarySubscription : ICancelable;
+				var otherSubscription : ICancelable;
 				
 				primarySubscription = source.subscribeFunc(
 					function (value : Object) : void
@@ -1347,12 +1399,12 @@ package rx
 				{
 					if (primarySubscription != null)
 					{
-						primarySubscription.unsubscribe();
+						primarySubscription.cancel();
 					}
 					
 					if (otherSubscription != null)
 					{
-						otherSubscription.unsubscribe();
+						otherSubscription.cancel();
 					}
 				});
 			});
@@ -1362,7 +1414,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -1401,11 +1453,11 @@ package rx
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var lastValueTimestamp : Number = 0;
 				
-				var subscription : ISubscription;
+				var subscription : ICancelable;
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : TimeStamped) : void
@@ -1429,25 +1481,20 @@ package rx
 			});
 		}
 		
-		public function throwError(error:Error):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function timeInterval(scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ICancelable
 			{
 				var lastTimeMs : Number = -1;
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						var now : Number = (new Date()).time;
+						var now : Number = (scheduler.now).time;
 						var interval : Number = (lastTimeMs == -1)
 							? 0
 							: now - lastTimeMs;
@@ -1471,28 +1518,23 @@ package rx
 		{
 			var source : IObservable = this;
 			
+			other = other || Observable.throwError(new TimeoutError("Sequence timed out"), this.type);
+			
 			scheduler = Observable.resolveScheduler(scheduler);
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
-				var subscription : ISubscription = null;
+				var subscription : FutureSubscription = new FutureSubscription();
 				
 				var timeout : Function = function():void
 				{
-					if (other == null)
-					{
-						observer.onError(new TimeoutError("Sequence timed out"));
-					}
-					else
-					{
-						subscription.unsubscribe();
-						subscription = other.subscribe(observer);
-					}
+					subscription.cancel();
+					subscription = other.subscribe(observer);
 				};
 				
-				var timeoutAction : IScheduledAction = scheduler.schedule(timeout, timeoutMs);
+				var timeoutAction : ICancelable = scheduler.schedule(timeout, timeoutMs);
 				
-				subscription = source.subscribeFunc(
+				subscription.innerSubscription = source.subscribeFunc(
 					function (value : Object) : void
 					{
 						timeoutAction.cancel();
@@ -1505,27 +1547,25 @@ package rx
 						timeoutAction.cancel();
 						observer.onCompleted();
 					},
-					function (error : Error) : void { observer.onError(error); }
+					observer.onError
 					);
 				
 				return new ClosureSubscription(function():void
 				{
-					subscription.unsubscribe();
+					timeoutAction.cancel();
+					subscription.cancel();
 				});
 			});
 		}
 		
-		public function timer(dueTimeMs:int):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
+			scheduler = Observable.resolveScheduler(scheduler);
+			
 			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
-				return new TimeStamped(value, new Date().getTime());
-			}, scheduler);
+				return new TimeStamped(value, scheduler.now.time);
+			});
 		}
 		
 		public function toAsync(func:Function):IObservable
@@ -1533,62 +1573,31 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function where(predicate:Function):IObservable
-		{
-			var source : IObservable = this;
-			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ISubscription
-			{
-				var decoratorObserver : IObserver = new ClosureObserver(
-					function (value : Object) : void
-					{
-						var result : Boolean = false;
-						
-						try
-						{
-							result = predicate(value);
-						}
-						catch(err : Error)
-						{
-							observer.onError(err);
-						}
-							
-						if (result)
-						{
-							observer.onNext(value);
-						}
-					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
-					);
-				
-				return source.subscribe(decoratorObserver);
-			});
-		}
+		include "operators/include.as"
 		
 		public function zip(resultType : Class, rightSource:IObservable, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(resultType, function (observer : IObserver) : ISubscription
+			return new ClosureObservable(resultType, function (observer : IObserver) : ICancelable
 			{
 				var leftValues : Array = new Array();
 				var rightValues : Array = new Array();
 				
-				var leftSubscription : ISubscription, 
-					rightSubscription : ISubscription;
+				var leftSubscription : ICancelable, 
+					rightSubscription : ICancelable;
 				
 				var unsubscribeAll : Function = function():void
 				{
 					if (leftSubscription != null)
 					{
-						leftSubscription.unsubscribe();
+						leftSubscription.cancel();
 						leftSubscription = null;
 					}
 					
 					if (rightSubscription != null)
 					{
-						rightSubscription.unsubscribe();
+						rightSubscription.cancel();
 						rightSubscription = null;
 					}
 				};				
@@ -1596,8 +1605,6 @@ package rx
 				var leftObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						trace("zip :: left");
-						
 						if (rightValues.length > 0)
 						{
 							value = selector(value, rightValues.shift());
@@ -1616,8 +1623,6 @@ package rx
 				var rightObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						trace("zip :: right");
-						
 						if (leftValues.length > 0)
 						{
 							value = selector(leftValues.shift(), value);
@@ -1640,13 +1645,13 @@ package rx
 				{
 					if (leftSubscription != null)
 					{
-						leftSubscription.unsubscribe();
+						leftSubscription.cancel();
 						leftSubscription = null;
 					}
 					
 					if (rightSubscription != null)
 					{
-						rightSubscription.unsubscribe();
+						rightSubscription.cancel();
 						rightSubscription = null;
 					}
 				});

@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
-	import rx.ISubscription;
+	import rx.ICancelable;
 	import rx.Observable;
 	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
@@ -42,12 +42,14 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ISubscription = obs.subscribe(stats); 
+			var subscription : ICancelable = obs.subscribe(stats); 
+			
+			Assert.assertFalse(stats.nextCalled);
 			
 			scheduler.runNext();
 			scheduler.runNext();
 			scheduler.runNext();
-			subscription.unsubscribe();
+			subscription.cancel();
 			
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals(2, stats.nextValues[0]);

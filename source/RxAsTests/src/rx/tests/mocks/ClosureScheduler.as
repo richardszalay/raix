@@ -1,6 +1,6 @@
 package rx.tests.mocks
 {
-	import rx.scheduling.IScheduledAction;
+	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 
 	public class ClosureScheduler implements IScheduler
@@ -12,9 +12,14 @@ package rx.tests.mocks
 			_scheduleFunc = scheduleFunc;
 		}
 
-		public function schedule(action:Function, dueTime:int=0):IScheduledAction
+		public function schedule(action:Function, dueTime:int=0):ICancelable
 		{
-			return IScheduledAction(_scheduleFunc(action, dueTime));
+			return ICancelable(_scheduleFunc(action, dueTime));
 		}
+		
+		private var _now : Date = new Date();
+		
+		public function get now() : Date { return _now; }
+		public function set now(value : Date) : void { _now = value; }
 	}
 }

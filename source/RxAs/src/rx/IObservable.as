@@ -1,6 +1,7 @@
 package rx
 {
 	import rx.scheduling.IScheduler;
+	import rx.subjects.IConnectableObservable;
 	
 	public interface IObservable
 	{
@@ -14,16 +15,16 @@ package rx
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
 		function subscribeFunc(onNext : Function, onComplete : Function = null, 
-			onError : Function = null) : ISubscription;
+			onError : Function = null) : ICancelable;
 		
 		/**
 		 * Subscribes to this observable using the supplied observer 
 		 * @param scheduler Optional. The schduler to use
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
-		function subscribe(observer : IObserver) : ISubscription;
+		function subscribe(observer : IObserver) : ICancelable;
 		
-		function aggregate(accumulator : Function) : IObservable;
+		function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
 		
 		function any(predicate : Function = null) : IObservable;
 		
@@ -99,10 +100,13 @@ package rx
 		
 		function onErrorResumeNext(second:IObservable, scheduler:IScheduler=null):IObservable; 
 		 
-		// TODO: ??
-		//function prune (scheduler : IScheduler = null)
+		function prune(scheduler : IScheduler = null) : IConnectableObservable;
 		
-		function publish(scheduler : IScheduler = null) : Subject;
+		function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable;
+		
+		function publish() : IConnectableObservable;
+		
+		function publishAndConnect(selector : Function) : IObservable;
 		
 		// static function range(start : int, count : int, scheduler : IScheduler = null) : IObservable;
 		
@@ -117,6 +121,8 @@ package rx
 		function retry(retryCount : int, scheduler : IScheduler = null) : IObservable;
 		
 		function returnValue(value : Object) : IObservable;
+		
+		function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
 		
 		function select(result : Class, selector:Function):IObservable;
 		
@@ -133,10 +139,10 @@ package rx
 		
 		//static function start(func : Function, scheduler : IScheduler = null) : IObservable;
 		
-		function startWith(value : Object) : IObservable;
+		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
 		
 		// TODO: ??
-		function sum() : Number;
+		function sum() : IObservable;
 		
 		function take(count : int, scheduler : IScheduler = null) : IObservable;
 		

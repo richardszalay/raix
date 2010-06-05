@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import rx.ISubscription;
+			import rx.IObservable;
+			import rx.Observable;
+			
+			private var subscription : ISubscription;
+			
+			private function getKeyObservable(keyDownObservable : IObservable, char : String) : IObservable
+			{
+				return keyDownObservable.where(function(c:String) : Boolean { return c==char; });
+			}
+			
+			public override function setup() : void
+			{
+				var mouseDownChar : IObservable = Observable.fromEvent(stage, KeyboardEvent.KEY_DOWN)
+					.select(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
+					.take(1);
+					
+				var testString : String = "reactive";
+				
+				var obs : IObservable = getKeyObservable(mouseDownChar, testString.charAt(0));
+				
+				for (var i:int=1; i<testString.length; i++)
+				{
+					obs = (function(i:int):IObservable
+					{
+						return obs.selectMany(String, function(c:String):IObservable
+						{
+							return getKeyObservable(mouseDownChar, testString.charAt(i));
+						});
+					})(i);
+				}
+				
+				output.text = "";
+				
+				subscription = obs
+					.subscribeFunc(function(... String) : void
+					{
+						output.text = "Key phrase recognised";
+					}, 
+					function():void
+					{
+						if (output.text.length == 0)
+						{
+							output.text = "Key phrase not recognised";
+						}
+						
+						subscription.unsubscribe();
+						
+						running = false;
+					});
+			}
+			
+			public override function teardown() : void
+			{
+				if (subscription != null)
+				{
+					subscription.unsubscribe();
+					subscription = null;
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" borderColor="#000000" id="trackContainer" horizontalScrollPolicy="off" fontFamily="Courier New">
+			<mx:Label text="Type in the keyphrase: reactive" visible="{running}" includeInLayout="{running}" />
+			<mx:Label id="output" />
+		</mx:VBox>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+private function getKeyObservable(keyDownObservable : IObservable, char : String) : IObservable
+{
+	return keyDownObservable.where(function(c:String) : Boolean { return c==char; });
+}
+
+public override function setup() : void
+{
+	var mouseDownChar : IObservable = Observable.fromEvent(stage, KeyboardEvent.KEY_DOWN)
+		.select(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
+		.take(1);
+		
+	var testString : String = "reactive";
+	
+	var obs : IObservable = getKeyObservable(mouseDownChar, testString.charAt(0));
+	
+	for (var i:int=1; i&lt;testString.length; i++)
+	{
+		obs = (function(i:int):IObservable
+		{
+			return obs.selectMany(String, function(c:String):IObservable
+			{
+				return getKeyObservable(mouseDownChar, testString.charAt(i));
+			});
+		})(i);
+	}
+	
+	output.text = "";
+	
+	subscription = obs
+		.subscribeFunc(function(... String) : void
+		{
+			output.text = "Key phrase recognised";
+		}, 
+		function():void
+		{
+			if (output.text.length == 0)
+			{
+				output.text = "Key phrase not recognised";
+			}
+			
+			subscription.unsubscribe();
+			
+			running = false;
+		});
+}
+	]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

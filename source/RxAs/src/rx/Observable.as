@@ -177,24 +177,33 @@ package rx
 		
 		public static function interval(intervalMs : uint, scheduler : IScheduler = null):IObservable
 		{
+			return timer(intervalMs, intervalMs, scheduler);
+		}
+		
+		public static function timer(delayMs : uint, intervalMs : uint, scheduler : IScheduler = null):IObservable
+		{
 			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
 			{
 				var intervalIndex : uint = 0;
 				
-				var scheduledAction : ICancelable = Scheduler.scheduleRecursive(scheduler,
-					function(recurse : Function):void
+				var scheduledAction : FutureSubscription = new FutureSubscription();
+				
+				scheduledAction.innerSubscription = scheduler.schedule(function():void
 					{
 						observer.onNext(++intervalIndex);
 						
-						recurse();
-					}, intervalMs);
+						scheduledAction.innerSubscription = Scheduler.scheduleRecursive(scheduler,
+							function(recurse : Function):void
+							{
+								observer.onNext(++intervalIndex);
+								
+								recurse();
+							}, intervalMs);
+					}, delayMs);
 				
-				return new ClosureSubscription(function():void
-				{
-					scheduledAction.cancel();
-				});
+				return scheduledAction;
 			});
 		}
 		
@@ -521,8 +530,7 @@ package rx
 		public static function resolveScheduler(scheduler : IScheduler) : IScheduler
 		{
 			return scheduler || Scheduler.defaultScheduler;
-		}
-		
+		}		
 		
 		public static function merge(type : Class, source : IObservable, scheduler : IScheduler = null) : IObservable
 		{

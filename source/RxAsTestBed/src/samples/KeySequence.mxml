@@ -3,12 +3,12 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import rx.ICancelable;
 			import mx.events.FlexEvent;
-			import rx.ISubscription;
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var subscription : ISubscription;
+			private var subscription : ICancelable;
 			
 			private function getKeyObservable(keyDownObservable : IObservable, char : String) : IObservable
 			{
@@ -50,7 +50,7 @@
 							output.text = "Key phrase not recognised";
 						}
 						
-						subscription.unsubscribe();
+						subscription.cancel();
 						
 						running = false;
 					});
@@ -60,7 +60,7 @@
 			{
 				if (subscription != null)
 				{
-					subscription.unsubscribe();
+					subscription.cancel();
 					subscription = null;
 				}
 			}

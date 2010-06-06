@@ -8,6 +8,7 @@ package rx
 	import rx.subjects.AsyncSubject;
 	import rx.subjects.ConnectableObservable;
 	import rx.subjects.IConnectableObservable;
+	import rx.subjects.ReplaySubject;
 	import rx.util.*;
 	
 	public class AbsObservable implements IObservable
@@ -963,6 +964,28 @@ package rx
 			return this.select(type, function(ts:TimeStamped):Object
 			{
 				return ts.value;
+			});
+		}
+		
+		public function replay(bufferSize : uint = 0, window : uint = 0, 
+			scheduler : IScheduler = null) : IConnectableObservable
+		{
+			return new ConnectableObservable(this, new ReplaySubject(this.type, bufferSize, window, scheduler));
+		}
+		
+		public function replayAndConnect(selector : Function, bufferSize : uint = 0, 
+			window : uint = 0, scheduler : IScheduler = null) : IObservable
+		{
+			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			{
+				var connectable : IConnectableObservable = replay(bufferSize, window, scheduler);
+				
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				 
+				subscription.add( IConnectableObservable(selector(connectable)).subscribe(obs) );
+				subscription.add( connectable.connect() );
+				
+				return subscription;
 			});
 		}
 		

@@ -113,6 +113,9 @@ package rx
 		function removeTimeInterval(type : Class) : IObservable;
 		function removeTimestamp(type : Class) : IObservable;
 		
+		function replay(bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
+		function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
+		
 		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;
 		
 		// TODO: ??

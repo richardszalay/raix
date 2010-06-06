@@ -16,6 +16,7 @@ package rx.tests.operators
 		public var catchError : CatchErrorFixture;
 		public var catchErrorDefered : CatchErrorDeferedFixture;
 		public var cast : CastFixture;
+		public var concat : ConcatFixture;
 		public var contains : ContainsFixture;
 		public var count : CountFixture;
 		public var dematerialize : DematerializeFixture;
@@ -40,6 +41,7 @@ package rx.tests.operators
 		public var never : NeverFixture;
 		public var prune : PruneFixture;
 		public var publish : PublishFixture;
+		public var replay : ReplayFixture;
 		public var repeat : RepeatFixture;
 		public var range : RangeFixture;
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
@@ -56,6 +58,7 @@ package rx.tests.operators
 		public var take : TakeFixture;
 		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;
+		public var timer : TimerFixture;
 		public var timeInterval : TimeIntervalFixture;
 		public var timeout : TimeoutFixture;
 		public var throttle : ThrottleFixture;

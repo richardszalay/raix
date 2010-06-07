@@ -24,6 +24,8 @@ package rx
 		 */
 		function subscribe(observer : IObserver) : ICancelable;
 		
+		function and(right : IObservable) : Pattern;
+		
 		function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
 		
 		function any(predicate : Function = null) : IObservable;
@@ -31,6 +33,8 @@ package rx
 		function all(predicate : Function) : IObservable;
 		
 		function asynchronous() : IObservable;
+		
+		function average():IObservable;
 		
 		function bufferWithCount(count : int, skip : int = 0) : IObservable;
 		

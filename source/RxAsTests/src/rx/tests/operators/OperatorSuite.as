@@ -10,6 +10,7 @@ package rx.tests.operators
 		public var all : AllFixture;
 		public var any : AnyFixture;
 		public var amb : AmbFixture;
+		public var average : AverageFixture;
 		public var asObservable : AsObservableFixture;
 		public var bufferWithCount : BufferWithCountFixture;
 		public var bufferWithTime : BufferWithTimeFixture;
@@ -31,6 +32,7 @@ package rx.tests.operators
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var fromEvent : FromEventFixture;
 		public var interval : IntervalFixture;
+		public var join : JoinFixture;
 		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;

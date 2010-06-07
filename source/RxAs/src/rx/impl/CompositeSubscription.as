@@ -4,6 +4,7 @@ package rx.impl
 
 	public class CompositeSubscription implements ICancelable
 	{
+		private var _cancelled : Boolean = false;
 		private var _subscriptions : Array;
 		
 		public function CompositeSubscription(values : Array)
@@ -13,7 +14,14 @@ package rx.impl
 		
 		public function add(subscription : ICancelable) : void
 		{
-			_subscriptions.push(subscription);
+			if (_cancelled)
+			{
+				subscription.cancel();
+			}
+			else
+			{			
+				_subscriptions.push(subscription);
+			}
 		}
 		
 		public function remove(subscription : ICancelable) : void
@@ -35,6 +43,8 @@ package rx.impl
 
 		public function cancel():void
 		{
+			_cancelled = true;
+			
 			while(_subscriptions.length > 0)
 			{
 				_subscriptions.shift().cancel();

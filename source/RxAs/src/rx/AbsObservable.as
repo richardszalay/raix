@@ -35,10 +35,47 @@ package rx
 			
 			return subscribe(observer);
 		}
+		
+		public function and(right : IObservable) : Pattern
+		{
+			return new Pattern([this, right]);
+		}
 
 		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
 			return scan(accumulator, outputType, initialValue).last();
+		}
+		
+		public function average():IObservable
+		{
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(obs:IObserver):ICancelable
+			{
+				var total : Number = 0;
+				var count : Number = 0;
+				
+				return source.subscribeFunc(
+					function(v:Number):void { count++; total += v; },
+					function():void
+					{
+						if (count == 0)
+						{
+							obs.onError(new Error("Sequence contained no elements"));
+						}
+						else
+						{
+							obs.onNext(total / count);
+							obs.onCompleted();
+						}
+					},
+					obs.onError);
+			});
+			
+			return aggregate(function(x:Number, y:Number):Number
+			{
+				return x+y;
+			}, type, 0);
 		}
 		
 		public function any(predicate : Function = null) : IObservable

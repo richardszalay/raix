@@ -1,9 +1,11 @@
 package rx.subjects
 {
+	import flash.errors.IllegalOperationError;
+	
 	import rx.AbsObservable;
+	import rx.ICancelable;
 	import rx.IObserver;
 	import rx.ISubject;
-	import rx.ICancelable;
 	import rx.Notification;
 	import rx.Observable;
 	import rx.impl.ClosureSubscription;
@@ -11,7 +13,6 @@ package rx.subjects
 	import rx.impl.OnError;
 	import rx.impl.OnNext;
 	import rx.impl.ScheduledActionSubscription;
-	import rx.ICancelable;
 	import rx.scheduling.IScheduler;
 	
 	public class AsyncSubject extends AbsObservable implements ISubject
@@ -86,6 +87,16 @@ package rx.subjects
 				
 				dispatchAll();
 			}
+		}
+		
+		public function lastValue() : Object
+		{
+			if (_lastValue == null || !_lastValue.hasValue)
+			{
+				throw new IllegalOperationError("No value available");
+			}
+			
+			return _lastValue.value;
 		}
 		
 		private function dispatchAll() : void

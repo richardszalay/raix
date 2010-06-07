@@ -219,8 +219,16 @@ package rx
 				
 				for each(var plan : Plan in activePlans)
 				{
+					var index : int = 0;
+					
 					for each(var source : IObservable in plan.sources)
 					{
+						if (plan.sources.indexOf(source, (index++) + 1) != -1)
+						{
+							observer.onError(new ArgumentError("Sources must be unique within a plan"));
+							return ClosureSubscription.empty();
+						}
+						
 						if (queues[source] == undefined)
 						{
 							sources.push(source);
@@ -293,26 +301,29 @@ package rx
 					{
 						for each(var source : IObservable in plan.sources)
 						{
-							if (queues[source] && completed[source] && queues[source].length == 0)
+							if (!queues[source] || (completed[source] && queues[source].length == 0))
 							{
-								activePlans.splice(activePlans.indexOf(plan), 1);
+								activePlans.splice(activePlans.indexOf(plan), 1);								
+								break;
 							}
 						}
 					}
 					
-					if (sources.length == 0 || activePlans.length)
+					if (sources.length == 0 || activePlans.length == 0)
 					{
 						observer.onCompleted();
 					}
 				};
 					
 				var subscriptions : CompositeSubscription = new CompositeSubscription([]);
+				
+				var tempSources : Array = sources.concat([]);
 					
-				for each(var source : IObservable in sources)
+				for each(var source : IObservable in tempSources)
 				{
 					(function(source:IObservable):void
 					{
-						subscriptions.add(source.subscribeFunc(
+						var safetyObserver : SafetyObserver = new SafetyObserver(new ClosureObserver(
 							function(v:Object):void
 							{
 								queues[source].push(v);
@@ -334,6 +345,13 @@ package rx
 								}
 							},
 							observer.onError));
+							
+						var subscription : ICancelable = source.subscribe(safetyObserver);
+						
+						subscriptions.add(subscription);
+						
+						safetyObserver.setSubscription(subscription);
+						
 					})(source);
 				}
 				

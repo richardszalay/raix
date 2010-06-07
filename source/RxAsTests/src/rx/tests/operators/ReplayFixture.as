@@ -4,7 +4,7 @@ package rx.tests.operators
 	
 	import rx.IObservable;
 	import rx.Subject;
-	import rx.subjects.ReplaySubject;
+	import rx.subjects.IConnectableObservable;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
 	
@@ -14,11 +14,12 @@ package rx.tests.operators
         public function sends_live_values() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
 
             var stats : StatsObserver = new StatsObserver();
 
             source.subscribe(stats);
+            source.connect();
 
             subject.onNext(1);
             subject.onNext(2);
@@ -36,10 +37,13 @@ package rx.tests.operators
         public function sends_live_values_after_replay() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            
+            var source : IConnectableObservable = subject.replay();
 
             var stats : StatsObserver = new StatsObserver();
 
+            source.connect();
+            
             subject.onNext(1);
             subject.onNext(2);
 
@@ -59,10 +63,12 @@ package rx.tests.operators
         public function replays_values_when_incomplete() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
 
             var stats : StatsObserver = new StatsObserver();
 
+            source.connect();
+            
             subject.onNext(1);
             subject.onNext(2);
             subject.onNext(3);
@@ -80,7 +86,8 @@ package rx.tests.operators
         public function replays_values_when_complete() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -102,7 +109,8 @@ package rx.tests.operators
         public function replays_values_when_errored() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -124,7 +132,8 @@ package rx.tests.operators
         public function replays_empty_sequence() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -140,7 +149,8 @@ package rx.tests.operators
         public function replays_error_sequence() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay();
+            var source : IConnectableObservable = subject.replay();
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -155,7 +165,8 @@ package rx.tests.operators
         public function ignores_buffer_size_for_live_subscriptions() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(2);
+            var source : IConnectableObservable = subject.replay(2);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -177,7 +188,8 @@ package rx.tests.operators
         public function honours_buffer_size_for_replays_with_priority_to_most_recent() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(2);
+            var source : IConnectableObservable = subject.replay(2);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -197,7 +209,8 @@ package rx.tests.operators
         public function buffer_size_includes_oncompleted() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(2);
+            var source : IConnectableObservable = subject.replay(2);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -217,7 +230,8 @@ package rx.tests.operators
         public function buffer_size_includes_onerror() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(2);
+            var source : IConnectableObservable = subject.replay(2);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -237,7 +251,8 @@ package rx.tests.operators
         public function ignores_window_for_live_subscriptions() : void
         {
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10);
+            var source : IConnectableObservable = subject.replay(0, 10);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -261,7 +276,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -293,7 +309,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -324,7 +341,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -355,7 +373,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -379,7 +398,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -402,7 +422,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(2, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(2, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -433,7 +454,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(3, 10, scheduler);
+            var source : IConnectableObservable = subject.replay(3, 10, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -464,8 +486,9 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 0, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 0, scheduler);
 
+            source.connect();
             var stats : StatsObserver = new StatsObserver();
 
             source.subscribe(stats);
@@ -497,7 +520,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 0, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 0, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -530,7 +554,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 0, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 0, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -550,7 +575,8 @@ package rx.tests.operators
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : Subject = new Subject(int);
-            var source : IObservable = subject.replay(0, 0, scheduler);
+            var source : IConnectableObservable = subject.replay(0, 0, scheduler);
+            source.connect();
 
             var stats : StatsObserver = new StatsObserver();
 

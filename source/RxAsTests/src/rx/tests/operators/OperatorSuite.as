@@ -33,6 +33,7 @@ package rx.tests.operators
 		public var fromEvent : FromEventFixture;
 		public var interval : IntervalFixture;
 		public var join : JoinFixture;
+		public var joinCounter : JoinCounterFixture;
 		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;

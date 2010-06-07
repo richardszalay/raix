@@ -20,6 +20,11 @@ package rx.impl
 				_unsubscribeFunc(); 
 			}
 		}
+		
+		public static function empty() : ClosureSubscription
+		{
+			return new ClosureSubscription(function():void{});
+		}
 
 	}
 }

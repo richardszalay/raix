@@ -96,8 +96,10 @@ package rx.tests.operators
 
             Assert.assertEquals(4, stats.nextCount);
             Assert.assertEquals("0,2", stats.nextValues[0]);
-            Assert.assertEquals("4,6", stats.nextValues[1]);
-            Assert.assertEquals("1,3", stats.nextValues[2]);
+            // 1,3 and 4,6 are swapped from the proof tests, presumably 
+            // due to CurrentThreadScheduler vs ImmediateScheduler
+            Assert.assertEquals("1,3", stats.nextValues[1]); 
+            Assert.assertEquals("4,6", stats.nextValues[2]);
             Assert.assertEquals("5,7", stats.nextValues[3]);
             Assert.assertTrue(stats.completedCalled);
         }
@@ -147,17 +149,19 @@ package rx.tests.operators
 
             Observable.join(String, [
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
-                    subjectA.and(subjectC).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
+                    subjectA.and(subjectC).then(String, function(x:int,y:int):String { return x.toString() + "." + y.toString(); })
                 ])
                 .subscribe(stats);
 
             subjectA.onNext(0);
             subjectB.onNext(1);
 
-            subjectA.onNext(0);
-            subjectC.onNext(2);
+            subjectA.onNext(2);
+            subjectC.onNext(3);
 
-            Assert.assertEquals(0, stats.nextCount);
+            Assert.assertEquals(2, stats.nextCount);
+            Assert.assertEquals("0,1", stats.nextValues[0]);
+            Assert.assertEquals("2.3", stats.nextValues[1]);
         }
 
         [Test]
@@ -213,10 +217,9 @@ package rx.tests.operators
             subjectA.onCompleted();
 
             Assert.assertEquals(0, subjectA.subscriptionCount);
-            Assert.assertEquals(0, subjectB.subscriptionCount);
+            Assert.assertEquals(1, subjectB.subscriptionCount);
             Assert.assertEquals(1, subjectC.subscriptionCount);
             Assert.assertEquals(1, subjectD.subscriptionCount);
         }
-
 	}
 }

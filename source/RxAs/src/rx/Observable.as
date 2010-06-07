@@ -3,6 +3,7 @@ package rx
 	import flash.display.LoaderInfo;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
+	import flash.utils.Dictionary;
 	
 	import mx.rpc.AsyncToken;
 	
@@ -195,6 +196,139 @@ package rx
 				{
 					scheduledAction.cancel();
 				});
+			});
+		}
+		
+		public static function join(type : Class, plans : Array) : IObservable
+		{
+			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
+			{
+				var activePlans : Array = new Array().concat(plans);
+				var sources : Array = new Array();
+				var queues : Dictionary = new Dictionary();
+				var completed : Dictionary = new Dictionary();
+				
+				for each(var plan : Plan in activePlans)
+				{
+					for each(var source : IObservable in plan.sources)
+					{
+						if (queues[source] == undefined)
+						{
+							sources.push(source);
+							queues[source] = new Array();
+							completed[source] = false;
+						}
+					}
+				}
+				
+				var matchPlan : Function = function():void
+				{
+					var match : Plan = null;
+					
+					for each(var plan : Plan in activePlans)
+					{
+						var args : Array = new Array();
+						
+						for each(var source : IObservable in plan.sources)
+						{
+							if (queues[source].length > 0)
+							{
+								args.push(queues[source][0]);
+							}
+							else
+							{
+								break;
+							}
+						}
+						
+						if (args.length == plan.sources.length)
+						{
+							for each(var source : IObservable in plan.sources)
+							{
+								queues[source].shift();
+								
+								if (completed[source] && queues[source].length == 0)
+								{
+									delete queues[source];
+									delete completed[source];
+									sources.splice(sources.indexOf(source), 1);
+								}
+							}
+							
+							var value : Object = null;
+							
+							try
+							{
+								value = plan.selector.apply(NaN, args);
+							}
+							catch(err : Error)
+							{
+								observer.onError(err);
+								return;
+							}
+							
+							observer.onNext(value);
+							
+							checkComplete();
+							
+							break;
+						}
+					}
+				};
+				
+				var checkComplete : Function = function():void
+				{
+					var tempPlans : Array = new Array().concat(activePlans);
+					
+					for each(var plan : Plan in tempPlans)
+					{
+						for each(var source : IObservable in plan.sources)
+						{
+							if (queues[source] && completed[source] && queues[source].length == 0)
+							{
+								activePlans.splice(activePlans.indexOf(plan), 1);
+							}
+						}
+					}
+					
+					if (sources.length == 0 || activePlans.length)
+					{
+						observer.onCompleted();
+					}
+				};
+					
+				var subscriptions : CompositeSubscription = new CompositeSubscription([]);
+					
+				for each(var source : IObservable in sources)
+				{
+					(function(source:IObservable):void
+					{
+						subscriptions.add(source.subscribeFunc(
+							function(v:Object):void
+							{
+								queues[source].push(v);
+								matchPlan();
+							},
+							function():void
+							{
+								if (queues[source].length == 0)
+								{
+									delete queues[source];
+									delete completed[source];
+									sources.splice(sources.indexOf(source), 1);
+									
+									checkComplete();
+								}
+								else
+								{
+									completed[source] = true;
+								}
+							},
+							observer.onError));
+					})(source);
+				}
+				
+				return subscriptions;
 			});
 		}
 		

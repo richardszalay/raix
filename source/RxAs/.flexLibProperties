@@ -7,8 +7,10 @@
     <classEntry path="rx.impl.ClosureScheduledAction"/>
     <classEntry path="rx.IObservable"/>
     <classEntry path="rx.impl.CompositeSubscription"/>
+    <classEntry path="rx.Plan"/>
     <classEntry path="rx.flex.IObservableResponder"/>
     <classEntry path="rx.impl.FutureSubscription"/>
+    <classEntry path="rx.Pattern"/>
     <classEntry path="rx.AbsObservable"/>
     <classEntry path="rx.impl.SafetyObserver"/>
     <classEntry path="rx.IObserver"/>

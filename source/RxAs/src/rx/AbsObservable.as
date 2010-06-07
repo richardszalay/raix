@@ -34,6 +34,11 @@ package rx
 			
 			return subscribe(observer);
 		}
+		
+		public function and(right : IObservable) : Pattern
+		{
+			return new Pattern([this, right]);
+		}
 
 		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{

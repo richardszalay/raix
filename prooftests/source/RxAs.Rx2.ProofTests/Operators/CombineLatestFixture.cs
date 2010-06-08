@@ -191,17 +191,20 @@ namespace RxAs.Rx2.ProofTests.Operators
         }
 
         [Test]
-        public void range()
+        public void handles_synchronous_sources()
         {
             var subjectA = Observable.Range(0, 2);
-            var subjectB = Observable.Range(2, 4); 
+            var subjectB = Observable.Range(2, 2); 
 
             var stats = new StatsObserver<string>();
 
             subjectA.CombineLatest(subjectB, (a, b) => String.Concat(a.ToString(), ",", b.ToString()))
                 .Subscribe(stats);
 
-            Assert.AreEqual(0, stats.NextCount);
+            Assert.AreEqual(3, stats.NextCount);
+            Assert.AreEqual("0,2", stats.NextValues[0]);
+            Assert.AreEqual("1,2", stats.NextValues[1]);
+            Assert.AreEqual("1,3", stats.NextValues[2]);
         }
     }
 }

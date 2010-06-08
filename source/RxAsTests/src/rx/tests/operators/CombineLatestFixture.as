@@ -186,5 +186,22 @@ package rx.tests.operators
             Assert.assertEquals(0, subjectA.subscriptionCount);
             Assert.assertEquals(0, subjectB.subscriptionCount);
         }
+        
+        [Test]
+        public function handles_synchronous_sources() : void
+        {
+            var subjectA : IObservable = Observable.range(0, 2);
+            var subjectB : IObservable = Observable.range(2, 2);
+
+            var stats : StatsObserver = new StatsObserver();
+
+            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+                .subscribe(stats);
+
+            Assert.assertEquals(3, stats.nextCount);
+            Assert.assertEquals("0,2", stats.nextValues[0]);
+            Assert.assertEquals("1,2", stats.nextValues[1]);
+            Assert.assertEquals("1,3", stats.nextValues[2]);
+        }
 	}
 }

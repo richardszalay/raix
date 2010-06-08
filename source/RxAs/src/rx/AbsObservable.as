@@ -400,9 +400,74 @@ package rx
 			});
 		}
 		
-		public function combineLatest(right:IObservable, selector:Function):IObservable
+		public function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var left : IObservable = this;
+			
+			return new ClosureObservable(returnType, function(observer : IObserver) : ICancelable 
+			{
+				var leftSubscription : FutureSubscription = new FutureSubscription();
+				var leftValue : Object = null;
+				var leftComplete : Object = null;
+				var leftHasValue : Object = null;
+				
+				var rightSubscription : FutureSubscription = new FutureSubscription();
+				var rightValue : Object = null;
+				var rightComplete : Object = null;
+				var rightHasValue : Object = null;				
+				
+				var subscriptions : CompositeSubscription = new CompositeSubscription(
+					[leftSubscription, rightSubscription]);
+				
+				var checkValue : Function = function():void
+				{
+					if (leftHasValue && rightHasValue)
+					{
+						try
+						{
+							var value : Object = selector(leftValue, rightValue);
+							observer.onNext(value);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+						}
+					}
+				};
+				
+				var checkComplete : Function = function():void
+				{
+					if (leftComplete && rightComplete)
+					{
+						observer.onCompleted();
+					}
+				};
+				
+				Scheduler.immediate.schedule(function():void
+				{
+					leftSubscription.innerSubscription = left.subscribeFunc(
+						function(v:Object) : void
+						{
+							leftValue = v;
+							leftHasValue = true;
+							checkValue();
+						},
+						function():void { leftComplete = true; checkComplete(); },
+						observer.onError);
+					
+					rightSubscription.innerSubscription = right.subscribeFunc(
+						function(v:Object) : void
+						{
+							rightValue = v;
+							rightHasValue = true;
+							checkValue();
+						},
+						function():void { rightComplete = true; checkComplete(); },
+						observer.onError);
+				});
+				
+				return subscriptions;
+			});
 		}
 		
 		public function concat(sources:Array, scheduler:IScheduler=null):IObservable

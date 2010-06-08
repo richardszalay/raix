@@ -17,6 +17,7 @@ package rx.tests.operators
 		public var catchError : CatchErrorFixture;
 		public var catchErrorDefered : CatchErrorDeferedFixture;
 		public var cast : CastFixture;
+		public var combineLatest : CombineLatestFixture;
 		public var concat : ConcatFixture;
 		public var contains : ContainsFixture;
 		public var count : CountFixture;

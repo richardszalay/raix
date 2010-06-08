@@ -79,6 +79,7 @@
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\BufferWithTimeFixture.cs" />
     <Compile Include="Operators\AggregateFixture.cs" />
+    <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\ConcatFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\DoFixture.cs" />

@@ -69,7 +69,10 @@ package rx
 			{
 				var currentSource : IObservable = sources.shift();
 			
+				var schedule : FutureSubscription = new FutureSubscription();
 				var subscription : FutureSubscription = new FutureSubscription();
+				
+				var composite : CompositeSubscription = new CompositeSubscription([schedule, subscription]);
 				
 				var remainingSources : Array = [].concat(sources);
 				
@@ -80,7 +83,11 @@ package rx
 					if (remainingSources.length > 0)
 					{
 						currentSource = IObservable(remainingSources.shift());
-						subscription.innerSubscription = currentSource.subscribe(dec);
+						
+						schedule.innerSubscription = scheduler.schedule(function():void
+						{
+							subscription.innerSubscription = currentSource.subscribe(dec);
+						});
 					}
 					else
 					{
@@ -90,9 +97,12 @@ package rx
 				
 				dec = new ClosureObserver(observer.onNext, onComplete, observer.onError);
 
-				subscription.innerSubscription = currentSource.subscribe(dec);
+				schedule.innerSubscription = scheduler.schedule(function():void
+				{
+					subscription.innerSubscription = currentSource.subscribe(dec);
+				});
 				
-				return subscription;
+				return composite;
 			});
 		}
 		

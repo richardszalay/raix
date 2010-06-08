@@ -51,5 +51,47 @@ package rx.tests.operators
             Assert.assertEquals(1, stats.nextValues[0]);
             Assert.assertFalse(stats.completedCalled);
         }
+        
+        [Test]
+        public function scheduler_is_used_for_first_subscription() : void
+        {
+            var sourceA : Subject = new Subject(int);
+            var sourceB : IObservable = Observable.empty(int);
+
+            var scheduler : ManualScheduler = new ManualScheduler();
+            var stats : StatsObserver = new StatsObserver();
+
+            sourceA.concat([sourceB], scheduler).subscribe(stats);
+
+            Assert.assertEquals(0, sourceA.subscriptionCount);
+            Assert.assertEquals(1, scheduler.queueSize);
+
+            scheduler.runNext();
+
+            Assert.assertEquals(1, sourceA.subscriptionCount);
+            Assert.assertEquals(0, scheduler.queueSize);
+        }
+
+        [Test]
+        public function scheduler_is_used_for_subsequent_subscriptions() : void
+        {
+            var sourceA : IObservable = Observable.empty();
+            var sourceB : Subject = new Subject(int);
+
+            var scheduler : ManualScheduler = new ManualScheduler();
+            var stats : StatsObserver = new StatsObserver();
+
+            sourceA.concat([sourceB], scheduler).subscribe(stats);
+
+            scheduler.runNext();
+
+            Assert.assertEquals(0, sourceB.subscriptionCount);
+            Assert.assertEquals(1, scheduler.queueSize);
+
+            scheduler.runNext();
+
+            Assert.assertEquals(1, sourceB.subscriptionCount);
+            Assert.assertEquals(0, scheduler.queueSize);
+        }
 	}
 }

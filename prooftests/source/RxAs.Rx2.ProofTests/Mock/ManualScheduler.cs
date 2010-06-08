@@ -46,5 +46,10 @@ namespace RxAs.Rx2.ProofTests.Mock
                 actions.Dequeue()();
             }
         }
+
+        public int QueueSize
+        {
+            get { return actions.Count; }
+        }
     }
 }

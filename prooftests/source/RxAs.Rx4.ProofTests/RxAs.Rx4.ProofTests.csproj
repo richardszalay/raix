@@ -71,6 +71,7 @@
     <Compile Include="Operators\ForkJoinFixture.cs" />
     <Compile Include="Operators\JoinFixture.cs" />
     <Compile Include="Operators\PruneFixture.cs" />
+    <Compile Include="Operators\RepeatFixture.cs" />
     <Compile Include="Operators\SelectManyFixture.cs" />
     <Compile Include="Operators\SkipUntilFixture.cs" />
     <Compile Include="Operators\DoFixture.cs" />

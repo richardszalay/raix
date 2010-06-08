@@ -9,6 +9,7 @@ namespace RxAs.Rx4.ProofTests.Mock
 {
     public class StatsSubject<T> : ISubject<T>
     {
+        private int totalSubscriptionCount;
         private int subscriptionCount;
 
         private Subject<T> innerSubject;
@@ -21,6 +22,11 @@ namespace RxAs.Rx4.ProofTests.Mock
         public int SubscriptionCount
         {
             get { return subscriptionCount; }
+        }
+
+        public int TotalSubscriptionCount
+        {
+            get { return totalSubscriptionCount; }
         }
 
         public bool HasSubscriptions
@@ -46,6 +52,7 @@ namespace RxAs.Rx4.ProofTests.Mock
         public IDisposable Subscribe(IObserver<T> observer)
         {
             Interlocked.Increment(ref subscriptionCount);
+            Interlocked.Increment(ref totalSubscriptionCount);
 
             IDisposable disposable = innerSubject.Subscribe(observer);
 

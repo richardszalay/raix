@@ -1091,20 +1091,16 @@ package rx
 			});
 		}
 		
-		public function repeat(repeatCount:int=0, scheduler:IScheduler=null):IObservable
+		public function repeat(repeatCount:uint=0):IObservable
 		{
 			var source : IObservable = this;
-			
-			scheduler = Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (repeatCount == 0);
-				var iterationsRemaining : int = repeatCount;
+				var iterationsRemaining : uint = repeatCount - 1;
 				
-				var scheduledAction : ICancelable = null;
-				
-				var subscription : ICancelable = null;				
+				var subscription : FutureSubscription = new FutureSubscription();				
 				var recursiveObserver : IObserver = null;
 				
 				recursiveObserver = new ClosureObserver(
@@ -1113,9 +1109,9 @@ package rx
 					{
 						if (isInfinite || iterationsRemaining-- > 0)
 						{
-							scheduledAction = scheduler.schedule(function():void
+							Scheduler.immediate.schedule(function():void
 							{
-								subscription = source.subscribe(recursiveObserver);
+								subscription.innerSubscription = source.subscribe(recursiveObserver);
 							});
 						}
 						else
@@ -1123,32 +1119,54 @@ package rx
 							observer.onCompleted();
 						}
 					},
-					function(e:Error) : void { observer.onError(e); }
-					);
+					observer.onError);
 				
-				scheduledAction = scheduler.schedule(function():void
+				Scheduler.immediate.schedule(function():void
 				{
-					subscription = source.subscribe(recursiveObserver);
+					subscription.innerSubscription = source.subscribe(recursiveObserver);
 				});
 				
-				return new ClosureSubscription(function():void
-				{
-					if (scheduledAction != null)
-					{
-						scheduledAction.cancel()
-					}
-					
-					if (subscription != null)
-					{
-						subscription.cancel();
-					}
-				});
+				return subscription;
 			});
 		}
 		
-		public function retry(retryCount:int, scheduler:IScheduler=null):IObservable
+		public function retry(retryCount:int = 0):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			{
+				var isInfinite : Boolean = (retryCount == 0);
+				var iterationsRemaining : uint = retryCount - 1;
+				
+				var subscription : FutureSubscription = new FutureSubscription();				
+				var recursiveObserver : IObserver = null;
+				
+				recursiveObserver = new ClosureObserver(
+					function(pl:Object) : void { observer.onNext(pl); },
+					observer.onCompleted,
+					function(err : Error):void
+					{
+						if (isInfinite || iterationsRemaining-- > 0)
+						{
+							Scheduler.immediate.schedule(function():void
+							{
+								subscription.innerSubscription = source.subscribe(recursiveObserver);
+							});
+						}
+						else
+						{
+							observer.onError(err);
+						}
+					});
+				
+				Scheduler.immediate.schedule(function():void
+				{
+					subscription.innerSubscription = source.subscribe(recursiveObserver);
+				});
+				
+				return subscription;
+			});
 		}
 		
 		public function returnValue(value:Object):IObservable

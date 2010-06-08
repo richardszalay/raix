@@ -67,14 +67,14 @@ package rx
 			
 			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
-				var currentSource : IObservable = sources.shift();
+				var remainingSources : Array = [].concat(sources);
+				var currentSource : IObservable = remainingSources.shift();
 			
 				var schedule : FutureSubscription = new FutureSubscription();
 				var subscription : FutureSubscription = new FutureSubscription();
 				
 				var composite : CompositeSubscription = new CompositeSubscription([schedule, subscription]);
 				
-				var remainingSources : Array = [].concat(sources);
 				
 				var dec : IObserver = null;
 				

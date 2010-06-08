@@ -93,5 +93,23 @@ package rx.tests.operators
             Assert.assertEquals(1, sourceB.subscriptionCount);
             Assert.assertEquals(0, scheduler.queueSize);
         }
+        
+        [Test]
+        public function can_resubscribe() : void
+        {
+        	var obs : IObservable = Observable.returnValue(int, 1)
+        		.concat([Observable.returnValue(int, 2)]);
+        		
+        	var statsA : StatsObserver = new StatsObserver();
+        	var statsB : StatsObserver = new StatsObserver();
+        	
+        	obs.subscribe(statsA);
+        	obs.subscribe(statsB);
+        	
+        	Assert.assertEquals(2, statsB.nextCount); 
+        	Assert.assertEquals(1, statsB.nextValues[0]); 
+        	Assert.assertEquals(2, statsB.nextValues[1]); 
+        	Assert.assertTrue(statsB.completedCalled); 
+        }
 	}
 }

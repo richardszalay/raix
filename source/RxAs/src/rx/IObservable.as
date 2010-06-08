@@ -120,12 +120,12 @@ package rx
 		function replay(bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
 		function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
-		function repeat(repeatCount : int = 0, scheduler : IScheduler = null) : IObservable;
+		function repeat(repeatCount:uint=0):IObservable;
 		
 		// TODO: ??
 		// function replay() : IObservable
 		
-		function retry(retryCount : int, scheduler : IScheduler = null) : IObservable;
+		function retry(retryCount : int = 0) : IObservable;
 		
 		function returnValue(value : Object) : IObservable;
 		

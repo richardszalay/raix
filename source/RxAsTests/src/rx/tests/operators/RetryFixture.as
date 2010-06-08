@@ -10,11 +10,11 @@ package rx.tests.operators
 	import rx.impl.ClosureSubscription;
 	import rx.tests.mocks.StatsObserver;
 	
-	public class RepeatFixture extends AbsDecoratorOperatorFixture
+	public class RetryFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.concat([Observable.empty(source.type).repeat(1)]);
+			return source.concat([Observable.empty(source.type).retry(1)]);
 		}
 		
 		[Test]
@@ -22,15 +22,16 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 5)
-				.repeat(3)
+			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
+				.retry(3)
 				.subscribe(stats);
-				
+
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals(5, stats.nextValues[0]);
 			Assert.assertEquals(5, stats.nextValues[1]);
 			Assert.assertEquals(5, stats.nextValues[2]);
-			Assert.assertTrue(stats.completedCalled);
+			Assert.assertTrue(stats.errorCalled);
+			Assert.assertFalse(stats.completedCalled);
 		}
 		
 		[Test]
@@ -38,8 +39,8 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 5)
-				.repeat(500)
+			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
+				.retry(500)
 				.subscribe(stats);
 		}
 		
@@ -52,19 +53,19 @@ package rx.tests.operators
                 {
                     subscribeCount++;
 
-                    obs.onCompleted();
+                    obs.onError(new Error());
 
                     return ClosureSubscription.empty();
                 });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat(2).subscribe(stats);
+            source.retry(2).subscribe(stats);
 
             Assert.assertEquals(2, subscribeCount);
         }
 
         [Test]
-        public function errors_stop_repeats() : void
+        public function complete_stop_repeats() : void
         {
             var subscribeCount : int = 0;
 
@@ -72,16 +73,17 @@ package rx.tests.operators
             {
                 subscribeCount++;
 
-                obs.onError(new Error());
+                obs.onCompleted();
 
                 return ClosureSubscription.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat(2).subscribe(stats);
+            source.retry(2).subscribe(stats);
 
             Assert.assertEquals(1, subscribeCount);
-            Assert.assertTrue(stats.errorCalled);
+            Assert.assertTrue(stats.completedCalled);
+            Assert.assertFalse(stats.errorCalled);
         }
 
         [Test]
@@ -94,14 +96,14 @@ package rx.tests.operators
                 if (subscribeCount < 200)
                 {
                     obs.onNext(subscribeCount++);
-                    obs.onCompleted();
+                    obs.onError(new Error());
                 }
 
                 return ClosureSubscription.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat().subscribe(stats);
+            source.retry().subscribe(stats);
 
             Assert.assertEquals(200, subscribeCount);
             Assert.assertFalse(stats.completedCalled);

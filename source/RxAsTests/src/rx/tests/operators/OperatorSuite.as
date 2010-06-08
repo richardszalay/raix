@@ -47,6 +47,7 @@ package rx.tests.operators
 		public var publish : PublishFixture;
 		public var replay : ReplayFixture;
 		public var repeat : RepeatFixture;
+		public var retry : RetryFixture;
 		public var range : RangeFixture;
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;

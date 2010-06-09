@@ -81,9 +81,11 @@
     <Compile Include="Operators\AggregateFixture.cs" />
     <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\ConcatFixture.cs" />
+    <Compile Include="Operators\ForkJoinInstanceFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\DoFixture.cs" />
     <Compile Include="Operators\FinallyFixture.cs" />
+    <Compile Include="Operators\ForkJoinFixture.cs" />
     <Compile Include="Operators\JoinsFixture.cs" />
     <Compile Include="Operators\MaterializeFixture.cs" />
     <Compile Include="Operators\NeverEventFixture.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Operators\FromEventFixture.cs" />
     <Compile Include="Operators\ScanFixture.cs" />
     <Compile Include="Operators\SumFixture.cs" />
+    <Compile Include="Operators\TakeFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subjects\AsyncSubjectFixture.cs" />
     <Compile Include="Subjects\BehaviorSubjectFixture.cs" />

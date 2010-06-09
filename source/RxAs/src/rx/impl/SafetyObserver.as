@@ -20,7 +20,10 @@ package rx.impl
 		
 	    public function onNext(value : Object) : void
 	    {
-	    	_innerObserver.onNext(value);
+	    	if (_active)
+	    	{
+	    		_innerObserver.onNext(value);
+	    	}
 	    }
 	    
 		public function onCompleted() : void

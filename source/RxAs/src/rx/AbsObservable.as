@@ -794,9 +794,9 @@ package rx
 			});
 		}
 		
-		public function forkJoin(sources:Array):IObservable
+		public function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable
 		{
-			throw new IllegalOperationError("Not implemented");
+			return this.zip(resultType, right, selector).take(1);
 		}
 		
 		public function asObservable():IObservable
@@ -1483,30 +1483,35 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			scheduler = Observable.resolveScheduler(scheduler);
+			if (count == 0)
+			{
+				return Observable.empty(this.type, scheduler); 
+			}
 			
 			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
-				var subscription : ICancelable;
+				var subscription : FutureSubscription = new FutureSubscription();
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
 					{
-						scheduler.schedule(function():void { observer.onNext(value); });
+						observer.onNext(value);
 						
 						if (++countSoFar == count)
 						{
-							subscription.cancel();
-							scheduler.schedule(function():void { observer.onCompleted(); });
+							observer.onCompleted();
 						}
 					},
-					function () : void { scheduler.schedule(function():void { observer.onCompleted(); }); },
-					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
+					observer.onCompleted,
+					observer.onError
 					);
 				
-				subscription = source.subscribe(decoratorObserver);
+				Scheduler.immediate.schedule(function():void
+				{
+					subscription.innerSubscription = source.subscribe(decoratorObserver);
+				});
 				
 				return subscription;
 			});
@@ -1724,26 +1729,16 @@ package rx
 			
 			return new ClosureObservable(resultType, function (observer : IObserver) : ICancelable
 			{
+				var canceled : Boolean = false;
+				
+				var leftComplete : Boolean = false;
 				var leftValues : Array = new Array();
+				
+				var rightComplete : Boolean = false;
 				var rightValues : Array = new Array();
 				
-				var leftSubscription : ICancelable, 
-					rightSubscription : ICancelable;
-				
-				var unsubscribeAll : Function = function():void
-				{
-					if (leftSubscription != null)
-					{
-						leftSubscription.cancel();
-						leftSubscription = null;
-					}
-					
-					if (rightSubscription != null)
-					{
-						rightSubscription.cancel();
-						rightSubscription = null;
-					}
-				};				
+				var leftSubscription : FutureSubscription = new FutureSubscription(), 
+					rightSubscription : FutureSubscription = new FutureSubscription();
 				
 				var leftObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -1759,8 +1754,12 @@ package rx
 							leftValues.push(value);
 						}
 					},
-					function () : void { unsubscribeAll(); observer.onCompleted(); },
-					function (error : Error) : void { unsubscribeAll(); observer.onError(error); }
+					function():void
+					{
+						leftComplete = true; 
+						if (rightComplete) { observer.onCompleted(); }
+					},
+					observer.onError
 					);
 					
 				var rightObserver : IObserver = new ClosureObserver(
@@ -1777,26 +1776,20 @@ package rx
 							rightValues.push(value);
 						}
 					},
-					function () : void { unsubscribeAll(); observer.onCompleted(); },
-					function (error : Error) : void { unsubscribeAll(); observer.onError(error); }
+					function():void
+					{
+						rightComplete = true; 
+						if (leftComplete) { observer.onCompleted(); }
+					},
+					observer.onError
 					);
 					
-				leftSubscription = source.subscribe(leftObserver);
-				rightSubscription = rightSource.subscribe(rightObserver);
+				leftSubscription.innerSubscription = source.subscribe(leftObserver);
+				rightSubscription.innerSubscription = rightSource.subscribe(rightObserver);
 				
 				return new ClosureSubscription(function():void
 				{
-					if (leftSubscription != null)
-					{
-						leftSubscription.cancel();
-						leftSubscription = null;
-					}
-					
-					if (rightSubscription != null)
-					{
-						rightSubscription.cancel();
-						rightSubscription = null;
-					}
+					new CompositeSubscription([leftSubscription, rightSubscription]).cancel();
 				});
 			});
 		}		

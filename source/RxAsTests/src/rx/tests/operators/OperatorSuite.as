@@ -31,6 +31,8 @@ package rx.tests.operators
 		public var finallyAction : FinallyActionFixture;
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
+		public var forkJoin : ForkJoinFixture;
+		public var forkJoinInstance : ForkJoinInstanceFixture;
 		public var fromEvent : FromEventFixture;
 		public var interval : IntervalFixture;
 		public var join : JoinFixture;

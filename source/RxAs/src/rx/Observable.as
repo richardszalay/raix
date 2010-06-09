@@ -369,6 +369,64 @@ package rx
 			});
 		}
 		
+		public static function forkJoin(sources : Array) : IObservable
+		{
+			if (sources.length < 2)
+			{
+				throw new ArgumentError("At least two sources must be passed to forkJoin"); 
+			}
+			
+			sources = new Array().concat(sources);
+			
+			return new ClosureObservable(Array, function(observer : IObserver) : ICancelable
+			{
+				var hasValue : Array = new Array(sources.length);
+				var isComplete : Array = new Array(sources.length);
+				var values : Array = new Array();
+				
+				var subscriptions : CompositeSubscription = new CompositeSubscription([]);
+				
+				var booleanPredicate : Function = function(v:Boolean, i:int, a:Array) : Boolean { return v; };
+				
+				for (var i:int =0;i<sources.length; i++)
+				{
+					(function(i:int):void
+					{
+						var source : IObservable = sources[i];
+						
+						subscriptions.add(source.subscribeFunc(
+							function(v:Object):void
+							{
+								if (!hasValue[i])
+								{
+									hasValue[i] = true;
+									values[i] = v;
+									
+									if (hasValue.every(booleanPredicate))
+									{
+										observer.onNext(values);
+										observer.onCompleted();
+									}
+								}
+							},
+							function():void
+							{
+								isComplete[i] = true;
+								
+								if (isComplete.every(booleanPredicate))
+								{
+									observer.onCompleted();
+								}
+							},
+							observer.onError));
+						
+					})(i);
+				}
+				
+				return subscriptions;
+			});
+		}
+		
 		public static function fromEvent(eventDispatcher:IEventDispatcher, type:String, eventType : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
 			eventType = eventType || Event;
@@ -709,7 +767,10 @@ package rx
 				
 				var sourceComplete : Boolean = false;
 				
-				subscription.add(source.subscribeFunc(
+				var outerSubscription : FutureSubscription = new FutureSubscription();
+				subscription.add(outerSubscription);
+				
+				outerSubscription.innerSubscription = source.subscribeFunc(
 					function(innerSource:IObservable) : void
 					{
 						if (innerSource == null)
@@ -730,25 +791,27 @@ package rx
 								innerSubscription.cancel();
 								subscription.remove(innerSubscription);
 								
-								if (sourceComplete && subscription.count == 1)
+								if (sourceComplete && subscription.count == 0)
 								{
 									obs.onCompleted();
 								}
 							},
-							function(e:Error) : void { obs.onError(e); }
+							obs.onError
 						);
 					},
 					function() : void
 					{
 						sourceComplete = true;
 						
-						if (subscription.count == 1)
+						subscription.remove(outerSubscription);
+						
+						if (subscription.count == 0)
 						{
 							obs.onCompleted();
 						}
 					},
-					function(e:Error) : void { obs.onError(e); }
-					));
+					obs.onError
+					);
 				
 				return subscription;
 			});

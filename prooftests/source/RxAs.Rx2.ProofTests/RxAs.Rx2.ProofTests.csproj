@@ -74,6 +74,7 @@
     <Compile Include="Mock\ManualScheduler.cs" />
     <Compile Include="Mock\StatsObserver.cs" />
     <Compile Include="Mock\StatsSubject.cs" />
+    <Compile Include="Operators\AllFixture.cs" />
     <Compile Include="Operators\BufferWithCountFixture.cs" />
     <Compile Include="Operators\CastFixture.cs" />
     <Compile Include="Operators\CatchFixture.cs" />

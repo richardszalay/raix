@@ -54,6 +54,22 @@ package rx
 			});
 		}
 		
+		public static function create(subscribeFunc : Function) : IObservable
+		{
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
+			{
+				var cancelFunc : Function = subscribeFunc(observer) as Function;
+				
+				return new ClosureSubscription(function():void
+				{
+					if (cancelFunc != null)
+					{
+						cancelFunc();
+					}
+				});
+			});
+		}
+		
 		public static function concat(type : Class, sources : Array, scheduler:IScheduler=null) : IObservable
 		{
 			if (sources == null || sources.length == 0)

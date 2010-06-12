@@ -79,6 +79,7 @@
     <Compile Include="Operators\FromEventFixture.cs" />
     <Compile Include="Operators\MaterializeFixture.cs" />
     <Compile Include="Operators\NeverEventFixture.cs" />
+    <Compile Include="Operators\ThrottleFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

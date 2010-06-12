@@ -1611,14 +1611,14 @@ package rx
 						{
 							lastValueTimestamp = value.timestamp;
 							
-							scheduler.schedule(function():void { observer.onNext(value.value); });
+							observer.onNext(value.value);
 						}
 					},
-					function () : void { scheduler.schedule(function():void { observer.onCompleted(); }); },
-					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
+					observer.onCompleted,
+					observer.onError
 					);
 				
-				subscription = source.timestamp().subscribe(decoratorObserver);
+				subscription = source.timestamp(scheduler).subscribe(decoratorObserver);
 				
 				return subscription;
 			});

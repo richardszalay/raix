@@ -57,7 +57,9 @@ package rx
 		// static create(subscribe : Function) : IObservable;
 
 		function delay(delayMs : int, scheduler : IScheduler = null) : IObservable;
-		function delayUntil(dt : Date, scheduler : IScheduler = null) : IObservable;
+		
+		// Not sure if this makes sense
+		//function delayUntil(dt : Date, scheduler : IScheduler = null) : IObservable;
 		
 		function dematerialize(type : Class):IObservable;
 		

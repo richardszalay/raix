@@ -71,25 +71,16 @@ package rx
 		
 		function firstOrDefault() : IObservable;
 		
-		function forkJoin(sources : Array/*.<IObservable>*/) : IObservable;
-		
-		// TODO: What's the equivalent?
-		//function fromAsyncPattern
-		
-		// TODO: Lot's of overloads to look at
-		// function generate() : IObservable;
+		function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable;
 		
 		function asObservable() : IObservable;
 		
 		function distinctUntilChanged(comparer : Function = null) : IObservable;
 		
-		//function join(plans : Array/*.<Plan>*/) : IObservable;
-		
 		function last() : IObservable;
 		function lastOrDefault() : IObservable;
 		
 		function latest() : Array;
-		//function latestValue() : IPropertyGetter;
 		
 		function let(func : Function) : IObservable;
 		
@@ -98,7 +89,6 @@ package rx
 		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
 		
 		function mostRecent(initialValue : Object) : IObservable;
-		//function mostRecentValue(initialValue : Object) : IPropertyGetter;
 		
 		function ofType(type : Class) : IObservable;
 
@@ -114,8 +104,6 @@ package rx
 		
 		function publishAndConnect(selector : Function) : IObservable;
 		
-		// static function range(start : int, count : int, scheduler : IScheduler = null) : IObservable;
-		
 		function removeTimeInterval(type : Class) : IObservable;
 		function removeTimestamp(type : Class) : IObservable;
 		
@@ -123,9 +111,6 @@ package rx
 		function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
 		function repeat(repeatCount:uint=0):IObservable;
-		
-		// TODO: ??
-		// function replay() : IObservable
 		
 		function retry(retryCount : int = 0) : IObservable;
 		
@@ -150,7 +135,6 @@ package rx
 		
 		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
 		
-		// TODO: ??
 		function sum() : IObservable;
 		
 		function take(count : int, scheduler : IScheduler = null) : IObservable;
@@ -164,8 +148,6 @@ package rx
 		function timeInterval(scheduler : IScheduler = null) : IObservable;
 		
 		function timeout(timeoutMs : int, other : IObservable = null, scheduler : IScheduler = null) : IObservable;
-		
-		// static function timer(dueTimeMs : int) : IObservable;
 		
 		function timestamp(scheduler : IScheduler = null) : IObservable;
 		

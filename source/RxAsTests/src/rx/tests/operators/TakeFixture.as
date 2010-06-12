@@ -5,6 +5,7 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
+	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
 	public class TakeFixture extends AbsDecoratorOperatorFixture
@@ -43,82 +44,38 @@ package rx.tests.operators
 		}
 
 		[Test]
-		public function next_is_raised_through_scheduler() : void
-		{
-			var manObs : Subject = new Subject(int);
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var obs : IObservable = manObs.take(3, scheduler);
-			
-			var nextCount : uint = 0;
-			var completeCalled : Boolean = false;
-			
-			obs.subscribeFunc(
-				function(pl:int):void { nextCount++; },
-				function():void { completeCalled = true; }	
-			);
-			
-			manObs.onNext(0);
-			manObs.onNext(0);			
-			manObs.onNext(0);
-			
-			Assert.assertEquals(0, nextCount);
-			Assert.assertFalse(completeCalled);
-			
-			scheduler.runAll();
-			
-			Assert.assertEquals(3, nextCount);
-			Assert.assertTrue(completeCalled);
-		}
-		
-		[Test]
-		public function completed_is_raised_through_scheduler() : void
-		{
-			var manObs : Subject = new Subject(int);
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var obs : IObservable = manObs.take(3, scheduler);
-			
-			var completeCalled : Boolean = false;
-			
-			obs.subscribeFunc(
-				function(pl:int):void { },
-				function():void { completeCalled = true; }	
-			);
-			
-			manObs.onCompleted();
-			
-			Assert.assertFalse(completeCalled);
-			
-			scheduler.runAll();
-			
-			Assert.assertTrue(completeCalled);
-		}
-		
-		[Test]
-		public function error_is_raised_through_scheduler() : void
-		{
-			var manObs : Subject = new Subject(int);
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var obs : IObservable = manObs.take(3, scheduler);
-			
-			var errorCalled : Boolean = false;
-			
-			obs.subscribeFunc(
-				function(pl:int):void { },
-				function():void{},
-				function(err:Error):void { errorCalled = true; }	
-			);
-			
-			manObs.onError(new Error());
-			
-			Assert.assertFalse(errorCalled);
-			
-			scheduler.runAll();
-			
-			Assert.assertTrue(errorCalled);
-		}
+        public function scheduler_is_not_used_when_count_great_than_zero() : void
+        {
+            var scheduler : ManualScheduler = new ManualScheduler();
+
+            var subject : Subject = new Subject(int);
+
+            var stats : StatsObserver = new StatsObserver();
+
+            subject.take(3, scheduler).subscribe(stats);
+
+            subject.onNext(0);
+            subject.onNext(1);
+            subject.onNext(2);
+            
+            Assert.assertEquals(0, scheduler.queueSize);
+        }
+
+        [Test]
+        public function scheduler_is_used_for_completion_when_take_is_zero() : void
+        {
+            var scheduler : ManualScheduler = new ManualScheduler();
+
+            var stats : StatsObserver = new StatsObserver();
+
+            new Subject(int).take(0, scheduler).subscribe(stats);
+
+            Assert.assertFalse(stats.completedCalled);
+
+            scheduler.runNext();
+
+            Assert.assertTrue(stats.completedCalled);
+        }
 
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void

@@ -1,11 +1,11 @@
 package rx.tests.operators
 {
 	import org.flexunit.Assert;
-	import org.flexunit.async.Async;
 	
 	import rx.IObservable;
 	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
+	import rx.tests.mocks.StatsObserver;
 	
 	[TestCase]
 	public class ThrottleFixture extends AbsDecoratorOperatorFixture
@@ -15,73 +15,55 @@ package rx.tests.operators
 			return source.throttle(0);
 		}
 		
-		[Test(async)]
-		public function values_are_throttled_within_specified_timeframe() : void
-		{
-			var manObs : Subject = new Subject(int);
-			
-			var obs : IObservable = manObs.throttle(50);
-			
-			var nextCount : uint = 0;
-			
-			obs.subscribeFunc(function(pl:int):void
-			{
-				nextCount++;
-			});
-			
-			manObs.onNext(1); // piped
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			
-			Assert.assertEquals(1, nextCount);
-			
-			// Wait past the throttle timeframe (+5ms to be sure)
-			Async.asyncHandler(this, function():void{}, 55, null, function():void
-			{
-				manObs.onNext(1); // piped
-				manObs.onNext(2); // ignored
-			
-				Assert.assertEquals(2, nextCount);
-			});
-		}
-		
-		[Test(async)]
-		public function scheduler_is_used() : void
-		{
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var manObs : Subject = new Subject(int);
-			
-			var obs : IObservable = manObs.throttle(50, scheduler);
-			
-			var nextCount : uint = 0;
-			
-			obs.subscribeFunc(function(pl:int):void
-			{
-				nextCount++;
-			});
-			
-			manObs.onNext(1); // piped
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			manObs.onNext(1); // ignored
-			
-			Assert.assertEquals(0, nextCount);
-			
-			// Wait past the throttle timeframe (+5ms to be sure)
-			Async.asyncHandler(this, function():void{}, 55, null, function():void
-			{
-				scheduler.runNext();
-				Assert.assertEquals(1, nextCount);
-				
-				manObs.onNext(1); // piped
-				
-				scheduler.runNext();
-			
-				Assert.assertEquals(2, nextCount);
-			});
-		}
+		[Test]
+		public function scheduler_is_used_to_reset_throttle() : void 
+        {
+            var scheduler : ManualScheduler = new ManualScheduler();
+
+            scheduler.now = new Date();
+
+            var subject : Subject = new Subject(int);
+
+            var stats : StatsObserver = new StatsObserver();
+
+            subject.throttle(1000, scheduler).subscribe(stats);
+
+            subject.onNext(0);
+            subject.onNext(1);
+
+            scheduler.now = new Date(scheduler.now.time + 1000);
+
+            scheduler.runNext();
+            scheduler.runNext();
+
+            subject.onNext(2);
+
+            Assert.assertEquals(2, stats.nextCount);
+            Assert.assertEquals(1, scheduler.queueSize);
+        }
+
+		[Test]
+        public function exact_time_is_not_allowed() : void
+        {
+            var scheduler : ManualScheduler = new ManualScheduler();
+
+            var subject : Subject = new Subject(int);
+
+            var stats : StatsObserver = new StatsObserver();
+
+            scheduler.now = new Date();
+
+            subject
+                .throttle(1000, scheduler)
+                .subscribe(stats);
+            
+            subject.onNext(0);
+
+            scheduler.now = new Date(scheduler.now.time + 5001);
+            subject.onNext(1);
+
+            Assert.assertEquals(1, stats.nextCount);
+        }
 
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void

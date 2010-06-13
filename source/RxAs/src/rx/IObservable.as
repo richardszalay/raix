@@ -42,13 +42,13 @@ package rx
 		
 		function cast(type : Class) : IObservable;
 		
-		function catchError(second : IObservable, scheduler : IScheduler = null) : IObservable;
+		function catchError(second : IObservable) : IObservable;
 		
 		function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable;
 		
 		function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable;
 		
-		function concat(sources : Array/*.<IObservable>*/, scheduler : IScheduler = null) : IObservable;
+		function concat(sources : Array/*.<IObservable>*/) : IObservable;
 		
 		function contains(value : Object, comparer : Function = null) : IObservable
 		
@@ -110,7 +110,7 @@ package rx
 		function replay(bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
 		function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
-		function repeat(repeatCount:uint=0):IObservable;
+		function repeat(repeatCount : uint = 0) : IObservable;
 		
 		function retry(retryCount : int = 0) : IObservable;
 		
@@ -137,7 +137,7 @@ package rx
 		
 		function sum() : IObservable;
 		
-		function take(count : int, scheduler : IScheduler = null) : IObservable;
+		function take(count : int) : IObservable;
 		
 		function takeUntil(other : IObservable) : IObservable;
 		

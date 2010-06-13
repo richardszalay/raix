@@ -134,7 +134,7 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function buffer_is_flushed_on_error() : void
+		public function buffer_is_aborted_on_error() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
@@ -148,8 +148,27 @@ package rx.tests.operators
 				.subscribe(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
-			Assert.assertEquals(1, stats.nextCount);
-            Assert.assertEquals(5, stats.nextValues[0].length);
+			Assert.assertEquals(0, stats.nextCount);
+            //Assert.assertEquals(5, stats.nextValues[0].length);
+		}
+		
+		[Test]
+		public function empty_buffer_is_aborted_on_error() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			var valueScheduler : ManualScheduler = new ManualScheduler();
+			var bufferScheduler : ManualScheduler = new ManualScheduler();
+			
+			var startTime : Date = new Date();
+			
+			Observable.empty(int).concat([Observable.throwError(new Error())])
+				.bufferWithTime(30, 20, bufferScheduler)
+				.subscribe(stats);
+			
+			Assert.assertTrue(stats.errorCalled);
+			Assert.assertEquals(0, stats.nextCount);
+            //Assert.assertEquals(5, stats.nextValues[0].length);
 		}
 	}
 }

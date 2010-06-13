@@ -109,7 +109,7 @@ package rx.tests.subjects
         }
 
         [Test]
-        public function next_and_complete_are_scheduled_together() : void
+        public function next_and_complete_are_scheduled_separately() : void
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
@@ -124,9 +124,13 @@ package rx.tests.subjects
 
             subject.subscribe(statsA);
             
+            Assert.assertEquals(1, scheduler.queueSize);
             scheduler.runNext();
-
             Assert.assertTrue(statsA.nextCalled);
+            Assert.assertFalse(statsA.completedCalled);
+            
+            Assert.assertEquals(1, scheduler.queueSize);
+            scheduler.runNext();
             Assert.assertTrue(statsA.completedCalled);
         }
 

@@ -41,50 +41,8 @@ package rx.tests.operators
 			
 			Assert.assertTrue(stats.errorCalled);
 			Assert.assertTrue(stats.error is IllegalOperationError);
-		}
-		
-		[Test]
-		public function catch_with_observer_subscribes_to_first_through_scheduler() : void
-		{
-			var manObs : Subject = new Subject(int);
-			
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var stats : StatsObserver = new StatsObserver();
-			
-			manObs
-				.catchError(Observable.throwError(new IllegalOperationError(), int), scheduler)
-				.subscribe(stats);
-			
-			Assert.assertFalse(manObs.hasSubscriptions);
-			
-			scheduler.runNext();
-			
-			Assert.assertTrue(manObs.hasSubscriptions);
-		}
-		
-		[Test]
-		public function catch_with_observer_subscribes_to_next_through_scheduler() : void
-		{
-			var manObs : Subject = new Subject(int);
-			
-			var scheduler : ManualScheduler = new ManualScheduler();
-			
-			var stats : StatsObserver = new StatsObserver();
-			
-			Observable.throwError(new Error(), int)
-				.catchError(manObs, scheduler)
-				.subscribe(stats);
-			
-			scheduler.runNext();
-			
-			Assert.assertFalse(manObs.hasSubscriptions);
-			
-			scheduler.runNext();
-			
-			Assert.assertTrue(manObs.hasSubscriptions);
-		}
-		
+		}		
+	
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{

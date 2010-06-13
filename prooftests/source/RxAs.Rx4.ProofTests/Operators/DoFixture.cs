@@ -65,17 +65,20 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
-        public void exception_thrown_in_next_action_bubbles_when_error_action_is_specifid()
+        [Test]
+        public void exception_thrown_in_next_action_sent_to_onerror_when_error_action_is_specifid()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
 
             Observable.Range(0, 2)
                 .Do(x => { throw new ApplicationException(); }, e => { })
                 .Subscribe(stats);
+
+            Assert.IsFalse(stats.NextCalled);
+            Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
+        [Test]
         public void exception_thrown_in_next_action_bubbles_when_complete_action_is_specifid()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
@@ -83,9 +86,11 @@ namespace RxAs.Rx4.ProofTests.Operators
             Observable.Range(0, 2)
                 .Do(x => { throw new ApplicationException(); }, () => { })
                 .Subscribe(stats);
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
+        [Test]
         public void exception_thrown_in_next_action_bubbles_when_all_actions_are_specifid()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
@@ -93,17 +98,23 @@ namespace RxAs.Rx4.ProofTests.Operators
             Observable.Range(0, 2)
                 .Do(x => { throw new ApplicationException(); }, e => { }, () => { })
                 .Subscribe(stats);
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
 
         [Test]
         public void exception_thrown_in_next_action_sent_to_error_action()
         {
+            StatsObserver<int> stats = new StatsObserver<int>();
+
             Observable.Range(0, 5)
                 .Do(x => { throw new Exception(); })
-                .Subscribe(x => { }, e => { }, () => { });
+                .Subscribe(stats);
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
+        [Test]
         public void exception_thrown_in_complete_action_is_bubbled()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
@@ -111,9 +122,11 @@ namespace RxAs.Rx4.ProofTests.Operators
             Observable.Range(0, 2)
                 .Do(x => { }, () => { throw new ApplicationException(); })
                 .Subscribe(stats);
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
+        [Test]
         public void exception_thrown_in_error_action_is_bubbled()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
@@ -121,6 +134,8 @@ namespace RxAs.Rx4.ProofTests.Operators
             Observable.Throw<int>(new Exception())
                 .Do(x => { }, e => { throw new ApplicationException(); })
                 .Subscribe(stats);
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
     }
 }

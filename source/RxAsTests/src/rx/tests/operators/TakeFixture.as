@@ -3,6 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.IObservable;
+	import rx.Observable;
 	import rx.Subject;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver;
@@ -43,38 +44,10 @@ package rx.tests.operators
 			Assert.assertTrue(completeCalled);
 		}
 
-		[Test]
-        public function scheduler_is_not_used_when_count_great_than_zero() : void
+        [Test(expets="ArgumentError")]
+        public function take_zero_throws_argument_exception() : void
         {
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            var subject : Subject = new Subject(int);
-
-            var stats : StatsObserver = new StatsObserver();
-
-            subject.take(3, scheduler).subscribe(stats);
-
-            subject.onNext(0);
-            subject.onNext(1);
-            subject.onNext(2);
-            
-            Assert.assertEquals(0, scheduler.queueSize);
-        }
-
-        [Test]
-        public function scheduler_is_used_for_completion_when_take_is_zero() : void
-        {
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            new Subject(int).take(0, scheduler).subscribe(stats);
-
-            Assert.assertFalse(stats.completedCalled);
-
-            scheduler.runNext();
-
-            Assert.assertTrue(stats.completedCalled);
+            Observable.range(0, 5).take(0);
         }
 
 		[Test(expects="Error")]

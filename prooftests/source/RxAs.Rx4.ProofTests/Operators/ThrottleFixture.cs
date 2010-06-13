@@ -9,6 +9,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 {
     public class ThrottleFixture
     {
+        [Test]
         public void scheduler_is_used_to_reset_throttle()
         {
             ManualScheduler scheduler = new ManualScheduler();
@@ -24,20 +25,21 @@ namespace RxAs.Rx4.ProofTests.Operators
             subject.OnNext(0);
             subject.OnNext(1);
 
-            //Assert.AreEqual(1, stats.NextCount);
-            //Assert.AreEqual(1, scheduler.QueueSize);
-
             scheduler.Now = scheduler.Now.AddSeconds(1);
 
+            Assert.AreEqual(2, scheduler.QueueSize);
             scheduler.RunNext();
             scheduler.RunNext();
 
             subject.OnNext(2);
+            Assert.AreEqual(1, scheduler.QueueSize);
 
+            scheduler.RunNext();
             Assert.AreEqual(2, stats.NextCount);
             Assert.AreEqual(1, scheduler.QueueSize);
         }
 
+        [Test]
         public void exact_time_is_not_allowed()
         {
             ManualScheduler scheduler = new ManualScheduler();

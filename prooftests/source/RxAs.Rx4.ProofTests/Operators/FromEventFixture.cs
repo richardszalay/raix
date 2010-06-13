@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RxAs.Rx4.ProofTests.Mock;
-using RxAs.Rx4.ProofTests.Mock;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {

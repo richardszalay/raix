@@ -81,8 +81,8 @@ package rx.tests.operators
 			Assert.assertTrue(stats.errorCalled);
 		}
 		
-		[Test(expects="Error")]
-		public function error_thrown_in_next_action_is_bubbled_if_next_and_complete_is_specified() : void
+		[Test]
+		public function error_thrown_in_next_action_is_sent_to_on_error_if_next_and_complete_is_specified() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
@@ -95,7 +95,7 @@ package rx.tests.operators
 			Assert.assertTrue(stats.errorCalled);
 		}
 		
-		[Test(expects="Error")]
+		[Test]
 		public function error_thrown_in_next_action_is_bubbled_if_next_and_error_is_specified() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
@@ -110,7 +110,7 @@ package rx.tests.operators
 			Assert.assertTrue(stats.errorCalled);
 		}
 		
-		[Test(expects="Error")]
+		[Test]
 		public function error_thrown_in_next_action_is_bubbled_if_all_actions_are_specified() : void
 		{
 			var stats : StatsObserver = new StatsObserver();

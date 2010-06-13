@@ -54,9 +54,9 @@ package rx
 			});
 		}
 		
-		public static function create(subscribeFunc : Function) : IObservable
+		public static function create(type : Class, subscribeFunc : Function) : IObservable
 		{
-			return new ClosureObservable(function(observer : IObserver) : ICancelable
+			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
 			{
 				var cancelFunc : Function = subscribeFunc(observer) as Function;
 				
@@ -70,7 +70,7 @@ package rx
 			});
 		}
 		
-		public static function concat(type : Class, sources : Array, scheduler:IScheduler=null) : IObservable
+		public static function concat(type : Class, sources : Array) : IObservable
 		{
 			if (sources == null || sources.length == 0)
 			{
@@ -78,8 +78,6 @@ package rx
 			}
 			
 			sources = new Array().concat(sources);
-			
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
 			
 			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
@@ -91,7 +89,6 @@ package rx
 				
 				var composite : CompositeSubscription = new CompositeSubscription([schedule, subscription]);
 				
-				
 				var dec : IObserver = null;
 				
 				var onComplete : Function = function () : void
@@ -100,10 +97,7 @@ package rx
 					{
 						currentSource = IObservable(remainingSources.shift());
 						
-						schedule.innerSubscription = scheduler.schedule(function():void
-						{
-							subscription.innerSubscription = currentSource.subscribe(dec);
-						});
+						subscription.innerSubscription = currentSource.subscribe(dec);
 					}
 					else
 					{
@@ -113,10 +107,7 @@ package rx
 				
 				dec = new ClosureObserver(observer.onNext, onComplete, observer.onError);
 
-				schedule.innerSubscription = scheduler.schedule(function():void
-				{
-					subscription.innerSubscription = currentSource.subscribe(dec);
-				});
+				subscription.innerSubscription = currentSource.subscribe(dec);
 				
 				return composite;
 			});
@@ -413,16 +404,11 @@ package rx
 						subscriptions.add(source.subscribeFunc(
 							function(v:Object):void
 							{
+								values[i] = v;
+								
 								if (!hasValue[i])
 								{
 									hasValue[i] = true;
-									values[i] = v;
-									
-									if (hasValue.every(booleanPredicate))
-									{
-										observer.onNext(values);
-										observer.onCompleted();
-									}
 								}
 							},
 							function():void

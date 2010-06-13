@@ -62,25 +62,75 @@
     <Compile Include="Mock\ManualScheduler.cs" />
     <Compile Include="Mock\StatsObserver.cs" />
     <Compile Include="Mock\StatsSubject.cs" />
-    <Compile Include="Operators\BufferWithCountFixture.cs" />
-    <Compile Include="Operators\BufferWithTimeFixture.cs" />
-    <Compile Include="Operators\CastFixture.cs" />
-    <Compile Include="Operators\AmbFixture.cs" />
-    <Compile Include="Operators\AnyFixture.cs" />
-    <Compile Include="Operators\AllFixture.cs" />
-    <Compile Include="Operators\ForkJoinFixture.cs" />
-    <Compile Include="Operators\JoinFixture.cs" />
-    <Compile Include="Operators\PruneFixture.cs" />
-    <Compile Include="Operators\RepeatFixture.cs" />
-    <Compile Include="Operators\SelectManyFixture.cs" />
-    <Compile Include="Operators\SkipUntilFixture.cs" />
-    <Compile Include="Operators\DoFixture.cs" />
-    <Compile Include="Operators\EmptyEventFixture.cs" />
-    <Compile Include="Operators\FromEventFixture.cs" />
-    <Compile Include="Operators\MaterializeFixture.cs" />
-    <Compile Include="Operators\NeverEventFixture.cs" />
-    <Compile Include="Operators\ThrottleFixture.cs" />
+    <Compile Include="Operators\AggregateFixture.cs" />
+    <Compile Include="Operators\AllFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\AmbFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\AnyFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\BufferWithCountFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\BufferWithTimeFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\CastFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\CatchFixture.cs" />
+    <Compile Include="Operators\CombineLatestFixture.cs" />
+    <Compile Include="Operators\CountFixture.cs" />
+    <Compile Include="Operators\DoFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\EmptyEventFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\FinallyFixture.cs" />
+    <Compile Include="Operators\ForkJoinFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ForkJoinInstanceFixture.cs" />
+    <Compile Include="Operators\FromEventFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\JoinFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\JoinsFixture.cs" />
+    <Compile Include="Operators\MaterializeFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\NeverEventFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\PruneFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\RepeatFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ScanFixture.cs" />
+    <Compile Include="Operators\SelectManyFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\SkipUntilFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\SumFixture.cs" />
+    <Compile Include="Operators\TakeFixture.cs" />
+    <Compile Include="Operators\ThrottleFixture.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subjects\AsyncSubjectFixture.cs" />
+    <Compile Include="Subjects\BehaviorSubjectFixture.cs" />
+    <Compile Include="Subjects\ConnectableObservableFixture.cs" />
+    <Compile Include="Subjects\ReplaySubjectFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

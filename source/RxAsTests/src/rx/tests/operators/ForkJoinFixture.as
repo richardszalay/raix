@@ -36,7 +36,7 @@ package rx.tests.operators
         }
 
         [Test]
-        public function first_values_are_emitted_if_both_sources_have_multiple_values() : void
+        public function last_values_are_emitted_if_both_sources_have_multiple_values() : void
         {
             var stats : StatsObserver = new StatsObserver();
 
@@ -44,13 +44,12 @@ package rx.tests.operators
                     .subscribe(stats);
 
             Assert.assertEquals(1, stats.nextCount);
-            Assert.assertEquals("0,2", stats.nextValues[0]);
-            Assert.assertTrue(stats.completedCalled);
+            Assert.assertEquals("1,3", stats.nextValues[0]);
             Assert.assertTrue(stats.completedCalled);
         }
 
         [Test]
-        public function values_are_emitted_after_all_are_available() : void
+        public function values_are_emitted_after_all_sequences_have_completed() : void
         {
             var subjectA : Subject = new Subject(int);
             var subjectB : Subject = new Subject(int);
@@ -62,6 +61,11 @@ package rx.tests.operators
 
             subjectA.onNext(0);
             subjectB.onNext(1);
+            subjectB.onCompleted();
+            Assert.assertFalse(stats.nextCalled);
+
+            subjectA.onCompleted();
+            Assert.assertTrue(stats.nextCalled);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals("0,1", stats.nextValues[0]);
@@ -69,7 +73,7 @@ package rx.tests.operators
         }
 
         [Test]
-        public function sequence_completes_when_all_values_are_available() : void
+        public function sequence_completes_when_all_sequences_complete() : void
         {
             var subjectA : Subject = new Subject(int);
             var subjectB : Subject = new Subject(int);
@@ -80,9 +84,11 @@ package rx.tests.operators
                     .subscribe(stats);
 
             subjectA.onNext(0);
+            subjectB.onNext(1);
+            subjectB.onCompleted();
             Assert.assertFalse(stats.completedCalled);
 
-            subjectB.onNext(1);
+            subjectA.onCompleted();
             Assert.assertTrue(stats.completedCalled);
         }
         
@@ -98,7 +104,10 @@ package rx.tests.operators
                     .subscribe(stats);
 
             subjectB.onNext(1);
+            subjectB.onCompleted();
+            
             subjectA.onNext(0);
+            subjectA.onCompleted();
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals(0, stats.nextValues[0][0]);

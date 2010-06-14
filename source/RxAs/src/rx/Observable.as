@@ -13,6 +13,8 @@ package rx
 
 	public class Observable
 	{
+		private static var _unhandledErrorsSubject : Subject = new Subject(Error);
+		
 		public function Observable()
 		{
 			throw new IllegalOperationError("This class is static and cannot be instantiated. Create an IObservable by using one of Observable's static methods");
@@ -564,6 +566,12 @@ package rx
 		}
 		
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
+		{
+			return Observable.merge(Error, Observable.returnValues(Error, 
+				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
+		}
+		
+		private static function getNativeUncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
 			loaderInfo = loaderInfo || LoaderInfo.getLoaderInfoByDefinition(Observable);
 			

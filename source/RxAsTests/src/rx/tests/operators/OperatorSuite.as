@@ -23,7 +23,7 @@ package rx.tests.operators
 		public var count : CountFixture;
 		public var dematerialize : DematerializeFixture;
 		public var delay : DelayFixture;
-		public var delayUntil : DelayUntilFixture;
+		//public var delayUntil : DelayUntilFixture;
 		public var defer : DeferFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var doAction : DoActionFixture;

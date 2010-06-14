@@ -10,79 +10,134 @@ namespace RxAs.Rx4.ProofTests.Operators
     [TestFixture]
     public class ForkJoinFixture
     {
-        [Test]
-		public void uses_first_value_from_each_and_completes()
-		{
+        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        public void no_values_are_emitted_if_one_source_is_empty()
+        {
             var stats = new StatsObserver<int[]>();
 
-            var subjectA = new Subject<int>();
-            var subjectB = new Subject<int>();
-            var subjectC = new Subject<int>();
+            Observable.ForkJoin(
+                    Observable.Empty<int>(),
+                    Observable.Return(1)
+                    )
+                    .Subscribe(stats);
 
-            Observable.ForkJoin(subjectA, subjectB, subjectC)
-                .Subscribe(stats);
-
-            subjectA.OnNext(0); // first A
             Assert.AreEqual(0, stats.NextCount);
+            Assert.IsTrue(stats.CompletedCalled);
+        }
 
-            subjectB.OnNext(1); // first B
+        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        public void no_values_are_emitted_if_both_sources_are_empty()
+        {
+            var stats = new StatsObserver<int[]>();
+
+            Observable.ForkJoin(
+                    Observable.Empty<int>(),
+                    Observable.Empty<int>()
+                    )
+                    .Subscribe(stats);
+
             Assert.AreEqual(0, stats.NextCount);
+            Assert.IsTrue(stats.CompletedCalled);
+        }
 
-            subjectB.OnNext(2);
-            Assert.AreEqual(0, stats.NextCount);
+        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        public void value_array_is_emitted_if_both_sources_have_one_value()
+        {
+            var stats = new StatsObserver<int[]>();
 
-            subjectA.OnNext(3);
-            Assert.AreEqual(0, stats.NextCount);
+            Observable.ForkJoin(
+                    Observable.Return(1),
+                    Observable.Return(2)
+                    )
+                    .Subscribe(stats);
 
-            subjectC.OnNext(4); // first C
             Assert.AreEqual(1, stats.NextCount);
-            Assert.AreEqual(0, stats.NextValues[0][0]);
-            Assert.AreEqual(1, stats.NextValues[0][1]);
-            Assert.AreEqual(4, stats.NextValues[0][2]);
+            Assert.AreEqual(1, stats.NextValues[0][0]);
+            Assert.AreEqual(2, stats.NextValues[0][1]);
             Assert.IsTrue(stats.CompletedCalled);
         }
 
         [Test]
-        public void order_of_values_matches_observers()
+        public void last_values_are_emitted_if_both_sources_have_multiple_values()
         {
             var stats = new StatsObserver<int[]>();
 
-            var subjectA = new Subject<int>();
-            var subjectB = new Subject<int>();
-            var subjectC = new Subject<int>();
+            Observable.ForkJoin(
+                    Observable.Range(0, 2),
+                    Observable.Range(2, 2)
+                    )
+                    .Subscribe(stats);
 
-            Observable.ForkJoin(subjectA, subjectB, subjectC)
-                .Subscribe(stats);
-
-            subjectC.OnNext(4); // first C
-            subjectB.OnNext(1); // first B
-            subjectA.OnNext(0); // first A
-            
             Assert.AreEqual(1, stats.NextCount);
-            Assert.AreEqual(0, stats.NextValues[0][0]);
-            Assert.AreEqual(1, stats.NextValues[0][1]);
-            Assert.AreEqual(4, stats.NextValues[0][2]);
+            Assert.AreEqual(1, stats.NextValues[0][0]);
+            Assert.AreEqual(3, stats.NextValues[0][1]);
             Assert.IsTrue(stats.CompletedCalled);
         }
 
         [Test]
-        public void completes_with_no_value_when_child_sequence_completes_with_no_value()
+        public void values_are_emitted_after_all_sequences_complete()
         {
-            var stats = new StatsObserver<int[]>();
-
             var subjectA = new Subject<int>();
             var subjectB = new Subject<int>();
-            var subjectC = new Subject<int>();
 
-            Observable.ForkJoin(subjectA, subjectB, subjectC)
-                .Subscribe(stats);
+            var stats = new StatsObserver<int[]>();
+
+            Observable.ForkJoin(subjectA, subjectB)
+                    .Subscribe(stats);
+
+            subjectA.OnNext(0);
+            subjectB.OnNext(1);
+            subjectB.OnCompleted();
+            Assert.IsFalse(stats.NextCalled);
 
             subjectA.OnCompleted();
-            subjectB.OnNext(0);
-            subjectC.OnNext(1);
+            Assert.IsTrue(stats.NextCalled);
 
-            Assert.IsFalse(stats.NextCalled);
+            Assert.AreEqual(0, stats.NextValues[0][0]);
+            Assert.AreEqual(1, stats.NextValues[0][1]);
             Assert.IsTrue(stats.CompletedCalled);
+        }
+
+        [Test]
+        public void sequence_completes_when_all_sequences_complete()
+        {
+            var subjectA = new Subject<int>();
+            var subjectB = new Subject<int>();
+
+            var stats = new StatsObserver<int[]>();
+
+            Observable.ForkJoin(subjectA, subjectB)
+                    .Subscribe(stats);
+
+            subjectA.OnNext(0);
+            subjectB.OnNext(1);
+            subjectB.OnCompleted();
+            Assert.IsFalse(stats.CompletedCalled);
+
+            subjectA.OnCompleted();
+            Assert.IsTrue(stats.CompletedCalled);
+        }
+
+        [Test]
+        public void observable_order_is_preserved()
+        {
+            var subjectA = new Subject<int>();
+            var subjectB = new Subject<int>();
+
+            var stats = new StatsObserver<int[]>();
+
+            Observable.ForkJoin(subjectA, subjectB)
+                    .Subscribe(stats);
+
+            subjectB.OnNext(1);
+            subjectB.OnCompleted(); 
+            
+            subjectA.OnNext(0);
+            subjectA.OnCompleted();
+
+            Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(0, stats.NextValues[0][0]);
+            Assert.AreEqual(1, stats.NextValues[0][1]);
         }
     }
 }

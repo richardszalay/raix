@@ -297,7 +297,7 @@ package rx
 					},
 					function (error : Error) : void
 					{
-						flushBuffer();
+						buffer = [];
 						observer.onError(error);
 					});
 					
@@ -336,9 +336,9 @@ package rx
 			});
 		}
 		
-		public function catchError(second : IObservable, scheduler : IScheduler = null) : IObservable
+		public function catchError(second : IObservable) : IObservable
 		{
-			return Observable.catchErrors([this, second], scheduler);
+			return Observable.catchErrors([this, second]);
 		}
 		
 		public function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable
@@ -470,11 +470,11 @@ package rx
 			});
 		}
 		
-		public function concat(sources:Array, scheduler:IScheduler=null):IObservable
+		public function concat(sources:Array):IObservable
 		{
 			sources = [this].concat(sources);
 			
-			return Observable.concat(this.type, sources, scheduler);
+			return Observable.concat(this.type, sources);
 		}
 		
 		public function contains(value : Object, comparer : Function = null) : IObservable
@@ -692,14 +692,8 @@ package rx
 						}
 						catch(err : Error)
 						{
-							if (completeAction == null && errorAction == null)
-							{
-								observer.onError(err);
-							}
-							else
-							{
-								throw err;
-							}
+							observer.onError(err);
+							return;
 						}
 						
 						observer.onNext(pl);
@@ -1468,7 +1462,7 @@ package rx
 		{
 			return Observable
 				.returnValues(this.type, values, scheduler)
-				.concat([this], scheduler);
+				.concat([this]);
 		}
 
 		public function sum():IObservable
@@ -1479,13 +1473,13 @@ package rx
 			}, type, 0).catchError(Observable.returnValue(type, 0));
 		}
 		
-		public function take(count:int, scheduler:IScheduler=null):IObservable
+		public function take(count:int):IObservable
 		{
 			var source : IObservable = this;
 			
 			if (count == 0)
 			{
-				return Observable.empty(this.type, scheduler); 
+				return Observable.empty(this.type); 
 			}
 			
 			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
@@ -1616,14 +1610,14 @@ package rx
 						{
 							lastValueTimestamp = value.timestamp;
 							
-							scheduler.schedule(function():void { observer.onNext(value.value); });
+							observer.onNext(value.value);
 						}
 					},
-					function () : void { scheduler.schedule(function():void { observer.onCompleted(); }); },
-					function (error : Error) : void { scheduler.schedule(function():void { observer.onError(error); }); }
+					observer.onCompleted,
+					observer.onError
 					);
 				
-				subscription = source.timestamp().subscribe(decoratorObserver);
+				subscription = source.timestamp(scheduler).subscribe(decoratorObserver);
 				
 				return subscription;
 			});

@@ -202,6 +202,9 @@ namespace RxAs.Rx4.ProofTests.Operators
             scheduler.RunNext(); // only run one
 
             Assert.IsTrue(stats.NextCalled);
+
+            scheduler.RunNext(); // only run one
+
             Assert.IsTrue(stats.CompletedCalled); // complete is called anyway
         }
 

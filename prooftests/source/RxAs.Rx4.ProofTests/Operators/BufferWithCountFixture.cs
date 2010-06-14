@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using RxAs.Rx4.ProofTests.Mock;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
@@ -16,7 +17,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 			
 			var obs = manObs.BufferWithCount(3);
 			
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1, 2 },
                     new int[] { 3, 4, 5 }
@@ -30,7 +31,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 		{
 			var obs = Observable.Range(0, 4).BufferWithCount(2, 1);
 			
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1 },
                     new int[] { 1, 2 },
@@ -46,7 +47,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 		{
             var obs = Observable.Range(0, 4).BufferWithCount(2, 2);
 
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1 },
                     new int[] { 2, 3 }
@@ -60,7 +61,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 		{
 			var obs = Observable.Range(0, 4).BufferWithCount(2, 3);
 
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1 },
                     new int[] { 3 }
@@ -74,7 +75,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 		{
 			var obs = Observable.Range(0, 3).BufferWithCount(2);
 
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1 },
                     new int[] { 2 }
@@ -86,12 +87,11 @@ namespace RxAs.Rx4.ProofTests.Operators
 		[Test]
 		public void remaining_items_are_released_on_error()
 		{
-			var obs = Observable.Range(0, 4)
-                .Take(3)
+			var obs = Observable.Range(0, 3)
                 .Concat<int>(Observable.Throw<int>(new Exception()))
                 .BufferWithCount(2);
 
-			var expectedValues = new Queue<int[]>(new int[][]
+			var expectedValues = new List<int[]>(new int[][]
                 {
                     new int[] { 0, 1 },
                     new int[] { 2 }
@@ -100,35 +100,23 @@ namespace RxAs.Rx4.ProofTests.Operators
             TestBufferResults(obs, expectedValues);
 		}
 
-        private void TestBufferResults<T>(IObservable<IList<T>> obs, Queue<T[]> expectedValues)
+        private void TestBufferResults<T>(IObservable<IList<T>> obs, List<T[]> expectedValues)
 		{
-			var nextCount = 0;
-			
-			var expectedValueCount = expectedValues.Count;
-			
-			obs.Subscribe(
-                pl => 
-                    {
-                        nextCount++;
+            var stats = new StatsObserver<IList<T>>();
 
-                        T[] expectedArr = expectedValues.Dequeue();
+            obs.Subscribe(stats);
 
-                        Assert.AreEqual(pl.Count, expectedArr.Length);
+            Assert.AreEqual(expectedValues.Count, stats.NextCount, "incorrect number of values");
 
-                        for (int i=0; i<expectedArr.Length; i++)
-                        {
-                            Assert.AreEqual(expectedArr[i], pl[i]);
-                        }
-                    },
-                ex =>
-                    {
-                        Assert.AreEqual(expectedValueCount, nextCount, "incorrect number of values");
-                    },
-                () =>
-                    {
-                        Assert.AreEqual(expectedValueCount, nextCount, "incorrect number of values");
-                    }
-                );
+            for (int i = 0; i < expectedValues.Count; i++)
+            {
+                Assert.AreEqual(expectedValues[i].Length, stats.NextValues[i].Count, "incorrect number of values");
+
+                for (int v = 0; v < expectedValues[i].Length; v++)
+                {
+                    Assert.AreEqual(expectedValues[i][v], stats.NextValues[i][v], "incorrect value");
+                }
+            }
 		}
     }
 }

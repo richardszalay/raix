@@ -7,7 +7,6 @@ using RxAs.Rx4.ProofTests.Mock;
 using System.Threading;
 using System.Concurrency;
 using System.Diagnostics;
-using RxAs.Rx4.ProofTests.Mock;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {

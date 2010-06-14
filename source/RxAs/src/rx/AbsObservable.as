@@ -1168,6 +1168,51 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
+		public function sample(intervalMs : uint, scheduler : IScheduler = null) : IObservable
+		{
+			scheduler = Observable.resolveScheduler(scheduler);
+			
+			var source : IObservable = this;
+			
+			return new ClosureObservable(this.type, function(observer : IObserver) : ICancelable
+			{
+				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				
+				var isComplete : Boolean = false;
+				var valueChanged : Boolean = false;
+				var value : Object = null;
+				
+				subscription.add(Observable.interval(intervalMs, scheduler).subscribeFunc(
+					function(i:int):void
+					{
+						if (valueChanged)
+						{
+							observer.onNext(value);
+							valueChanged = false;
+						}
+						
+						if (isComplete)
+						{
+							observer.onCompleted();
+						}
+					}));
+					
+				subscription.add(source.subscribeFunc(
+					function(v:Object):void
+					{
+						valueChanged = true;
+						value = v;
+					},
+					function():void
+					{
+						isComplete = true;
+					},
+					observer.onError));
+					
+				return subscription;
+			});
+		}
+		
 		public function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
 			var useInitialValue : Boolean = (outputType != null);

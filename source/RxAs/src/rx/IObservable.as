@@ -116,6 +116,8 @@ package rx
 		
 		function returnValue(value : Object) : IObservable;
 		
+		function sample(intervalMs : uint, scheduler : IScheduler = null) : IObservable;
+		
 		function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
 		
 		function select(result : Class, selector:Function):IObservable;

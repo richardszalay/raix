@@ -53,6 +53,7 @@ package rx.tests.operators
 		public var range : RangeFixture;
 		public var removeTimeInterval : RemoveTimeIntervalFixture;
 		public var removeTimestamp : RemoveTimestampFixture;
+		public var sample : SampleFixture;
 		public var scan : ScanFixture;
 		public var select : SelectFixture;
 		public var selectMany : SelectManyFixture;

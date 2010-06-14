@@ -21,14 +21,23 @@ namespace RxAs.Rx4.ProofTests.Mock
         {
             actions.Enqueue(action);
 
-            return Disposable.Create(() => { });
+            return Disposable.Create(() => Remove(action));
         }
 
         public IDisposable Schedule(Action action)
         {
             actions.Enqueue(action);
 
-            return Disposable.Create(() => {  });
+            return Disposable.Create(() => Remove(action));
+        }
+
+        private void Remove(Action action)
+        {
+            List<Action> actionsList = actions.ToList();
+
+            actionsList.Remove(action);
+
+            actions = new Queue<Action>(actionsList);
         }
 
         public void RunAll()

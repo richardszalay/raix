@@ -114,6 +114,7 @@
     <Compile Include="Operators\RepeatFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\SampleFixture.cs" />
     <Compile Include="Operators\ScanFixture.cs" />
     <Compile Include="Operators\SelectManyFixture.cs">
       <SubType>Code</SubType>

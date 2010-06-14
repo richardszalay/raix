@@ -6,6 +6,7 @@ package rx.subjects
 	import rx.IObserver;
 	import rx.ISubject;
 	import rx.Subject;
+	import rx.impl.ClosureObservable;
 	import rx.impl.ClosureSubscription;
 	import rx.impl.CompositeSubscription;
 
@@ -37,6 +38,40 @@ package rx.subjects
 			}
 			
 			return _subscription;
+		}
+		
+		public function refCount() : IObservable
+		{
+			var source : IConnectableObservable = this;
+			
+			var connection : ICancelable = null;
+			var subscriptionCount : uint = 0;
+			
+			return new ClosureObservable(this.type, function(observer : IObserver) : ICancelable
+			{
+				subscriptionCount++;
+				
+				var subscription : ICancelable = source.subscribe(observer);
+				
+				if (subscriptionCount == 1)
+				{
+					connection = source.connect();
+				}
+				
+				return new CompositeSubscription([
+					subscription,
+					new ClosureSubscription(function():void
+					{
+						subscriptionCount--;
+						
+						if (subscriptionCount == 0)
+						{
+							connection.cancel();
+							connection = null;
+						}
+					})
+				]);
+			});
 		}
 		
 		public override function subscribe(observer:IObserver):ICancelable

@@ -6,7 +6,8 @@ package rx.tests.operators
 	[RunWith("org.flexunit.runners.Suite")]
 	public class OperatorSuite
 	{
-		public var aggregaet : AggregateFixture;
+		public var addRef : AddRefFixture;
+		public var aggregate : AggregateFixture;
 		public var all : AllFixture;
 		public var any : AnyFixture;
 		public var amb : AmbFixture;

@@ -6,5 +6,7 @@ package rx.subjects
 	public interface IConnectableObservable extends IObservable
 	{
 		function connect() : ICancelable;
+		
+		function refCount() : IObservable;
 	}
 }

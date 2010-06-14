@@ -62,6 +62,7 @@
     <Compile Include="Mock\ManualScheduler.cs" />
     <Compile Include="Mock\StatsObserver.cs" />
     <Compile Include="Mock\StatsSubject.cs" />
+    <Compile Include="Operators\AddRefFixture.cs" />
     <Compile Include="Operators\AggregateFixture.cs" />
     <Compile Include="Operators\AllFixture.cs">
       <SubType>Code</SubType>

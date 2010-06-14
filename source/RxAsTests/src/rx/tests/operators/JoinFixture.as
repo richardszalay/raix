@@ -154,14 +154,14 @@ package rx.tests.operators
                 .subscribe(stats);
 
             subjectA.onNext(0);
-            subjectC.onNext(3);
+            subjectC.onNext(1);
 
             subjectA.onNext(2);
-            subjectB.onNext(1);
+            subjectB.onNext(3);
 
             Assert.assertEquals(2, stats.nextCount);
-            Assert.assertEquals("2.3", stats.nextValues[1]);
-            Assert.assertEquals("0,1", stats.nextValues[0]);
+            Assert.assertEquals("0.1", stats.nextValues[0]);
+            Assert.assertEquals("2,3", stats.nextValues[1]);
         }
 
         [Test]

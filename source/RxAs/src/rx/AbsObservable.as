@@ -161,7 +161,7 @@ package rx
 			throw new IllegalOperationError("Not implemented");
 		}
 		
-		public function bufferWithCount(count:int, skip:int=0):IObservable
+		public function bufferWithCount(count:uint, skip:uint=0):IObservable
 		{
 			if (count == 0)
 			{
@@ -236,7 +236,7 @@ package rx
 			});
 		}
 		
-		public function bufferWithTime(timeMs:int, timeShiftMs:int=0, scheduler:IScheduler=null):IObservable
+		public function bufferWithTime(timeMs:uint, timeShiftMs:uint=0, scheduler:IScheduler=null):IObservable
 		{
 			if (timeMs == 0)
 			{
@@ -541,7 +541,7 @@ package rx
 			});
 		}
 		
-		public function delay(delayMs:int, scheduler:IScheduler=null):IObservable
+		public function delay(delayMs:uint, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -790,7 +790,7 @@ package rx
 		
 		public function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable
 		{
-			return this.zip(resultType, right, selector).take(1);
+			return this.combineLatest(resultType, right, selector).takeLast(1);
 		}
 		
 		public function asObservable():IObservable
@@ -1124,7 +1124,7 @@ package rx
 			});
 		}
 		
-		public function retry(retryCount:int = 0):IObservable
+		public function retry(retryCount:uint = 0):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -1335,7 +1335,7 @@ package rx
 			});
 		}
 		
-		public function skip(count:int):IObservable
+		public function skip(count:uint):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -1360,6 +1360,41 @@ package rx
 				subscription = source.subscribe(decoratorObserver);
 				
 				return subscription;
+			});
+		}
+		
+		public function skipLast(count : uint) : IObservable
+		{
+			if (count == 0)
+			{
+				throw new ArgumentError("count cannot be 0");
+			}
+			
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			{
+				var buffer : Array = new Array();
+				
+				var futureSubscription : FutureSubscription = new FutureSubscription();
+				
+				futureSubscription.innerSubscription = source.subscribeFunc(
+					function(v:Object):void
+					{
+						buffer.push(v);
+					},
+					function():void
+					{
+						while(buffer.length > count)
+						{
+							observer.onNext(buffer.shift());
+						}
+						
+						observer.onCompleted();
+					},
+					observer.onError);
+					
+				return futureSubscription;
 			});
 		}
 		
@@ -1473,7 +1508,7 @@ package rx
 			}, type, 0).catchError(Observable.returnValue(type, 0));
 		}
 		
-		public function take(count:int):IObservable
+		public function take(count:uint):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -1508,6 +1543,45 @@ package rx
 				});
 				
 				return subscription;
+			});
+		}
+		
+		public function takeLast(count : uint) : IObservable
+		{
+			if (count == 0)
+			{
+				throw new ArgumentError("count cannot be 0");
+			}
+			
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			{
+				var buffer : Array = new Array();
+				
+				var futureSubscription : FutureSubscription = new FutureSubscription();
+				
+				futureSubscription.innerSubscription = source.subscribeFunc(
+					function(v:Object):void
+					{
+						buffer.push(v);
+						
+						if (buffer.length > count)
+						{
+							buffer.shift();
+						}
+					},
+					function():void
+					{
+						while(buffer.length > 0)
+						{
+							observer.onNext(buffer.shift());
+						}
+						observer.onCompleted();
+					},
+					observer.onError);
+					
+				return futureSubscription;
 			});
 		}
 		
@@ -1589,7 +1663,7 @@ package rx
 			});
 		}
 		
-		public function throttle(dueTimeMs:int, scheduler:IScheduler=null):IObservable
+		public function throttle(dueTimeMs:uint, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -1656,7 +1730,7 @@ package rx
 			});
 		}
 		
-		public function timeout(timeoutMs:int, other:IObservable=null, scheduler:IScheduler=null):IObservable
+		public function timeout(timeoutMs:uint, other:IObservable=null, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
 			

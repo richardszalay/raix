@@ -36,9 +36,9 @@ package rx
 		
 		function average():IObservable;
 		
-		function bufferWithCount(count : int, skip : int = 0) : IObservable;
+		function bufferWithCount(count : uint, skip : uint = 0) : IObservable;
 		
-		function bufferWithTime(timeMs : int, timeShiftMs : int = 0, scheduler : IScheduler = null) : IObservable;
+		function bufferWithTime(timeMs : uint, timeShiftMs : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
 		function cast(type : Class) : IObservable;
 		
@@ -56,7 +56,7 @@ package rx
 		
 		// static create(subscribe : Function) : IObservable;
 
-		function delay(delayMs : int, scheduler : IScheduler = null) : IObservable;
+		function delay(delayMs : uint, scheduler : IScheduler = null) : IObservable;
 		
 		// Not sure if this makes sense
 		//function delayUntil(dt : Date, scheduler : IScheduler = null) : IObservable;
@@ -112,7 +112,7 @@ package rx
 		
 		function repeat(repeatCount : uint = 0) : IObservable;
 		
-		function retry(retryCount : int = 0) : IObservable;
+		function retry(retryCount : uint = 0) : IObservable;
 		
 		function returnValue(value : Object) : IObservable;
 		
@@ -125,7 +125,9 @@ package rx
 		function single() : IObservable;
 		function singleOrDefault() : IObservable;
 		
-		function skip(count : int) : IObservable;
+		function skip(count : uint) : IObservable;
+		
+		function skipLast(count : uint) : IObservable;
 		
 		function skipUntil(other : IObservable) : IObservable;
 		
@@ -137,17 +139,19 @@ package rx
 		
 		function sum() : IObservable;
 		
-		function take(count : int) : IObservable;
+		function takeLast(count : uint) : IObservable;
+		
+		function take(count : uint) : IObservable;
 		
 		function takeUntil(other : IObservable) : IObservable;
 		
 		function takeWhile(predicate : Function) : IObservable;
 		
-		function throttle(dueTimeMs : int, scheduler : IScheduler = null) : IObservable;
+		function throttle(dueTimeMs : uint, scheduler : IScheduler = null) : IObservable;
 		
 		function timeInterval(scheduler : IScheduler = null) : IObservable;
 		
-		function timeout(timeoutMs : int, other : IObservable = null, scheduler : IScheduler = null) : IObservable;
+		function timeout(timeoutMs : uint, other : IObservable = null, scheduler : IScheduler = null) : IObservable;
 		
 		function timestamp(scheduler : IScheduler = null) : IObservable;
 		

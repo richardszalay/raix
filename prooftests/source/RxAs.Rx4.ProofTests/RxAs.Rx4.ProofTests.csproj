@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Operators\SumFixture.cs" />
     <Compile Include="Operators\TakeFixture.cs" />
+    <Compile Include="Operators\TakeLast.cs" />
     <Compile Include="Operators\ThrottleFixture.cs">
       <SubType>Code</SubType>
     </Compile>

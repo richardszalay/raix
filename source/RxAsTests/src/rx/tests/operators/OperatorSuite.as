@@ -59,10 +59,12 @@ package rx.tests.operators
 		public var single : SingleFixture;
 		public var singleOrDefault : SingleOrDefaultFixture;
 		public var skip : SkipFixture;
+		public var skipLast : SkipLastFixture;
 		public var skipUntil : SkipUntilFixture;
 		public var skipWhile : SkipWhileFixture;
 		public var sum : SumFixture;
 		public var take : TakeFixture;
+		public var takeLast : TakeLastFixture;
 		public var takeUntil : TakeUntilFixture;
 		public var takeWhile : TakeWhileFixture;
 		public var timer : TimerFixture;

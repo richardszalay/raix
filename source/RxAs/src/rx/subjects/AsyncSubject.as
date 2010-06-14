@@ -119,7 +119,10 @@ package rx.subjects
 			
 			if (_lastValue.hasValue)
 			{
-				observer.onCompleted();
+				_scheduler.schedule(function():void
+				{
+					observer.onCompleted();
+				});
 			}
 		}
 	}

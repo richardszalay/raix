@@ -419,6 +419,11 @@ package rx
 								
 								if (isComplete.every(booleanPredicate))
 								{
+									if (hasValue.every(booleanPredicate))
+									{
+										observer.onNext(values.concat([]));
+									}
+									
 									observer.onCompleted();
 								}
 							},

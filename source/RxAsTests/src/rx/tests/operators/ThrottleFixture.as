@@ -16,8 +16,11 @@ package rx.tests.operators
 		}
 		
 		[Test]
-		public function scheduler_is_used_to_reset_throttle() : void 
+		public function scheduler_is_used_to_determine_time() : void 
         {
+        	// TODO: This is not how the Rx throttle works,
+        	// the rxas imlpementation should be brought in line to match Rx
+        	
             var scheduler : ManualScheduler = new ManualScheduler();
 
             scheduler.now = new Date();
@@ -29,17 +32,13 @@ package rx.tests.operators
             subject.throttle(1000, scheduler).subscribe(stats);
 
             subject.onNext(0);
+            
+            scheduler.now = new Date(scheduler.now.time + 1001);
             subject.onNext(1);
-
-            scheduler.now = new Date(scheduler.now.time + 1000);
-
-            scheduler.runNext();
-            scheduler.runNext();
 
             subject.onNext(2);
 
             Assert.assertEquals(2, stats.nextCount);
-            Assert.assertEquals(1, scheduler.queueSize);
         }
 
 		[Test]
@@ -59,7 +58,7 @@ package rx.tests.operators
             
             subject.onNext(0);
 
-            scheduler.now = new Date(scheduler.now.time + 5001);
+            scheduler.now = new Date(scheduler.now.time + 1000);
             subject.onNext(1);
 
             Assert.assertEquals(1, stats.nextCount);

@@ -23,23 +23,26 @@ namespace RxAs.Rx4.ProofTests.Operators
             subject.Throttle(TimeSpan.FromSeconds(1), scheduler).Subscribe(stats);
 
             subject.OnNext(0);
+            Assert.AreEqual(1, scheduler.QueueSize);
+            scheduler.RunNext();
+
+            scheduler.Now = scheduler.Now.AddMilliseconds(500);
             subject.OnNext(1);
-
-            scheduler.Now = scheduler.Now.AddSeconds(1);
-
-            Assert.AreEqual(2, scheduler.QueueSize);
-            scheduler.RunNext();
+            Assert.AreEqual(1, scheduler.QueueSize);
             scheduler.RunNext();
 
+            scheduler.Now = scheduler.Now.AddMilliseconds(1500);
             subject.OnNext(2);
             Assert.AreEqual(1, scheduler.QueueSize);
-
             scheduler.RunNext();
+
             Assert.AreEqual(2, stats.NextCount);
+            Assert.AreEqual(0, stats.NextValues[0]);
+            Assert.AreEqual(2, stats.NextValues[0]);
             Assert.AreEqual(1, scheduler.QueueSize);
         }
 
-        [Test]
+        [Test, Ignore]
         public void exact_time_is_not_allowed()
         {
             ManualScheduler scheduler = new ManualScheduler();
@@ -55,9 +58,11 @@ namespace RxAs.Rx4.ProofTests.Operators
                 .Subscribe(stats);
             
             subject.OnNext(0);
+            scheduler.RunAll();
 
-            scheduler.Now = scheduler.Now.AddSeconds(5).AddMilliseconds(1);
+            scheduler.Now = scheduler.Now.Add(TimeSpan.FromMilliseconds(4999));
             subject.OnNext(1);
+            scheduler.RunAll();
 
             Assert.AreEqual(1, stats.NextCount);
         }

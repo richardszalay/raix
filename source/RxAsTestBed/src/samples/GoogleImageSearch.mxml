@@ -60,7 +60,7 @@
 				 return getObservableJSON(getGisUrlRequest(searchTerm))
 				 	.selectMany(Object, function(result:Object) : IObservable
 					{
-						return Observable.returnValues(Object, result.responseData.results);
+						return Observable.fromArray(Object, result.responseData.results);
 					})
 					.select(Image, function(result:Object) : Image
 					{
@@ -191,7 +191,7 @@ private function getImageObservable(searchTerm : String, thumbnails : Boolean) :
 	 return getObservableJSON(getGisUrlRequest(searchTerm))
 	 	.selectMany(Object, function(result:Object) : IObservable
 		{
-			return Observable.returnValues(Object, result.responseData.results);
+			return ObsfromArrayrnValues(Object, result.responseData.results);
 		})
 		.select(Image, function(result:Object) : Image
 		{

@@ -1541,7 +1541,7 @@ package rx
 		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			return Observable
-				.returnValues(this.type, values, scheduler)
+				.fromArray(this.type, values, scheduler)
 				.concat([this]);
 		}
 

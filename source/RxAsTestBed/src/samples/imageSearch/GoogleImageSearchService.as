@@ -21,7 +21,7 @@ package samples.imageSearch
 			return _jsonService.getObservable(urlRequest)
 			 	.selectMany(Object, function(result:Object) : IObservable
 				{
-					return Observable.returnValues(Object, result.responseData.results);
+					return Observable.fromArray(Object, result.responseData.results);
 				})
 				.select(ImageResult, function(result:Object) : ImageResult
 				{

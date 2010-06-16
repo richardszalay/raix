@@ -3,8 +3,12 @@ package rx
 	import flash.display.LoaderInfo;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	
+	import mx.collections.ICollectionView;
+	import mx.collections.IViewCursor;
 	import mx.rpc.AsyncToken;
 	
 	import rx.flex.*;
@@ -574,7 +578,7 @@ package rx
 		
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
-			return Observable.merge(Error, Observable.returnValues(Error, 
+			return Observable.merge(Error, Observable.fromArray(Error, 
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
@@ -615,43 +619,6 @@ package rx
 				function(i:int):int { return i+1; },
 				scheduler
 				);
-			
-			/*
-			return new ClosureObservable(int, function(obs:IObserver) : ISubscription
-			{
-				var end : int = start + count;
-				
-				var scheduledActions : Array = new Array();
-				
-				var scheduledAction : ICancelable = null;
-				
-				var i : int = start;
-				
-				var rescursiveAction : Function = null;
-				
-				rescursiveAction = function():void
-				{
-					obs.onNext(i);
-					
-					i++;
-					
-					if (i < end)
-					{
-						scheduledAction = scheduler.schedule(rescursiveAction);
-					}
-					else
-					{
-						obs.onCompleted();
-					}
-				};
-				
-				scheduledAction = scheduler.schedule(rescursiveAction);
-
-				return new ClosureSubscription(function():void
-				{
-					scheduledAction.cancel();
-				});
-			});*/
 		}
 		
 		public static function throwError(error : Error, observableType : Class = null) : IObservable
@@ -671,37 +638,23 @@ package rx
 			});
 		}
 		
-		public static function returnValues(type : Class, values : Array, scheduler : IScheduler = null) : IObservable
+		public static function fromArray(elementType : Class, values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = resolveScheduler(scheduler);
 			
-			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
-			{
-				var valueScheduledAction : ICancelable = null;
-				
-				for each(var value : Object in values) 
-				{
-					(function(value:Object) : void
-					{
-						valueScheduledAction = 
-							scheduler.schedule(function():void { obs.onNext(value); });
-					})(value);
-				}
-				
-				var completeScheduledAction : ICancelable =
-					scheduler.schedule(function():void { obs.onCompleted(); });
-				
-				return new ClosureSubscription(function():void
-				{
-					valueScheduledAction.cancel();
-					completeScheduledAction.cancel();
-				});
-			});
+			values = values.slice();
+			
+			return Observable.generate(elementType,
+				0,
+				function(i : int):Boolean { return i < values.length; },
+				function(i : int):Object { return values[i]; },
+				function(i : int):int { return i+1; },
+				scheduler);
 		}
 		
 		public static function returnValue(type : Class, value : Object, scheduler : IScheduler = null) : IObservable
 		{
-			return returnValues(type, [value], scheduler); 
+			return fromArray(type, [value], scheduler); 
 		}
 		
 		public static function catchErrors(sources : Array, scheduler : IScheduler = null) : IObservable
@@ -862,6 +815,24 @@ package rx
 		
 		CONFIG::FLEX
 		{
+			public static function fromCollection(elementType : Class, collection : ICollectionView, scheduler : IScheduler	= null) : IObservable
+			{
+				return defer(elementType, function():IObservable
+				{
+					return fromViewCursor(elementType, collection.createCursor());
+				});
+			}
+			
+			public static function fromViewCursor(elementType : Class, cursor : IViewCursor, scheduler : IScheduler	= null) : IObservable
+			{
+				return Observable.generate(elementType,
+					true,
+					function(state : Boolean):Boolean { return state; },
+					function(state : Boolean):Object { return cursor.current; },
+					function(state : Boolean):Boolean { return cursor.moveNext(); },
+					scheduler);
+			}
+			
 			public static function fromAsyncPattern(returnType : Class, asyncMethod : Function, 
 				args : Array) : IObservable 
 			{

@@ -5,9 +5,10 @@ package rx.flex
 	import mx.rpc.events.FaultEvent;
 	
 	import rx.AbsObservable;
-	import rx.IObserver;
 	import rx.ICancelable;
+	import rx.IObserver;
 	import rx.impl.ClosureSubscription;
+	import rx.util.ErrorUtil;
 	
 	public class ObservableResponder extends AbsObservable implements IObservableResponder
 	{
@@ -60,7 +61,7 @@ package rx.flex
 			{
 				var errorEvent : ErrorEvent = ErrorEvent(info);
 				
-				return new Error(errorEvent.text, 0);
+				return ErrorUtil.mapErrorEvent(errorEvent);
 			}
 			
 			return new Error((info||"").toString(), 0);

@@ -1,10 +1,12 @@
 package rx
 {
+	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ICollectionView;
@@ -14,6 +16,7 @@ package rx
 	import rx.flex.*;
 	import rx.impl.*;
 	import rx.scheduling.*;
+	import rx.util.ErrorUtil;
 
 	public class Observable
 	{
@@ -473,6 +476,60 @@ package rx
 			});
 		}
 		
+		public static function fromEvents(eventDispatcher:IEventDispatcher, types:Array, commonEventType : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
+		{
+			return Observable.merge(commonEventType,
+				Observable.fromArray(String, types)
+					.selectMany(commonEventType, function(type : String) : IObservable
+					{
+						return fromEvent(eventDispatcher, type, commonEventType, useCapture, priority);
+					}));
+		}
+		
+		public static function fromErrorEvent(eventDispatcher:IEventDispatcher, type:String, eventType : Class = null, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
+		{
+			return mapErrorEvents(
+				fromEvent(eventDispatcher, type, eventType, useCapture, priority),
+				errorMap
+			);
+		}
+		
+		public static function fromErrorEvents(eventDispatcher:IEventDispatcher, types:Array, eventType : Class = null, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
+		{
+			return mapErrorEvents(
+				fromEvents(eventDispatcher, types, eventType, useCapture, priority),
+				errorMap
+			);
+		}
+		
+		private static function mapErrorEvents(source : IObservable, errorMap : Function = null) : IObservable
+		{
+			errorMap = errorMap || ErrorUtil.mapErrorEvent;
+			
+			return source
+				.take(1)
+				.selectMany(Error, function(event : Event) : IObservable
+				{
+					var error : Error = null;
+					
+					try
+					{
+						error = errorMap(event) as Error;
+						
+						if (error == null)
+						{
+							error = new Error("errorMap must return an instance of Error");
+						}
+					}
+					catch(err : Error)
+					{
+						error = err;
+					}
+					
+					return throwError(error);
+				});
+		}
+		
 		public static function empty(observableType : Class = null, scheduler : IScheduler = null) : IObservable
 		{
 			observableType = observableType || Object;
@@ -811,6 +868,105 @@ package rx
 				
 				return new ScheduledActionSubscription(scheduledAction);
 			});
+		}
+		
+		public static function loader(request : URLRequest, loaderContext : LoaderContext = null) : ITaskObservable
+		{
+			var progress : Subject = new Subject(int);
+			
+			var connection : IObservable = new ClosureObservable(Object, function(observer : IObserver) : ICancelable
+			{
+				var loader : Loader = new Loader();
+				loader.load(request, loaderContext);
+
+				try
+				{
+					loader.load(request);
+				}
+				catch(err : Error)
+				{
+					observer.onError(err);
+					return ClosureSubscription.empty();
+				}
+				
+				progress.onNext(0);
+				
+				return new CompositeSubscription([
+					Observable.fromEvent(loader.loaderInfo, ProgressEvent.PROGRESS)
+						.subscribeFunc(function(progressEvent : ProgressEvent):void
+						{
+							if (progressEvent.bytesTotal == 0)
+							{
+								progress.onNext(0);
+							}
+							else
+							{
+								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
+							}
+						}),
+					Observable.fromEvent(loader.loaderInfo, Event.COMPLETE)
+						.subscribeFunc(function(completeEvent : Event) : void
+						{
+							observer.onNext(loader.data);
+							observer.onCompleted();
+						}),
+					Observable.fromErrorEvents(loader.loaderInfo, 
+						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
+						.subscribe(observer)
+				]);
+
+			});
+			
+			return new TaskObservable(connection, progress);
+		}
+		
+		public static function urlLoader(request : URLRequest, dataFormat : String = "text", loaderContext : LoaderContext = null) : ITaskObservable
+		{
+			var progress : Subject = new Subject(int);
+			
+			var connection : IObservable = new ClosureObservable(Object, function(observer : IObserver) : ICancelable
+			{
+				var loader : URLLoader = new URLLoader();
+				
+				try
+				{
+					loader.load(request);
+				}
+				catch(err : Error)
+				{
+					observer.onError(err);
+					return ClosureSubscription.empty();
+				}
+				
+				progress.onNext(0);
+				
+				return new CompositeSubscription([
+					Observable.fromEvent(loader, ProgressEvent.PROGRESS)
+						.subscribeFunc(function(progressEvent : ProgressEvent):void
+						{
+							if (progressEvent.bytesTotal == 0)
+							{
+								progress.onNext(0);
+							}
+							else
+							{
+								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
+							}
+						}),
+					Observable.fromEvent(loader, Event.COMPLETE)
+						.subscribeFunc(function(completeEvent : Event) : void
+						{
+							observer.onNext(loader.data);
+							observer.onCompleted();
+						}),
+					Observable.fromErrorEvents(loader, 
+						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
+						.subscribe(observer)
+				]);
+
+			});
+			
+			return new TaskObservable(connection, progress);
 		}
 		
 		CONFIG::FLEX

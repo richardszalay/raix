@@ -4,10 +4,12 @@
     <classEntry path="rx.scheduling.IScheduler"/>
     <classEntry path="rx.TimeInterval"/>
     <classEntry path="rx.subjects.ReplaySubject"/>
+    <classEntry path="rx.util.ErrorUtil"/>
     <classEntry path="rx.impl.ClosureScheduledAction"/>
     <classEntry path="rx.IObservable"/>
     <classEntry path="rx.impl.CompositeSubscription"/>
     <classEntry path="rx.Plan"/>
+    <classEntry path="rx.TaskProgress"/>
     <classEntry path="rx.flex.IObservableResponder"/>
     <classEntry path="rx.impl.FutureSubscription"/>
     <classEntry path="rx.Pattern"/>
@@ -15,9 +17,11 @@
     <classEntry path="rx.impl.SafetyObserver"/>
     <classEntry path="rx.IObserver"/>
     <classEntry path="rx.ICancelable"/>
+    <classEntry path="rx.TaskObservable"/>
     <classEntry path="rx.NotificationKind"/>
     <classEntry path="rx.scheduling.ImmediateScheduler"/>
     <classEntry path="rx.Subject"/>
+    <classEntry path="rx.ITaskObservable"/>
     <classEntry path="rx.impl.ClosureObservable"/>
     <classEntry path="rx.impl.ScheduledActionSubscription"/>
     <classEntry path="rx.util.ComparerUtil"/>

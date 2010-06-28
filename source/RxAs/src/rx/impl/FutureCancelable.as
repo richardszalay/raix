@@ -2,12 +2,12 @@ package rx.impl
 {
 	import rx.ICancelable;
 	
-	public class FutureSubscription implements ICancelable
+	public class FutureCancelable implements ICancelable
 	{
 		private var _unsubscribed : Boolean = false;
 		private var _innerSubscription : ICancelable = null;
 		
-		public function FutureSubscription()
+		public function FutureCancelable()
 		{
 		}
 		

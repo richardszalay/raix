@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			var nextCount : int = 0;
 			
-			obs.subscribeFunc(function(pl:Notification):void
+			obs.subscribe(function(pl:Notification):void
 			{
 				nextCount++;
 				
@@ -48,7 +48,7 @@ package rx.tests.operators
 			var nextCount : int = 0;
 			var completeCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:Notification):void
 				{
 					nextCount++;
@@ -76,7 +76,7 @@ package rx.tests.operators
 			
 			var err : Error = new Error();
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:Notification):void
 				{
 					nextCount++;
@@ -103,7 +103,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 			});
 			
@@ -121,7 +121,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 			});
 			
@@ -139,7 +139,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			var subs : ICancelable = obs.subscribeFunc(function(pl:int):void
+			var subs : ICancelable = obs.subscribe(function(pl:int):void
 			{
 			});
 			
@@ -161,7 +161,7 @@ package rx.tests.operators
 			var errorCalled : Boolean = false;
 			var completedCalled : int = 0;
 			
-			var subs : ICancelable = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribe(
 				function(pl:int):void { nextCalled++; },
 				function():void { completedCalled++; },
 				function(e:Error):void { errorCalled = true; }
@@ -188,7 +188,7 @@ package rx.tests.operators
 			var nextCalled : int = 0;
 			var completedCalled : int = 0;
 			
-			var subs : ICancelable = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribe(
 				function(pl:int):void { nextCalled++; },
 				function():void { completedCalled++; },
 				function(e:Error):void { }

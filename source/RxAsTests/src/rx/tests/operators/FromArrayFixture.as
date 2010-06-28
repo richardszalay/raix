@@ -16,7 +16,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.fromArray(String, array)
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals("right", stats.nextValues[0]);
@@ -35,7 +35,7 @@ package rx.tests.operators
 			var observable : IObservable = Observable.fromArray(String, array);
 			array.pop();
 			
-			observable.subscribe(stats);
+			observable.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals("right", stats.nextValues[0]);

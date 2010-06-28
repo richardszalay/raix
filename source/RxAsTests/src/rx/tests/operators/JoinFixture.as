@@ -18,7 +18,7 @@ package rx.tests.operators
             Observable.join(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(2, stats.nextCount);
             Assert.assertEquals("0,10", stats.nextValues[0]);
@@ -37,7 +37,7 @@ package rx.tests.operators
             Observable.join(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectA.onNext(1);
@@ -64,7 +64,7 @@ package rx.tests.operators
             Observable.join(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectA.onNext(1);
@@ -92,7 +92,7 @@ package rx.tests.operators
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                 subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })                
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(4, stats.nextCount);
             Assert.assertEquals("0,2", stats.nextValues[0]);
@@ -114,7 +114,7 @@ package rx.tests.operators
             Observable.join(String, [
                 subjectA.and(subjectA).then(String, function(x:int,y:int):String { return null; })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
             Assert.assertTrue(stats.error is ArgumentError);
@@ -132,7 +132,7 @@ package rx.tests.operators
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return null; }),
                 subjectB.and(subjectA).then(String, function(x:int,y:int):String { return null; })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, subjectA.subscriptionCount);
             Assert.assertEquals(1, subjectB.subscriptionCount);
@@ -151,7 +151,7 @@ package rx.tests.operators
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectA.and(subjectC).then(String, function(x:int,y:int):String { return x.toString() + "." + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectC.onNext(1);
@@ -178,7 +178,7 @@ package rx.tests.operators
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, subjectA.subscriptionCount);
             Assert.assertEquals(1, subjectB.subscriptionCount);
@@ -207,7 +207,7 @@ package rx.tests.operators
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, subjectA.subscriptionCount);
             Assert.assertEquals(1, subjectB.subscriptionCount);

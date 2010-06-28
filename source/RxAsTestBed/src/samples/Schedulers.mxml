@@ -8,11 +8,11 @@
 			import rx.impl.ClosureObservable;
 			import rx.scheduling.GreenThreadScheduler;
 			import rx.scheduling.IScheduler;
-			import rx.impl.ClosureSubscription;
-			import rx.impl.FutureSubscription;
+			import rx.impl.ClosureCancelable;
+			import rx.impl.FutureCancelable;
 			import mx.controls.Label;
 			import rx.scheduling.Scheduler;
-			import rx.impl.CompositeSubscription;
+			import rx.impl.CompositeCancelable;
 			import samples.imageSearch.JsonService;
 			import rx.IObserver;
 			import mx.events.FlexEvent;
@@ -20,13 +20,13 @@
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var subscription : CompositeSubscription;
+			private var subscription : CompositeCancelable;
 			
 			public override function setup() : void
 			{
-				subscription = new CompositeSubscription([]);
+				subscription = new CompositeCancelable([]);
 				
-				subscription.add(getFpsObservable().subscribeFunc(
+				subscription.add(getFpsObservable().subscribe(
 					function(frames:int):void { fpsLabel.text = frames + " fps"; }));
 			}
 			
@@ -51,9 +51,9 @@
 				
 				container.addChild(labelContainer);
 				
-				var futureSubscription : FutureSubscription = new FutureSubscription();
+				var futureSubscription : FutureCancelable = new FutureCancelable();
 				
-				var subscriptionToAdd : ICancelable = new ClosureSubscription(function():void
+				var subscriptionToAdd : ICancelable = new ClosureCancelable(function():void
 				{
 					container.removeChild(labelContainer);
 					futureSubscription.cancel();
@@ -67,7 +67,7 @@
 				var startTime : Number = new Date().time;
 				
 				var innerSubscription : ICancelable = 
-					Observable.range(0, 100000, scheduler).subscribeFunc(
+					Observable.range(0, 100000, scheduler).subscribe(
 						function(i:int):void { label.text = i.toString(); },
 						function():void
 						{
@@ -84,14 +84,14 @@
 			{
 				return new ClosureObservable(Number, function(obs : IObserver) : ICancelable
 				{
-					var subcription : CompositeSubscription = new CompositeSubscription([]);
+					var subcription : CompositeCancelable = new CompositeCancelable([]);
 					
 					var frameCount : int = 0;
 					
-					subcription.add(Observable.fromEvent(stage, Event.ENTER_FRAME).subscribeFunc(
+					subcription.add(Observable.fromEvent(stage, Event.ENTER_FRAME).subscribe(
 						function(...args):void { frameCount++; }));
 						
-					subcription.add(Observable.interval(1000).subscribeFunc(
+					subcription.add(Observable.interval(1000).subscribe(
 						function(...args):void { obs.onNext(frameCount); frameCount = 0; }));	
 					
 					return subcription;
@@ -153,9 +153,9 @@
 	<![CDATA[
 public override function setup() : void
 {
-	subscription = new CompositeSubscription([]);
+	subscription = neCompositeCancelableon([]);
 	
-	subscription.add(getFpsObservable().subscribeFunc(
+	subscription.add(getFpsObservasubscribebeFunc(
 		function(frames:int):void { fpsLabel.text = frames + " fps"; }));
 }
 
@@ -180,8 +180,8 @@ private function addObservable(scheduler : IScheduler) : void
 	
 	container.addChild(labelContainer);
 	
-	var futureSubscription : FutureSubscription = new FutureSubscription();
-ICancelableriptionToAdd : ISubscription = new ClosureSubscription(function():void
+	vFutureCancelableion : FFutureCancelable= new FutureSubscription();
+ICancelableriptionToClosureCancelable = new ClosureSubscription(function():void
 	{
 		container.removeChild(labelContainer);
 		futureSubscription.cancel();

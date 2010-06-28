@@ -20,7 +20,7 @@ package rx.tests.subjects
 
             Assert.assertFalse(subject.hasSubscriptions);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertTrue(subject.hasSubscriptions);
 
@@ -41,7 +41,7 @@ package rx.tests.subjects
 
             Assert.assertFalse(subject.hasSubscriptions);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertTrue(subject.hasSubscriptions);
 
@@ -60,7 +60,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
             source.onCompleted();
@@ -81,7 +81,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -100,7 +100,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -119,7 +119,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             connectable.connect();
             connectable.connect();
@@ -137,7 +137,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -157,7 +157,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -179,7 +179,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
 
@@ -203,7 +203,7 @@ package rx.tests.subjects
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
             source.onCompleted();

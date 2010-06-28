@@ -14,7 +14,7 @@ package rx
 		 * @param onError Optional. Function to be called when an error occurs in the sequence. Signature is function(err:Error):void
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
-		function subscribeFunc(onNext : Function, onComplete : Function = null, 
+		function subscribe(onNext : Function, onComplete : Function = null, 
 			onError : Function = null) : ICancelable;
 		
 		/**
@@ -22,7 +22,7 @@ package rx
 		 * @param scheduler Optional. The schduler to use
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
-		function subscribe(observer : IObserver) : ICancelable;
+		function subscribeWith(observer : IObserver) : ICancelable;
 		
 		function and(right : IObservable) : Pattern;
 		
@@ -88,8 +88,6 @@ package rx
 		
 		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
 		
-		function mostRecent(initialValue : Object) : IObservable;
-		
 		function ofType(type : Class) : IObservable;
 
 		function observeOn(scheduler : IScheduler) : IObservable;
@@ -113,8 +111,6 @@ package rx
 		function repeat(repeatCount : uint = 0) : IObservable;
 		
 		function retry(retryCount : uint = 0) : IObservable;
-		
-		function returnValue(value : Object) : IObservable;
 		
 		function sample(intervalMs : uint, scheduler : IScheduler = null) : IObservable;
 		

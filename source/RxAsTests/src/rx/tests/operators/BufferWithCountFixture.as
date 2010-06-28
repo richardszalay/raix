@@ -147,7 +147,7 @@ package rx.tests.operators
 			
 			var expectedValueCount : int = expectedValues.length;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:Array):void
 				{
 					nextCount++;
@@ -187,7 +187,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.bufferWithCount(1);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

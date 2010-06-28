@@ -7,8 +7,8 @@ package rx.subjects
 	import rx.ISubject;
 	import rx.Subject;
 	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureSubscription;
-	import rx.impl.CompositeSubscription;
+	import rx.impl.ClosureCancelable;
+	import rx.impl.CompositeCancelable;
 
 	public class ConnectableObservable extends AbsObservable implements IConnectableObservable
 	{
@@ -31,9 +31,9 @@ package rx.subjects
 			
 			if (!hasSubscription)
 			{
-				_subscription = new CompositeSubscription([
-					new ClosureSubscription(function():void { _subscription = null; }),
-					_source.subscribe(_subject)
+				_subscription = new CompositeCancelable([
+					new ClosureCancelable(function():void { _subscription = null; }),
+					_source.subscribeWith(_subject)
 					]);
 			}
 			
@@ -51,16 +51,16 @@ package rx.subjects
 			{
 				subscriptionCount++;
 				
-				var subscription : ICancelable = source.subscribe(observer);
+				var subscription : ICancelable = source.subscribeWith(observer);
 				
 				if (subscriptionCount == 1)
 				{
 					connection = source.connect();
 				}
 				
-				return new CompositeSubscription([
+				return new CompositeCancelable([
 					subscription,
-					new ClosureSubscription(function():void
+					new ClosureCancelable(function():void
 					{
 						subscriptionCount--;
 						
@@ -74,9 +74,9 @@ package rx.subjects
 			});
 		}
 		
-		public override function subscribe(observer:IObserver):ICancelable
+		public override function subscribeWith(observer:IObserver):ICancelable
 		{
-			return _subject.subscribe(observer);
+			return _subject.subscribeWith(observer);
 		}
 	}
 }

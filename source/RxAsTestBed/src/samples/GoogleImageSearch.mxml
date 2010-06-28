@@ -27,7 +27,7 @@
 					imageRequest = preloadImages(imageRequest);
 				}
 				
-				gisSubscription = imageRequest.subscribeFunc(
+				gisSubscription = imageRequest.subscribe(
 					function(image : Image):void
 					{
 						imageContainer.addChild(image);

@@ -16,12 +16,12 @@
 				var interval : IObservable = Observable.interval(500);
 				var bufferedInterval : IObservable = interval.bufferWithCount(5);
 				
-				intervalSub = interval.subscribeFunc(function(i:uint):void
+				intervalSub = interval.subscribe(function(i:uint):void
 				{
 					intervalLabel.text = i.toString();
 				});
 				
-				bufferedSub = bufferedInterval.subscribeFunc(function(indexes : Array):void
+				bufferedSub = bufferedInterval.subscribe(function(indexes : Array):void
 				{
 					bufferedIntervalLabel.text = indexes.join(", ");
 				});

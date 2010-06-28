@@ -2,7 +2,7 @@ package rx.util
 {
 	public class ComparerUtil
 	{
-		public static function normalizeComaparer(source : Function) : Function
+		public static function normalizeComparer(source : Function) : Function
 		{
 			return function(a:Object,b:Object) : Boolean
 			{

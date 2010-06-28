@@ -32,7 +32,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.asObservable();
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

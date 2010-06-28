@@ -19,7 +19,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats); 
+			obs.subscribeWith(stats); 
 			
 			Assert.assertEquals(7, stats.nextCount);
 			Assert.assertEquals(2, stats.nextValues[0]);
@@ -42,7 +42,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ICancelable = obs.subscribe(stats); 
+			var subscription : ICancelable = obs.subscribeWith(stats); 
 			
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -66,7 +66,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = Observable.range(0, 1);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -85,7 +85,7 @@ package rx.tests.operators
 				throw new Error();
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

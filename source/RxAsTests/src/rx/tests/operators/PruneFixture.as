@@ -16,7 +16,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            connectable.subscribe(stats);
+            connectable.subscribeWith(stats);
             connectable.connect();
 
             subject.onNext(1);
@@ -35,7 +35,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            connectable.subscribe(stats);
+            connectable.subscribeWith(stats);
             connectable.connect();
 
             subject.onNext(1);
@@ -63,7 +63,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            connectable.subscribe(stats);
+            connectable.subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertTrue(3, stats.nextValues[0]);
@@ -85,7 +85,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onError(new Error());
 
-            connectable.subscribe(stats);
+            connectable.subscribeWith(stats);
 
             Assert.assertFalse(stats.nextCalled);
             Assert.assertFalse(stats.completedCalled);
@@ -109,7 +109,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            connectable.subscribe(statsA);
+            connectable.subscribeWith(statsA);
 
             Assert.assertFalse(statsA.nextCalled);
 
@@ -135,7 +135,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            connectable.subscribe(statsA);
+            connectable.subscribeWith(statsA);
             
             Assert.assertEquals(1, scheduler.queueSize);
             scheduler.runNext();
@@ -165,8 +165,8 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            connectable.subscribe(statsA);
-            connectable.subscribe(statsB);
+            connectable.subscribeWith(statsA);
+            connectable.subscribeWith(statsB);
             
 
             scheduler.runNext();

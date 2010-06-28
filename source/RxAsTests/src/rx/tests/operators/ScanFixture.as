@@ -14,7 +14,7 @@ package rx.tests.operators
 
             Observable.range(0, 5)
                 .scan(function(x:int,y:int):int { return x + y; })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(5, stats.nextCount);
             Assert.assertEquals(0, stats.nextValues[0]);
@@ -33,7 +33,7 @@ package rx.tests.operators
 
             Observable.range(0, 5)
                 .scan(function(x:Date,y:int):Date { return new Date(x.time + y); }, Date, start)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(5, stats.nextCount);
             Assert.assertEquals(start.time + 0, stats.nextValues[0].time);
@@ -54,7 +54,7 @@ package rx.tests.operators
 
             Observable.range(0, 5)
                 .scan(function(x:Date,y:int):Date { accumulatorValues.push(y); return x; }, Date, start)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(0, accumulatorValues[0]);
         }
@@ -68,7 +68,7 @@ package rx.tests.operators
 
             Observable.range(0, 5)
                 .scan(function(x:int,y:int):int { accumulatorValues.push(y); return x+y; })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, accumulatorValues[0]);
         }
@@ -80,7 +80,7 @@ package rx.tests.operators
 
             Observable.empty(int)
                 .scan(function(x:int,y:int):int { return x + y; })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertFalse(stats.errorCalled);
             Assert.assertTrue(stats.completedCalled);

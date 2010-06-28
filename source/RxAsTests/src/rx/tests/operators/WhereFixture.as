@@ -26,7 +26,7 @@ package rx.tests.operators
 			var expectedValues : Array = [0, 2, 4, 6, 8];
 			var nextCount : uint = 0;
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 				nextCount++;
 				Assert.assertEquals(expectedValues.shift(), pl);
@@ -53,7 +53,7 @@ package rx.tests.operators
 			var nextCalled : Boolean = false;
 			var errorCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { nextCalled = true; },
 				function():void { },
 				function(e:Error):void { errorCalled = true; }
@@ -75,7 +75,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

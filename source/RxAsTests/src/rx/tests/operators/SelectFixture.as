@@ -25,7 +25,7 @@ package rx.tests.operators
 				return index++;
 			});
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 				Assert.assertEquals(index-1, pl);	
 			});
@@ -49,7 +49,7 @@ package rx.tests.operators
 			var nextCalled : Boolean = false;
 			var errorCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { nextCalled = true; },
 				function():void { },
 				function(e:Error):void { errorCalled = true; }
@@ -71,7 +71,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

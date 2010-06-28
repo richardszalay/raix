@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			Observable.throwError(new Error(), int)
 				.catchError(Observable.empty(int))
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
 		}
@@ -37,7 +37,7 @@ package rx.tests.operators
 			
 			Observable.throwError(new Error(), int)
 				.catchError(Observable.throwError(new IllegalOperationError(), int))
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
 			Assert.assertTrue(stats.error is IllegalOperationError);
@@ -53,7 +53,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

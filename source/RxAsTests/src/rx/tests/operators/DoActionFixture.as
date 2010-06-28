@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			manObs
 				.doAction(function(pl:Object):void { Assert.assertFalse(observerCalled); actionCalled = true; })
-				.subscribeFunc(function(pl:Object):void { Assert.assertTrue(actionCalled); observerCalled = true; })
+				.subscribe(function(pl:Object):void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onNext(0);
 			
@@ -43,7 +43,7 @@ package rx.tests.operators
 			
 			manObs
 				.doAction(null, function():void { Assert.assertFalse(observerCalled); actionCalled = true; })
-				.subscribeFunc(null, function():void { Assert.assertTrue(actionCalled); observerCalled = true; })
+				.subscribe(null, function():void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onCompleted();
 			
@@ -61,7 +61,7 @@ package rx.tests.operators
 			
 			manObs
 				.doAction(null, null, function(pl:Error):void { Assert.assertFalse(observerCalled); actionCalled = true; })
-				.subscribeFunc(null, null, function(pl:Error):void { Assert.assertTrue(actionCalled); observerCalled = true; })
+				.subscribe(null, null, function(pl:Error):void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onError(new Error());
 			
@@ -76,7 +76,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 3)
 				.doAction(function(pl:Object):void { throw new Error(); })
-				.subscribe(stats)
+				.subscribeWith(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
 		}
@@ -90,7 +90,7 @@ package rx.tests.operators
 				.doAction(
 					function(pl:Object):void { throw new Error(); }, 
 					function():void{})
-				.subscribe(stats)
+				.subscribeWith(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
 		}
@@ -105,7 +105,7 @@ package rx.tests.operators
 					function(pl:Object):void { throw new Error(); }, 
 					null, 
 					function(e:Error):void{})
-				.subscribe(stats)
+				.subscribeWith(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
 		}
@@ -120,7 +120,7 @@ package rx.tests.operators
 					function(pl:Object):void { throw new Error(); }, 
 					function():void{}, 
 					function(e:Error):void{})
-				.subscribe(stats)
+				.subscribeWith(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
 		}
@@ -135,7 +135,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

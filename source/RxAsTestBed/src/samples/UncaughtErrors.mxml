@@ -12,7 +12,7 @@
 			
 			public override function setup() : void
 			{
-				subscription = Observable.uncaughtErrors().subscribeFunc(function(e : /*UncaughtError*/Event) : void
+				subscription = Observable.uncaughtErrors().subscribe(function(e : /*UncaughtError*/Event) : void
 				{
 					if (!e.hasOwnProperty("error"))
 					{

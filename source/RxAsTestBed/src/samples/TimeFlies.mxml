@@ -32,7 +32,7 @@
 						
 						var sub : ICancelable = mm
 							.delay(i * 100)
-							.subscribeFunc(function(me : MouseEvent):void
+							.subscribe(function(me : MouseEvent):void
 							{
 								var glob : Point = new Point(me.stageX, me.stageY);
 								

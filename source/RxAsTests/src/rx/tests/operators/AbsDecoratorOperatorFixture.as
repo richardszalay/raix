@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onCompleted();
 			
@@ -43,7 +43,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onError(new Error());
 			
@@ -61,7 +61,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ICancelable = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribeWith(stats);
 			
 			subs.cancel();
 			
@@ -79,7 +79,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ICancelable = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribeWith(stats);
 			
 			manObs.onCompleted();
 			manObs.onNext(new Object());
@@ -100,7 +100,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subs : ICancelable = obs.subscribe(stats);
+			var subs : ICancelable = obs.subscribeWith(stats);
 			
 			manObs.onError(new Error());
 			manObs.onNext(new Object());

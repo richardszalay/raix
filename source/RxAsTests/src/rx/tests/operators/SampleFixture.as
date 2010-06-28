@@ -19,7 +19,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, scheduler.queueSize);
 
@@ -42,7 +42,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subject.onNext(0);
             subject.onNext(1);
@@ -68,7 +68,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             stats.onNext(0);
 
@@ -89,7 +89,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, scheduler.queueSize);
 
@@ -107,7 +107,7 @@ package rx.tests.operators
 
             Observable.empty(int)
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertFalse(stats.completedCalled);
 
@@ -126,7 +126,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subject.onNext(0);
             subject.onCompleted();
@@ -147,7 +147,7 @@ package rx.tests.operators
 
             subject
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subject.onNext(0);
             subject.onCompleted();
@@ -165,7 +165,7 @@ package rx.tests.operators
 
             Observable.throwError(new Error())
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
         }
@@ -179,7 +179,7 @@ package rx.tests.operators
 
             Observable.throwError(new Error())
                 .sample(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(0, scheduler.queueSize);
         }

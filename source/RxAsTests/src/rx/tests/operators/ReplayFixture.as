@@ -18,7 +18,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
             source.connect();
 
             subject.onNext(1);
@@ -47,7 +47,7 @@ package rx.tests.operators
             subject.onNext(1);
             subject.onNext(2);
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             subject.onNext(3);
             subject.onCompleted();
@@ -73,7 +73,7 @@ package rx.tests.operators
             subject.onNext(2);
             subject.onNext(3);
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);
             Assert.assertTrue(1, stats.nextValues[0]);
@@ -96,7 +96,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);
             Assert.assertTrue(1, stats.nextValues[0]);
@@ -119,7 +119,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onError(new Error());
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);
             Assert.assertTrue(1, stats.nextValues[0]);
@@ -139,7 +139,7 @@ package rx.tests.operators
 
             subject.onCompleted();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(0, stats.nextCount);
             Assert.assertTrue(stats.completedCalled);
@@ -156,7 +156,7 @@ package rx.tests.operators
 
             subject.onError(new Error());
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
         }
@@ -170,7 +170,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             subject.onNext(1);
             subject.onNext(2);
@@ -197,7 +197,7 @@ package rx.tests.operators
             subject.onNext(2);
             subject.onNext(3);
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(2, stats.nextCount);
             Assert.assertTrue(2, stats.nextValues[0]);
@@ -219,7 +219,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onCompleted();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertTrue(3, stats.nextValues[0]);
@@ -240,7 +240,7 @@ package rx.tests.operators
             subject.onNext(3);
             subject.onError(new Error());
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertTrue(3, stats.nextValues[0]);
@@ -256,7 +256,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             subject.onNext(1);
             subject.onNext(2);
@@ -293,7 +293,7 @@ package rx.tests.operators
             subject.onNext(3);
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -326,7 +326,7 @@ package rx.tests.operators
             subject.onCompleted();
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -358,7 +358,7 @@ package rx.tests.operators
             subject.onError(new Error());
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -384,7 +384,7 @@ package rx.tests.operators
             subject.onCompleted();
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -409,7 +409,7 @@ package rx.tests.operators
             subject.onError(new Error());
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -439,7 +439,7 @@ package rx.tests.operators
             subject.onCompleted();
 
             scheduler.now = new Date(start + 8);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -471,7 +471,7 @@ package rx.tests.operators
             subject.onCompleted();
 
             scheduler.now = new Date(start + 11);
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             scheduler.runAll();
 
@@ -491,7 +491,7 @@ package rx.tests.operators
             source.connect();
             var stats : StatsObserver = new StatsObserver();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             subject.onNext(1);
             subject.onNext(2);
@@ -529,7 +529,7 @@ package rx.tests.operators
             subject.onNext(2);
             subject.onCompleted();
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertFalse(stats.nextCalled);
 
@@ -561,7 +561,7 @@ package rx.tests.operators
 
             subject.onError(new Error());
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertFalse(stats.errorCalled);
 
@@ -583,7 +583,7 @@ package rx.tests.operators
             subject.onNext(1);
             subject.onNext(2);
 
-            source.subscribe(stats);
+            source.subscribeWith(stats);
 
             Assert.assertFalse(stats.nextCalled);
 

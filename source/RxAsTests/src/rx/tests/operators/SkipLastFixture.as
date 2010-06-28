@@ -19,7 +19,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.range(0, 5).skipLast(3).subscribe(stats);
+			Observable.range(0, 5).skipLast(3).subscribeWith(stats);
 			
 			Assert.assertEquals(2, stats.nextCount);
 			Assert.assertEquals(0, stats.nextValues[0]);
@@ -32,7 +32,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.range(0, 2).skipLast(3).subscribe(stats);
+			Observable.range(0, 2).skipLast(3).subscribeWith(stats);
 			
 			Assert.assertEquals(0, stats.nextCount);
 			Assert.assertTrue(stats.completedCalled);
@@ -43,7 +43,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.empty(int).skipLast(3).subscribe(stats);
+			Observable.empty(int).skipLast(3).subscribeWith(stats);
 			
 			Assert.assertEquals(0, stats.nextCount);
 			Assert.assertTrue(stats.completedCalled);
@@ -54,7 +54,7 @@ package rx.tests.operators
 		{
 			var obs : IObservable = Observable.range(0, 2).skip(1);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

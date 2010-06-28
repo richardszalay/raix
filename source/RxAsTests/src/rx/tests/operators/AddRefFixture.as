@@ -17,7 +17,7 @@ package rx.tests.operators
 
             Assert.assertEquals(0, subject.subscriptionCount);
 
-            refCount.subscribe(new Subject(int));
+            refCount.subscribeWith(new Subject(int));
             Assert.assertEquals(1, subject.subscriptionCount);
         }
 
@@ -29,10 +29,10 @@ package rx.tests.operators
 
             var refCount : IObservable = subject.publish().refCount();
 
-            refCount.subscribe(new Subject(int));
+            refCount.subscribeWith(new Subject(int));
             Assert.assertEquals(1, subject.subscriptionCount);
 
-            refCount.subscribe(new Subject(int));
+            refCount.subscribeWith(new Subject(int));
             Assert.assertEquals(1, subject.subscriptionCount);
         }
 
@@ -43,8 +43,8 @@ package rx.tests.operators
 
             var refCount : IObservable = subject.publish().refCount();
 
-            var subscriptionA : ICancelable = refCount.subscribe(new Subject(int));
-            var subscriptionB : ICancelable = refCount.subscribe(new Subject(int));
+            var subscriptionA : ICancelable = refCount.subscribeWith(new Subject(int));
+            var subscriptionB : ICancelable = refCount.subscribeWith(new Subject(int));
 
             Assert.assertEquals(1, subject.subscriptionCount);
 
@@ -65,8 +65,8 @@ package rx.tests.operators
 
             var refCount : IObservable = subject.publish().refCount();
 
-            var subscriptionA : ICancelable = refCount.subscribe(statsA);
-            var subscriptionB : ICancelable = refCount.subscribe(statsB);
+            var subscriptionA : ICancelable = refCount.subscribeWith(statsA);
+            var subscriptionB : ICancelable = refCount.subscribeWith(statsB);
 
             subject.onNext(0);
 
@@ -84,8 +84,8 @@ package rx.tests.operators
 
             var refCount : IObservable = subject.publish().refCount();
 
-            var subscriptionA : ICancelable = refCount.subscribe(statsA);
-            refCount.subscribe(statsB).cancel();
+            var subscriptionA : ICancelable = refCount.subscribeWith(statsA);
+            refCount.subscribeWith(statsB).cancel();
 
             subject.onNext(0);
 
@@ -103,8 +103,8 @@ package rx.tests.operators
 
             var refCount : IObservable = subject.publish().refCount();
 
-            var subscriptionA : ICancelable = refCount.subscribe(statsA);
-            var subscriptionB : ICancelable = refCount.subscribe(statsB);
+            var subscriptionA : ICancelable = refCount.subscribeWith(statsA);
+            var subscriptionB : ICancelable = refCount.subscribeWith(statsB);
 
             subject.onError(new Error());
 

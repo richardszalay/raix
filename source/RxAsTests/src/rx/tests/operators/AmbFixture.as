@@ -24,7 +24,7 @@ package rx.tests.operators
 			var subjectC : Subject = new Subject(int);
 			
 			Observable.amb([subjectA, subjectB, subjectC])
-                .subscribe(stats);
+                .subscribeWith(stats);
                 
             subjectC.onNext(0);
                 
@@ -43,7 +43,7 @@ package rx.tests.operators
 			var subjectC : IObservable = Observable.empty(int);
 			
 			Observable.amb([subjectA, subjectB, subjectC])
-                .subscribe(stats);
+                .subscribeWith(stats);
                 
             Assert.assertFalse(subjectA.hasSubscriptions);
             Assert.assertFalse(subjectB.hasSubscriptions);
@@ -60,7 +60,7 @@ package rx.tests.operators
 			var subjectC : IObservable = Observable.throwError(new Error(), int);
 			
 			Observable.amb([subjectA, subjectB, subjectC])
-                .subscribe(stats);
+                .subscribeWith(stats);
                 
             Assert.assertFalse(subjectA.hasSubscriptions);
             Assert.assertFalse(subjectB.hasSubscriptions);
@@ -74,7 +74,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

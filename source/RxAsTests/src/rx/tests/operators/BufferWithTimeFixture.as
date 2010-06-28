@@ -21,7 +21,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 5, valueScheduler)
 				.bufferWithTime(120, 0, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -53,7 +53,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 5, valueScheduler)
 				.bufferWithTime(30, 20, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -90,7 +90,7 @@ package rx.tests.operators
 			
 			Observable.never(int)
 				.bufferWithTime(30, 20, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -112,7 +112,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 5, valueScheduler)
 				.bufferWithTime(30, 20, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -145,7 +145,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 5).concat([Observable.throwError(new Error())])
 				.bufferWithTime(30, 20, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
 			Assert.assertEquals(0, stats.nextCount);
@@ -164,7 +164,7 @@ package rx.tests.operators
 			
 			Observable.empty(int).concat([Observable.throwError(new Error())])
 				.bufferWithTime(30, 20, bufferScheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
 			Assert.assertEquals(0, stats.nextCount);

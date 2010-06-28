@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			Observable.throwError(new Error(), int)
 				.onErrorResumeNext(Observable.empty(int))
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
 		}
@@ -37,7 +37,7 @@ package rx.tests.operators
 			
 			Observable.throwError(new Error(), int)
 				.onErrorResumeNext(Observable.throwError(new IllegalOperationError(), int))
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
 			Assert.assertTrue(stats.error is IllegalOperationError);
@@ -54,7 +54,7 @@ package rx.tests.operators
 			
 			manObs
 				.onErrorResumeNext(Observable.throwError(new IllegalOperationError(), int), scheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
 			
@@ -74,7 +74,7 @@ package rx.tests.operators
 			
 			Observable.throwError(new Error(), int)
 				.onErrorResumeNext(manObs, scheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			scheduler.runNext();
 			
@@ -92,7 +92,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.onErrorResumeNext(Observable.empty(int));
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -113,7 +113,7 @@ package rx.tests.operators
 			var nextCalled : Boolean = false;
 			var errorCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { nextCalled = true; },
 				function():void { },
 				function(e:Error):void { errorCalled = true; }

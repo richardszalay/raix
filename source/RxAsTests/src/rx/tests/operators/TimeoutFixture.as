@@ -17,7 +17,7 @@ package rx.tests.operators
 			
 			Observable.never(int)
 				.timeout(100)
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Async.asyncHandler(this, function():void{}, 150, null, function():void
 			{
@@ -32,7 +32,7 @@ package rx.tests.operators
 			
 			Observable.never(int)
 				.timeout(100, Observable.range(0, 2))
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Async.asyncHandler(this, function():void{}, 150, null, function():void
 			{
@@ -51,7 +51,7 @@ package rx.tests.operators
 			
 			var subscription : ICancelable = Observable.never(int)
 				.timeout(100, Observable.range(0, 2))
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			Assert.assertFalse(otherObs.hasSubscriptions);
 			

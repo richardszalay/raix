@@ -24,7 +24,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.distinctUntilChanged();
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			manObs.onNext(0);
@@ -54,7 +54,7 @@ package rx.tests.operators
 			});	
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			manObs.onNext(0);
@@ -77,7 +77,7 @@ package rx.tests.operators
 			});	
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			manObs.onNext(0);
@@ -100,7 +100,7 @@ package rx.tests.operators
 			});	
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			manObs.onNext(0);
@@ -123,7 +123,7 @@ package rx.tests.operators
 			});
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			manObs.onNext(0);
@@ -149,7 +149,7 @@ package rx.tests.operators
 			});	
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0); // Y
 			manObs.onNext(0); // N
@@ -179,7 +179,7 @@ package rx.tests.operators
 			});	
 			
 			var stats : StatsObserver = new StatsObserver();			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(0);
 			
@@ -198,7 +198,7 @@ package rx.tests.operators
 			});
 			
 			var stats : StatsObserver = new StatsObserver();
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 
 			manObs.onNext(0);
 			
@@ -216,7 +216,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

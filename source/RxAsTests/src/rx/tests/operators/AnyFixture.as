@@ -22,7 +22,7 @@ package rx.tests.operators
 			var source : Subject = new Subject(int);
 			
 			source.any(function(i:int):Boolean { return i > 2; })
-				.subscribe(stats);
+				.subscribeWith(stats);
 			
 			source.onNext(0);
             source.onNext(1);
@@ -43,7 +43,7 @@ package rx.tests.operators
 			var source : Subject = new Subject(int);
 			
 			source.any(function(i:int):Boolean { return i > 2; })
-				.subscribe(stats);
+				.subscribeWith(stats);
 
             source.onNext(3);
             Assert.assertTrue(stats.nextCalled);
@@ -58,7 +58,7 @@ package rx.tests.operators
 			var source : Subject = new Subject(int);
 			
 			source.any(function(i:int):Boolean { return i > 2; })
-				.subscribe(stats);
+				.subscribeWith(stats);
 
             source.onNext(3);
             Assert.assertTrue(stats.completedCalled);
@@ -72,7 +72,7 @@ package rx.tests.operators
 			var source : Subject = new Subject(int);
 			
 			source.any(function(i:int):Boolean { throw new Error(); })
-				.subscribe(stats);
+				.subscribeWith(stats);
 
             source.onNext(0);
             Assert.assertTrue(stats.errorCalled);
@@ -86,7 +86,7 @@ package rx.tests.operators
 			var source : Subject = new Subject(int);
 			
 			source.any(function(i:int):Boolean { return i > 2; })
-				.subscribe(stats);
+				.subscribeWith(stats);
 
             source.onError(new Error());
             Assert.assertTrue(stats.errorCalled);
@@ -99,7 +99,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -115,7 +115,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.empty(int).any(function(i:int):Boolean { return i > 2; })
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Assert.assertTrue(stats.completedCalled);
 			Assert.assertTrue(stats.nextCalled);
@@ -133,7 +133,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onCompleted();
 			manObs.onNext(new Object());

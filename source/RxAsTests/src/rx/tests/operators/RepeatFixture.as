@@ -7,7 +7,7 @@ package rx.tests.operators
 	import rx.IObserver;
 	import rx.Observable;
 	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureSubscription;
+	import rx.impl.ClosureCancelable;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class RepeatFixture extends AbsDecoratorOperatorFixture
@@ -24,7 +24,7 @@ package rx.tests.operators
 			
 			Observable.returnValue(int, 5)
 				.repeat(3)
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals(5, stats.nextValues[0]);
@@ -40,7 +40,7 @@ package rx.tests.operators
 			
 			Observable.returnValue(int, 5)
 				.repeat(500)
-				.subscribe(stats);
+				.subscribeWith(stats);
 		}
 		
 		[Test]
@@ -54,11 +54,11 @@ package rx.tests.operators
 
                     obs.onCompleted();
 
-                    return ClosureSubscription.empty();
+                    return ClosureCancelable.empty();
                 });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat(2).subscribe(stats);
+            source.repeat(2).subscribeWith(stats);
 
             Assert.assertEquals(2, subscribeCount);
         }
@@ -74,11 +74,11 @@ package rx.tests.operators
 
                 obs.onError(new Error());
 
-                return ClosureSubscription.empty();
+                return ClosureCancelable.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat(2).subscribe(stats);
+            source.repeat(2).subscribeWith(stats);
 
             Assert.assertEquals(1, subscribeCount);
             Assert.assertTrue(stats.errorCalled);
@@ -97,11 +97,11 @@ package rx.tests.operators
                     obs.onCompleted();
                 }
 
-                return ClosureSubscription.empty();
+                return ClosureCancelable.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.repeat().subscribe(stats);
+            source.repeat().subscribeWith(stats);
 
             Assert.assertEquals(200, subscribeCount);
             Assert.assertFalse(stats.completedCalled);

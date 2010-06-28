@@ -26,7 +26,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			var tfA : TextField = new TextField();
 			var tfB : TextField = new TextField();
@@ -48,7 +48,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(obs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

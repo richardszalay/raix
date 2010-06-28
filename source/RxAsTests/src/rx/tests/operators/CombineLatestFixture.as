@@ -16,7 +16,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, subjectA.subscriptionCount);
             Assert.assertEquals(1, subjectB.subscriptionCount);
@@ -32,7 +32,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(1);
             subjectB.onNext(2);
@@ -51,7 +51,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(1);
             subjectB.onNext(2);
@@ -74,7 +74,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(1);
             subjectA.onNext(2);
@@ -100,7 +100,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(1);
             subjectA.onCompleted();
@@ -123,7 +123,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onNext(1);
             subjectA.onCompleted();
@@ -145,7 +145,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onError(new Error());
 
@@ -161,7 +161,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onCompleted();
             subjectB.onCompleted();
@@ -179,7 +179,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             subjectA.onError(new Error());
 
@@ -196,7 +196,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);
             Assert.assertEquals("0,2", stats.nextValues[0]);

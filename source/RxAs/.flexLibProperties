@@ -5,13 +5,10 @@
     <classEntry path="rx.TimeInterval"/>
     <classEntry path="rx.subjects.ReplaySubject"/>
     <classEntry path="rx.util.ErrorUtil"/>
-    <classEntry path="rx.impl.ClosureScheduledAction"/>
     <classEntry path="rx.IObservable"/>
-    <classEntry path="rx.impl.CompositeSubscription"/>
     <classEntry path="rx.Plan"/>
     <classEntry path="rx.TaskProgress"/>
     <classEntry path="rx.flex.IObservableResponder"/>
-    <classEntry path="rx.impl.FutureSubscription"/>
     <classEntry path="rx.Pattern"/>
     <classEntry path="rx.AbsObservable"/>
     <classEntry path="rx.impl.SafetyObserver"/>
@@ -35,10 +32,10 @@
     <classEntry path="rx.subjects.AsyncSubject"/>
     <classEntry path="rx.Observable"/>
     <classEntry path="rx.impl.OnError"/>
-    <classEntry path="rx.impl.ClosureSubscription"/>
     <classEntry path="rx.TimeStamped"/>
     <classEntry path="rx.Notification"/>
     <classEntry path="rx.impl.ClosureObserver"/>
+    <classEntry path="rx.impl.ClosureCancelable"/>
     <classEntry path="rx.impl.OnNext"/>
     <classEntry path="rx.subjects.ConnectableObservable"/>
     <classEntry path="rx.scheduling.GreenThreadScheduler"/>

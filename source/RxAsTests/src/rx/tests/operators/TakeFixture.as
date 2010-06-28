@@ -26,7 +26,7 @@ package rx.tests.operators
 			var nextCount : uint = 0;
 			var completeCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { nextCount++; },
 				function():void { completeCalled = true; }	
 			);
@@ -57,7 +57,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.take(3);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

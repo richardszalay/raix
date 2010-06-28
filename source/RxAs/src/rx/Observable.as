@@ -29,32 +29,32 @@ package rx
 		
 		public static function amb(sources : Array/*.<IObservable>*/) : IObservable
 		{
-			sources = new Array().concat(sources);
+			sources = sources.slice();
 			
 			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
 			{
-				var subscription : CompositeSubscription = new CompositeSubscription([])
+				var subscription : CompositeCancelable = new CompositeCancelable([])
 			
 				for each(var source : IObservable in sources)
 				{
 					(function(obs:IObservable):void
 					{
-						var futureSubscription : FutureSubscription = new FutureSubscription();
+						var futureSubscription : FutureCancelable = new FutureCancelable();
 						subscription.add(futureSubscription);
 					
-						futureSubscription.innerSubscription = obs.subscribeFunc(
+						futureSubscription.innerSubscription = obs.subscribe(
 							function(pl:Object) : void
 							{
-								var newSubscriptions : CompositeSubscription = 
-									new CompositeSubscription(subscription.subscriptions);
+								var newSubscriptions : CompositeCancelable = 
+									new CompositeCancelable(subscription.subscriptions);
 									
 								newSubscriptions.remove(futureSubscription);
 								newSubscriptions.cancel();
 								
 								observer.onNext(pl);
 							},
-							function():void { observer.onCompleted(); },
-							function(e:Error):void { observer.onError(e); }
+							observer.onCompleted,
+							observer.onError
 							);
 					})(source);
 				}
@@ -69,10 +69,11 @@ package rx
 			{
 				var cancelFunc : Function = subscribeFunc(observer) as Function;
 				
-				return new ClosureSubscription(function():void
+				return new ClosureCancelable(function():void
 				{
 					if (cancelFunc != null)
 					{
+						// TODO: What if an error is thrown?
 						cancelFunc();
 					}
 				});
@@ -86,37 +87,39 @@ package rx
 				throw new ArgumentError("");
 			}
 			
-			sources = new Array().concat(sources);
+			sources = sources.slice();
 			
 			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
-				var remainingSources : Array = [].concat(sources);
+				var remainingSources : Array = sources.slice();
 				var currentSource : IObservable = remainingSources.shift();
 			
-				var schedule : FutureSubscription = new FutureSubscription();
-				var subscription : FutureSubscription = new FutureSubscription();
+				var schedule : FutureCancelable = new FutureCancelable();
+				var subscription : FutureCancelable = new FutureCancelable();
 				
-				var composite : CompositeSubscription = new CompositeSubscription([schedule, subscription]);
-				
-				var dec : IObserver = null;
-				
-				var onComplete : Function = function () : void
-				{
-					if (remainingSources.length > 0)
-					{
-						currentSource = IObservable(remainingSources.shift());
-						
-						subscription.innerSubscription = currentSource.subscribe(dec);
-					}
-					else
-					{
-						observer.onCompleted();
-					}
-				}
-				
-				dec = new ClosureObserver(observer.onNext, onComplete, observer.onError);
+				var composite : CompositeCancelable = new CompositeCancelable([schedule, subscription]);
 
-				subscription.innerSubscription = currentSource.subscribe(dec);
+				var innerObserver : IObserver = null;
+				
+				innerObserver = new ClosureObserver(
+					observer.onNext,
+					function () : void
+					{
+						if (remainingSources.length > 0)
+						{
+							currentSource = IObservable(remainingSources.shift());
+							
+							subscription.innerSubscription = currentSource.subscribeWith(innerObserver);
+						}
+						else
+						{
+							observer.onCompleted();
+						}
+					},
+					observer.onError
+					);
+				
+				subscription.innerSubscription = currentSource.subscribeWith(innerObserver);
 				
 				return composite;
 			});
@@ -135,10 +138,10 @@ package rx
 				
 				if (observable.type != type)
 				{
-					throw new ArgumentError("Deffered observable type must match type given to defer"); 
+					throw new ArgumentError("Deferred observable type must match type given to defer"); 
 				}
 				
-				return observable.subscribe(observer);
+				return observable.subscribeWith(observer);
 			});
 		}
 		
@@ -192,13 +195,7 @@ package rx
 					}
 				};
 				
-				var scheduledAction : ICancelable = 
-					Scheduler.scheduleRecursive(scheduler, recursiveAction);
-				
-				return new ClosureSubscription(function():void
-				{
-					scheduledAction.cancel();
-				});
+				return Scheduler.scheduleRecursive(scheduler, recursiveAction);
 			});
 		}
 		
@@ -215,7 +212,7 @@ package rx
 			{
 				var intervalIndex : uint = 0;
 				
-				var scheduledAction : FutureSubscription = new FutureSubscription();
+				var scheduledAction : FutureCancelable = new FutureCancelable();
 				
 				scheduledAction.innerSubscription = scheduler.schedule(function():void
 					{
@@ -243,16 +240,18 @@ package rx
 				var queues : Dictionary = new Dictionary();
 				var completed : Dictionary = new Dictionary();
 				
+				var source : IObservable = null;
+				
 				for each(var plan : Plan in activePlans)
 				{
 					var index : int = 0;
 					
-					for each(var source : IObservable in plan.sources)
+					for each(source in plan.sources)
 					{
 						if (plan.sources.indexOf(source, (index++) + 1) != -1)
 						{
 							observer.onError(new ArgumentError("Sources must be unique within a plan"));
-							return ClosureSubscription.empty();
+							return ClosureCancelable.empty();
 						}
 						
 						if (queues[source] == undefined)
@@ -272,7 +271,7 @@ package rx
 					{
 						var args : Array = new Array();
 						
-						for each(var source : IObservable in plan.sources)
+						for each(source in plan.sources)
 						{
 							if (queues[source].length > 0)
 							{
@@ -286,7 +285,7 @@ package rx
 						
 						if (args.length == plan.sources.length)
 						{
-							for each(var source : IObservable in plan.sources)
+							for each(source in plan.sources)
 							{
 								queues[source].shift();
 								
@@ -341,11 +340,11 @@ package rx
 					}
 				};
 					
-				var subscriptions : CompositeSubscription = new CompositeSubscription([]);
+				var subscriptions : CompositeCancelable = new CompositeCancelable([]);
 				
 				var tempSources : Array = sources.concat([]);
 					
-				for each(var source : IObservable in tempSources)
+				for each(source in tempSources)
 				{
 					(function(source:IObservable):void
 					{
@@ -372,7 +371,7 @@ package rx
 							},
 							observer.onError));
 							
-						var subscription : ICancelable = source.subscribe(safetyObserver);
+						var subscription : ICancelable = source.subscribeWith(safetyObserver);
 						
 						subscriptions.add(subscription);
 						
@@ -400,7 +399,7 @@ package rx
 				var isComplete : Array = new Array(sources.length);
 				var values : Array = new Array();
 				
-				var subscriptions : CompositeSubscription = new CompositeSubscription([]);
+				var subscriptions : CompositeCancelable = new CompositeCancelable([]);
 				
 				var booleanPredicate : Function = function(v:Boolean, i:int, a:Array) : Boolean { return v; };
 				
@@ -410,7 +409,7 @@ package rx
 					{
 						var source : IObservable = sources[i];
 						
-						subscriptions.add(source.subscribeFunc(
+						subscriptions.add(source.subscribe(
 							function(v:Object):void
 							{
 								values[i] = v;
@@ -469,7 +468,7 @@ package rx
 					eventDispatcher.addEventListener(type, listener, useCapture, priority);
 				});
 				
-				return new ClosureSubscription(function():void
+				return new ClosureCancelable(function():void
 				{
 					eventDispatcher.removeEventListener(type, listener, useCapture);
 				});
@@ -560,7 +559,7 @@ package rx
 				var remainingSources : Array = new Array().concat(sources);
 				
 				var subscription : ICancelable = null;
-				var futureSubscription : FutureSubscription = new FutureSubscription();
+				var futureSubscription : FutureCancelable = new FutureCancelable();
 				
 				var scheduledAction : ICancelable = null;
 				
@@ -575,7 +574,7 @@ package rx
 						subscription.cancel();
 					}
 					
-					subscription = currentSource.subscribeFunc(
+					subscription = currentSource.subscribe(
 						function(pl:Object) : void { obs.onNext(pl); },
 						function() : void
 						{
@@ -605,7 +604,7 @@ package rx
 				
 				scheduledAction = scheduler.schedule(moveNextFunc);
 				
-				return new ClosureSubscription(function():void
+				return new ClosureCancelable(function():void
 				{
 					if (scheduledAction != null)
 					{
@@ -629,7 +628,7 @@ package rx
 			
 			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
 			{
-				return new ClosureSubscription(function():void{});
+				return new ClosureCancelable(function():void{});
 			});
 		}
 		
@@ -691,7 +690,7 @@ package rx
 			{
 				obs.onError(error);
 				
-				return new ClosureSubscription(function():void{});
+				return new ClosureCancelable(function():void{});
 			});
 		}
 		
@@ -739,7 +738,7 @@ package rx
 				{
 					var currentSource : IObservable = remainingSources.shift();
 						
-					subscription = currentSource.subscribeFunc(
+					subscription = currentSource.subscribe(
 						function(pl:Object) : void { obs.onNext(pl); },
 						function() : void { obs.onCompleted(); },
 						function(e:Error) : void
@@ -757,7 +756,7 @@ package rx
 				
 				scheduledAction = scheduler.schedule(moveNextFunc);
 				
-				return new ClosureSubscription(function():void
+				return new ClosureCancelable(function():void
 				{
 					if (scheduledAction != null)
 					{
@@ -788,14 +787,14 @@ package rx
 			
 			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
 			{
-				var subscription : CompositeSubscription = new CompositeSubscription([]);
+				var subscription : CompositeCancelable = new CompositeCancelable([]);
 				
 				var sourceComplete : Boolean = false;
 				
-				var outerSubscription : FutureSubscription = new FutureSubscription();
+				var outerSubscription : FutureCancelable = new FutureCancelable();
 				subscription.add(outerSubscription);
 				
-				outerSubscription.innerSubscription = source.subscribeFunc(
+				outerSubscription.innerSubscription = source.subscribe(
 					function(innerSource:IObservable) : void
 					{
 						if (innerSource == null)
@@ -803,10 +802,10 @@ package rx
 							throw new IllegalOperationError("Cannot merge null IObservable");
 						}
 						
-						var innerSubscription : FutureSubscription = new FutureSubscription();
+						var innerSubscription : FutureCancelable = new FutureCancelable();
 						subscription.add(innerSubscription);
 						
-						innerSubscription.innerSubscription = innerSource.subscribeFunc(
+						innerSubscription.innerSubscription = innerSource.subscribe(
 							function(pl:Object) : void
 							{
 								obs.onNext(pl);
@@ -886,14 +885,14 @@ package rx
 				catch(err : Error)
 				{
 					observer.onError(err);
-					return ClosureSubscription.empty();
+					return ClosureCancelable.empty();
 				}
 				
 				progress.onNext(0);
 				
-				return new CompositeSubscription([
+				return new CompositeCancelable([
 					Observable.fromEvent(loader.loaderInfo, ProgressEvent.PROGRESS)
-						.subscribeFunc(function(progressEvent : ProgressEvent):void
+						.subscribe(function(progressEvent : ProgressEvent):void
 						{
 							if (progressEvent.bytesTotal == 0)
 							{
@@ -905,14 +904,14 @@ package rx
 							}
 						}),
 					Observable.fromEvent(loader.loaderInfo, Event.COMPLETE)
-						.subscribeFunc(function(completeEvent : Event) : void
+						.subscribe(function(completeEvent : Event) : void
 						{
 							observer.onNext(loader.data);
 							observer.onCompleted();
 						}),
 					Observable.fromErrorEvents(loader.loaderInfo, 
 						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
-						.subscribe(observer)
+						.subscribeWith(observer)
 				]);
 
 			});
@@ -935,14 +934,14 @@ package rx
 				catch(err : Error)
 				{
 					observer.onError(err);
-					return ClosureSubscription.empty();
+					return ClosureCancelable.empty();
 				}
 				
 				progress.onNext(0);
 				
-				return new CompositeSubscription([
+				return new CompositeCancelable([
 					Observable.fromEvent(loader, ProgressEvent.PROGRESS)
-						.subscribeFunc(function(progressEvent : ProgressEvent):void
+						.subscribe(function(progressEvent : ProgressEvent):void
 						{
 							if (progressEvent.bytesTotal == 0)
 							{
@@ -954,14 +953,14 @@ package rx
 							}
 						}),
 					Observable.fromEvent(loader, Event.COMPLETE)
-						.subscribeFunc(function(completeEvent : Event) : void
+						.subscribe(function(completeEvent : Event) : void
 						{
 							observer.onNext(loader.data);
 							observer.onCompleted();
 						}),
 					Observable.fromErrorEvents(loader, 
 						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
-						.subscribe(observer)
+						.subscribeWith(observer)
 				]);
 
 			});

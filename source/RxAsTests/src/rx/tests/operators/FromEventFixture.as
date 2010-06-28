@@ -33,7 +33,7 @@ package rx.tests.operators
 		[Test]
 		public function event_listener_is_added_after_subscrube() : void
 		{
-			var sub : ICancelable = obs.subscribeFunc(function():void{});
+			var sub : ICancelable = obs.subscribe(function():void{});
 			
 			Assert.assertTrue(ev.hasEventListener(TEST_EVENT));
 		}
@@ -41,7 +41,7 @@ package rx.tests.operators
 		[Test]
 		public function event_listener_is_removed_on_unsubscribe() : void
 		{
-			var sub : ICancelable = obs.subscribeFunc(function():void{});
+			var sub : ICancelable = obs.subscribe(function():void{});
 			
 			sub.cancel();
 			
@@ -51,8 +51,8 @@ package rx.tests.operators
 		[Test]
 		public function multiple_subscribers_do_not_conflict() : void
 		{
-			var subA : ICancelable = obs.subscribeFunc(function():void{});
-			var subB : ICancelable = obs.subscribeFunc(function():void{});
+			var subA : ICancelable = obs.subscribe(function():void{});
+			var subB : ICancelable = obs.subscribe(function():void{});
 			
 			Assert.assertTrue(ev.hasEventListener(TEST_EVENT));
 			
@@ -70,7 +70,7 @@ package rx.tests.operators
 			
 			var nextCount : uint = 0;
 			
-			obs.subscribeFunc(function():void { nextCount++ });
+			obs.subscribe(function():void { nextCount++ });
 			
 			ev.dispatchEvent(new Event(TEST_EVENT));
 			Assert.assertEquals(1, nextCount);

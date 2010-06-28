@@ -34,7 +34,7 @@
 						});
 					});
 				
-				subscription = obs.subscribeFunc(function(delt : Point) : void
+				subscription = obs.subscribe(function(delt : Point) : void
 				{
 					moveBox.x += delt.x;
 					moveBox.y += delt.y;

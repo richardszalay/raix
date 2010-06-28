@@ -16,7 +16,7 @@
 				subscription = Observable.interval(100).take(10)
 					.concat([Observable.interval(500).take(5)])
 					.concat([Observable.interval(1000).take(5)])
-					.subscribeFunc(function(i:uint) : void
+					.subscribe(function(i:uint) : void
 					{
 						output.text = i.toString();
 					},

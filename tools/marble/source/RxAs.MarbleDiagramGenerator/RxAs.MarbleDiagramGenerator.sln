@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxAs.MarbleDiagramGenerator", "RxAs.MarbleDiagramGenerator.csproj", "{414E4D1B-99E4-4E61-9106-E65655FC2481}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{414E4D1B-99E4-4E61-9106-E65655FC2481}.Debug|x86.ActiveCfg = Debug|x86
+		{414E4D1B-99E4-4E61-9106-E65655FC2481}.Debug|x86.Build.0 = Debug|x86
+		{414E4D1B-99E4-4E61-9106-E65655FC2481}.Release|x86.ActiveCfg = Release|x86
+		{414E4D1B-99E4-4E61-9106-E65655FC2481}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

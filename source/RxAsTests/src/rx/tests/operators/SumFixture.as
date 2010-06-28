@@ -14,7 +14,7 @@ package rx.tests.operators
 
             Observable.range(0, 5)
                 .sum()
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals(10, stats.nextValues[0]);
@@ -29,7 +29,7 @@ package rx.tests.operators
 
             Observable.empty()
                 .sum()
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals(0, stats.nextValues[0]);

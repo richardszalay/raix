@@ -19,7 +19,7 @@ package rx.tests.subjects
 
             var stats : StatsObserver = new StatsObserver();
 
-            subject.subscribe(stats);
+            subject.subscribeWith(stats);
 
             subject.onNext(1);
             subject.onNext(2);
@@ -36,7 +36,7 @@ package rx.tests.subjects
 
             var stats : StatsObserver = new StatsObserver();
 
-            subject.subscribe(stats);
+            subject.subscribeWith(stats);
 
             subject.onNext(1);
             subject.onNext(2);
@@ -60,7 +60,7 @@ package rx.tests.subjects
             subject.onNext(3);
             subject.onCompleted();
 
-            subject.subscribe(stats);
+            subject.subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertTrue(3, stats.nextValues[0]);
@@ -79,7 +79,7 @@ package rx.tests.subjects
             subject.onNext(3);
             subject.onError(new Error());
 
-            subject.subscribe(stats);
+            subject.subscribeWith(stats);
 
             Assert.assertFalse(stats.nextCalled);
             Assert.assertFalse(stats.completedCalled);
@@ -99,7 +99,7 @@ package rx.tests.subjects
             subject.onNext(3);
             subject.onCompleted();
 
-            subject.subscribe(statsA);
+            subject.subscribeWith(statsA);
 
             Assert.assertFalse(statsA.nextCalled);
 
@@ -122,7 +122,7 @@ package rx.tests.subjects
             subject.onNext(3);
             subject.onCompleted();
 
-            subject.subscribe(statsA);
+            subject.subscribeWith(statsA);
             
             Assert.assertEquals(1, scheduler.queueSize);
             scheduler.runNext();
@@ -149,8 +149,8 @@ package rx.tests.subjects
             subject.onNext(3);
             subject.onCompleted();
 
-            subject.subscribe(statsA);
-            subject.subscribe(statsB);
+            subject.subscribeWith(statsA);
+            subject.subscribeWith(statsB);
 
 
             scheduler.runNext();

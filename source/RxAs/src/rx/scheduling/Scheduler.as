@@ -1,7 +1,7 @@
 package rx.scheduling
 {
 	import rx.ICancelable;
-	import rx.impl.ClosureScheduledAction;
+	import rx.impl.ClosureCancelable;
 	
 	public class Scheduler
 	{
@@ -47,7 +47,7 @@ package rx.scheduling
 			
 			reschedule();
 			
-			return new ClosureScheduledAction(function():void
+			return new ClosureCancelable(function():void
 			{
 				cancelled = true;
 				scheduledAction.cancel();

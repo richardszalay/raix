@@ -36,7 +36,7 @@
 							.map(function(v:Object,...args):String { return v.titleNoFormatting; });
 					});
 					
-				subscription = searchObservable.subscribeFunc(
+				subscription = searchObservable.subscribe(
 					function(values:Array) : void 
 					{
 						autoComplete.dataProvider = values;

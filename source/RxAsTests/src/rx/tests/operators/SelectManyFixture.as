@@ -27,7 +27,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 3)
                 .selectMany(int, function(x:int):IObservable { return Observable.range(x * 2, 2); })
-                .subscribe(stats);
+                .subscribeWith(stats);
                 
             Assert.assertEquals(6, stats.nextCount);
             Assert.assertEquals(0, stats.nextValues[0]);
@@ -53,7 +53,7 @@ package rx.tests.operators
 
             source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             first.onNext(1);
@@ -85,7 +85,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -116,7 +116,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -148,7 +148,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -180,7 +180,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -211,7 +211,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -240,7 +240,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -269,7 +269,7 @@ package rx.tests.operators
 
             var subscription : ICancelable = source
                 .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             source.onNext(0);
             source.onNext(1);
@@ -297,7 +297,7 @@ package rx.tests.operators
 			});
 			
 			var stats : StatsObserver = new StatsObserver();
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 		}
 		
 		[Test]
@@ -311,7 +311,7 @@ package rx.tests.operators
 			});
 			
 			var stats : StatsObserver = new StatsObserver();
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 
 			manObs.onNext(0);
 			
@@ -325,7 +325,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

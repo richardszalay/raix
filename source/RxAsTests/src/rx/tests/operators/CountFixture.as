@@ -21,7 +21,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.range(5, 3).count().subscribe(stats);
+			Observable.range(5, 3).count().subscribeWith(stats);
 			
 			Assert.assertEquals(1, stats.nextCount);
 			Assert.assertEquals(3, stats.nextValues[0]);
@@ -33,7 +33,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.never(int).count().subscribe(stats);
+			Observable.never(int).count().subscribeWith(stats);
 			
 			Assert.assertEquals(0, stats.nextCount);
 			Assert.assertFalse(stats.completedCalled);
@@ -44,7 +44,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.empty(int).count().subscribe(stats);
+			Observable.empty(int).count().subscribeWith(stats);
 			
 			Assert.assertEquals(1, stats.nextCount);
 			Assert.assertEquals(0, stats.nextValues[0]);
@@ -56,7 +56,7 @@ package rx.tests.operators
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int).count().subscribe(stats);
+			Observable.throwError(new Error(), int).count().subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertTrue(stats.errorCalled);
@@ -69,7 +69,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.count();
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -91,7 +91,7 @@ package rx.tests.operators
 			var nextCount : int = 0;
 			var errorCalled : Boolean = false;
 			
-			var subs : ICancelable = obs.subscribeFunc(
+			var subs : ICancelable = obs.subscribe(
 				function(pl:int):void { nextCount++; },
 				function():void { },
 				function(e:Error):void { errorCalled = true; }

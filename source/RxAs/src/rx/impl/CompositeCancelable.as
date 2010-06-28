@@ -2,12 +2,12 @@ package rx.impl
 {
 	import rx.ICancelable;
 
-	public class CompositeSubscription implements ICancelable
+	public class CompositeCancelable implements ICancelable
 	{
 		private var _cancelled : Boolean = false;
 		private var _subscriptions : Array;
 		
-		public function CompositeSubscription(values : Array)
+		public function CompositeCancelable(values : Array)
 		{
 			_subscriptions = new Array().concat(values);
 		}

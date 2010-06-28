@@ -1,7 +1,7 @@
 package rx.tests.mocks
 {
-	import rx.impl.ClosureScheduledAction;
 	import rx.ICancelable;
+	import rx.impl.ClosureCancelable;
 	import rx.scheduling.IScheduler;
 	
 	public class ManualScheduler implements IScheduler
@@ -17,7 +17,7 @@ package rx.tests.mocks
 		{
 			_buffer.push(action);
 			
-			return new ClosureScheduledAction(function():void
+			return new ClosureCancelable(function():void
 			{
 				for (var i:int=0; i<_buffer.length; i++)
 				{

@@ -16,7 +16,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([Observable.empty(), Observable.returnValue(int, 1)])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(0, stats.nextCount);
             Assert.assertTrue(stats.completedCalled);
@@ -28,7 +28,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([Observable.returnValue(int, 1), Observable.returnValue(int, 2)])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals("1,2", stats.nextValues[0]);
@@ -41,7 +41,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([Observable.range(0, 2), Observable.range(2, 2)])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals("1,3", stats.nextValues[0]);
@@ -57,7 +57,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([subjectA, subjectB])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectB.onNext(1);
@@ -81,7 +81,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([subjectA, subjectB])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectB.onNext(1);
@@ -101,7 +101,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.forkJoin([subjectA, subjectB])
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             subjectB.onNext(1);
             subjectB.onCompleted();

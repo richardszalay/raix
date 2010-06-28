@@ -1,6 +1,6 @@
 package rx
 {
-	import rx.impl.ClosureSubscription;
+	import rx.impl.ClosureCancelable;
 	
 	public class Subject extends AbsObservable implements ISubject
 	{
@@ -21,13 +21,13 @@ package rx
 			return _type;
 		}
 		
-		public override function subscribe(observer:IObserver):ICancelable
+		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			_subscriptionCount++;
 			
 			_observers.push(observer);
 			
-			return new ClosureSubscription(function():void
+			return new ClosureCancelable(function():void
 			{
 				for (var i:int=0; i<_observers.length; i++)
 				{

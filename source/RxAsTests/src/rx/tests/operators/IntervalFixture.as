@@ -8,8 +8,7 @@ package rx.tests.operators
 	
 	import rx.ICancelable;
 	import rx.Observable;
-	import rx.impl.ClosureScheduledAction;
-	import rx.ICancelable;
+	import rx.impl.ClosureCancelable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver; 
@@ -30,13 +29,13 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.interval(intervalValue, scheduler).subscribe(stats);
+			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertFalse(stats.completedCalled);
@@ -56,14 +55,14 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
 			var stats : StatsObserver = new StatsObserver();
 			
 			var subscription : ICancelable = 
-				Observable.interval(intervalValue, scheduler).subscribe(stats);
+				Observable.interval(intervalValue, scheduler).subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertEquals(1, scheduler.queueSize);
@@ -81,7 +80,7 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
 			
 			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
 			Expect.call(scheduler.schedule(null, 0))
@@ -92,7 +91,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.interval(intervalValue, scheduler).subscribe(stats);
+			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
 			
 			repository.verify(scheduler);
 		}
@@ -104,7 +103,7 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : ICancelable = ClosureScheduledAction.empty();
+			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
 			
 			var calledScheduledAction : Boolean = false;
 			
@@ -119,7 +118,7 @@ package rx.tests.operators
 						action();
 					}
 					
-					return ClosureScheduledAction.empty();
+					return ClosureCancelable.empty();
 				})
 				.repeat.twice();
 				
@@ -127,7 +126,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.interval(intervalValue, scheduler).subscribe(stats);
+			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
 			
 			repository.verify(scheduler);
 		}

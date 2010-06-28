@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RxAs.Rx4.ProofTests.Mock;
+using System.Diagnostics;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
@@ -87,6 +88,14 @@ namespace RxAs.Rx4.ProofTests.Operators
 		[Test]
 		public void remaining_items_are_released_on_error()
 		{
+            Observable.Range(0, 3)
+                .Concat<int>(Observable.Throw<int>(new Exception()))
+                .BufferWithCount(2)
+                .Subscribe(
+                    xs => Debug.WriteLine(xs.Count),
+                    e => Debug.WriteLine("Error!")
+                );
+
 			var obs = Observable.Range(0, 3)
                 .Concat<int>(Observable.Throw<int>(new Exception()))
                 .BufferWithCount(2);

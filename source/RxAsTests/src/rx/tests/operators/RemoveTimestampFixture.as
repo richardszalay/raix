@@ -22,7 +22,7 @@ package rx.tests.operators
 			
 			var expectedValues : Array = [1, 2, 3, 4];
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 				Assert.assertEquals(expectedValues.shift(), pl);
 			});
@@ -42,7 +42,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

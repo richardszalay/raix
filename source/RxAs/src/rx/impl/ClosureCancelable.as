@@ -2,12 +2,12 @@ package rx.impl
 {
 	import rx.ICancelable;
 	
-	public class ClosureSubscription implements ICancelable
+	public class ClosureCancelable implements ICancelable
 	{
 		private var _unsubscribeFunc : Function;
 		private var _isUnsubscribed : Boolean = false;
 		
-		public function ClosureSubscription(unsubscribeFunc : Function)
+		public function ClosureCancelable(unsubscribeFunc : Function)
 		{
 			_unsubscribeFunc = unsubscribeFunc;
 		}
@@ -21,9 +21,9 @@ package rx.impl
 			}
 		}
 		
-		public static function empty() : ClosureSubscription
+		public static function empty() : ClosureCancelable
 		{
-			return new ClosureSubscription(function():void{});
+			return new ClosureCancelable(function():void{});
 		}
 
 	}

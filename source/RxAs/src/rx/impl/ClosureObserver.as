@@ -1,6 +1,7 @@
 package rx.impl
 {
 	import rx.IObserver;
+	import rx.Observable;
 	
 	public class ClosureObserver implements IObserver
 	{

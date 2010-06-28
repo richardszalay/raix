@@ -18,7 +18,7 @@ package rx.tests.operators
         		Observable.returnValue(int, 2),
         		Observable.returnValue(int, 3)
         		])
-        		.subscribe(stats);
+        		.subscribeWith(stats);
             
             Assert.assertEquals(3, stats.nextCount);
             Assert.assertEquals(1, stats.nextValues[0]);
@@ -41,7 +41,7 @@ package rx.tests.operators
         		subjectB,
         		subjectC
         		])
-        		.subscribe(stats);
+        		.subscribeWith(stats);
         		
         	subs.cancel();
             
@@ -60,8 +60,8 @@ package rx.tests.operators
         	var statsA : StatsObserver = new StatsObserver();
         	var statsB : StatsObserver = new StatsObserver();
         	
-        	obs.subscribe(statsA);
-        	obs.subscribe(statsB);
+        	obs.subscribeWith(statsA);
+        	obs.subscribeWith(statsB);
         	
         	Assert.assertEquals(2, statsB.nextCount); 
         	Assert.assertEquals(1, statsB.nextValues[0]); 

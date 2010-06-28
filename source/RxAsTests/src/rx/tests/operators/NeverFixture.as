@@ -23,7 +23,7 @@ package rx.tests.operators
 				Assert.assertFalse(wasCalled);
 			};
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function():void { wasCalled = true; },
 				function():void { wasCalled = true; },
 				function():void { wasCalled = true; }

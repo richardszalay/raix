@@ -18,7 +18,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
             source.onCompleted();
@@ -39,7 +39,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -58,7 +58,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -77,7 +77,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             connectable.connect();
             connectable.connect();
@@ -95,7 +95,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -115,7 +115,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             Assert.assertFalse(source.hasSubscriptions);
 
@@ -137,7 +137,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
 
@@ -161,7 +161,7 @@ package rx.tests.operators
 
             var connectable : IConnectableObservable = source.publish();
 
-            var sub : ICancelable = connectable.subscribe(stats);
+            var sub : ICancelable = connectable.subscribeWith(stats);
 
             source.onNext(0);
             source.onCompleted();

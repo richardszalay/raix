@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			var nextCount : int = 0;
 			
-			obs.subscribeFunc(function(pl:int):void
+			obs.subscribe(function(pl:int):void
 			{
 				nextCount++;
 			});
@@ -51,7 +51,7 @@ package rx.tests.operators
 			var nextCalled : Boolean = false;
 			var completeCalled : Boolean = false;
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { nextCalled = true; },
 				function() : void { completeCalled = true; }
 			);
@@ -101,7 +101,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onNext(1);
 			
@@ -127,7 +127,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObs.onError(new Error());
 			
@@ -146,7 +146,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 
 			manObs.onNext(0);
 			
@@ -164,7 +164,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

@@ -25,7 +25,7 @@ package rx.tests.operators
                 {
                     finallyCalled = true;
                 })
-                .subscribe(stats);
+                .subscribeWith(stats);
 
             Assert.assertTrue(finallyCalled);
         }
@@ -40,7 +40,7 @@ package rx.tests.operators
                 {
                     Assert.assertTrue(stats.completedCalled);
                 })
-                .subscribe(stats);
+                .subscribeWith(stats);
         }
 
         [Test]
@@ -55,7 +55,7 @@ package rx.tests.operators
             	{
             		finallyCalled = true;
             	})
-            	.subscribe(stats);
+            	.subscribeWith(stats);
 
             Assert.assertTrue(finallyCalled);
         }
@@ -70,7 +70,7 @@ package rx.tests.operators
             	{
             		Assert.assertTrue(stats.errorCalled);
             	})
-            	.subscribe(stats);
+            	.subscribeWith(stats);
         }
 
         [Test]
@@ -82,7 +82,7 @@ package rx.tests.operators
             
             new ClosureObservable(int, function(obs : IObserver):ICancelable
             	{
-            		return new ClosureSubscription(function():void
+            		return new ClosureCancelable(function():void
             		{
             			sourceSubscriptionDisposed = true;
             		});
@@ -91,7 +91,7 @@ package rx.tests.operators
             	{
             		Assert.assertTrue(sourceSubscriptionDisposed);
             	})
-            	.subscribe(stats)
+            	.subscribeWith(stats)
             	.cancel();
         }
 
@@ -106,7 +106,7 @@ package rx.tests.operators
             {
             	new ClosureObservable(int, function(obs : IObserver):ICancelable
             	{
-            		return new ClosureSubscription(function():void
+            		return new ClosureCancelable(function():void
             		{
             			throw new Error();
             		});
@@ -115,7 +115,7 @@ package rx.tests.operators
             	{
             		finallyCalled = true;
             	})
-            	.subscribe(stats)
+            	.subscribeWith(stats)
             	.cancel();
             }
             finally
@@ -138,7 +138,7 @@ package rx.tests.operators
 				throw new Error();
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -151,7 +151,7 @@ package rx.tests.operators
 			var obs : IObservable = Observable.range(0, 1)
 				.finallyAction(function():void{});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

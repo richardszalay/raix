@@ -7,7 +7,7 @@ package rx.tests.operators
 	import rx.IObserver;
 	import rx.Observable;
 	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureSubscription;
+	import rx.impl.ClosureCancelable;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class RetryFixture extends AbsDecoratorOperatorFixture
@@ -24,7 +24,7 @@ package rx.tests.operators
 			
 			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
 				.retry(3)
-				.subscribe(stats);
+				.subscribeWith(stats);
 
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals(5, stats.nextValues[0]);
@@ -41,7 +41,7 @@ package rx.tests.operators
 			
 			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
 				.retry(500)
-				.subscribe(stats);
+				.subscribeWith(stats);
 		}
 		
 		[Test]
@@ -55,11 +55,11 @@ package rx.tests.operators
 
                     obs.onError(new Error());
 
-                    return ClosureSubscription.empty();
+                    return ClosureCancelable.empty();
                 });
 
             var stats : StatsObserver = new StatsObserver();
-            source.retry(2).subscribe(stats);
+            source.retry(2).subscribeWith(stats);
 
             Assert.assertEquals(2, subscribeCount);
         }
@@ -75,11 +75,11 @@ package rx.tests.operators
 
                 obs.onCompleted();
 
-                return ClosureSubscription.empty();
+                return ClosureCancelable.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.retry(2).subscribe(stats);
+            source.retry(2).subscribeWith(stats);
 
             Assert.assertEquals(1, subscribeCount);
             Assert.assertTrue(stats.completedCalled);
@@ -99,11 +99,11 @@ package rx.tests.operators
                     obs.onError(new Error());
                 }
 
-                return ClosureSubscription.empty();
+                return ClosureCancelable.empty();
             });
 
             var stats : StatsObserver = new StatsObserver();
-            source.retry().subscribe(stats);
+            source.retry().subscribeWith(stats);
 
             Assert.assertEquals(200, subscribeCount);
             Assert.assertFalse(stats.completedCalled);

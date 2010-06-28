@@ -29,7 +29,7 @@ package rx.tests.operators
 
             var stats : StatsObserver = new StatsObserver();
 
-            subject.throttle(1000, scheduler).subscribe(stats);
+            subject.throttle(1000, scheduler).subscribeWith(stats);
 
             subject.onNext(0);
             
@@ -54,7 +54,7 @@ package rx.tests.operators
 
             subject
                 .throttle(1000, scheduler)
-                .subscribe(stats);
+                .subscribeWith(stats);
             
             subject.onNext(0);
 
@@ -71,7 +71,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = manObs.throttle(5);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

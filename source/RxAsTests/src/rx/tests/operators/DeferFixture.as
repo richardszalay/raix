@@ -26,8 +26,8 @@ package rx.tests.operators
 			var statsA : StatsObserver = new StatsObserver();
 			var statsB : StatsObserver = new StatsObserver();
 			
-			defObs.subscribe(statsA);
-			defObs.subscribe(statsB);
+			defObs.subscribeWith(statsA);
+			defObs.subscribeWith(statsB);
 			
 			manObsA.onNext(1);			
 			manObsB.onNext(5);
@@ -46,7 +46,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = Observable.defer(int, function():IObservable { return manObs; });
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
@@ -65,7 +65,7 @@ package rx.tests.operators
 				throw new Error();
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

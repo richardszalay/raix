@@ -22,7 +22,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
 			var observer : StatsObserver = new StatsObserver();
-			obs.subscribe(observer);
+			obs.subscribeWith(observer);
 			
 			manObs.onNext(0);
 			manObs.onNext(1);
@@ -41,7 +41,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
 			var observer : StatsObserver = new StatsObserver();
-			obs.subscribe(observer);
+			obs.subscribeWith(observer);
 			
 			manObs.onCompleted();
 			
@@ -57,7 +57,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
 			var observer : StatsObserver = new StatsObserver();
-			obs.subscribe(observer);
+			obs.subscribeWith(observer);
 			
 			var err : Error = new Error();
 			manObs.onError(err);
@@ -74,7 +74,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
 			var observer : StatsObserver = new StatsObserver();
-			obs.subscribe(observer);
+			obs.subscribeWith(observer);
 			
 			manObs.onError(new Error());
 			
@@ -89,7 +89,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.materialize().dematerialize(int);
 			
 			var observer : StatsObserver = new StatsObserver();
-			obs.subscribe(observer);
+			obs.subscribeWith(observer);
 			
 			manObs.onError(new Error());
 			
@@ -114,7 +114,7 @@ package rx.tests.operators
 				return true;
 			});
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

@@ -8,7 +8,7 @@ package rx.subjects
 	import rx.ISubject;
 	import rx.Notification;
 	import rx.Observable;
-	import rx.impl.ClosureSubscription;
+	import rx.impl.ClosureCancelable;
 	import rx.impl.OnCompleted;
 	import rx.impl.OnError;
 	import rx.impl.OnNext;
@@ -27,7 +27,7 @@ package rx.subjects
 			_scheduler = Observable.resolveScheduler(scheduler);
 		}
 		
-		public override function subscribe(observer:IObserver):ICancelable
+		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			if (_complete)
 			{
@@ -42,7 +42,7 @@ package rx.subjects
 			{
 				_observers.push(observer);
 				
-				return new ClosureSubscription(function():void
+				return new ClosureCancelable(function():void
 				{
 					var index : int = _observers.indexOf(observer);
 					

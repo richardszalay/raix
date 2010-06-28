@@ -17,7 +17,7 @@ package rx.tests.operators
 				nextCalled : Boolean = false,
 				completeCalled : Boolean = false;
 				
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:Object):void { nextCalled = true; },
 				function():void { completeCalled = true; },
 				function(e:Error):void { errorCalled = true; Assert.assertStrictlyEquals(err, e); }

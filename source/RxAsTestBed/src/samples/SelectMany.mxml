@@ -21,7 +21,7 @@
 				var obs : IObservable = md
 					.selectMany(MouseEvent, function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
 				
-				subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+				subscription = obs.subscribe(function(me : MouseEvent) : void
 				{
 					var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
 

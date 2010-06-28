@@ -26,10 +26,10 @@
 							observer.onNext(value);
 						}
 					},
-					function () : void { observer.onCompleted(); },
-					function (error : Error) : void { observer.onError(error); }
+					observer.onCompleted,
+					observer.onError
 					);
 				
-				return source.subscribe(decoratorObserver);
+				return source.subscribeWith(decoratorObserver);
 			});
 		}

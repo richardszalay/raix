@@ -16,7 +16,7 @@
 				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE)
 					.where(function(me : MouseEvent) : Boolean { return me.localX > 50 || me.localY > 50; });
 				
-				subscription = mm.subscribeFunc(function(me : MouseEvent) : void
+				subscription = mm.subscribe(function(me : MouseEvent) : void
 				{
 					coords.text = me.localX.toString() + " - " + me.localY.toString();
 				});

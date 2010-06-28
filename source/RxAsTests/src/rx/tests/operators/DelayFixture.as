@@ -20,7 +20,7 @@ package rx.tests.operators
 			
 			Observable.returnValue(int, 1)
 				.delay(200, scheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 					
 			Assert.assertFalse(stats.nextCalled);
 			
@@ -37,7 +37,7 @@ package rx.tests.operators
 			
 			var subscription : ICancelable = Observable.returnValue(int, 1)
 				.delay(100, scheduler)
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Assert.assertEquals(2, scheduler.queueSize);
 			
@@ -52,7 +52,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 2)
 				.delay(200)
-				.subscribe(stats)
+				.subscribeWith(stats)
 				.cancel();				
 
 			Async.asyncHandler(this, function():void {}, 210, null, function():void
@@ -68,7 +68,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = Observable.returnValue(int, 1).delay(50, scheduler);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

@@ -64,7 +64,7 @@ class Counter
     			_counter.onNext(n + 1);
     			
     			result.onNext(n);
-    		})]).subscribeFunc(null);
+    		})]).subscribe(null);
     		
     	_counter.onNext(init);
     }

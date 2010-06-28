@@ -19,13 +19,13 @@
 				var click : IObservable = Observable.fromEvent(throttledButton, MouseEvent.CLICK);
 				
 				throttledSubscription = click.throttle(1000)
-					.subscribeFunc(function(me : MouseEvent) : void
+					.subscribe(function(me : MouseEvent) : void
 					{
 						lastThrottledTimestamp.text
 							 = new Date().getTime().toString();
 					});
 					
-				subscription = click.subscribeFunc(function(me : MouseEvent) : void
+				subscription = click.subscribe(function(me : MouseEvent) : void
 				{
 					lastClickTimestamp.text
 							 = new Date().getTime().toString();

@@ -44,7 +44,7 @@ package rx.tests.operators
 			Assert.assertStrictlyEquals(manObsB, obs);
 			
 			var stats : StatsObserver = new StatsObserver();
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			manObsA.onNext(0);	
 			manObsB.onNext(1);
@@ -60,7 +60,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

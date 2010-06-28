@@ -28,7 +28,7 @@ package rx.subjects
 			_scheduler = Observable.resolveScheduler(scheduler);			
 		}
 		
-		public override function subscribe(observer:IObserver):ICancelable
+		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			removeInvalidValues();
 			
@@ -61,7 +61,7 @@ package rx.subjects
 																
 			}, 0);
 			
-			return new ClosureSubscription(function():void
+			return new ClosureCancelable(function():void
 			{
 				scheduledAction.cancel();
 				

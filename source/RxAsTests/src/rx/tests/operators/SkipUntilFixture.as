@@ -25,7 +25,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			primaryObs.onNext(0);
 			primaryObs.onNext(1);
@@ -48,7 +48,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			primaryObs.onNext(0);
 			primaryObs.onNext(1);
@@ -70,7 +70,7 @@ package rx.tests.operators
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			otherObs.onNext(0);
 			
@@ -84,7 +84,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.skipUntil(Observable.returnValue(int, 1));
 			
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

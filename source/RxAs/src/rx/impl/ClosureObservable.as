@@ -15,7 +15,7 @@ package rx.impl
 			_type = type;
 		}
 		
-		public override function subscribe(observer : IObserver) : ICancelable 
+		public override function subscribeWith(observer : IObserver) : ICancelable 
 		{
 			// TODO: What is observer is already a SafetyObserver (eg. select().first())?
 			var safetyObserver : SafetyObserver = new SafetyObserver(observer);

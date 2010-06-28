@@ -20,7 +20,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.fromCollection(String, collection)
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);
 			Assert.assertEquals("right", stats.nextValues[0]);

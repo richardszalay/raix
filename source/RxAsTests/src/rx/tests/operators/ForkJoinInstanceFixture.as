@@ -16,7 +16,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.empty().forkJoin(String, Observable.returnValue(int, 1), selector)
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(0, stats.nextCount);
             Assert.assertTrue(stats.completedCalled);
@@ -28,7 +28,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.returnValue(int, 1).forkJoin(String, Observable.returnValue(int, 2), selector)
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals("1,2", stats.nextValues[0]);
@@ -41,7 +41,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             Observable.range(0, 2).forkJoin(String, Observable.range(2, 2), selector)
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
             Assert.assertEquals("1,3", stats.nextValues[0]);
@@ -58,7 +58,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.forkJoin(String, subjectB, selector)
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectB.onNext(1);
@@ -82,7 +82,7 @@ package rx.tests.operators
             var stats : StatsObserver = new StatsObserver();
 
             subjectA.forkJoin(String, subjectB, selector)
-                    .subscribe(stats);
+                    .subscribeWith(stats);
 
             subjectA.onNext(0);
             subjectB.onNext(1);

@@ -2,11 +2,10 @@ package rx.tests.operators
 {
 	import org.flexunit.Assert;
 	
+	import rx.ICancelable;
 	import rx.IObservable;
-	import rx.ICancelable;
 	import rx.Observable;
-	import rx.impl.ClosureScheduledAction;
-	import rx.ICancelable;
+	import rx.impl.ClosureCancelable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.ClosureScheduler;
 	import rx.tests.mocks.NullScheduler;
@@ -21,7 +20,7 @@ package rx.tests.operators
 			
 			var completed : Boolean = false;
 			
-			obs.subscribeFunc(null, function():void
+			obs.subscribe(null, function():void
 			{
 				completed = true;	
 			});
@@ -38,7 +37,7 @@ package rx.tests.operators
 			
 			var completed : Boolean = false;
 			
-			obs.subscribeFunc(null, function():void
+			obs.subscribe(null, function():void
 			{
 				completed = true;	
 			});
@@ -51,7 +50,7 @@ package rx.tests.operators
 		{
 			var obs : IObservable = Observable.empty();
 			
-			var subscription : ICancelable = obs.subscribeFunc(null);
+			var subscription : ICancelable = obs.subscribe(null);
 			subscription.cancel();
 		}
 		
@@ -64,7 +63,7 @@ package rx.tests.operators
             {
             	action();
             	
-            	return new ClosureScheduledAction(function():void
+            	return new ClosureCancelable(function():void
             	{
             		disposed = true;
             	});
@@ -72,7 +71,7 @@ package rx.tests.operators
 
             var obs : IObservable = Observable.empty(Object, scheduler);
 
-           var subscription : ICancelable = obs.subscribeFunc(null);
+           var subscription : ICancelable = obs.subscribe(null);
 
             Assert.assertTrue(disposed);
         }

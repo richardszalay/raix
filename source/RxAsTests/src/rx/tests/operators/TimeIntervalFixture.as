@@ -18,7 +18,7 @@ package rx.tests.operators
 			
 			Observable.range(0, 2, scheduler)
 				.timeInterval()
-				.subscribe(stats);
+				.subscribeWith(stats);
 				
 			scheduler.runNext();
 

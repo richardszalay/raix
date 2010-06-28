@@ -26,7 +26,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.observeOn(scheduler);
 			
 			var stats : StatsObserver = new StatsObserver();
-			obs.subscribe(stats);
+			obs.subscribeWith(stats);
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
 			
@@ -44,7 +44,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.observeOn(scheduler);
 			
 			var stats : StatsObserver = new StatsObserver();
-			var subscription : ICancelable = obs.subscribe(stats);
+			var subscription : ICancelable = obs.subscribeWith(stats);
 			
 			subscription.cancel();
 			
@@ -62,7 +62,7 @@ package rx.tests.operators
 			var obs : IObservable = manObs.observeOn(scheduler);
 			
 			var stats : StatsObserver = new StatsObserver();
-			var subscription : ICancelable = obs.subscribe(stats);
+			var subscription : ICancelable = obs.subscribeWith(stats);
 			
 			scheduler.runNext();
 			Assert.assertTrue(manObs.hasSubscriptions);
@@ -78,7 +78,7 @@ package rx.tests.operators
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
-			obs.subscribeFunc(
+			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
 				function():void { },
 				function(e:Error):void { Assert.fail("Unexpected call to onError"); }

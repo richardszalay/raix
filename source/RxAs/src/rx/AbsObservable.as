@@ -314,25 +314,42 @@ package rx
 		
 		public function cast(type : Class) : IObservable
 		{
-			return this.select(type, function(x:Object):Object
+			var source : IObservable = this;
+			
+			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
 			{
-				if (x != null)
-				{
-					var obj : Object = x as type;
-					
-					if (obj == null)
+				return source.subscribe(
+					function(x : Object) : void
 					{
-						var fromType : String = getQualifiedClassName(x);
-						var toType : String = getQualifiedClassName(type);
-						
-						throw new TypeError(
-							"Error #1034: Type Coercion failed: cannot convert " +
-							fromType + " to " + toType
-						);
-					}
-				}
-				
-				return x;
+						if (x == null)
+						{
+							observer.onNext(x);
+						}
+						else
+						{
+							var obj : Object = x as type;
+							
+							if (obj == null)
+							{
+								var fromType : String = getQualifiedClassName(x);
+								var toType : String = getQualifiedClassName(type);
+								
+								var error : Error = new TypeError(
+									"Error #1034: Type Coercion failed: cannot convert " +
+									fromType + " to " + toType
+								); 
+								
+								observer.onError(error);
+								return;
+							}
+							else
+							{
+								observer.onNext(obj);
+							}
+						}
+					},
+					observer.onCompleted,
+					observer.onError);
 			});
 		}
 		
@@ -341,7 +358,7 @@ package rx
 			return Observable.catchErrors([this, second]);
 		}
 		
-		public function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable
+		public function catchErrorDefer(errorType : Class, deferFunc : Function) : IObservable
 		{
 			var source : IObservable = this;
 			

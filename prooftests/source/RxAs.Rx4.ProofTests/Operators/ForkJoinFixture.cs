@@ -36,6 +36,7 @@ namespace RxAs.Rx4.ProofTests.Operators
                     )
                     .Subscribe(stats);
 
+
             Assert.AreEqual(0, stats.NextCount);
             Assert.IsTrue(stats.CompletedCalled);
         }

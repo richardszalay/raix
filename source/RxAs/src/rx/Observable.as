@@ -65,20 +65,33 @@ package rx
 		
 		public static function create(type : Class, subscribeFunc : Function) : IObservable
 		{
-			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
+			return createWithCancelable(type, function(observer : IObserver):ICancelable
 			{
 				var cancelFunc : Function = subscribeFunc(observer) as Function;
 				
-				return new ClosureCancelable(function():void
+				if (cancelFunc == null)
 				{
-					if (cancelFunc != null)
-					{
-						// TODO: What if an error is thrown?
-						cancelFunc();
-					}
-				});
+					throw new IllegalOperationError("Expected a Function to be returned from subscribeFunc");
+				}
+				
+				return Cancelable.create(cancelFunc);
 			});
 		}
+		
+		public static function createWithCancelable(type : Class, subscribeFunc : Function) : IObservable
+		{
+			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
+			{
+				var cancelable : ICancelable = subscribeFunc(observer) as ICancelable;
+				
+				if (cancelable == null)
+				{
+					throw new IllegalOperationError("Expected an ICancelable to be returned from subscribeFunc");
+				}
+				
+				return cancelable;
+			});
+		});
 		
 		public static function concat(type : Class, sources : Array) : IObservable
 		{
@@ -841,32 +854,45 @@ package rx
 			});
 		}
 		
-		public static function call(action : Function, type : Class = null, scheduler : IScheduler = null) : IObservable
+		public static function start(action : Function, type : Class = null, scheduler : IScheduler = null) : IObservable
 		{
-			scheduler = resolveScheduler(scheduler);
+			return toAsync(action, type, scheduler)();
+		}
+		
+		public static function toAsync(action : Function, type : Class = null, scheduler : IScheduler = null) : Function
+		{
+			scheduler = scheduler || Scheduler.asynchronous;
+			
+			var hasReturnType : Boolean = (type != null);
 			
 			type = type || Unit;
 			
-			return new ClosureObservable(type, function(obs:IObserver) : ICancelable
+			return function (... args) : IObservable
 			{
-				var scheduledAction : ICancelable = scheduler.schedule(function():void
+				return new ClosureObservable(type, function(obs:IObserver) : ICancelable
 				{
-					try
+					var scheduledAction : ICancelable = scheduler.schedule(function():void
 					{
-						var ret : Object = action();
-					}
-					catch(err : Error)
-					{
-						obs.onError(err);
-						return;
-					}
+						try
+						{
+							var ret : Object = action();
+						}
+						catch(err : Error)
+						{
+							obs.onError(err);
+							return;
+						}
+						
+						if (hasReturnType)
+						{
+							obs.onNext(ret);
+						}
+						obs.onCompleted();
+					});
 					
-					obs.onNext(ret);
-					obs.onCompleted();
+					return new ScheduledActionSubscription(scheduledAction);
 				});
-				
-				return new ScheduledActionSubscription(scheduledAction);
-			});
+			};
 		}
 		
 		public static function loader(request : URLRequest, loaderContext : LoaderContext = null) : ITaskObservable

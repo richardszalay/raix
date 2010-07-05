@@ -14,7 +14,7 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.catchErrorDefered(Error, function(e:Error):IObservable
+			return source.catchErrorDefer(Error, function(e:Error):IObservable
 			{
 				return Observable.throwError(e, source.type);
 			});
@@ -26,7 +26,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.throwError(new Error(), int)
-				.catchErrorDefered(Error, function(e:Error):IObservable { return Observable.empty(int); })
+				.catchErrorDefer(Error, function(e:Error):IObservable { return Observable.empty(int); })
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
@@ -38,7 +38,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.throwError(new Error(), int)
-				.catchErrorDefered(Error, function(e:Error):IObservable
+				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					return Observable.throwError(new IllegalOperationError(), int);
 				})
@@ -54,7 +54,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.throwError(new Error(), int)
-				.catchErrorDefered(Error, function(e:Error):IObservable
+				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					throw new IllegalOperationError();
 				})
@@ -70,7 +70,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.throwError(new Error(), int)
-				.catchErrorDefered(Error, function(e:Error):IObservable
+				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					return null;
 				})
@@ -86,7 +86,7 @@ package rx.tests.operators
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.throwError(new IllegalOperationError(), int)
-				.catchErrorDefered(ArgumentError, function(e:Error):IObservable
+				.catchErrorDefer(ArgumentError, function(e:Error):IObservable
 				{
 					return null;
 				})

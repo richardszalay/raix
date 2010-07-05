@@ -85,6 +85,8 @@
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
+    <Compile Include="Operators\CreateFixture.cs" />
+    <Compile Include="Operators\CreateWithDisposable.cs" />
     <Compile Include="Operators\DoFixture.cs">
       <SubType>Code</SubType>
     </Compile>

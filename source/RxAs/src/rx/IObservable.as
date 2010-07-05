@@ -44,7 +44,7 @@ package rx
 		
 		function catchError(second : IObservable) : IObservable;
 		
-		function catchErrorDefered(errorType : Class, deferFunc : Function) : IObservable;
+		function catchErrorDefer(errorType : Class, deferFunc : Function) : IObservable;
 		
 		function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable;
 		

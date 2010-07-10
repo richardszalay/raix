@@ -5,7 +5,7 @@ package rx.tests.operators
 	import rx.ICancelable;
 	import rx.IObservable;
 	import rx.Observable;
-	import rx.impl.ClosureCancelable;
+	import rx.Cancelable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.ClosureScheduler;
 	import rx.tests.mocks.NullScheduler;
@@ -63,7 +63,7 @@ package rx.tests.operators
             {
             	action();
             	
-            	return new ClosureCancelable(function():void
+            	return Cancelable.create(function():void
             	{
             		disposed = true;
             	});

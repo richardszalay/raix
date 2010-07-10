@@ -3,7 +3,7 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
-	import rx.impl.*;
+	import rx.*;
 	import rx.scheduling.*;
 	import rx.subjects.AsyncSubject;
 	import rx.subjects.ConnectableObservable;
@@ -17,7 +17,7 @@ package rx
 		{
 		}
 		
-		public function get type() : Class
+		public function get valueClass() : Class
 		{
 			return Object;
 		}
@@ -50,7 +50,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(obs:IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(obs:IObserver):ICancelable
 			{
 				var total : Number = 0;
 				var count : Number = 0;
@@ -75,7 +75,7 @@ package rx
 			return aggregate(function(x:Number, y:Number):Number
 			{
 				return x+y;
-			}, type, 0);
+			}, valueClass, 0);
 		}
 		
 		public function any(predicate : Function = null) : IObservable
@@ -84,7 +84,7 @@ package rx
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Object) : void
@@ -123,7 +123,7 @@ package rx
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Object) : void
@@ -156,11 +156,6 @@ package rx
 			});
 		}
 		
-		public function asynchronous():IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function bufferWithCount(count:uint, skip:uint=0):IObservable
 		{
 			if (count == 0)
@@ -176,7 +171,7 @@ package rx
 			
 			var source : IObservable = this;
 
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -251,9 +246,9 @@ package rx
 			
 			var source : IObservable = this;
 			
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var buffer : Array = new Array();
 				var startTime : Number = scheduler.now.time;
@@ -369,7 +364,7 @@ package rx
 			
 			errorType = errorType || Error;
 			
-			return new ClosureObservable(source.type, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function(obs:IObserver) : ICancelable
 			{
 				var subscription : ICancelable = null;
 				
@@ -491,7 +486,7 @@ package rx
 		{
 			sources = [this].concat(sources);
 			
-			return Observable.concat(this.type, sources);
+			return Observable.concat(this.valueClass, sources);
 		}
 		
 		public function contains(value : Object, comparer : Function = null) : IObservable
@@ -562,9 +557,9 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			scheduler = scheduler || Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var scheduledActions : CompositeCancelable = new CompositeCancelable([]);
 				var nextScheduledAction : ICancelable = null;
@@ -601,9 +596,9 @@ package rx
 			
 			var dtValue : Number = dt.time;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
-				scheduler = scheduler || Observable.resolveScheduler(scheduler);
+				scheduler = scheduler || scheduler || Scheduler.synchronous;
 				
 				var isPastDate : Boolean = (scheduler.now.time >= dtValue);
 				var scheduledActions : CompositeCancelable = new CompositeCancelable([]);
@@ -651,7 +646,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			if (source.type != Notification)
+			if (source.valueClass != Notification)
 			{
 				throw new ArgumentError("dematerialize can only be called on IObservable of " +
 					"Notification, which is returned by materialize");
@@ -684,7 +679,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -731,7 +726,7 @@ package rx
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var subscription : ICancelable = source.subscribeWith(observer);
 				
@@ -753,7 +748,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -772,7 +767,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -800,7 +795,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return Observable.defer(source.type, function():IObservable
+			return Observable.defer(source.valueClass, function():IObservable
 			{
 				return source;
 			});
@@ -855,7 +850,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -888,7 +883,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -918,11 +913,6 @@ package rx
 			});
 		}
 		
-		public function latest():Array
-		{
-			throw new IllegalOperationError("Not implemented");
-		}
-		
 		public function let(func : Function) : IObservable
 		{
 			return IObservable(func(this));
@@ -944,7 +934,7 @@ package rx
 		
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			return Observable.merge(this.type, sources.startWith([this], scheduler), scheduler);
+			return Observable.merge(this.valueClass, sources.startWith([this], scheduler), scheduler);
 		}
 		
 		public function ofType(type : Class) : IObservable
@@ -959,7 +949,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var first : FutureCancelable = new FutureCancelable();
 				var second : FutureCancelable = new FutureCancelable();
@@ -980,12 +970,12 @@ package rx
 		
 		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return new ConnectableObservable(this, new AsyncSubject(this.type, scheduler));
+			return new ConnectableObservable(this, new AsyncSubject(this.valueClass, scheduler));
 		}
 		
 		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
-			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
 			{
 				var connectable : IConnectableObservable = prune(scheduler);
 				
@@ -1000,12 +990,12 @@ package rx
 		
 		public function publish() : IConnectableObservable
 		{
-			return new ConnectableObservable(this, new Subject(this.type));
+			return new ConnectableObservable(this, new Subject(this.valueClass));
 		}
 		
 		public function publishAndConnect(selector : Function) : IObservable
 		{
-			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
 			{
 				var connectable : IConnectableObservable = publish();
 				
@@ -1020,10 +1010,10 @@ package rx
 		
 		public function removeTimeInterval(type : Class) : IObservable
 		{
-			if (this.type != TimeInterval)
+			if (this.valueClass != TimeInterval)
 			{
 				throw new IllegalOperationError("Cannot remove timeInterval from observable that is of type " +
-					getQualifiedClassName(this.type));
+					getQualifiedClassName(this.valueClass));
 			}
 			
 			return this.select(type, function(ts:TimeInterval):Object
@@ -1034,10 +1024,10 @@ package rx
 		
 		public function removeTimestamp(type : Class) : IObservable
 		{
-			if (this.type != TimeStamped)
+			if (this.valueClass != TimeStamped)
 			{
 				throw new IllegalOperationError("Cannot remove timestamp from observable that is of type " +
-					getQualifiedClassName(this.type));
+					getQualifiedClassName(this.valueClass));
 			}
 			
 			return this.select(type, function(ts:TimeStamped):Object
@@ -1050,13 +1040,13 @@ package rx
 			scheduler : IScheduler = null) : IConnectableObservable
 		{
 			return new ConnectableObservable(this, 
-				new ReplaySubject(this.type, bufferSize, window, scheduler));
+				new ReplaySubject(this.valueClass, bufferSize, window, scheduler));
 		}
 		
 		public function replayAndConnect(selector : Function, bufferSize : uint = 0, 
 			window : uint = 0, scheduler : IScheduler = null) : IObservable
 		{
-			return new ClosureObservable(this.type, function(obs:IObserver):ICancelable
+			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
 			{
 				var connectable : IConnectableObservable = replay(bufferSize, window, scheduler);
 				
@@ -1073,7 +1063,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (repeatCount == 0);
 				var iterationsRemaining : int = repeatCount - 1;
@@ -1112,7 +1102,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (retryCount == 0);
 				var iterationsRemaining : int = retryCount - 1;
@@ -1149,11 +1139,11 @@ package rx
 		
 		public function sample(intervalMs : uint, scheduler : IScheduler = null) : IObservable
 		{
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(this.type, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(this.valueClass, function(observer : IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([]);
 				
@@ -1198,7 +1188,7 @@ package rx
 			
 			if (!useInitialValue)
 			{
-				outputType = this.type; 
+				outputType = this.valueClass; 
 			}
 			
 			var source : IObservable = this;
@@ -1288,7 +1278,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1328,7 +1318,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1359,7 +1349,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var skippedSoFar : uint = 0;
 				
@@ -1388,7 +1378,7 @@ package rx
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -1418,7 +1408,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var subscription : ICancelable;
 				
@@ -1477,7 +1467,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var skipping : Boolean = true;
 				
@@ -1512,7 +1502,7 @@ package rx
 		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			return Observable
-				.fromArray(this.type, values, scheduler)
+				.fromArray(this.valueClass, values, scheduler)
 				.concat([this]);
 		}
 
@@ -1521,7 +1511,7 @@ package rx
 			return aggregate(function(x:Number, y:Number):Number
 			{
 				return x+y;
-			}, type, 0).catchError(Observable.returnValue(type, 0));
+			}, valueClass, 0).catchError(Observable.returnValue(valueClass, 0));
 		}
 		
 		public function take(count:uint):IObservable
@@ -1530,10 +1520,10 @@ package rx
 			
 			if (count == 0)
 			{
-				return Observable.empty(this.type); 
+				return Observable.empty(this.valueClass); 
 			}
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
@@ -1571,7 +1561,7 @@ package rx
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -1605,7 +1595,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var subscription : ICancelable;
 				
@@ -1633,7 +1623,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				return source.subscribe(
 					function (value : Object) : void
@@ -1669,9 +1659,9 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var lastValueTimestamp : Number = 0;
 				
@@ -1699,7 +1689,7 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 			
 			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ICancelable
 			{
@@ -1730,11 +1720,11 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			other = other || Observable.throwError(new TimeoutError("Sequence timed out"), this.type);
+			other = other || Observable.throwError(new TimeoutError("Sequence timed out"), this.valueClass);
 			
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var timeout : FutureCancelable = new FutureCancelable();
 				var subscription : FutureCancelable = new FutureCancelable();
@@ -1768,17 +1758,12 @@ package rx
 		
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
-			scheduler = Observable.resolveScheduler(scheduler);
+			scheduler = scheduler || Scheduler.synchronous;
 			
 			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);
 			});
-		}
-		
-		public function toAsync(func:Function):IObservable
-		{
-			throw new IllegalOperationError("Not implemented");
 		}
 		
 		include "operators/include.as"

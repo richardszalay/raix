@@ -1,9 +1,9 @@
-package rx.impl
+package rx.scheduling
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	public class TimerPool
+	internal class TimerPool
 	{
 		private var _pool : Array = new Array();
 		

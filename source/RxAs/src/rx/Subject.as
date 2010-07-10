@@ -1,6 +1,6 @@
 package rx
 {
-	import rx.impl.ClosureCancelable;
+	import rx.ClosureCancelable;
 	
 	public class Subject extends AbsObservable implements ISubject
 	{
@@ -16,7 +16,7 @@ package rx
 			_type= type;
 		}
 		
-		public override function get type() : Class
+		public override function get valueClass() : Class
 		{
 			return _type;
 		}

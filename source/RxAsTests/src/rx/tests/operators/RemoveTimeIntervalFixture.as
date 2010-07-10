@@ -10,7 +10,7 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.timeInterval().removeTimeInterval(source.type);
+			return source.timeInterval().removeTimeInterval(source.valueClass);
 		}
 		
 		[Test]

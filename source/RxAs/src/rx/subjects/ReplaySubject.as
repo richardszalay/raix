@@ -1,7 +1,7 @@
 package rx.subjects
 {
 	import rx.*;
-	import rx.impl.*;
+	import rx.*;
 	import rx.scheduling.*;
 	
 	public class ReplaySubject extends AbsObservable implements ISubject
@@ -25,7 +25,7 @@ package rx.subjects
 			_type = type;
 			_bufferSize = bufferSize;
 			_window = window;
-			_scheduler = Observable.resolveScheduler(scheduler);			
+			_scheduler = scheduler || Scheduler.synchronous;
 		}
 		
 		public override function subscribeWith(observer:IObserver):ICancelable
@@ -61,7 +61,7 @@ package rx.subjects
 																
 			}, 0);
 			
-			return new ClosureCancelable(function():void
+			return Cancelable.create(function():void
 			{
 				scheduledAction.cancel();
 				

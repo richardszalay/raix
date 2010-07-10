@@ -1,6 +1,6 @@
 package rx
 {
-	import rx.impl.ClosureObserver;
+	import rx.ClosureObserver;
 	
 	public class Observer
 	{

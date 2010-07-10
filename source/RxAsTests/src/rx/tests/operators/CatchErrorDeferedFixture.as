@@ -16,7 +16,7 @@ package rx.tests.operators
 		{
 			return source.catchErrorDefer(Error, function(e:Error):IObservable
 			{
-				return Observable.throwError(e, source.type);
+				return Observable.throwError(e, source.valueClass);
 			});
 		}
 		

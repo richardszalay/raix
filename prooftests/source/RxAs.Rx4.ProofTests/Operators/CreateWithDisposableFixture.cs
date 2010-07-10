@@ -9,7 +9,7 @@ using System.Disposables;
 namespace RxAs.Rx4.ProofTests.Operators
 {
     [TestFixture]
-    public class CreateWithDisposable
+    public class CreateWithDisposableFixture
     {
         [Test]
         public void create_calls_delegate()

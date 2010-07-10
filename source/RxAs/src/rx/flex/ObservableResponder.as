@@ -4,10 +4,7 @@ package rx.flex
 	
 	import mx.rpc.events.FaultEvent;
 	
-	import rx.AbsObservable;
-	import rx.ICancelable;
-	import rx.IObserver;
-	import rx.impl.ClosureCancelable;
+	import rx.*;
 	import rx.util.ErrorUtil;
 	
 	public class ObservableResponder extends AbsObservable implements IObservableResponder
@@ -21,7 +18,7 @@ package rx.flex
 			_type = type;
 		}
 		
-		public override function get type():Class
+		public override function get valueClass():Class
 		{
 			return _type;
 		}
@@ -71,7 +68,7 @@ package rx.flex
 		{
 			_observers.push(observer);
 			
-			return new ClosureCancelable(function():void
+			return Cancelable.create(function():void
 			{
 				var index : int = _observers.indexOf(observer);
 				

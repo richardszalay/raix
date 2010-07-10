@@ -7,8 +7,6 @@ package rx.scheduling
 	import mx.core.Application;
 	
 	import rx.*;
-	import rx.impl.TimerPool;
-	import rx.impl.ClosureCancelable;
 	
 	public class GreenThreadScheduler implements IScheduler
 	{
@@ -45,7 +43,7 @@ package rx.scheduling
 				timer.addEventListener(TimerEvent.TIMER, handler);
 				timer.start();
 				
-				return new ClosureCancelable(function():void
+				return Cancelable.create(function():void
 				{
 					if (timer != null)
 					{
@@ -69,7 +67,7 @@ package rx.scheduling
 						.subscribe(executeGreenThread);
 				}
 				
-				return new ClosureCancelable(function():void
+				return Cancelable.create(function():void
 				{
 					var index : int = _pendingActions.indexOf(action);
 					if (index != -1)

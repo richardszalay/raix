@@ -13,7 +13,7 @@ package rx
 			
 			for (var i:int=0; i<_sources.length; i++)
 			{
-				_types[i] = _sources[i].type;
+				_types[i] = _sources[i].valueClass;
 			}
 		}
 		

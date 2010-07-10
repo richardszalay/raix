@@ -1,45 +1,46 @@
-package rx.impl
+package rx
 {
 	import rx.IObserver;
 	import rx.Notification;
 	import rx.NotificationKind;
 	
-	public class OnError/*.<T>*/ extends Notification/*.<T>*/
+	public class OnNext/*.<T>*/ extends Notification/*.<T>*/
 	{
-		private var _error : Error;
+		private var _value : Object;
 		
-		public function OnError(error : Error)
+		public function OnNext(value : Object /* T */)
 		{
-			this._error = error;
+			this._value = value;
 		}
 		
 		public override function acceptFunc(onNext : Function, onCompleted : Function = null, 
 			onError : Function = null) : void
 		{
-			if (onError != null)
+			if (onNext != null)
 			{
-				onError(_error);
+				onNext(_value);
 			}
 		}
 		
 		public override function get hasValue() : Boolean
 		{
-			return false;
+			return true;
 		}
 		
 		public override function get error() : Error
 		{
-			return _error;
+			return null;
 		}
 		
 		public override function get value() : Object // T
 		{
-			return null;
+			return _value;
 		}
 		
 		public override function get kind() : int
 		{
-			return NotificationKind.ON_ERROR;
+			return NotificationKind.ON_NEXT;
 		}
+
 	}
 }

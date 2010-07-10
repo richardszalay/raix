@@ -4,8 +4,9 @@ package rx.scheduling
 	import flash.utils.Timer;
 	
 	import rx.ICancelable;
-	import rx.impl.TimerPool;
-	import rx.impl.ClosureCancelable;
+	import rx.Cancelable;
+	import rx.scheduling.TimerPool;
+	import rx.ClosureCancelable;
 	
 	public class ImmediateScheduler implements IScheduler
 	{
@@ -32,7 +33,7 @@ package rx.scheduling
 				timer.addEventListener(TimerEvent.TIMER, handler);
 				timer.start();
 				
-				return new ClosureCancelable(function():void
+				return Cancelable.create(function():void
 				{
 					if (timer != null)
 					{
@@ -72,7 +73,7 @@ package rx.scheduling
 					}
 				}
 				
-				return ClosureCancelable.empty();
+				return Cancelable.empty;
 			}
 		}
 		

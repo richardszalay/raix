@@ -1,4 +1,4 @@
-package rx.impl
+package rx
 {
 	import rx.IObserver;
 	import rx.Notification;

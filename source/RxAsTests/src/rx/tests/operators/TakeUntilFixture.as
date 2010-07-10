@@ -12,7 +12,7 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.takeUntil(Observable.never(source.type));
+			return source.takeUntil(Observable.never(source.valueClass));
 		}
 		
 		[Test]

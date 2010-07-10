@@ -5,7 +5,7 @@
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void

@@ -2,14 +2,19 @@ package rx
 {
 	import flash.errors.IllegalOperationError;
 	
-	import rx.impl.ClosureCancelable;
+	import rx.ClosureCancelable;
 	
 	public class Cancelable
 	{
-		public static ICancelable create(action : Function) : ICancelable
+		public static function create(action : Function) : ICancelable
 		{
 			return new ClosureCancelable(action);
-		});
+		}
+		
+		public static function get empty() : ICancelable
+		{
+			return ClosureCancelable.empty();
+		}
 		
 		public function Cancelable()
 		{

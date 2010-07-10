@@ -10,7 +10,7 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.select(source.type, function(pl:Object) : Object { return pl; });
+			return source.select(source.valueClass, function(pl:Object) : Object { return pl; });
 		}
 		
 		[Test]

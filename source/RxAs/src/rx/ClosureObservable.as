@@ -1,10 +1,10 @@
-package rx.impl
+package rx
 {
 	import rx.AbsObservable;
 	import rx.IObserver;
 	import rx.ICancelable;
 	
-	public class ClosureObservable extends AbsObservable
+	internal class ClosureObservable extends AbsObservable
 	{
 		private var _observeFunc : Function;
 		private var _type : Class;
@@ -27,7 +27,7 @@ package rx.impl
 			return subscription; 
 		}
 		
-		public override function get type() : Class
+		public override function get valueClass() : Class
 		{
 			return _type;
 		}

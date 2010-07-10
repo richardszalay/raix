@@ -3,17 +3,17 @@ package rx.subjects
 	import flash.errors.IllegalOperationError;
 	
 	import rx.AbsObservable;
+	import rx.Cancelable;
 	import rx.ICancelable;
 	import rx.IObserver;
 	import rx.ISubject;
 	import rx.Notification;
-	import rx.Observable;
-	import rx.impl.ClosureCancelable;
-	import rx.impl.OnCompleted;
-	import rx.impl.OnError;
-	import rx.impl.OnNext;
-	import rx.impl.ScheduledActionSubscription;
+	import rx.OnCompleted;
+	import rx.OnError;
+	import rx.OnNext;
+	import rx.ScheduledActionSubscription;
 	import rx.scheduling.IScheduler;
+	import rx.scheduling.Scheduler;
 	
 	public class AsyncSubject extends AbsObservable implements ISubject
 	{
@@ -24,7 +24,7 @@ package rx.subjects
 		
 		public function AsyncSubject(type : Class, scheduler : IScheduler = null)
 		{
-			_scheduler = Observable.resolveScheduler(scheduler);
+			_scheduler = scheduler || Scheduler.synchronous;
 		}
 		
 		public override function subscribeWith(observer:IObserver):ICancelable
@@ -42,7 +42,7 @@ package rx.subjects
 			{
 				_observers.push(observer);
 				
-				return new ClosureCancelable(function():void
+				return Cancelable.create(function():void
 				{
 					var index : int = _observers.indexOf(observer);
 					

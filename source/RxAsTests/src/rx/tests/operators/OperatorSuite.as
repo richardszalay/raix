@@ -22,6 +22,8 @@ package rx.tests.operators
 		public var concat : ConcatFixture;
 		public var contains : ContainsFixture;
 		public var count : CountFixture;
+		public var create : CreateFixture;
+		public var createWithCancelableFixture : CreateWithCancelableFixture;
 		public var dematerialize : DematerializeFixture;
 		public var delay : DelayFixture;
 		//public var delayUntil : DelayUntilFixture;
@@ -37,12 +39,14 @@ package rx.tests.operators
 		public var fromArray : FromArrayFixture;
 		public var fromEvent : FromEventFixture;
 		public var fromCollection : FromCollectionFixture;
+		public var ifElse : IfElseFixture;
 		public var interval : IntervalFixture;
 		public var join : JoinFixture;
 		public var joinCounter : JoinCounterFixture;
 		public var let : LetFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
+		public var lookup : LookupFixture;
 		public var observeOn : ObserveOnFixture;
 		public var onErrorResumeNext : OnErrorResumeNextFixture;
 		public var ofType : OfTypeFixture;

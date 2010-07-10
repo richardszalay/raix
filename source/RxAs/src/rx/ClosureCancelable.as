@@ -1,8 +1,8 @@
-package rx.impl
+package rx
 {
 	import rx.ICancelable;
 	
-	public class ClosureCancelable implements ICancelable
+	internal class ClosureCancelable implements ICancelable
 	{
 		private var _unsubscribeFunc : Function;
 		private var _isUnsubscribed : Boolean = false;

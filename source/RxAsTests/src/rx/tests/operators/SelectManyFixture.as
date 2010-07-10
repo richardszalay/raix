@@ -14,9 +14,9 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.selectMany(source.type, function(pl:Object):IObservable
+			return source.selectMany(source.valueClass, function(pl:Object):IObservable
 			{
-				return Observable.returnValue(source.type, pl);
+				return Observable.returnValue(source.valueClass, pl);
 			});
 		}
 		

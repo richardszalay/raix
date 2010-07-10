@@ -3,7 +3,7 @@ package rx.tests.operators
 	import org.flexunit.Assert;
 	
 	import rx.*;
-	import rx.impl.*;
+	import rx.*;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class FinallyActionFixture extends AbsDecoratorOperatorFixture
@@ -80,9 +80,9 @@ package rx.tests.operators
 
             var sourceSubscriptionDisposed : Boolean = true;
             
-            new ClosureObservable(int, function(obs : IObserver):ICancelable
+            Observable.createWithCancelable(int, function(obs : IObserver):ICancelable
             	{
-            		return new ClosureCancelable(function():void
+            		return Cancelable.create(function():void
             		{
             			sourceSubscriptionDisposed = true;
             		});
@@ -104,9 +104,9 @@ package rx.tests.operators
 
             try
             {
-            	new ClosureObservable(int, function(obs : IObserver):ICancelable
+            	Observable.createWithCancelable(int, function(obs : IObserver):ICancelable
             	{
-            		return new ClosureCancelable(function():void
+            		return Cancelable.create(function():void
             		{
             			throw new Error();
             		});

@@ -6,15 +6,14 @@ package rx.tests.operators
 	import rx.IObservable;
 	import rx.IObserver;
 	import rx.Observable;
-	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureCancelable;
+	import rx.Cancelable;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class RepeatFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.concat([Observable.empty(source.type).repeat(1)]);
+			return source.concat([Observable.empty(source.valueClass).repeat(1)]);
 		}
 		
 		[Test]
@@ -48,13 +47,13 @@ package rx.tests.operators
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = new ClosureObservable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
                 {
                     subscribeCount++;
 
                     obs.onCompleted();
 
-                    return ClosureCancelable.empty();
+                    return Cancelable.empty;
                 });
 
             var stats : StatsObserver = new StatsObserver();
@@ -68,13 +67,13 @@ package rx.tests.operators
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = new ClosureObservable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
             {
                 subscribeCount++;
 
                 obs.onError(new Error());
 
-                return ClosureCancelable.empty();
+                return Cancelable.empty;
             });
 
             var stats : StatsObserver = new StatsObserver();
@@ -89,7 +88,7 @@ package rx.tests.operators
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = new ClosureObservable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
             {
                 if (subscribeCount < 200)
                 {
@@ -97,7 +96,7 @@ package rx.tests.operators
                     obs.onCompleted();
                 }
 
-                return ClosureCancelable.empty();
+                return Cancelable.empty;
             });
 
             var stats : StatsObserver = new StatsObserver();

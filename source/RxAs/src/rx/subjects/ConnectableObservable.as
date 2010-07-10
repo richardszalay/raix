@@ -1,14 +1,6 @@
 package rx.subjects
 {
-	import rx.AbsObservable;
-	import rx.ICancelable;
-	import rx.IObservable;
-	import rx.IObserver;
-	import rx.ISubject;
-	import rx.Subject;
-	import rx.impl.ClosureObservable;
-	import rx.impl.ClosureCancelable;
-	import rx.impl.CompositeCancelable;
+	import rx.*;
 
 	public class ConnectableObservable extends AbsObservable implements IConnectableObservable
 	{
@@ -19,10 +11,10 @@ package rx.subjects
 		public function ConnectableObservable(source : IObservable, subject : ISubject = null)
 		{
 			// TODO: Assert source != null
-			// TODO: Assert source.type = subject.type
+			// TODO: Assert source.valueClass = subject.valueClass
 			
 			_source = source.asObservable();
-			_subject = subject || new Subject(source.type);
+			_subject = subject || new Subject(source.valueClass);
 		}
 		
 		public function connect():ICancelable
@@ -32,7 +24,7 @@ package rx.subjects
 			if (!hasSubscription)
 			{
 				_subscription = new CompositeCancelable([
-					new ClosureCancelable(function():void { _subscription = null; }),
+					Cancelable.create(function():void { _subscription = null; }),
 					_source.subscribeWith(_subject)
 					]);
 			}
@@ -47,7 +39,7 @@ package rx.subjects
 			var connection : ICancelable = null;
 			var subscriptionCount : uint = 0;
 			
-			return new ClosureObservable(this.type, function(observer : IObserver) : ICancelable
+			return Observable.createWithCancelable(this.valueClass, function(observer : IObserver) : ICancelable
 			{
 				subscriptionCount++;
 				
@@ -60,7 +52,7 @@ package rx.subjects
 				
 				return new CompositeCancelable([
 					subscription,
-					new ClosureCancelable(function():void
+					Cancelable.create(function():void
 					{
 						subscriptionCount--;
 						

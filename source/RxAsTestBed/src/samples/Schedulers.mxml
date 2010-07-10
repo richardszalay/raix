@@ -3,16 +3,15 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import rx.FutureCancelable;
+			import rx.Cancelable;
+			import rx.CompositeCancelable;
 			import mx.controls.Button;
 			import mx.containers.HBox;
-			import rx.impl.ClosureObservable;
 			import rx.scheduling.GreenThreadScheduler;
 			import rx.scheduling.IScheduler;
-			import rx.impl.ClosureCancelable;
-			import rx.impl.FutureCancelable;
 			import mx.controls.Label;
 			import rx.scheduling.Scheduler;
-			import rx.impl.CompositeCancelable;
 			import samples.imageSearch.JsonService;
 			import rx.IObserver;
 			import mx.events.FlexEvent;
@@ -53,7 +52,7 @@
 				
 				var futureSubscription : FutureCancelable = new FutureCancelable();
 				
-				var subscriptionToAdd : ICancelable = new ClosureCancelable(function():void
+				var subscriptionToAdd : ICancelable = Cancelable.create(function():void
 				{
 					container.removeChild(labelContainer);
 					futureSubscription.cancel();
@@ -82,7 +81,7 @@
 			
 			private function getFpsObservable() : IObservable
 			{
-				return new ClosureObservable(Number, function(obs : IObserver) : ICancelable
+				return Observable.create(Number, function(obs : IObserver) : ICancelable
 				{
 					var subcription : CompositeCancelable = new CompositeCancelable([]);
 					

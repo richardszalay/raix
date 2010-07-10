@@ -84,9 +84,10 @@
     </Compile>
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\CombineLatestFixture.cs" />
+    <Compile Include="Operators\CaseFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\CreateFixture.cs" />
-    <Compile Include="Operators\CreateWithDisposable.cs" />
+    <Compile Include="Operators\CreateWithDisposableFixture.cs" />
     <Compile Include="Operators\DoFixture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +102,7 @@
     <Compile Include="Operators\FromEventFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\IfFixture.cs" />
     <Compile Include="Operators\JoinFixture.cs">
       <SubType>Code</SubType>
     </Compile>

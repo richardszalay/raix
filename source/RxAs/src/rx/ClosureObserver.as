@@ -1,9 +1,9 @@
-package rx.impl
+package rx
 {
 	import rx.IObserver;
 	import rx.Observable;
 	
-	public class ClosureObserver implements IObserver
+	internal class ClosureObserver implements IObserver
 	{
 		private var _onNext : Function;		
 		private var _onComplete : Function;		

@@ -11,7 +11,7 @@ package rx.tests.operators
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.materialize().dematerialize(source.type);
+			return source.materialize().dematerialize(source.valueClass);
 		}
 		
 		[Test]

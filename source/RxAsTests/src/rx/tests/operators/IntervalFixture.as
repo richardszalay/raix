@@ -8,7 +8,7 @@ package rx.tests.operators
 	
 	import rx.ICancelable;
 	import rx.Observable;
-	import rx.impl.ClosureCancelable;
+	import rx.Cancelable;
 	import rx.scheduling.IScheduler;
 	import rx.tests.mocks.ManualScheduler;
 	import rx.tests.mocks.StatsObserver; 
@@ -29,7 +29,7 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
+			var returnScheduledAction : ICancelable = Cancelable.empty;
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
@@ -55,7 +55,7 @@ package rx.tests.operators
 		{
 			var intervalValue : int = 50;
 			
-			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
+			var returnScheduledAction : ICancelable = Cancelable.empty;
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 		
@@ -80,7 +80,7 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
+			var returnScheduledAction : ICancelable = Cancelable.empty;
 			
 			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
 			Expect.call(scheduler.schedule(null, 0))
@@ -103,7 +103,7 @@ package rx.tests.operators
 			
 			var repository : MockRepository = new MockRepository();
 			
-			var returnScheduledAction : ICancelable = ClosureCancelable.empty();
+			var returnScheduledAction : ICancelable = Cancelable.empty;
 			
 			var calledScheduledAction : Boolean = false;
 			
@@ -118,7 +118,7 @@ package rx.tests.operators
 						action();
 					}
 					
-					return ClosureCancelable.empty();
+					return Cancelable.empty;
 				})
 				.repeat.twice();
 				

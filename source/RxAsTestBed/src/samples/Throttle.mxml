@@ -5,7 +5,6 @@
 		<![CDATA[
 			import mx.formatters.Formatter;
 			import mx.formatters.DateFormatter;
-			import mx.charts.DateTimeAxis;
 			import mx.events.FlexEvent;
 			import rx.ICancelable;
 			import rx.IObservable;

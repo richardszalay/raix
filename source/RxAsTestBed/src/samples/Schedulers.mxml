@@ -74,14 +74,14 @@
 							label.text += " - completed in " + ((new Date().time - startTime) / 1000) + " seconds @ " + fpsLabel.text;
 						});
 						
-				futureSubscription.innerSubscription = innerSubscription;
+				futureSubscription.innerCancelable = innerSubscription;
 				
 				subscription.add(subscriptionToAdd);
 			}
 			
 			private function getFpsObservable() : IObservable
 			{
-				return Observable.create(Number, function(obs : IObserver) : ICancelable
+				return Observable.createWithCancelable(Number, function(obs : IObserver) : ICancelable
 				{
 					var subcription : CompositeCancelable = new CompositeCancelable([]);
 					

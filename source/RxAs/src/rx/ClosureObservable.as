@@ -3,6 +3,7 @@ package rx
 	import rx.AbsObservable;
 	import rx.IObserver;
 	import rx.ICancelable;
+	import rx.scheduling.Scheduler;
 	
 	internal class ClosureObservable extends AbsObservable
 	{
@@ -20,9 +21,14 @@ package rx
 			// TODO: What is observer is already a SafetyObserver (eg. select().first())?
 			var safetyObserver : SafetyObserver = new SafetyObserver(observer);
 			
-			var subscription : ICancelable = ICancelable(_observeFunc(safetyObserver));
-			
+			var subscription : FutureCancelable = new FutureCancelable();
 			safetyObserver.setSubscription(subscription);
+			
+			Scheduler.immediate.schedule(function():void
+			{
+				subscription.innerCancelable = ICancelable(_observeFunc(safetyObserver));
+			});
+			
 			
 			return subscription; 
 		}

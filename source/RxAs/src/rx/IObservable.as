@@ -277,6 +277,13 @@ package rx
 		function observeOn(scheduler : IScheduler) : IObservable;
 		
 		/**
+		 * Defers subscriptions to the source through a scheduler  
+		 * @param scheduler The subscriber to schedule subscriptions through
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 */		
+		function subscribeOn(scheduler : IScheduler) : IObservable;
+		
+		/**
 		 * Subscribes down a list of sequence as each one errors or complete 
 		 * @param second The sequence to run after the current sequence completes or errors
 		 * @param scheduler The scheduler to use to subscribe to the new sequence

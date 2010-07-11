@@ -4,8 +4,8 @@ package rx
 	
 	public class FutureCancelable implements ICancelable
 	{
-		private var _unsubscribed : Boolean = false;
-		private var _innerSubscription : ICancelable = null;
+		private var _canceled : Boolean = false;
+		private var _innerCancelable : ICancelable = null;
 		
 		public function FutureCancelable()
 		{
@@ -13,30 +13,30 @@ package rx
 		
 		public function cancel() : void
 		{
-			_unsubscribed = true;
+			_canceled = true;
 			
-			if (_innerSubscription != null)
+			if (_innerCancelable != null)
 			{
-				_innerSubscription.cancel();
-				_innerSubscription = null;
+				_innerCancelable.cancel();
+				_innerCancelable = null;
 			}
 		}
 		
-		public function set innerSubscription(value : ICancelable) : void
+		public function set innerCancelable(value : ICancelable) : void
 		{
-			if (_innerSubscription != null)
+			if (_innerCancelable != null)
 			{
-				_innerSubscription.cancel();
-				_innerSubscription = null;
+				_innerCancelable.cancel();
+				_innerCancelable = null;
 			}
 			
-			if (_unsubscribed)
+			if (_canceled)
 			{
 				value.cancel();
 			}
 			else
 			{
-				_innerSubscription = value;
+				_innerCancelable = value;
 			}
 		}
 	}

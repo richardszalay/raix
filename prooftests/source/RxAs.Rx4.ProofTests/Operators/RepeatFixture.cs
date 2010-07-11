@@ -12,6 +12,16 @@ namespace RxAs.Rx4.ProofTests.Operators
     public class RepeatFixture
     {
         [Test]
+        public void repeatCount_includes_initial_subscription()
+        {
+            var stats = new StatsObserver<int>();
+
+            Observable.Return(1).Repeat(2).Subscribe(stats);
+
+            Assert.AreEqual(2, stats.NextCount);
+        }
+
+        [Test]
         public void repeats_specified_number_of_times()
         {
             var stats = new StatsObserver<int>();

@@ -49,7 +49,7 @@ package rx
 						var futureSubscription : FutureCancelable = new FutureCancelable();
 						subscription.add(futureSubscription);
 					
-						futureSubscription.innerSubscription = obs.subscribe(
+						futureSubscription.innerCancelable = obs.subscribe(
 							function(pl:Object) : void
 							{
 								var newSubscriptions : CompositeCancelable = 
@@ -194,7 +194,7 @@ package rx
 						{
 							currentSource = IObservable(remainingSources.shift());
 							
-							subscription.innerSubscription = currentSource.subscribeWith(innerObserver);
+							subscription.innerCancelable = currentSource.subscribeWith(innerObserver);
 						}
 						else
 						{
@@ -204,7 +204,7 @@ package rx
 					observer.onError
 					);
 				
-				subscription.innerSubscription = currentSource.subscribeWith(innerObserver);
+				subscription.innerCancelable = currentSource.subscribeWith(innerObserver);
 				
 				return composite;
 			});
@@ -356,11 +356,11 @@ package rx
 				
 				var scheduledAction : FutureCancelable = new FutureCancelable();
 				
-				scheduledAction.innerSubscription = scheduler.schedule(function():void
+				scheduledAction.innerCancelable = scheduler.schedule(function():void
 					{
 						observer.onNext(++intervalIndex);
 						
-						scheduledAction.innerSubscription = Scheduler.scheduleRecursive(scheduler,
+						scheduledAction.innerCancelable = Scheduler.scheduleRecursive(scheduler,
 							function(recurse : Function):void
 							{
 								observer.onNext(++intervalIndex);
@@ -803,7 +803,7 @@ package rx
 							}
 						});
 					
-					futureSubscription.innerSubscription = subscription;
+					futureSubscription.innerCancelable = subscription;
 				};
 				
 				scheduledAction = scheduler.schedule(moveNextFunc);
@@ -844,7 +844,7 @@ package rx
 		 */		
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
-			return Observable.merge(Error, Observable.fromArray(Error, 
+			return Observable.merge(Error, Observable.fromArray(IObservable, 
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
@@ -939,6 +939,20 @@ package rx
 		}
 		
 		/**
+		 * Repeats a value a specification number of times 
+		 * @param valueClass The valueClass of the sequence and of value
+		 * @param value The value to repeat
+		 * @param repeatCount The number of times to emit the value
+		 * @param scheduler The scheduler to use
+		 * @return An observable sequence of valueClass
+		 */
+		public static function repeatValue(valueClass : Class, value : Object, repeatCount : uint = 0, scheduler : IScheduler = null) : IObservable
+		{
+			return returnValue(valueClass, value, scheduler)
+				.repeat(repeatCount);
+		}
+		
+		/**
 		 * Create a sequence consisting of exactly one value 
 		 * @param valueClass The valueClass of the sequence and of value
 		 * @param value The value to emit
@@ -972,8 +986,8 @@ package rx
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
-				var subscription : ICancelable = null;
-				var scheduledAction : ICancelable = null;
+				var subscription : FutureCancelable = new FutureCancelable();
+				var scheduledAction : FutureCancelable = new FutureCancelable();
 				
 				var moveNextFunc : Function = null;
 				
@@ -981,14 +995,14 @@ package rx
 				{
 					var currentSource : IObservable = remainingSources.shift();
 						
-					subscription = currentSource.subscribe(
+					subscription.innerCancelable = currentSource.subscribe(
 						function(pl:Object) : void { obs.onNext(pl); },
 						function() : void { obs.onCompleted(); },
 						function(e:Error) : void
 						{
 							if (remainingSources.length > 0)
 							{
-								scheduledAction = scheduler.schedule(moveNextFunc);
+								scheduledAction.innerCancelable = scheduler.schedule(moveNextFunc);
 							}
 							else
 							{
@@ -997,20 +1011,9 @@ package rx
 						});
 				};
 				
-				scheduledAction = scheduler.schedule(moveNextFunc);
+				scheduledAction.innerCancelable = scheduler.schedule(moveNextFunc);
 				
-				return new ClosureCancelable(function():void
-				{
-					if (scheduledAction != null)
-					{
-						scheduledAction.cancel();
-					}
-					
-					if (subscription != null)
-					{
-						subscription.cancel();
-					}
-				});
+				return new CompositeCancelable([scheduledAction, subscription]);
 			});
 		}
 		
@@ -1028,8 +1031,6 @@ package rx
 				throw new ArgumentError("merge can only merge an IObservable of IObservables");
 			}
 			
-			scheduler = scheduler || Scheduler.synchronous;
-			
 			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([]);
@@ -1039,7 +1040,7 @@ package rx
 				var outerSubscription : FutureCancelable = new FutureCancelable();
 				subscription.add(outerSubscription);
 				
-				outerSubscription.innerSubscription = source.subscribe(
+				outerSubscription.innerCancelable = source.subscribe(
 					function(innerSource:IObservable) : void
 					{
 						if (innerSource == null)
@@ -1050,11 +1051,8 @@ package rx
 						var innerSubscription : FutureCancelable = new FutureCancelable();
 						subscription.add(innerSubscription);
 						
-						innerSubscription.innerSubscription = innerSource.subscribe(
-							function(pl:Object) : void
-							{
-								obs.onNext(pl);
-							},
+						innerSubscription.innerCancelable = innerSource.subscribe(
+							obs.onNext,
 							function() : void
 							{
 								innerSubscription.cancel();

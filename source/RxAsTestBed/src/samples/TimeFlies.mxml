@@ -2,6 +2,7 @@
 <samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import rx.CompositeCancelable;
 			import rx.Observer;
 			import mx.controls.Label;
 			import mx.events.FlexEvent;
@@ -9,7 +10,7 @@
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var subscriptions : Array = [];
+			private var subscriptions : CompositeCancelable = new CompositeCancelable([]);
 			
 			private static const VALUE : String = "Time flies like an arrow";
 			private static const LETTER_WIDTH : int = 7; 
@@ -19,6 +20,7 @@
 			public override function setup() : void
 			{
 				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);
+					//.where(function(mm:MouseEvent):Boolean { return mm.target == trackContainer; });
 				
 				for (var i:int=0; i<VALUE.length; i++)
 				{
@@ -36,23 +38,20 @@
 							{
 								var glob : Point = new Point(me.stageX, me.stageY);
 								
-								var pnt : Point = trackContainer.globalToLocal(glob);
+								var pnt : Point = trackContainer.globalToContent(glob);
 								
 								label.y = pnt.y;
 								label.x = pnt.x + (i * LETTER_WIDTH) + 15; 
 							});
 						
-						subscriptions.push(sub);
+						subscriptions.add(sub);
 					})(i);
 				}
 			}
 			
 			public override function teardown() : void
 			{
-				for each(var subscription:ICancelable in subscriptions)
-				{
-					subscription.cancel();
-				}
+				subscriptions.cancel();
 				
 				while(labels.length > 0)
 				{
@@ -61,7 +60,7 @@
 					trackContainer.removeChild(label);
 				}
 				
-				subscriptions = [];
+				subscriptions = new CompositeCancelable([]);
 			}
 		]]>
 	</mx:Script>

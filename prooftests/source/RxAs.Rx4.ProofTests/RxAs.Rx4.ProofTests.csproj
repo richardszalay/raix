@@ -85,6 +85,8 @@
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\CaseFixture.cs" />
+    <Compile Include="Operators\MergeFixture.cs" />
+    <Compile Include="Operators\RepeatValueFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\CreateFixture.cs" />
     <Compile Include="Operators\CreateWithDisposableFixture.cs" />

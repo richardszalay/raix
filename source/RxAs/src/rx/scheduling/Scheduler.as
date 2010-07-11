@@ -32,25 +32,21 @@ package rx.scheduling
 		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : ICancelable
 		{
 			var reschedule : Function = null;
-			var scheduledAction : ICancelable = null;
+			var scheduledAction : FutureCancelable = new FutureCancelable();
 			
-			var cancelled : Boolean = false;
+			var cancelled : BooleanCancelable = new BooleanCancelable();
 			
 			reschedule = function():void
 			{
-				if (!cancelled)
+				if (!cancelled.isCanceled)
 				{
-					scheduledAction = scheduler.schedule(function():void { action(reschedule); }, dueTime);
+					scheduledAction.innerCancelable = scheduler.schedule(function():void { action(reschedule); }, dueTime);
 				}
 			};
 			
 			reschedule();
 			
-			return Cancelable.create(function():void
-			{
-				cancelled = true;
-				scheduledAction.cancel();
-			});
+			return new CompositeCancelable([cancelled, scheduledAction]);
 		}
 	}
 }

@@ -3,7 +3,6 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
-	import rx.*;
 	import rx.scheduling.*;
 	import rx.subjects.AsyncSubject;
 	import rx.subjects.ConnectableObservable;
@@ -457,7 +456,7 @@ package rx
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					leftSubscription.innerSubscription = left.subscribe(
+					leftSubscription.innerCancelable = left.subscribe(
 						function(v:Object) : void
 						{
 							leftValue = v;
@@ -467,7 +466,7 @@ package rx
 						function():void { leftComplete = true; checkComplete(); },
 						observer.onError);
 					
-					rightSubscription.innerSubscription = right.subscribe(
+					rightSubscription.innerCancelable = right.subscribe(
 						function(v:Object) : void
 						{
 							rightValue = v;
@@ -569,7 +568,7 @@ package rx
 				
 				var composite : ICancelable = new CompositeCancelable([scheduledActions, future]);
 				
-				future.innerSubscription = source.subscribe(
+				future.innerCancelable = source.subscribe(
 					function(pl : Object) : void
 					{
 						scheduledActions.add(scheduler.schedule(function():void { observer.onNext(pl); }, delayMs));
@@ -606,7 +605,7 @@ package rx
 				var future : FutureCancelable = new FutureCancelable();
 				scheduledActions.add(future);				
 				
-				future.innerSubscription = source.materialize().subscribe(
+				future.innerCancelable = source.materialize().subscribe(
 					function(pl : Notification) : void
 					{
 						var now : Number = 0;
@@ -951,12 +950,33 @@ package rx
 			
 			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
+				var scheduledAction : FutureCancelable = new FutureCancelable();
+				
+				var subscription : ICancelable = source.materialize()
+					.subscribe(function(n:Notification):void
+					{
+						scheduledAction.innerCancelable = scheduler.schedule(function():void
+						{
+							n.accept(observer);
+						});
+					});
+
+				return new CompositeCancelable([subscription, scheduledAction]);
+			});
+		}
+		
+		public function subscribeOn(scheduler:IScheduler):IObservable
+		{
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			{
 				var first : FutureCancelable = new FutureCancelable();
 				var second : FutureCancelable = new FutureCancelable();
 				
-				first.innerSubscription = scheduler.schedule(function():void
+				first.innerCancelable = scheduler.schedule(function():void
 				{
-					second.innerSubscription = source.subscribeWith(observer);
+					second.innerCancelable = source.subscribeWith(observer);
 				});
 				
 				return new CompositeCancelable([first, second]);
@@ -1079,7 +1099,7 @@ package rx
 						{
 							Scheduler.immediate.schedule(function():void
 							{
-								subscription.innerSubscription = source.subscribeWith(recursiveObserver);
+								subscription.innerCancelable = source.subscribeWith(recursiveObserver);
 							});
 						}
 						else
@@ -1091,7 +1111,7 @@ package rx
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					subscription.innerSubscription = source.subscribeWith(recursiveObserver);
+					subscription.innerCancelable = source.subscribeWith(recursiveObserver);
 				});
 				
 				return subscription;
@@ -1119,7 +1139,7 @@ package rx
 						{
 							Scheduler.immediate.schedule(function():void
 							{
-								subscription.innerSubscription = source.subscribeWith(recursiveObserver);
+								subscription.innerCancelable = source.subscribeWith(recursiveObserver);
 							});
 						}
 						else
@@ -1130,7 +1150,7 @@ package rx
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					subscription.innerSubscription = source.subscribeWith(recursiveObserver);
+					subscription.innerCancelable = source.subscribeWith(recursiveObserver);
 				});
 				
 				return subscription;
@@ -1244,7 +1264,7 @@ package rx
 				
 				var subscription : FutureCancelable = new FutureCancelable();
 				
-				subscription.innerSubscription = source.subscribe(
+				subscription.innerCancelable = source.subscribe(
 					function (value : Object) : void
 					{
 						try
@@ -1384,7 +1404,7 @@ package rx
 				
 				var futureSubscription : FutureCancelable = new FutureCancelable();
 				
-				futureSubscription.innerSubscription = source.subscribe(
+				futureSubscription.innerCancelable = source.subscribe(
 					function(v:Object):void
 					{
 						buffer.push(v);
@@ -1545,7 +1565,7 @@ package rx
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					subscription.innerSubscription = source.subscribeWith(decoratorObserver);
+					subscription.innerCancelable = source.subscribeWith(decoratorObserver);
 				});
 				
 				return subscription;
@@ -1567,7 +1587,7 @@ package rx
 				
 				var futureSubscription : FutureCancelable = new FutureCancelable();
 				
-				futureSubscription.innerSubscription = source.subscribe(
+				futureSubscription.innerCancelable = source.subscribe(
 					function(v:Object):void
 					{
 						buffer.push(v);
@@ -1606,13 +1626,13 @@ package rx
 					primarySubscription, otherSubscription
 				]);
 				
-				otherSubscription.innerSubscription = other.subscribe(
+				otherSubscription.innerCancelable = other.subscribe(
 					function (value : Object) : void { observer.onCompleted(); },
 					observer.onCompleted,
 					observer.onError
 					);
 					
-				primarySubscription.innerSubscription = source.subscribeWith(observer);
+				primarySubscription.innerCancelable = source.subscribeWith(observer);
 					
 				
 				return composite;
@@ -1731,16 +1751,16 @@ package rx
 				
 				var composite : ICancelable = new CompositeCancelable([timeout, subscription]);
 				
-				timeout.innerSubscription = scheduler.schedule(function():void
+				timeout.innerCancelable = scheduler.schedule(function():void
 				{
 					subscription.cancel();
 					subscription = other.subscribeWith(observer);
 				}, timeoutMs);
 				
-				subscription.innerSubscription = source.subscribe(
+				subscription.innerCancelable = source.subscribe(
 					function (value : Object) : void
 					{
-						timeout.innerSubscription = scheduler.schedule(timeout, timeoutMs);
+						timeout.innerCancelable = scheduler.schedule(timeout, timeoutMs);
 						
 						observer.onNext(value);
 					},
@@ -1831,8 +1851,8 @@ package rx
 					observer.onError
 					);
 					
-				leftSubscription.innerSubscription = source.subscribeWith(leftObserver);
-				rightSubscription.innerSubscription = rightSource.subscribeWith(rightObserver);
+				leftSubscription.innerCancelable = source.subscribeWith(leftObserver);
+				rightSubscription.innerCancelable = rightSource.subscribeWith(rightObserver);
 				
 				return new ClosureCancelable(function():void
 				{

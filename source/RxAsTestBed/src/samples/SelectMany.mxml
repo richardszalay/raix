@@ -3,6 +3,7 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
+			import mx.core.FlexSprite;
 			import mx.containers.Panel;
 			import rx.CompositeCancelable;
 			import rx.IObserver;
@@ -11,22 +12,18 @@
 			import rx.IObservable;
 			import rx.Observable;
 			
-			private var innerRect : Panel = new Panel();
+			private var innerRect : Canvas = new Canvas();
 			private var subscription : ICancelable;
 			
 			public override function setup() : void
 			{
-				// Filter mouse movement events so that they are ignored within the top 50x50 box
-				var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
-				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
-				var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
-				
 				trackContainer.graphics.lineStyle(3, 0xFF0000, 1);
 				
 				innerRect.graphics.lineStyle(1, 0x00FF00, 1);
 	            innerRect.graphics.beginFill(0xFFFFFF);
 	            innerRect.graphics.drawRect(10, 10, 200, 200);
 	            innerRect.graphics.endFill();
+	            
 	            trackContainer.addChild(innerRect);
 	            
 				subscription = new CompositeCancelable([
@@ -37,19 +34,20 @@
 			
 			private function drawOn(sprite : Sprite) : ICancelable
 			{
-				var md : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_DOWN);
-				var mm : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_MOVE);					
-				var mu : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
+				var mouseDown : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_DOWN);
+				var mouseMove : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_MOVE);					
+				var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
 				
-				return md
-					.doAction(function(ev:MouseEvent):void
+				return mouseDown
+					.selectMany(MouseEvent, function(e:MouseEvent):IObservable
 					{
-						sprite.graphics.moveTo(ev.localX, ev.localY);
+						sprite.graphics.moveTo(e.localX, e.localY);
+						
+						return mouseMove.takeUntil(mouseUp);
 					})
-					.selectMany(MouseEvent, function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); })
-					.subscribe(function(ev:MouseEvent):void
+					.subscribe(function(e:MouseEvent):void
 					{
-						sprite.graphics.lineTo(ev.localX, ev.localY);
+						sprite.graphics.lineTo(e.localX, e.localY);
 					});
 			}
 			
@@ -75,25 +73,42 @@
 			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
 				<mx:htmlText>
 	<![CDATA[
-// Filter mouse movement events so that they are ignored within the top 50x50 box
-var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOWN);
-var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
-var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
-
-var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
-
-var obs : IObservable = md
-	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
-
-subscription = obs.subscribeFunc(function(me : MouseEvent) : void
+public override function setup() : void
 {
-	var pnt : Point = trackContainer.globalToLocal(new Point(me.stageX, me.stageY));
+    trackContainer.graphics.lineStyle(3, 0xFF0000, 1);
+	
+    innerRect.graphics.lineStyle(1, 0x00FF00, 1);
+    innerRect.graphics.beginFill(0xFFFFFF);
+    innerRect.graphics.drawRect(10, 10, 200, 200);
+    innerRect.graphics.endFill();
+    
+    trackContainer.addChild(innerRect);
+    
+    subscription = new CompositeCancelable([
+        drawOn(trackContainer),
+        drawOn(innerRect)
+    ]);
+}
 
-	moveBox.x = pnt.x;
-	moveBox.y = pnt.y;
-});
-]]>
-				</mx:htmlText>
+private function drawOn(sprite : Sprite) : ICancelable
+{
+    var mouseDown : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_DOWN);
+    var mouseMove : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_MOVE);					
+    var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
+	
+    return mouseDown
+        .selectMany(MouseEvent, function(e:MouseEvent):IObservable
+        {
+            sprite.graphics.moveTo(e.localX, e.localY);
+            
+            return mouseMove.takeUntil(mouseUp);
+        })
+        .subscribe(function(e:MouseEvent):void
+        {
+            sprite.graphics.lineTo(e.localX, e.localY);
+        });
+}
+]]></mx:htmlText>
 			</mx:TextArea>
 		</mx:Box>
 	</mx:VBox>

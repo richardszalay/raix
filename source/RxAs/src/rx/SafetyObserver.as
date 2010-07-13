@@ -6,7 +6,7 @@ package rx
 	// a safety wrapper for the execution order of 
 	// third party IObservables as mentioned on the channel 9 video:
 	// Reactive Extensions API in depth: Contract (02:10)
-	public class SafetyObserver implements IObserver
+	internal class SafetyObserver implements IObserver
 	{
 		private var _innerObserver : IObserver;
 		private var _active : Boolean;

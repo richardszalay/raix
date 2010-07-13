@@ -1,6 +1,9 @@
 
 		import rx.ICancelable;
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function where(predicate:Function):IObservable
 		{
 			var source : IObservable = this;

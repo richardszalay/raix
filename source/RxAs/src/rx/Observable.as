@@ -19,7 +19,7 @@ package rx
 
 	/**
 	 * Provides static methods that create observable sequences
-	 */	
+	 */
 	public class Observable
 	{
 		private static var _unhandledErrorsSubject : Subject = new Subject(Error);
@@ -734,9 +734,7 @@ package rx
 			
 			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
 			{
-				return new ScheduledActionSubscription(
-					scheduler.schedule(obs.onCompleted)
-				);
+				return scheduler.schedule(obs.onCompleted);
 			});
 		}
 		
@@ -1134,7 +1132,7 @@ package rx
 						obs.onCompleted();
 					});
 					
-					return new ScheduledActionSubscription(scheduledAction);
+					return scheduledAction;
 				});
 			};
 		}

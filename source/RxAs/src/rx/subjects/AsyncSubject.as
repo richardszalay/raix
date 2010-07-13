@@ -36,7 +36,7 @@ package rx.subjects
 					dispatch(observer);
 				});
 				
-				return new ScheduledActionSubscription(scheduledAction);
+				return scheduledAction;
 			}
 			else
 			{

@@ -10,23 +10,38 @@ package rx
 	import rx.subjects.ReplaySubject;
 	import rx.util.*;
 	
+	/**
+	 * Subclass this class only if you want to implement a completely custom IObservable.
+	 * 
+	 * If you can avoid it, however, try to stick to subclassing Subject or using 
+	 * one of the creation methods.
+	 */
 	public class AbsObservable implements IObservable
 	{
 		public function AbsObservable()
 		{
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function get valueClass() : Class
 		{
 			return Object;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function subscribeWith(observer : IObserver) : ICancelable
 		{
 			// Abstract methods not supported by AS3
 			throw new IllegalOperationError("subscribe() must be overriden");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function subscribe(onNext : Function, onComplete : Function = null, 
 			onError : Function = null) : ICancelable
 		{
@@ -35,16 +50,25 @@ package rx
 			return subscribeWith(observer);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function and(right : IObservable) : Pattern
 		{
 			return new Pattern([this, right]);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
 			return scan(accumulator, outputType, initialValue).last();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function average():IObservable
 		{
 			var source : IObservable = this;
@@ -77,6 +101,9 @@ package rx
 			}, valueClass, 0);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function any(predicate : Function = null) : IObservable
 		{
 			var source : IObservable = this;
@@ -116,6 +143,10 @@ package rx
 			});
 		}
 		
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function all(predicate : Function) : IObservable
 		{
 			var source : IObservable = this;
@@ -155,6 +186,10 @@ package rx
 			});
 		}
 		
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function bufferWithCount(count:uint, skip:uint=0):IObservable
 		{
 			if (count == 0)
@@ -230,6 +265,10 @@ package rx
 			});
 		}
 		
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function bufferWithTime(timeMs:uint, timeShiftMs:uint=0, scheduler:IScheduler=null):IObservable
 		{
 			if (timeMs == 0)
@@ -306,6 +345,10 @@ package rx
 			});
 		}
 		
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function cast(type : Class) : IObservable
 		{
 			var source : IObservable = this;
@@ -347,11 +390,18 @@ package rx
 			});
 		}
 		
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function catchError(second : IObservable) : IObservable
 		{
 			return Observable.catchErrors([this, second]);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function catchErrorDefer(errorType : Class, deferFunc : Function) : IObservable
 		{
 			var source : IObservable = this;
@@ -411,6 +461,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable
 		{
 			var left : IObservable = this;
@@ -481,6 +534,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function concat(sources:Array):IObservable
 		{
 			sources = [this].concat(sources);
@@ -488,6 +544,9 @@ package rx
 			return Observable.concat(this.valueClass, sources);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function contains(value : Object, comparer : Function = null) : IObservable
 		{
 			var source : IObservable = this;
@@ -532,6 +591,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function count():IObservable
 		{
 			var source : IObservable = this;
@@ -552,6 +614,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function delay(delayMs:uint, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
@@ -589,6 +654,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function delayUntil(dt:Date, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
@@ -641,6 +709,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function dematerialize(type : Class):IObservable
 		{
 			var source : IObservable = this;
@@ -653,27 +724,15 @@ package rx
 			
 			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Notification) : void
-					{
-						switch(pl.kind)
-						{
-							case NotificationKind.ON_NEXT:
-								observer.onNext(pl.value);
-								break;
-							case NotificationKind.ON_COMPLETED:
-								observer.onCompleted();
-								break;
-							case NotificationKind.ON_ERROR:
-								observer.onError(pl.error);
-								break;
-						}
-					});
-					
-				return source.subscribeWith(dec);
+				return source.subscribe(
+					function(pl : Notification) : void { pl.accept(observer); }
+				);
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function doAction(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
 		{
 			var source : IObservable = this;
@@ -719,6 +778,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function finallyAction(action:Function):IObservable
 		{
 			if (action == null) throw new ArgumentError("finallyAction");
@@ -743,6 +805,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function first():IObservable
 		{
 			var source : IObservable = this;
@@ -762,6 +827,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function firstOrDefault():IObservable
 		{
 			var source : IObservable = this;
@@ -785,11 +853,17 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable
 		{
 			return this.combineLatest(resultType, right, selector).takeLast(1);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function asObservable():IObservable
 		{
 			var source : IObservable = this;
@@ -800,6 +874,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function distinctUntilChanged(comparer:Function = null):IObservable
 		{
 			var source : IObservable = this;
@@ -845,6 +922,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function last():IObservable
 		{
 			var source : IObservable = this;
@@ -878,6 +958,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function lastOrDefault():IObservable
 		{
 			var source : IObservable = this;
@@ -912,11 +995,17 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function let(func : Function) : IObservable
 		{
 			return IObservable(func(this));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function materialize():IObservable
 		{
 			var source : IObservable = this;
@@ -931,11 +1020,17 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
 			return Observable.merge(this.valueClass, sources.startWith([this], scheduler), scheduler);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function ofType(type : Class) : IObservable
 		{
 			return this.where(function(x:Object):Boolean
@@ -944,6 +1039,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function observeOn(scheduler:IScheduler):IObservable
 		{
 			var source : IObservable = this;
@@ -965,6 +1063,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function subscribeOn(scheduler:IScheduler):IObservable
 		{
 			var source : IObservable = this;
@@ -983,16 +1084,25 @@ package rx
 			});
 		}
 				
+		/**
+		 * @inheritDoc
+		 */
 		public function onErrorResumeNext(second:IObservable, scheduler:IScheduler=null):IObservable
 		{
 			return Observable.onErrorResumeNext([this, second], scheduler);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
 			return new ConnectableObservable(this, new AsyncSubject(this.valueClass, scheduler));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
 			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
@@ -1008,11 +1118,17 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function publish() : IConnectableObservable
 		{
 			return new ConnectableObservable(this, new Subject(this.valueClass));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function publishAndConnect(selector : Function) : IObservable
 		{
 			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
@@ -1028,6 +1144,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function removeTimeInterval(type : Class) : IObservable
 		{
 			if (this.valueClass != TimeInterval)
@@ -1042,6 +1161,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function removeTimestamp(type : Class) : IObservable
 		{
 			if (this.valueClass != TimeStamped)
@@ -1056,6 +1178,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function replay(bufferSize : uint = 0, window : uint = 0, 
 			scheduler : IScheduler = null) : IConnectableObservable
 		{
@@ -1063,6 +1188,9 @@ package rx
 				new ReplaySubject(this.valueClass, bufferSize, window, scheduler));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function replayAndConnect(selector : Function, bufferSize : uint = 0, 
 			window : uint = 0, scheduler : IScheduler = null) : IObservable
 		{
@@ -1079,6 +1207,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function repeat(repeatCount:uint=0):IObservable
 		{
 			var source : IObservable = this;
@@ -1118,6 +1249,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function retry(retryCount:uint = 0):IObservable
 		{
 			var source : IObservable = this;
@@ -1157,6 +1291,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function sample(intervalMs : uint, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = scheduler || Scheduler.synchronous;
@@ -1202,6 +1339,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
 		{
 			var useInitialValue : Boolean = (outputType != null);
@@ -1249,6 +1389,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function select(result : Class, selector:Function):IObservable
 		{
 			return selectInternal(result, selector);
@@ -1287,6 +1430,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function selectMany(type : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
@@ -1294,6 +1440,9 @@ package rx
 			return Observable.merge(type, this.select(IObservable, selector)); 
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function single():IObservable
 		{
 			var source : IObservable = this;
@@ -1334,6 +1483,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function singleOrDefault():IObservable
 		{
 			var source : IObservable = this;
@@ -1365,6 +1517,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skip(count:uint):IObservable
 		{
 			var source : IObservable = this;
@@ -1389,6 +1544,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skipLast(count : uint) : IObservable
 		{
 			if (count == 0)
@@ -1424,6 +1582,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skipUntil(other:IObservable):IObservable
 		{
 			var source : IObservable = this;
@@ -1483,6 +1644,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skipWhile(predicate:Function):IObservable
 		{
 			var source : IObservable = this;
@@ -1519,6 +1683,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			return Observable
@@ -1526,6 +1693,9 @@ package rx
 				.concat([this]);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function sum():IObservable
 		{
 			return aggregate(function(x:Number, y:Number):Number
@@ -1534,6 +1704,9 @@ package rx
 			}, valueClass, 0).catchError(Observable.returnValue(valueClass, 0));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function take(count:uint):IObservable
 		{
 			var source : IObservable = this;
@@ -1572,6 +1745,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function takeLast(count : uint) : IObservable
 		{
 			if (count == 0)
@@ -1611,6 +1787,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function takeUntil(other:IObservable):IObservable
 		{
 			var source : IObservable = this;
@@ -1639,6 +1818,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function takeWhile(predicate:Function):IObservable
 		{
 			var source : IObservable = this;
@@ -1675,6 +1857,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function throttle(dueTimeMs:uint, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
@@ -1705,6 +1890,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function timeInterval(scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
@@ -1736,6 +1924,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function timeout(timeoutMs:uint, other:IObservable=null, scheduler:IScheduler=null):IObservable
 		{
 			var source : IObservable = this;
@@ -1776,6 +1967,9 @@ package rx
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function timestamp(scheduler:IScheduler=null):IObservable
 		{
 			scheduler = scheduler || Scheduler.synchronous;
@@ -1788,6 +1982,9 @@ package rx
 		
 		include "operators/include.as"
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function zip(resultType : Class, rightSource:IObservable, selector:Function):IObservable
 		{
 			// TODO: Could this be replaced with a single-plan join?

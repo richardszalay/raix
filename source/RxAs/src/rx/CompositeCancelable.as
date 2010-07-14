@@ -33,7 +33,7 @@ package rx
 			}
 			else
 			{			
-				_cancelables.push(subscription);
+				_cancelables.push(cancelable);
 			}
 		}
 		
@@ -78,7 +78,7 @@ package rx
 		 */
 		public function get cancelables() : Array
 		{
-			return _subscriptions.slice();
+			return _cancelables.slice();
 		}
 	}
 }

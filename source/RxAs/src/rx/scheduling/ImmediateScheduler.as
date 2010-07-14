@@ -8,11 +8,18 @@ package rx.scheduling
 	import rx.scheduling.TimerPool;
 	import rx.ClosureCancelable;
 	
+	/**
+	 * A scheduler that executes actions immediately, or immediately
+	 * after their dueTime (if specified).
+	 */
 	public class ImmediateScheduler implements IScheduler
 	{
 		private var _runningAction : Boolean = false;
 		private var _pendingActions : Array = new Array();
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function schedule(action : Function, dueTime : int = 0) : ICancelable
 		{
 			if (dueTime != 0)
@@ -77,10 +84,16 @@ package rx.scheduling
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function get now() : Date { return new Date(); }
 		
 		private static var _instance : ImmediateScheduler = new ImmediateScheduler();
 		
+		/**
+		 * Gets the singleton instance of this scheduler
+		 */
 		public static function get instance() : ImmediateScheduler 
 		{
 			return _instance;

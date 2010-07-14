@@ -4,13 +4,19 @@ package rx
 	import rx.Notification;
 	import rx.NotificationKind;
 	
+	/**
+	 * A Notification for an onCompleted call
+	 */
 	public class OnCompleted/*.<T>*/ extends Notification/*.<T>*/
 	{
 		public function OnCompleted()
 		{
 		}
 		
-		public override function acceptFunc(onNext : Function, onCompleted : Function = null, 
+		/**
+		 * Calls onCompleted if it's not null
+		 */
+		public override function accept(onNext : Function, onCompleted : Function = null, 
 			onError : Function = null) : void
 		{
 			if (onCompleted != null)

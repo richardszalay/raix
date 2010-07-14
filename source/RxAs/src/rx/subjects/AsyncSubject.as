@@ -11,7 +11,6 @@ package rx.subjects
 	import rx.OnCompleted;
 	import rx.OnError;
 	import rx.OnNext;
-	import rx.ScheduledActionSubscription;
 	import rx.scheduling.IScheduler;
 	import rx.scheduling.Scheduler;
 	
@@ -115,7 +114,7 @@ package rx.subjects
 		
 		private function dispatch(observer : IObserver) : void
 		{
-			_lastValue.accept(observer);
+			_lastValue.acceptWith(observer);
 			
 			if (_lastValue.hasValue)
 			{

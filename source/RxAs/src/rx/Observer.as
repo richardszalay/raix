@@ -1,6 +1,6 @@
 package rx
 {
-	import rx.ClosureObserver;
+	import flash.errors.IllegalOperationError;
 	
 	/**
 	 * Provides static methods that create observers

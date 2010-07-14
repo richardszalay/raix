@@ -19,15 +19,15 @@ package rx
 		/**
 		 * Calls the appropriate method on an observer
 		 */
-		public function accept(observer : IObserver) : void
+		public function acceptWith(observer : IObserver) : void
 		{
-			acceptFunc(observer.onNext, observer.onCompleted, observer.onError);
+			accept(observer.onNext, observer.onCompleted, observer.onError);
 		}
 		
 		/**
 		 * Calls the appropriate method
 		 */
-		public function acceptFunc(onNext : Function, onCompleted : Function = null, 
+		public function accept(onNext : Function, onCompleted : Function = null, 
 			onError : Function = null) : void
 		{
 			throw new IllegalOperationError("accept must be overridden");

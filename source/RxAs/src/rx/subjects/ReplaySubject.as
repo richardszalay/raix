@@ -43,7 +43,7 @@ package rx.subjects
 				if (observerValues.length > 0)
 				{
 					var not : Notification = observerValues.shift().value;
-					not.accept(observer);
+					not.acceptWith(observer);
 					
 					recurse();
 				}

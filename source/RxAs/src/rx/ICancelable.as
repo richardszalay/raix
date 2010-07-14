@@ -1,7 +1,7 @@
 package rx
 {
 	/**
-	* Represents a handle that can be used to 
+	 * Represents a handle that can be used to cancel an operation 
 	 * 
 	 * @see rx.CompositeCancelable, rx.BooleanCancelable, rx.FutureCancelable, rx.Cancelable
 	*/	

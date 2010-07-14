@@ -13,8 +13,10 @@ package rx
 	/**
 	 * Subclass this class only if you want to implement a completely custom IObservable.
 	 * 
-	 * If you can avoid it, however, try to stick to subclassing Subject or using 
-	 * one of the creation methods.
+	 * <p>If you can avoid it, however, try to stick to subclassing Subject or using 
+	 * one of the creation methods.</p>
+	 * 
+	 * <p>This class may be made inaccessible in future revisions</p>
 	 */
 	public class AbsObservable implements IObservable
 	{
@@ -691,7 +693,7 @@ package rx
 						if (isPastDate)
 						{
 							scheduledActions.add(
-								scheduler.schedule(function():void { pl.accept(observer); })
+								scheduler.schedule(function():void { pl.acceptWith(observer); })
 							);
 						}
 						else
@@ -699,7 +701,7 @@ package rx
 							var delayMs : Number = dtValue - now;
 							
 							scheduledActions.push( 
-								scheduler.schedule(function():void { pl.accept(observer); }, delayMs)
+								scheduler.schedule(function():void { pl.acceptWith(observer); }, delayMs)
 							);
 						}
 					}
@@ -725,7 +727,7 @@ package rx
 			return new ClosureObservable(type, function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
-					function(pl : Notification) : void { pl.accept(observer); }
+					function(pl : Notification) : void { pl.acceptWith(observer); }
 				);
 			});
 		}
@@ -1055,7 +1057,7 @@ package rx
 					{
 						scheduledAction.innerCancelable = scheduler.schedule(function():void
 						{
-							n.accept(observer);
+							n.acceptWith(observer);
 						});
 					});
 

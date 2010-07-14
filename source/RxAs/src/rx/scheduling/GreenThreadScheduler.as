@@ -8,6 +8,16 @@ package rx.scheduling
 	
 	import rx.*;
 	
+	/**
+	 * A scheduler that distributes work on a timer, limiting the total execution 
+	 * time per 'switch' to maintain a framerate
+	 * 
+	 * <p>Adding more work results in the work taking longer to complete, but the 
+	 * framerate remaining constant</p>
+	 * 
+	 * <p>To benefit from GreenThreadScheduler, scheduled actions should execute in 
+	 * this smallest possible time (ie. be designed to be run many times</p>
+	 */	
 	public class GreenThreadScheduler implements IScheduler
 	{
 		private var _runningAction : Boolean = false;
@@ -21,6 +31,9 @@ package rx.scheduling
 			_contextSwitchObservable = contextSwitchObservable;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function schedule(action : Function, dueTime : int = 0) : ICancelable
 		{
 			if (dueTime != 0)
@@ -131,16 +144,25 @@ package rx.scheduling
 		
 		private var _contextSwitchTime : Number = 100;
 		
+		/**
+		 * Gets or sets the amount of time, in milliseconds, to allocate to 
+		 * execution on every context 'switch' 
+		 */				
 		public function get contextSwitchTime() : Number { return _contextSwitchTime; }
 		public function set contextSwitchTime(value : Number) : void { _contextSwitchTime = value; }
 		
+		/**
+		 * @inheritDoc 
+		 */		
 		public function get now() : Date { return new Date(); }
 		
 		private static var _instance : GreenThreadScheduler = new GreenThreadScheduler(
-			Observable.interval(100)
-			//Observable.fromEvent(Application.application.stage, Event.ENTER_FRAME)
+			Observable.interval(100, Scheduler.immediate)
 			);
 		
+		/**
+		 * Gets the singleton instance of this scheduler
+		 */
 		public static function get instance() : GreenThreadScheduler 
 		{
 			return _instance;

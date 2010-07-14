@@ -53,7 +53,7 @@ package rx
 							function(pl:Object) : void
 							{
 								var newSubscriptions : CompositeCancelable = 
-									new CompositeCancelable(subscription.subscriptions);
+									new CompositeCancelable(subscription.cancelables);
 									
 								newSubscriptions.remove(futureSubscription);
 								newSubscriptions.cancel();

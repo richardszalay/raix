@@ -25,7 +25,7 @@ package rx.tests.operators.mutation
 		{
 			var manObs : Subject = new Subject(EventDispatcher);
 			
-			var obs : IObservable = manObs.ofType(DisplayObject);
+			var obs : IObservable = manObs.ofClass(DisplayObject);
 			
 			var stats : StatsObserver = new StatsObserver();
 			

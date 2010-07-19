@@ -15,7 +15,7 @@ package rx
 	
 	import rx.flex.*;
 	import rx.scheduling.*;
-	import rx.util.ErrorUtil;
+	import rx.internal.*;
 
 	/**
 	 * Provides static methods that create observable sequences
@@ -640,19 +640,19 @@ package rx
 		/**
 		 * Creates Combines events from multiple event valueClasss 
 		 * @param eventDispatcher The IEventDispatcher that dispatches the event
-		 * @param valueClasss An array event valueClass names
-		 * @param commonEventType The valueClass of event common to all events. Event will be used if this argument is null.
+		 * @param eventTypes An array event type names
+		 * @param commonValueClass The valueClass of event common to all events. Event will be used if this argument is null.
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
-		 * @return An observable sequence of commonEventType, or Event if commonEventType is null 
+		 * @return An observable sequence of commonValueClass, or Event if commonValueClass is null 
 		 */
-		public static function fromEvents(eventDispatcher:IEventDispatcher, valueClasss:Array, commonEventType : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
+		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, commonValueClass : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
-			return Observable.merge(commonEventType,
-				Observable.fromArray(String, valueClasss)
-					.selectMany(commonEventType, function(valueClass : String) : IObservable
+			return Observable.mergeMany(commonValueClass,
+				Observable.fromArray(String, eventTypes)
+					.selectMany(commonValueClass, function(valueClass : String) : IObservable
 					{
-						return fromEvent(eventDispatcher, valueClass, commonEventType, useCapture, priority);
+						return fromEvent(eventDispatcher, valueClass, commonValueClass, useCapture, priority);
 					}));
 		}
 		
@@ -664,7 +664,7 @@ package rx
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
 		 * @param errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
-		 * @return An observable sequence of commonEventType, or Event if commonEventType is null 
+		 * @return An observable sequence of valueClass, or Object if valueClass is null 
 		 */
 		public static function fromErrorEvent(valueClass : Class, eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
 		{
@@ -684,13 +684,13 @@ package rx
 		 * @param errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
 		 * @return An observable sequence of 
 		 */		
-		public static function fromErrorEvents(valueClass : Class, eventDispatcher:IEventDispatcher, valueClasss:Array, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
+		public static function fromErrorEvents(valueClass : Class, eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
 		{
 			return mapErrorEvents(
-				fromEvents(eventDispatcher, valueClasss, Event, useCapture, priority),
+				fromEvents(eventDispatcher, eventTypes, Event, useCapture, priority),
 				errorMap
 			)
-			.ofType(valueClass);
+			.ofClass(valueClass);
 		}
 		
 		private static function mapErrorEvents(source : IObservable, errorMap : Function = null) : IObservable
@@ -723,16 +723,16 @@ package rx
 		
 		/**
 		 * Creates a sequence that immediately completes  
-		 * @param observableType The value class for the sequence
+		 * @param valueClass The value class for the sequence
 		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of observableType
+		 * @return An observable sequence of valueClass
 		 */		
-		public static function empty(observableType : Class = null, scheduler : IScheduler = null) : IObservable
+		public static function empty(valueClass : Class = null, scheduler : IScheduler = null) : IObservable
 		{
-			observableType = observableType || Object;
+			valueClass = valueClass || Object;
 			scheduler = scheduler || ImmediateScheduler.instance;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
 			{
 				return scheduler.schedule(obs.onCompleted);
 			});
@@ -824,11 +824,11 @@ package rx
 		/**
 		 * Returns an IObservable that never completes
 		 */
-		public static function never(observableType : Class = null) : IObservable
+		public static function never(valueClass : Class = null) : IObservable
 		{
-			observableType = observableType || Object;
+			valueClass = valueClass || Object;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
 			{
 				return new ClosureCancelable(function():void{});
 			});
@@ -842,7 +842,7 @@ package rx
 		 */		
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
-			return Observable.merge(Error, Observable.fromArray(IObservable, 
+			return Observable.mergeMany(Error, Observable.fromArray(IObservable, 
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
@@ -895,19 +895,19 @@ package rx
 		/**
 		 * Creates a sequence that immediately throws an Error  
 		 * @param error The error to raise when a new subscription occurs
-		 * @param observableType The valueClass of the returned sequence
-		 * @return An observable sequence of observableType
+		 * @param valueClass The Class of the returned sequence
+		 * @return An observable sequence of valueClass
 		 */		
-		public static function throwError(error : Error, observableType : Class = null) : IObservable
+		public static function throwError(error : Error, valueClass : Class = null) : IObservable
 		{
 			if (error == null)
 			{
 				throw new ArgumentError("error cannot be null");
 			}
 			
-			observableType = observableType || Object;
+			valueClass = valueClass || Object;
 			
-			return new ClosureObservable(observableType, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
 			{
 				obs.onError(error);
 				
@@ -917,18 +917,18 @@ package rx
 		
 		/**
 		 * Creates a sequence consisting of the values in an Array 
-		 * @param elementType The class common to all values in values
+		 * @param elementClass The class common to all values in values
 		 * @param values The array of values to iterate through
 		 * @param scheduler The scheduler used to control flow
-		 * @return An observable sequence of elementType
+		 * @return An observable sequence of elementClass
 		 */
-		public static function fromArray(elementType : Class, values : Array, scheduler : IScheduler = null) : IObservable
+		public static function fromArray(elementClass : Class, values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
 			values = values.slice();
 			
-			return Observable.generate(elementType,
+			return Observable.generate(elementClass,
 				0,
 				function(i : int):Boolean { return i < values.length; },
 				function(i : int):int { return i+1; },
@@ -1018,11 +1018,23 @@ package rx
 		/**
 		 * Emits the values from multiple sources in the order that they arrive 
 		 * @param valueClass The valueClass common to all sequences emitted by source
+		 * @param source An array of IObservable sequences
+		 * @param scheduler The scheduler used to control flow
+		 * @return An observable sequence of valueClass
+		 */		
+		public static function merge(valueClass : Class, sources : Array, scheduler : IScheduler = null) : IObservable
+		{
+			return mergeMany(valueClass, fromArray(IObservable, sources), scheduler);
+		}
+		
+		/**
+		 * Emits the values from multiple sources in the order that they arrive 
+		 * @param valueClass The valueClass common to all sequences emitted by source
 		 * @param source An IObservable with valueClass IObservable, the values of which will be merged
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function merge(valueClass : Class, source : IObservable, scheduler : IScheduler = null) : IObservable
+		public static function mergeMany(valueClass : Class, source : IObservable, scheduler : IScheduler = null) : IObservable
 		{
 			if (source.valueClass != IObservable)
 			{
@@ -1105,7 +1117,7 @@ package rx
 		{
 			scheduler = scheduler || Scheduler.asynchronous;
 			
-			var hasReturnType : Boolean = (valueClass != null);
+			var hasReturnValue : Boolean = (valueClass != null);
 			
 			valueClass = valueClass || Unit;
 			
@@ -1125,7 +1137,7 @@ package rx
 							return;
 						}
 						
-						if (hasReturnType)
+						if (hasReturnValue)
 						{
 							obs.onNext(ret);
 						}
@@ -1245,33 +1257,33 @@ package rx
 			});
 		}
 		
-		//CONFIG::FLEX
-		//{
+		CONFIG::FLEX
+		{
 			/**
 			 * Creates a sequence consisting of the values in a collection 
-			 * @param elementType The class common to all values in values
+			 * @param elementClass The class common to all values in values
 			 * @param values The collection of values to iterate through
 			 * @param scheduler The scheduler used to control flow
 			 * @return An observable sequence of elementType
 			 */
-			public static function fromCollection(elementType : Class, collection : ICollectionView, scheduler : IScheduler	= null) : IObservable
+			public static function fromCollection(elementClass : Class, collection : ICollectionView, scheduler : IScheduler	= null) : IObservable
 			{
-				return defer(elementType, function():IObservable
+				return defer(elementClass, function():IObservable
 				{
-					return fromViewCursor(elementType, collection.createCursor());
+					return fromViewCursor(elementClass, collection.createCursor());
 				});
 			}
 			
 			/**
 			 * Creates a sequence consisting of the values in a view cursor 
-			 * @param elementType The class common to all values in values
+			 * @param elementClass The class common to all values in values
 			 * @param values The view cursor of values to iterate through
 			 * @param scheduler The scheduler used to control flow
-			 * @return An observable sequence of elementType
+			 * @return An observable sequence of elementClass
 			 */
-			public static function fromViewCursor(elementType : Class, cursor : IViewCursor, scheduler : IScheduler	= null) : IObservable
+			public static function fromViewCursor(elementClass : Class, cursor : IViewCursor, scheduler : IScheduler	= null) : IObservable
 			{
-				return Observable.generate(elementType,
+				return Observable.generate(elementClass,
 					true,
 					function(state : Boolean):Boolean { return state; },
 					function(state : Boolean):Boolean { return cursor.moveNext(); },
@@ -1281,20 +1293,20 @@ package rx
 			
 			/**
 			 * Creates an observable sequence from a function that returns an AsyncToken 
-			 * @param returnType The class of the value returned by the AsyncToken
+			 * @param valueClass The class of the value returned by the AsyncToken
 			 * @param asyncMethod The method to execute when a new subscription occurs. This method must return AsyncToken
 			 * @param args The arguments to supply to asyncMethod
-			 * @return An observable sequence of returnType
+			 * @return An observable sequence of valueClass
 			 */			
-			public static function fromAsyncPattern(returnType : Class, asyncMethod : Function, 
+			public static function fromAsyncPattern(valueClass : Class, asyncMethod : Function, 
 				args : Array) : IObservable 
 			{
-				return defer(returnType, function():IObservable
+				return defer(valueClass, function():IObservable
 				{
 					// TODO: Catch/rethrow valueClass coercion error here?
 					var token : AsyncToken = asyncMethod.apply(NaN, args);
 					
-					var responder : IObservableResponder = responder(returnType);
+					var responder : IObservableResponder = responder(valueClass);
 					token.addResponder(responder);
 					
 					return responder;
@@ -1310,6 +1322,6 @@ package rx
 			{
 				return new ObservableResponder(valueClass);
 			}
-		//}
+		}
 	}
 }

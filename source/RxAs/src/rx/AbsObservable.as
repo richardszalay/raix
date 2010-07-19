@@ -8,7 +8,7 @@ package rx
 	import rx.subjects.ConnectableObservable;
 	import rx.subjects.IConnectableObservable;
 	import rx.subjects.ReplaySubject;
-	import rx.util.*;
+	import rx.internal.*;
 	
 	/**
 	 * Subclass this class only if you want to implement a completely custom IObservable.
@@ -63,9 +63,9 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
+		public function aggregate(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable
 		{
-			return scan(accumulator, outputType, initialValue).last();
+			return scan(accumulator, valueClass, initialValue).last();
 		}
 		
 		/**
@@ -351,11 +351,11 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function cast(type : Class) : IObservable
+		public function cast(valueClass : Class) : IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(type, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
 			{
 				return source.subscribe(
 					function(x : Object) : void
@@ -366,16 +366,16 @@ package rx
 						}
 						else
 						{
-							var obj : Object = x as type;
+							var obj : Object = x as valueClass;
 							
 							if (obj == null)
 							{
-								var fromType : String = getQualifiedClassName(x);
-								var toType : String = getQualifiedClassName(type);
+								var fromClassName : String = getQualifiedClassName(x);
+								var toClassName : String = getQualifiedClassName(valueClass);
 								
 								var error : Error = new TypeError(
 									"Error #1034: Type Coercion failed: cannot convert " +
-									fromType + " to " + toType
+									fromClassName + " to " + toClassName
 								); 
 								
 								observer.onError(error);
@@ -404,7 +404,7 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function catchErrorDefer(errorType : Class, deferFunc : Function) : IObservable
+		public function catchErrorDefer(errorClass : Class, deferFunc : Function) : IObservable
 		{
 			var source : IObservable = this;
 			
@@ -413,7 +413,7 @@ package rx
 				throw new ArgumentError("deferFunc");
 			}
 			
-			errorType = errorType || Error;
+			errorClass = errorClass || Error;
 			
 			return new ClosureObservable(source.valueClass, function(obs:IObserver) : ICancelable
 			{
@@ -424,7 +424,7 @@ package rx
 					function() : void { obs.onCompleted(); },
 					function(e : Error) : void
 					{
-						if (e is errorType)
+						if (e is errorClass)
 						{
 							var catchObservable : IObservable = null;
 							
@@ -466,11 +466,11 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable
+		public function combineLatest(valueClass : Class, right:IObservable, selector:Function):IObservable
 		{
 			var left : IObservable = this;
 			
-			return new ClosureObservable(returnType, function(observer : IObserver) : ICancelable 
+			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable 
 			{
 				var leftSubscription : FutureCancelable = new FutureCancelable();
 				var leftValue : Object = null;
@@ -557,7 +557,7 @@ package rx
 			
 			comparer = (comparer == null)
 				? defaultComparer
-				: ComparerUtil.normalizeComparer(comparer);
+				: normalizeComparer(comparer);
 			
 			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
 			{
@@ -714,7 +714,7 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function dematerialize(type : Class):IObservable
+		public function dematerialize(valueClass : Class):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -724,7 +724,7 @@ package rx
 					"Notification, which is returned by materialize");
 			}
 			
-			return new ClosureObservable(type, function(observer : IObserver):ICancelable
+			return new ClosureObservable(valueClass, function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Notification) : void { pl.acceptWith(observer); }
@@ -858,9 +858,9 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable
+		public function forkJoin(resultClass : Class, right : IObservable, selector : Function):IObservable
 		{
-			return this.combineLatest(resultType, right, selector).takeLast(1);
+			return this.combineLatest(resultClass, right, selector).takeLast(1);
 		}
 		
 		/**
@@ -887,7 +887,7 @@ package rx
 			
 			comparer = (comparer == null)
 				? defaultComparer
-				: ComparerUtil.normalizeComparer(comparer);
+				: normalizeComparer(comparer);
 			
 			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
 			{
@@ -1027,17 +1027,17 @@ package rx
 		 */
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			return Observable.merge(this.valueClass, sources.startWith([this], scheduler), scheduler);
+			return Observable.mergeMany(this.valueClass, sources.startWith([this], scheduler), scheduler);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function ofType(type : Class) : IObservable
+		public function ofClass(valueClass : Class) : IObservable
 		{
 			return this.where(function(x:Object):Boolean
 			{
-				return x is type;
+				return x is valueClass;
 			});
 		}
 		
@@ -1149,7 +1149,7 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function removeTimeInterval(type : Class) : IObservable
+		public function removeTimeInterval(valueClass : Class) : IObservable
 		{
 			if (this.valueClass != TimeInterval)
 			{
@@ -1157,7 +1157,7 @@ package rx
 					getQualifiedClassName(this.valueClass));
 			}
 			
-			return this.select(type, function(ts:TimeInterval):Object
+			return this.select(valueClass, function(ts:TimeInterval):Object
 			{
 				return ts.value;
 			});
@@ -1166,7 +1166,7 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function removeTimestamp(type : Class) : IObservable
+		public function removeTimestamp(valueClass : Class) : IObservable
 		{
 			if (this.valueClass != TimeStamped)
 			{
@@ -1174,7 +1174,7 @@ package rx
 					getQualifiedClassName(this.valueClass));
 			}
 			
-			return this.select(type, function(ts:TimeStamped):Object
+			return this.select(valueClass, function(ts:TimeStamped):Object
 			{
 				return ts.value;
 			});
@@ -1344,18 +1344,18 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable
+		public function scan(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable
 		{
-			var useInitialValue : Boolean = (outputType != null);
+			var useInitialValue : Boolean = (valueClass != null);
 			
 			if (!useInitialValue)
 			{
-				outputType = this.valueClass; 
+				valueClass = this.valueClass; 
 			}
 			
 			var source : IObservable = this;
 			
-			return Observable.defer(outputType, function():IObservable
+			return Observable.defer(valueClass, function():IObservable
 			{
 				var skipFirst : Boolean = true;
 				var accumulatedValue : Object = null;
@@ -1366,7 +1366,7 @@ package rx
 					accumulatedValue = initialValue;
 				}
 				
-				return source.select(outputType, function(value:Object):Object
+				return source.select(valueClass, function(value:Object):Object
 				{
 					if (skipFirst) 
 					{
@@ -1383,7 +1383,7 @@ package rx
 				});
 			});
 			
-			return new ClosureObservable(outputType, function(obs:IObserver):ICancelable
+			return new ClosureObservable(valueClass, function(obs:IObserver):ICancelable
 			{
 				var aggregate : Object = null;
 				
@@ -1394,16 +1394,16 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function select(result : Class, selector:Function):IObservable
+		public function select(valueClass : Class, selector:Function):IObservable
 		{
-			return selectInternal(result, selector);
+			return selectInternal(valueClass, selector);
 		}
 		
-		private function selectInternal(type : Class, selector:Function):IObservable
+		private function selectInternal(valueClass : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(type, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
@@ -1435,11 +1435,11 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function selectMany(type : Class, selector:Function):IObservable
+		public function selectMany(valueClass : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return Observable.merge(type, this.select(IObservable, selector)); 
+			return Observable.mergeMany(valueClass, this.select(IObservable, selector)); 
 		}
 		
 		/**
@@ -1982,18 +1982,52 @@ package rx
 			});
 		}
 		
-		include "operators/include.as"
+		/**
+		 * @inheritDoc
+		 */
+		public function where(predicate:Function):IObservable
+		{
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			{
+				var decoratorObserver : IObserver = new ClosureObserver(
+					function (value : Object) : void
+					{
+						var result : Boolean = false;
+						
+						try
+						{
+							result = predicate(value);
+						}
+						catch(err : Error)
+						{
+							observer.onError(err);
+						}
+							
+						if (result)
+						{
+							observer.onNext(value);
+						}
+					},
+					observer.onCompleted,
+					observer.onError
+					);
+				
+				return source.subscribeWith(decoratorObserver);
+			});
+		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function zip(resultType : Class, rightSource:IObservable, selector:Function):IObservable
+		public function zip(valueClass : Class, rightSource:IObservable, selector:Function):IObservable
 		{
 			// TODO: Could this be replaced with a single-plan join?
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(resultType, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(valueClass, function (observer : IObserver) : ICancelable
 			{
 				var canceled : Boolean = false;
 				
@@ -2058,6 +2092,26 @@ package rx
 					new CompositeCancelable([leftSubscription, rightSubscription]).cancel();
 				});
 			});
+		}
+		
+		private static function normalizeComparer(source : Function) : Function
+		{
+			return function(a:Object,b:Object) : Boolean
+			{
+				var result : Object = source(a, b);
+				
+				if (result is Boolean)
+				{
+					return (result == true);
+				}
+				
+				if (result is int || result is Number || result is uint)
+				{
+					return (result == 0);
+				}
+				
+				throw new ArgumentError("comparer function must return Boolean or int");
+			};
 		}		
 	}
 }

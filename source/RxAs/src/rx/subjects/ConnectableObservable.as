@@ -1,7 +1,10 @@
 package rx.subjects
 {
 	import rx.*;
-
+	
+	/**
+	 * Concrete implementation of IConnectableObservable
+	 */	
 	public class ConnectableObservable extends AbsObservable implements IConnectableObservable
 	{
 		private var _subscription : ICancelable;
@@ -17,6 +20,9 @@ package rx.subjects
 			_subject = subject || new Subject(source.valueClass);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function connect():ICancelable
 		{
 			var hasSubscription : Boolean = (_subscription != null);
@@ -32,6 +38,9 @@ package rx.subjects
 			return _subscription;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function refCount() : IObservable
 		{
 			var source : IConnectableObservable = this;
@@ -66,6 +75,9 @@ package rx.subjects
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			return _subject.subscribeWith(observer);

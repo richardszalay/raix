@@ -4,6 +4,9 @@ package rx.flex
 	
 	import rx.IObservable;
 	
+	/**
+	 * An observable sequence that is also an mx.rpc.IResponse
+	 */	
 	public interface IObservableResponder extends IResponder, IObservable
 	{
 	}

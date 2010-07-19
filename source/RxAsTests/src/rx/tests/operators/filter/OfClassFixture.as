@@ -11,11 +11,11 @@ package rx.tests.operators.filter
 	import rx.tests.mocks.StatsObserver;
 	import rx.tests.operators.AbsDecoratorOperatorFixture;
 	
-	public class OfTypeFixture extends AbsDecoratorOperatorFixture
+	public class OfClassFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.ofType(Object);
+			return source.ofClass(Object);
 		}
 		
 		[Test]
@@ -23,7 +23,7 @@ package rx.tests.operators.filter
 		{
 			var manObs : Subject = new Subject(EventDispatcher);
 			
-			var obs : IObservable = manObs.ofType(DisplayObject);
+			var obs : IObservable = manObs.ofClass(DisplayObject);
 			
 			var stats : StatsObserver = new StatsObserver();
 			

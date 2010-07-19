@@ -14,7 +14,7 @@ package rx.tests.operators.filter
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
-		public var ofType : OfTypeFixture;
+		public var ofType : OfClassFixture;
 		public var sample : SampleFixture;
 		public var single : SingleFixture;
 		public var singleOrDefault : SingleOrDefaultFixture;

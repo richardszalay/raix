@@ -14,18 +14,36 @@ package rx.subjects
 	import rx.scheduling.IScheduler;
 	import rx.scheduling.Scheduler;
 	
+	/**
+	 * A subject that replays the last value (or error) received to observers that subscribe 
+	 * after the sequence has completed
+	 */	
 	public class AsyncSubject extends AbsObservable implements ISubject
 	{
+		private var _valueClass : Class;
 		private var _scheduler : IScheduler;
+		
 		private var _complete : Boolean = false;		
 		private var _lastValue : Notification;
 		private var _observers : Array = new Array();
 		
-		public function AsyncSubject(type : Class, scheduler : IScheduler = null)
+		public function AsyncSubject(valueClass : Class, scheduler : IScheduler = null)
 		{
 			_scheduler = scheduler || Scheduler.synchronous;
+			_valueClass = valueClass;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
+		public override function get valueClass():Class
+		{
+			return _valueClass;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			if (_complete)
@@ -53,6 +71,9 @@ package rx.subjects
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function onNext(value : Object) : void
 		{
 			if (!_complete)
@@ -61,6 +82,9 @@ package rx.subjects
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function onCompleted() : void
 		{
 			if (!_complete)
@@ -76,6 +100,9 @@ package rx.subjects
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function onError(err : Error) : void
 		{
 			if (!_complete)
@@ -88,6 +115,10 @@ package rx.subjects
 			}
 		}
 		
+		/**
+		 * Gets the last value received, or throws an IllegalOperationError if no value 
+		 * has been received.
+		 */
 		public function lastValue() : Object
 		{
 			if (_lastValue == null || !_lastValue.hasValue)

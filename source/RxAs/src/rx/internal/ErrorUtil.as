@@ -1,4 +1,4 @@
-package rx.util
+package rx.internal
 {
 	import flash.events.ErrorEvent;
 	
@@ -12,6 +12,5 @@ package rx.util
 		{
 			return new Error(errorEvent.text, 0);
 		}
-
 	}
 }

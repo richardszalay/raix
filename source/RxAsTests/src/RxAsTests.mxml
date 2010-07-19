@@ -5,6 +5,7 @@
      
      <mx:Script>
      	<![CDATA[
+     		import rx.tests.misc.UtilitiesSuite;
      		import rx.flex.IObservableResponder;
      		import mx.rpc.IResponder;
      		import rx.IObservable;
@@ -20,7 +21,7 @@
 			public function runMe():void {
 				core = new FlexUnitCore();
 				core.addListener(new UIListener(uiListener));
-				core.run( OperatorSuite, SubjectSuite );
+				core.run( OperatorSuite, SubjectSuite, UtilitiesSuite );
 			}
      	]]>
      </mx:Script>

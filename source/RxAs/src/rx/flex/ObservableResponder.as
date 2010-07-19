@@ -5,40 +5,64 @@ package rx.flex
 	import mx.rpc.events.FaultEvent;
 	
 	import rx.*;
-	import rx.util.ErrorUtil;
+	import rx.internal.ErrorUtil;
 	
+	/**
+	 * Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+	 */	
 	public class ObservableResponder extends AbsObservable implements IObservableResponder
 	{
-		private var _type : Class;
+		private var _valueClass : Class;
 		
 		private var _observers : Array = new Array();
 		
-		public function ObservableResponder(type : Class)
+		private var _isComplete : Boolean = false;
+		
+		public function ObservableResponder(valueClass : Class)
 		{
-			_type = type;
+			_valueClass = valueClass;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public override function get valueClass():Class
 		{
-			return _type;
+			return _valueClass;
 		}
 		
+		/**
+		 * Implementation of mx.rpc.IResponder.result()
+		 */
 		public function result(data:Object):void
 		{
-			for each(var observer : IObserver in _observers)
+			if (!_isComplete)
 			{
-				observer.onNext(data);
-				observer.onCompleted();
+				_isComplete = true;
+				
+				for each(var observer : IObserver in _observers)
+				{
+					observer.onNext(data);
+					observer.onCompleted();
+				}
 			}
 		}
 		
+		/**
+		 * Implementation of mx.rpc.IResponder.fault()
+		 */
 		public function fault(info:Object) : void
 		{
-			var error : Error = getFaultError(info);
-			
-			for each(var observer : IObserver in _observers)
+			if (!_isComplete)
 			{
-				observer.onError(error);
+				_isComplete = true;
+			
+				var error : Error = getFaultError(info);
+			
+				for each(var observer : IObserver in _observers)
+				{
+					observer.onError(error);
+				}
 			}
 		}
 		
@@ -64,6 +88,9 @@ package rx.flex
 			return new Error((info||"").toString(), 0);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */		
 		public override function subscribeWith(observer:IObserver):ICancelable
 		{
 			_observers.push(observer);

@@ -112,7 +112,7 @@ package rx.scheduling
 					iterations++;
 				}
 				
-				trace(iterations + " iterations on green thread");
+				// trace(iterations + " iterations on green thread");
 				
 				if (_pendingActions.length == 0)
 				{

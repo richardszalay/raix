@@ -45,11 +45,11 @@ package rx
 		 * Runs calculation functions over every value in the source sequence and emits the final result
 		 * <p><a href="http://wiki.github.com/richardszalay/rxas/aggregate">Online Documentation</a></p> 
 		 * @param accumulator A function that accumulates the aggregate value
-		 * @param outputType The class of the values returned by accumulator
+		 * @param valueClass The class of the values returned by accumulator
 		 * @param initialValue The value to start with
-		 * @return An observable sequence of outputType (or this instance's valueClass if outputType is null)
+		 * @return An observable sequence of valueClass (or this instance's valueClass if valueClass is null)
 		 */		 
-		function aggregate(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
+		function aggregate(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable;
 		
 		/**
 		 * Determines if the source sequence contains a value that satisfies a condition
@@ -113,21 +113,21 @@ package rx
 		/**
 		 * Runs a specific sequence, determined at runtime, when an error occurs
 		 * <p><a href="http://wiki.github.com/richardszalay/rxas/catchErrorDefer">Online Documentation</a></p>
-		 * @param errorType The class (and superclass) of error to act on
+		 * @param errorClass The class (and superclass) of error to act on
 		 * @param deferFunc The function to execute in the event of an error. Signature is <code>function(e : Error) : IObservable</code>
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
-		function catchErrorDefer(errorType : Class, deferFunc : Function) : IObservable;
+		function catchErrorDefer(errorClass : Class, deferFunc : Function) : IObservable;
 		
 		/**
 		 * Merges two sequences through a mapping function, using the latest value from either source 
 		 * <p><a href="http://wiki.github.com/richardszalay/rxas/combineLatest">Online Documentation</a></p>
-		 * @param returnType The valueClass of the values returned by selector
+		 * @param returnClass The valueClass of the values returned by selector
 		 * @param right The sequence to combine with
 		 * @param selector The function that combines values from the two sources. Signature is <code>function(left : this.valueClass, right : right.valueClass) : returnType</code>
 		 * @return An observable sequence of returnType 
 		 */		
-		function combineLatest(returnType : Class, right:IObservable, selector:Function):IObservable;
+		function combineLatest(returnClass : Class, right:IObservable, selector:Function):IObservable;
 		
 		/**
 		 * Concatonates multiple sequences by running each sequence as the previous one finishes
@@ -205,12 +205,12 @@ package rx
 		/**
 		 * Combines the current sequence with another, emitting the last values of both after both have completed 
 		 * <p><a href="http://wiki.github.com/richardszalay/rxas/forkJoin">Online Documentation</a></p> 
-		 * @param resultType The class of the valueClass returned by selector
+		 * @param resultClass The class of the valueClass returned by selector
 		 * @param right The sequence to subscribe to, along with the current sequence
 		 * @param selector The function that accepts the last values of both sequences and returns the output value 
-		 * @return An observable sequence of valueClass resultType
+		 * @return An observable sequence of valueClass resultClass
 		 */		
-		function forkJoin(resultType : Class, right : IObservable, selector : Function):IObservable;
+		function forkJoin(resultClass : Class, right : IObservable, selector : Function):IObservable;
 		
 		/**
 		 * Hides the source sequence so it cannot be cast back to it’s concrete implementation  
@@ -267,7 +267,7 @@ package rx
 		 * @param valueClass The class (or subsclass) of all values to emit 
 		 * @return An observable sequence of valueClass
 		 */		
-		function ofType(valueClass : Class) : IObservable;
+		function ofClass(valueClass : Class) : IObservable;
 
 		/**
 		 * Defers messages to subscribers through a scheduler  
@@ -377,11 +377,11 @@ package rx
 		/**
 		 * Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
 		 * @param accumulator The function that accumulates values
-		 * @param outputType The class of the returned sequence and return value of accumulator
+		 * @param valueClass The class of the returned sequence and return value of accumulator
 		 * @param initialValue The value to start with
-		 * @return An observable sequence of outputType
+		 * @return An observable sequence of valueClass
 		 */
-		function scan(accumulator : Function, outputType : Class = null, initialValue : Object = null) : IObservable;
+		function scan(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable;
 		
 		/**
 		 * Maps the values from a source sequence through a function to change their value 
@@ -389,7 +389,7 @@ package rx
 		 * @param selector The function to be executed with each value
 		 * @return An observable sequence of valueClass result
 		 */
-		function select(result : Class, selector:Function):IObservable;
+		function select(valueClass : Class, selector:Function):IObservable;
 		
 		/**
 		 * Starts a new sequence for every value in the source sequence and merges their values
@@ -522,11 +522,11 @@ package rx
 		
 		/**
 		 * Merges two sequences through a mapping function while only ever using each value once 
-		 * @param resultType The class of the returned sequence and return value of selector
+		 * @param valueClass The class of the returned sequence and return value of selector
 		 * @param rightSource The sequence to combine with the current
 		 * @param selector The function to be executed when values are received from both sequences. The return value will be included in the output
-		 * @return An observable sequence of resultType
+		 * @return An observable sequence of valueClass
 		 */		
-		function zip(resultType : Class, rightSource : IObservable, selector : Function) : IObservable;
+		function zip(valueClass : Class, rightSource : IObservable, selector : Function) : IObservable;
 	}
 }

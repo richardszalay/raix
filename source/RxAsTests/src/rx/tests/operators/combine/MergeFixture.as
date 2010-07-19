@@ -13,7 +13,7 @@ package rx.tests.operators.combine
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.merge(int, Observable.fromArray(IObservable, [
+			Observable.mergeMany(int, Observable.fromArray(IObservable, [
 				Observable.range(0, 3),
 				Observable.range(3, 3),
 				Observable.range(6, 3),

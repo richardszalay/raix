@@ -79,7 +79,7 @@ package rx
 			{
 				_isFinished = true;
 				
-				var observers : Array = _observers.splice();
+				var observers : Array = _observers.slice();
 				
 				for each(var obs : IObserver in observers)
 				{

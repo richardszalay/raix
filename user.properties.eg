@@ -1,0 +1,4 @@
+# See build instructions - http://wiki.github.com/richardszalay/rxas/build-instructions
+
+FLEX_HOME = C:/Program Files (x86)/Adobe/Flex Builder 3 Plug-in/sdks/3.5.0
+test.localTrusted=false

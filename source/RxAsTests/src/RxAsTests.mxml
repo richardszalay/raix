@@ -5,6 +5,8 @@
      
      <mx:Script>
      	<![CDATA[
+     		import org.flexunit.internals.TraceListener;
+     		import org.flexunit.listeners.CIListener;
      		import rx.tests.misc.UtilitiesSuite;
      		import rx.flex.IObservableResponder;
      		import mx.rpc.IResponder;
@@ -20,8 +22,32 @@
 			
 			public function runMe():void {
 				core = new FlexUnitCore();
-				core.addListener(new UIListener(uiListener));
+				
+				addTestListeners(core);				
+				
 				core.run( OperatorSuite, SubjectSuite, UtilitiesSuite );
+			}
+			
+			private function addTestListeners(core : FlexUnitCore) : void
+			{
+				CONFIG::AUTOMATED
+				{
+					addAutomatedTestListeners(core);
+					return;
+				}
+				
+				addUITestListeners(core);
+			}
+			
+			private function addAutomatedTestListeners(core : FlexUnitCore) : void
+			{
+				core.addListener(new CIListener());
+				core.addListener(new TraceListener());
+			}
+			
+			private function addUITestListeners(core : FlexUnitCore) : void
+			{
+				core.addListener(new UIListener(uiListener));
 			}
      	]]>
      </mx:Script>

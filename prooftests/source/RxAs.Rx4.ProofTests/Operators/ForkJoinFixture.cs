@@ -10,7 +10,7 @@ namespace RxAs.Rx4.ProofTests.Operators
     [TestFixture]
     public class ForkJoinFixture
     {
-        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        [Test]
         public void no_values_are_emitted_if_one_source_is_empty()
         {
             var stats = new StatsObserver<int[]>();
@@ -25,7 +25,7 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.IsTrue(stats.CompletedCalled);
         }
 
-        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        [Test]
         public void no_values_are_emitted_if_both_sources_are_empty()
         {
             var stats = new StatsObserver<int[]>();
@@ -41,7 +41,7 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.IsTrue(stats.CompletedCalled);
         }
 
-        [Test, Ignore("Bug in current Rx v1.0.2563.0")]
+        [Test, Ignore("Bug in current Rx v1.0.2617.0")]
         public void value_array_is_emitted_if_both_sources_have_one_value()
         {
             var stats = new StatsObserver<int[]>();
@@ -53,6 +53,7 @@ namespace RxAs.Rx4.ProofTests.Operators
                     .Subscribe(stats);
 
             Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(2, stats.NextValues[0].Length);
             Assert.AreEqual(1, stats.NextValues[0][0]);
             Assert.AreEqual(2, stats.NextValues[0][1]);
             Assert.IsTrue(stats.CompletedCalled);

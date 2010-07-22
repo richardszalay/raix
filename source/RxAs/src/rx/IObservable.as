@@ -15,8 +15,7 @@ package rx
 		function get valueClass() : Class;
 		
 		/**
-		 * Subscribes to this observable using the supplied functions
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/subscribe">Online Documentation</a></p> 
+		 * Subscribes to this observable using the supplied functions 
 		 * @param onNext Function to be called for every payload. Signature is <code>function(payload : T) : void</code>
 		 * @param onComplete Optional. Function to be called when the sequence completes. Signature is <code>function():void</code>
 		 * @param onError Optional. Function to be called when an error occurs in the sequence. Signature is <code>function(err:Error):void</code>
@@ -27,7 +26,6 @@ package rx
 		
 		/**
 		 * Subscribes to this observable using the supplied observer
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/subscribeWith">Online Documentation</a></p> 
 		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
 		 */
 		function subscribeWith(observer : IObserver) : ICancelable;
@@ -35,7 +33,6 @@ package rx
 		/** 
 		 * Creates a pattern by combining the current source with right.
 		 * 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/and">Online Documentation</a></p>
 		 * @param right The other sequence to combine with the pattern.
 		 * @return A pattern representing both sequences
 		 */
@@ -43,7 +40,6 @@ package rx
 		
 		/** 
 		 * Runs calculation functions over every value in the source sequence and emits the final result
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/aggregate">Online Documentation</a></p> 
 		 * @param accumulator A function that accumulates the aggregate value
 		 * @param valueClass The class of the values returned by accumulator
 		 * @param initialValue The value to start with
@@ -53,7 +49,6 @@ package rx
 		
 		/**
 		 * Determines if the source sequence contains a value that satisfies a condition
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/any">Online Documentation</a></p>
 		 *  
 		 * @param predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
 		 * @return An observable sequence of Boolean
@@ -62,7 +57,6 @@ package rx
 		
 		/**
 		 * Determines if all values in the source sequence satisfy a condition
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/all">Online Documentation</a></p>
 		 * @param predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
 		 * @return An observable sequence of Boolean
 		 */		 
@@ -70,14 +64,12 @@ package rx
 		
 		/**
 		 * Returns the average value of all the elements in the source sequence  
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/average">Online Documentation</a></p>
 		 * @return An observable sequence of the same valueClass as the current sequence (which should be numeric)
 		 */		
 		function average():IObservable;
 		
 		/**
 		 * Emits the values from a source sequence in groups of a specific size  
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/bufferWithCount">Online Documentation</a></p>
 		 * @param count The number of values to buffer
 		 * @param skip The number of values to offset after the buffer is emitted.
 		 * @return An observable sequence of the same valueClass as the current sequence
@@ -86,7 +78,6 @@ package rx
 		
 		/**
 		 * Emits the values from a source sequence in groups of a specific size  
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/bufferWithTime">Online Documentation</a></p>
 		 * @param timeMs The amount of time to buffer before the values are released
 		 * @param timeShiftMs The amount of time to offset after the buffer is emitted
 		 * @param scheduler The scheduler to use
@@ -96,7 +87,6 @@ package rx
 		
 		/**
 		 * Forces values from a source sequence to be of a specific valueClass
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/cast">Online Documentation</a></p>
 		 * @param valueClass The valueClass of the output sequence
 		 * @return An observable sequence of valueClass 
 		 */
@@ -104,7 +94,6 @@ package rx
 		
 		/**
 		 * Runs a specific sequence when an error occurs
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/catchError">Online Documentation</a></p>
 		 * @param second The sequence to subscribe to when an error occurs
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
@@ -112,7 +101,6 @@ package rx
 		
 		/**
 		 * Runs a specific sequence, determined at runtime, when an error occurs
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/catchErrorDefer">Online Documentation</a></p>
 		 * @param errorClass The class (and superclass) of error to act on
 		 * @param deferFunc The function to execute in the event of an error. Signature is <code>function(e : Error) : IObservable</code>
 		 * @return An observable sequence of the same valueClass as the current sequence
@@ -121,7 +109,6 @@ package rx
 		
 		/**
 		 * Merges two sequences through a mapping function, using the latest value from either source 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/combineLatest">Online Documentation</a></p>
 		 * @param returnClass The valueClass of the values returned by selector
 		 * @param right The sequence to combine with
 		 * @param selector The function that combines values from the two sources. Signature is <code>function(left : this.valueClass, right : right.valueClass) : returnType</code>
@@ -131,7 +118,6 @@ package rx
 		
 		/**
 		 * Concatonates multiple sequences by running each sequence as the previous one finishes
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/concat">Online Documentation</a></p>
 		 * @param sources The sequences to concatonate after the current sequence 
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
@@ -139,7 +125,6 @@ package rx
 		
 		/**
 		 * Determines if the source sequence contains a specific value 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/contains">Online Documentation</a></p>
 		 * @param value The value to check against the sequence
 		 * @param comparer The function used to compare values. Default equality will be used if comparer is null.
 		 * @return An observable sequence of Boolean
@@ -148,14 +133,12 @@ package rx
 		
 		/**
 		 * Returns the number of elements in the source sequence 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/count">Online Documentation</a></p>
 		 * @return An observable sequence of int
 		 */		
 		function count() : IObservable;
 		
 		/**
 		 * Delays all values in a sequences by a specified time 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/delay">Online Documentation</a></p>
 		 * @param delayMs The amount of time, in milliseconds, to delay
 		 * @param scheduler The scheduler used to delay the values
 		 * @return An observable sequence of the same valueClass as the current sequence
@@ -164,7 +147,6 @@ package rx
 		
 		/**
 		 * Converts materialized values back into messages  
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/dematerialize">Online Documentation</a></p>
 		 * @param valueClass The class of the original values 
 		 * @return An observable sequence of valueClass
 		 */		
@@ -172,7 +154,6 @@ package rx
 		
 		/**
 		 * Allows custom code to be run when messages arrive without affecting the observer  
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/doAction">Online Documentation</a></p>
 		 * @param next The function to execute in the event of a value (onNext)
 		 * @param complete The function to execute in the event the sequence completes (onComplete)
 		 * @param error The function to execute in the event of an error (onError)
@@ -182,7 +163,6 @@ package rx
 		
 		/**
 		 * Executes a function when the sequence completes or errors
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/finallyAction">Online Documentation</a></p>
 		 * @param finallyAction The function to execute in the event the sequence completes or errors
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
@@ -190,21 +170,18 @@ package rx
 		
 		/**
 		 * Emits the first value in the sequence, or an error if the sequence completes with no values 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/first">Online Documentation</a></p>
 		 * @return An observable sequence of the same valueClass as the current sequence 
 		 */
 		function first() : IObservable;
 		
 		/**
 		 * Emits the first value in the sequence, or a default value if the sequence completes with no values
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/firstOrDefault">Online Documentation</a></p> 
 		 * @return An observable sequence of the same valueClass as the current sequence 
 		 */		
 		function firstOrDefault() : IObservable;
 		
 		/**
 		 * Combines the current sequence with another, emitting the last values of both after both have completed 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/forkJoin">Online Documentation</a></p> 
 		 * @param resultClass The class of the valueClass returned by selector
 		 * @param right The sequence to subscribe to, along with the current sequence
 		 * @param selector The function that accepts the last values of both sequences and returns the output value 
@@ -227,21 +204,18 @@ package rx
 		
 		/**
 		 * Emits the last value in the sequence, or an error if the sequence completes with no values 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/last">Online Documentation</a></p>
 		 * @return An observable sequence of the same valueClass as the current sequence 
 		 */
 		function last() : IObservable;
 		
 		/**
 		 * Emits the last value in the sequence, or the default value if the sequence completes with no values 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/lastOrDefault">Online Documentation</a></p>
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */
 		function lastOrDefault() : IObservable;
 		
 		/**
 		 * Pipes a composed sequence to be mapped through a function so it can be used multiple times 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/let">Online Documentation</a></p>
 		 * @param func The function to send the current sequence through, and return a new sequence 
 		 * @return The observable sequence returned by func 
 		 */		
@@ -249,7 +223,6 @@ package rx
 		
 		/**
 		 * Converts all messages (next, complete, error) into values 
-		 * <p><a href="http://wiki.github.com/richardszalay/rxas/materialize">Online Documentation</a></p>
 		 * @return An observable sequence of rx.Notification
 		 */		
 		function materialize() : IObservable;

@@ -1157,16 +1157,15 @@ package rx
 		 */
 		public static function loader(request : URLRequest, loaderContext : LoaderContext = null) : IObservable
 		{
-			var progress : Subject = new Subject(int);
+			//var progress : Subject = new Subject(int);
 			
 			return new ClosureObservable(Object, function(observer : IObserver) : ICancelable
 			{
 				var loader : Loader = new Loader();
-				loader.load(request, loaderContext);
-
+				
 				try
 				{
-					loader.load(request);
+					loader.load(request, loaderContext);
 				}
 				catch(err : Error)
 				{
@@ -1174,10 +1173,10 @@ package rx
 					return ClosureCancelable.empty();
 				}
 				
-				progress.onNext(0);
+				//progress.onNext(0);
 				
 				return new CompositeCancelable([
-					Observable.fromEvent(loader.loaderInfo, ProgressEvent.PROGRESS)
+					/*Observable.fromEvent(loader.loaderInfo, ProgressEvent.PROGRESS)
 						.subscribe(function(progressEvent : ProgressEvent):void
 						{
 							if (progressEvent.bytesTotal == 0)
@@ -1188,7 +1187,7 @@ package rx
 							{
 								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
 							}
-						}),
+						}),*/
 					Observable.fromEvent(loader.loaderInfo, Event.COMPLETE)
 						.subscribe(function(completeEvent : Event) : void
 						{
@@ -1231,7 +1230,7 @@ package rx
 				progress.onNext(0);
 				
 				return new CompositeCancelable([
-					Observable.fromEvent(loader, ProgressEvent.PROGRESS)
+					/*Observable.fromEvent(loader, ProgressEvent.PROGRESS)
 						.subscribe(function(progressEvent : ProgressEvent):void
 						{
 							if (progressEvent.bytesTotal == 0)
@@ -1242,7 +1241,7 @@ package rx
 							{
 								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
 							}
-						}),
+						}),*/
 					Observable.fromEvent(loader, Event.COMPLETE)
 						.subscribe(function(completeEvent : Event) : void
 						{
@@ -1317,7 +1316,7 @@ package rx
 			 * Creates an observable sequence that is also an IResponder 
 			 * @param valueClass The valueClass of the returned sequence
 			 * @return An observable sequence of valueClass
-			 */			
+			 */
 			public static function responder(valueClass : Class) : IObservableResponder
 			{
 				return new ObservableResponder(valueClass);

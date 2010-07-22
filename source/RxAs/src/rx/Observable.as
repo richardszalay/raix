@@ -1,17 +1,17 @@
 package rx
 {
-	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
+	import flash.xml.XMLDocument;
 	
 	import rx.flex.*;
 	import rx.scheduling.*;
-	import rx.internal.*;
 
 	/**
 	 * Provides static methods that create observable sequences
@@ -644,12 +644,11 @@ package rx
 		 */
 		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, commonValueClass : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
-			return Observable.mergeMany(commonValueClass,
-				Observable.fromArray(String, eventTypes)
+			return Observable.fromArray(String, eventTypes)
 					.selectMany(commonValueClass, function(valueClass : String) : IObservable
 					{
 						return fromEvent(eventDispatcher, valueClass, commonValueClass, useCapture, priority);
-					}));
+					});
 		}
 		
 		/**
@@ -1148,59 +1147,6 @@ package rx
 		/**
 		 * Creates an observable sequence that loads an object from a URLRequest 
 		 * @param request The URLRequest to load
-		 * @param loaderContext The optional LoaderContext to use
-		 * @return An observable sequence of Object
-		 */
-		public static function loader(request : URLRequest, loaderContext : LoaderContext = null) : IObservable
-		{
-			//var progress : Subject = new Subject(int);
-			
-			return new ClosureObservable(Object, function(observer : IObserver) : ICancelable
-			{
-				var loader : Loader = new Loader();
-				
-				try
-				{
-					loader.load(request, loaderContext);
-				}
-				catch(err : Error)
-				{
-					observer.onError(err);
-					return ClosureCancelable.empty();
-				}
-				
-				//progress.onNext(0);
-				
-				return new CompositeCancelable([
-					/*Observable.fromEvent(loader.loaderInfo, ProgressEvent.PROGRESS)
-						.subscribe(function(progressEvent : ProgressEvent):void
-						{
-							if (progressEvent.bytesTotal == 0)
-							{
-								progress.onNext(0);
-							}
-							else
-							{
-								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
-							}
-						}),*/
-					Observable.fromEvent(loader.loaderInfo, Event.COMPLETE)
-						.subscribe(function(completeEvent : Event) : void
-						{
-							observer.onNext(loader.data);
-							observer.onCompleted();
-						}),
-					Observable.fromErrorEvents(Event, loader.loaderInfo, 
-						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
-						.subscribeWith(observer)
-				]);
-
-			});
-		}
-		
-		/**
-		 * Creates an observable sequence that loads an object from a URLRequest 
-		 * @param request The URLRequest to load
 		 * @param dataFormat A value of flash.net.URLLoaderDataFormat
 		 * @param loaderContext The optional LoaderContext to use
 		 * @return An observable sequence of Object
@@ -1251,6 +1197,25 @@ package rx
 
 			});
 		}
-			 */
+		
+		/**
+		 * Loads an XML document
+		 * @param request The URLRequest to load
+		 * @param ignoreWhite Whether to ignore whitespace when parsing the XML
+		 * @param loaderContext The optional LoaderContext to use
+		 * @return An IObservable sequence of XMLDocument 
+		 */		
+		public function xmlDocument(request : URLRequest, ignoreWhitespace : Boolean, loaderContext : LoaderContext = null) : IObservable
+		{
+			return urlLoader(request, URLLoaderDataFormat.TEXT, loaderContext)
+				.select(XMLDocument, function(xml : String) : XMLDocument 
+				{
+					var doc : XMLDocument = new XMLDocument(xml);
+					doc.ignoreWhite = ignoreWhitespace;
+					doc.parseXML(xml);
+					
+					return doc;
+				});
+		}
 	}
 }

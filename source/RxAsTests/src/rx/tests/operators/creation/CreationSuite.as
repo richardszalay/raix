@@ -13,6 +13,7 @@ package rx.tests.operators.creation
 		public var empty : EmptyFixture;
 		public var fromArray : FromArrayFixture;
 		public var fromEvent : FromEventFixture;
+		public var fromEvents : FromEventsFixture;
 		public var ifElse : IfElseFixture;
 		public var interval : IntervalFixture;
 		public var lookup : LookupFixture;
@@ -20,5 +21,6 @@ package rx.tests.operators.creation
 		public var range : RangeFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timer : TimerFixture;
+		public var urlLoader : URLLoaderFixture;
 	}
 }

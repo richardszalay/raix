@@ -26,15 +26,12 @@ package rx.flex
 		 */
 		public static function fromList(elementClass : Class, list : IList, scheduler : IScheduler	= null) : IObservable
 		{
-			return Observable.defer(elementClass, function():IObservable
-			{
-				return Observable.generate(elementClass,
-					0,
-					function(i : int):Boolean { return i < list.length; },
-					function(i : int):int { return i+1; },
-					function(i : int):Object { return list.getItemAt(i); },
-					scheduler);
-			});
+			return Observable.generate(elementClass,
+				0,
+				function(i : int):Boolean { return i < list.length; },
+				function(i : int):int { return i+1; },
+				function(i : int):Object { return list.getItemAt(i); },
+				scheduler);
 		}
 
 		/**

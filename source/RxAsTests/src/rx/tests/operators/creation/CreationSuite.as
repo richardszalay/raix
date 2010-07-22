@@ -12,8 +12,6 @@ package rx.tests.operators.creation
 		public var defer : DeferFixture;
 		public var empty : EmptyFixture;
 		public var fromArray : FromArrayFixture;
-		public var fromCollection : FromCollectionFixture;
-		public var fromViewCursor : FromViewCursorFixture;
 		public var fromEvent : FromEventFixture;
 		public var ifElse : IfElseFixture;
 		public var interval : IntervalFixture;

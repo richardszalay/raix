@@ -5,6 +5,7 @@
      
      <mx:Script>
      	<![CDATA[
+     		import rx.tests.operators.flex.FlexSuite;
      		import org.flexunit.internals.TraceListener;
      		import org.flexunit.listeners.CIListener;
      		import rx.tests.misc.UtilitiesSuite;
@@ -25,7 +26,7 @@
 				
 				addTestListeners(core);				
 				
-				core.run( OperatorSuite, SubjectSuite, UtilitiesSuite );
+				core.run( OperatorSuite, FlexSuite, SubjectSuite, UtilitiesSuite );
 			}
 			
 			private function addTestListeners(core : FlexUnitCore) : void

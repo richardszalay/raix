@@ -4,8 +4,6 @@ package rx.scheduling
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import mx.core.Application;
-	
 	import rx.*;
 	
 	/**

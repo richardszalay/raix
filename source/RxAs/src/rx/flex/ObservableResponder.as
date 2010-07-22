@@ -5,7 +5,7 @@ package rx.flex
 	import mx.rpc.events.FaultEvent;
 	
 	import rx.*;
-	import rx.internal.ErrorUtil;
+	import rx.internal.*;
 	
 	/**
 	 * Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
@@ -40,7 +40,9 @@ package rx.flex
 			{
 				_isComplete = true;
 				
-				for each(var observer : IObserver in _observers)
+				var observers : Array = _observers.slice();
+				
+				for each(var observer : IObserver in observers)
 				{
 					observer.onNext(data);
 					observer.onCompleted();
@@ -58,8 +60,10 @@ package rx.flex
 				_isComplete = true;
 			
 				var error : Error = getFaultError(info);
+				
+				var observers : Array = _observers.slice();
 			
-				for each(var observer : IObserver in _observers)
+				for each(var observer : IObserver in observers)
 				{
 					observer.onError(error);
 				}
@@ -85,7 +89,7 @@ package rx.flex
 				return ErrorUtil.mapErrorEvent(errorEvent);
 			}
 			
-			return new Error((info||"").toString(), 0);
+			return new Error((info||Object("")).toString(), 0);
 		}
 		
 		/**

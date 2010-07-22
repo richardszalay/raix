@@ -1,10 +1,10 @@
-package rx.tests.operators.creation
+package rx.tests.operators.flex
 {
 	import mx.collections.ArrayCollection;
 	
 	import org.flexunit.Assert;
 	
-	import rx.Observable;
+	import rx.flex.FlexObservable;
 	import rx.tests.mocks.StatsObserver;
 	
 	public class FromCollectionFixture
@@ -19,7 +19,7 @@ package rx.tests.operators.creation
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.fromCollection(String, collection)
+			FlexObservable.fromCollection(String, collection)
 				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);

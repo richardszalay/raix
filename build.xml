@@ -55,6 +55,10 @@
 <!-- Build our SWC with a versioned name. -->
       <arg value="-output=${bin.loc}/${project.name.versioned}.swc"/>
 <!-- We want all the org package classes in the SWC being built. -->
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/flex.swc" />
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/framework.swc" />
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/rpc.swc" />
+      <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/utilities.swc" />
       <arg value="-source-path=${main.src.loc}"/>
       <arg value="-include-sources=${main.src.loc}/rx"/>
       <arg value="-include-sources+=${main.src.loc}/rx/scheduling"/>
@@ -110,7 +114,7 @@
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>
-    <java jar="${FLEX_HOME}/lib/asdoc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+    <java jar="${FLEX_4_HOME}/lib/asdoc.jar" dir="${FLEX_4_HOME}/frameworks" fork="true" failonerror="true">
       <!--<arg line="-external-library-path ${lib.loc}"/>-->
       <arg line="-doc-sources ${main.src.loc}"/>
       <arg line="-source-path ${main.src.loc}"/>
@@ -161,24 +165,23 @@
       <filterchain>
         <replacetokens>
           <token key="date" value="${touch.time}"/>
-          <token key="rlversion" value="${robotlegs.ver.num}"/>
+          <token key="rxasversion" value="${rxas.ver.num}"/>
           <token key="releasename" value="${project.name.versioned}"/>
-          <token key="ssversion" value="${swift.suspenders.version}"/>
-          <token key="sslink" value="${swift.suspenders.link}"/>
-          <token key="rlprojectlink" value="${robotlegs.project.link}"/>
-          <token key="bestpracticeslink" value="${robotlegs.best.practices.link}"/>
-          <token key="faqlink" value="${robotlegs.faq.link}"/>
+          <token key="rlprojectlink" value="${rxas.project.link}"/>
+          <token key="bestpracticeslink" value="${rxas.best.practices.link}"/>
+          <token key="faqlink" value="${rxas.faq.link}"/>
         </replacetokens>
       </filterchain>
     </copy>-->
 <!-- Copy LICENSE  -->
     <copy file="MIT-LICENSE.txt" tofile="${dist.loc}/MIT-LICENSE.txt" overwrite="true"/>
 <!-- Zip It  -->
+  	<copy file="${dist.loc}/bin/${project.name.versioned}.swc" 
+  		tofile="${dist.loc}/${project.name.versioned}.swc" overwrite="true" />
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
     </zip>
 <!-- Clean Up  -->
-    <delete file="${dist.loc}/${project.name.versioned}.swc"/>
     <delete file="${dist.loc}/README"/>
     <delete file="${dist.loc}/LICENSE"/>
     <delete dir="${dist.loc}/bin"/>

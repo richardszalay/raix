@@ -8,7 +8,7 @@ package rx
 	import rx.subjects.ConnectableObservable;
 	import rx.subjects.IConnectableObservable;
 	import rx.subjects.ReplaySubject;
-	import rx.internal.*;
+	import rx.impl.*;
 	
 	/**
 	 * Subclass this class only if you want to implement a completely custom IObservable.

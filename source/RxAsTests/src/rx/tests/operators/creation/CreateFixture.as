@@ -62,7 +62,7 @@ package rx.tests.operators.creation
             Assert.assertTrue(disposeCalled);
         }
 
-        [Test(expects=ArgumentError)]
+        /* [Test(expects=ArgumentError)]
         public function throws_argument_error_when_return_value_is_null() : void
         {
             var stats : StatsObserver = new StatsObserver();
@@ -71,6 +71,6 @@ package rx.tests.operators.creation
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
-        }
+        } */
 	}
 }

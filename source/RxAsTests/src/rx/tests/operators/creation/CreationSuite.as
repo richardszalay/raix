@@ -22,5 +22,6 @@ package rx.tests.operators.creation
 		public var throwError : ThrowErrorFixture;
 		public var timer : TimerFixture;
 		public var urlLoader : URLLoaderFixture;
+		public var xml : XMLFixture;
 	}
 }

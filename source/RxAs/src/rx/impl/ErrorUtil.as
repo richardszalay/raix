@@ -1,4 +1,4 @@
-package rx.internal
+package rx.impl
 {
 	import flash.errors.IOError;
 	import flash.events.ErrorEvent;

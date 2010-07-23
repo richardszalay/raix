@@ -5,7 +5,7 @@ package rx.flex
 	import mx.rpc.events.FaultEvent;
 	
 	import rx.*;
-	import rx.internal.*;
+	import rx.impl.*;
 	
 	/**
 	 * Concrete implementation of an observable sequence that is also an mx.rpc.IResponder

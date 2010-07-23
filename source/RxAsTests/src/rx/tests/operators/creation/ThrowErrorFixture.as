@@ -4,6 +4,7 @@ package rx.tests.operators.creation
 	
 	import rx.IObservable;
 	import rx.Observable;
+	import rx.tests.mocks.StatsObserver;
 	
 	public class ThrowErrorFixture
 	{
@@ -13,17 +14,12 @@ package rx.tests.operators.creation
 			var err : Error = new Error();
 			var obs : IObservable = Observable.throwError(err);
 			
-			var errorCalled : Boolean = false,
-				nextCalled : Boolean = false,
-				completeCalled : Boolean = false;
+			var stats : StatsObserver = new StatsObserver();
 				
-			obs.subscribe(
-				function(pl:Object):void { nextCalled = true; },
-				function():void { completeCalled = true; },
-				function(e:Error):void { errorCalled = true; Assert.assertStrictlyEquals(err, e); }
-				);
+			obs.subscribeWith(stats);
 				
-			Assert.assertTrue(errorCalled);
+			Assert.assertTrue(stats.errorCalled);
+			Assert.assertStrictlyEquals(err, stats.error);
 		}
 	}
 }

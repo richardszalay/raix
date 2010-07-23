@@ -8,6 +8,8 @@ package rx.tests.operators.creation
 	
 	import rx.Observable;
 	
+	// urlLoader() is delayed because if it comes back synchronously, it causes a problem 
+	// with ImmediateScheduler's trampoline
 	public class URLLoaderFixture
 	{
 		private var test : Object = this;
@@ -19,12 +21,13 @@ package rx.tests.operators.creation
 			
 			var nextHandler : Function = Async.asyncHandler(test, function(... args) : void
 			{
-				Assert.assertEquals("<data>text node</data>", result);
+				Assert.assertEquals("<data><inner>text node</inner></data>", result);
 			}, 5000);
 			
 			var completeHandler : Function = Async.asyncHandler(test, null, 5000); 
 
 			Observable.urlLoader(new URLRequest("rx/tests/operators/creation/test.xml"))
+				.delay(50)
 				.subscribe(
 					function(s:String) : void
 					{
@@ -48,6 +51,7 @@ package rx.tests.operators.creation
 			}, 5000); 
 
 			Observable.urlLoader(new URLRequest("rx/tests/operators/creation/does_not_exist.xml"))
+				.delay(50)
 				.subscribe(null, null, function(e:Error) : void
 				{
 					error = e;

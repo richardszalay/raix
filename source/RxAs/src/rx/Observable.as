@@ -8,10 +8,11 @@ package rx
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
-	import flash.xml.XMLDocument;
+	import flash.utils.getQualifiedClassName;
 	
 	import rx.flex.*;
 	import rx.scheduling.*;
+	import rx.impl.*;
 
 	/**
 	 * Provides static methods that create observable sequences
@@ -127,6 +128,7 @@ package rx
 				
 				if (cancelFunc == null)
 				{
+					trace(getQualifiedClassName(cancelFunc));
 					throw new ArgumentError("Expected a Function to be returned from subscribeFunc");
 				}
 				
@@ -1205,16 +1207,12 @@ package rx
 		 * @param loaderContext The optional LoaderContext to use
 		 * @return An IObservable sequence of XMLDocument 
 		 */		
-		public function xmlDocument(request : URLRequest, ignoreWhitespace : Boolean, loaderContext : LoaderContext = null) : IObservable
+		public static function xml(request : URLRequest, loaderContext : LoaderContext = null) : IObservable
 		{
 			return urlLoader(request, URLLoaderDataFormat.TEXT, loaderContext)
-				.select(XMLDocument, function(xml : String) : XMLDocument 
+				.select(XML, function(xml : String) : XML 
 				{
-					var doc : XMLDocument = new XMLDocument(xml);
-					doc.ignoreWhite = ignoreWhitespace;
-					doc.parseXML(xml);
-					
-					return doc;
+					return XML(xml);
 				});
 		}
 	}

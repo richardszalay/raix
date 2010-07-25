@@ -831,12 +831,11 @@ package rx
 			});
 		}
 		
-		/**
+		/*
 		 * Creates a sequences that accesses uncaught errors if supported by the platform (Flash Player 10.1+)
 		 * @param loaderInfo The LoaderInfo to catch uncaught errors from, or the LoaderInfo into which rx.Observable was loaded if the argument is null
-		 * @return An observable sequence of errors
-		 * 
-		 */		
+		 * @return An observable sequence of errors 
+		 		
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
 			return Observable.mergeMany(Error, Observable.fromArray(IObservable, 
@@ -861,7 +860,7 @@ package rx
 			{
 				return never();
 			}
-		}
+		}*/
 		
 		/**
 		 * Creates a sequence of consecutive integers  

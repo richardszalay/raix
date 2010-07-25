@@ -2,6 +2,7 @@ package rx.impl
 {
 	import flash.errors.IOError;
 	import flash.events.ErrorEvent;
+	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	
@@ -11,9 +12,13 @@ package rx.impl
 		{
 		}
 		
-		public static function mapErrorEvent(errorEvent : ErrorEvent) : Error
+		public static function mapErrorEvent(event : Event) : Error
 		{
-			var message : String = errorEvent.text;
+			var errorEvent : ErrorEvent = (event as ErrorEvent); 
+			
+			var message : String = (errorEvent == null)
+				? event.toString()
+				: errorEvent.text;
 			
 			if (errorEvent is IOErrorEvent)
 			{

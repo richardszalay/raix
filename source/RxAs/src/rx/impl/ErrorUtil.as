@@ -6,6 +6,7 @@ package rx.impl
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	
+	[ExcludeClass]
 	public class ErrorUtil
 	{
 		public function ErrorUtil()

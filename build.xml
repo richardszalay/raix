@@ -63,7 +63,7 @@
       <arg value="-include-sources=${main.src.loc}/rx"/>
       <arg value="-include-sources+=${main.src.loc}/rx/scheduling"/>
       <arg value="-include-sources+=${main.src.loc}/rx/flex"/>
-      <arg value="-include-sources+=${main.src.loc}/rx/internal"/>
+      <arg value="-include-sources+=${main.src.loc}/rx/impl"/>
       <arg value="-include-sources+=${main.src.loc}/rx/subjects"/>
 <!-- Boolean mosh pit! -->
       <arg value="-incremental=true"/>
@@ -75,8 +75,16 @@
     </java>
     <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>
+  <target name="copy-test-files">
+  	<copy todir="${bin.loc}" includeEmptyDirs="false">
+  		<fileset dir="${test.src.loc}">
+  			<exclude name="**/*.as" />
+  			<exclude name="**/*.mxml" />
+  		</fileset>
+  	</copy>
+  </target>
 <!-- Run Unit Tests -->
-  <target name="test" depends="compile">
+  <target name="test" depends="compile,copy-test-files">
     <echo>[test] Running Unit Tests</echo>
 <!-- Compile TestRunner.mxml as a SWF -->
     <java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true" maxmemory="${compile.maxmemory}">
@@ -98,7 +106,8 @@
       <arg value="-define+=CONFIG::AUTOMATED,true"/>
     </java>
 <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-    <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="true" verbose="true" localTrusted="${test.localTrusted}"/>
+    <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" 
+				localTrusted="${test.localTrusted}" failureProperty="test.failed" />
 <!-- Generate readable JUnit-style reports -->
     <junitreport todir="${report.loc}">
       <fileset dir="${report.loc}">
@@ -106,6 +115,7 @@
       </fileset>
       <report format="frames" todir="${report.loc}/html"/>
     </junitreport>
+  	<fail message="Unit Tests failed" if="${test.failed}" />
     <echo>[test] Finished running Unit Tests</echo>
   </target>
 <!-- Build Documentation -->
@@ -144,7 +154,6 @@
     <mkdir dir="${dist.loc}"/>
     <mkdir dir="${dist.loc}/bin"/>
     <mkdir dir="${dist.loc}/src"/>
-    <mkdir dir="${dist.loc}/libs"/>
     <copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin"/>
     <copy todir="${dist.loc}/src/rx">
       <fileset dir="${main.src.loc}/rx"/>
@@ -160,33 +169,34 @@
         <include name="*rx.*"/>
       </zipfileset>
     </zip>
-<!-- Copy README (TODO)
+<!-- Copy README -->
     <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/README" overwrite="true">
       <filterchain>
         <replacetokens>
           <token key="date" value="${touch.time}"/>
           <token key="rxasversion" value="${rxas.ver.num}"/>
           <token key="releasename" value="${project.name.versioned}"/>
-          <token key="rlprojectlink" value="${rxas.project.link}"/>
-          <token key="bestpracticeslink" value="${rxas.best.practices.link}"/>
-          <token key="faqlink" value="${rxas.faq.link}"/>
+          <token key="rxasprojectlink" value="${rxas.project.link}"/>
+          <token key="wikilink" value="${rxas.wiki.link}"/>
+          <token key="wikidocslink" value="${rxas.wikidocs.link}"/>
+          <token key="livedocslink" value="${rxas.livedocs.link}"/>
+          <token key="builddocslink" value="${rxas.builddocs.link}"/>
         </replacetokens>
       </filterchain>
-    </copy>-->
+    </copy>
 <!-- Copy LICENSE  -->
-    <copy file="MIT-LICENSE.txt" tofile="${dist.loc}/MIT-LICENSE.txt" overwrite="true"/>
+    <copy file="LICENSE" tofile="${dist.loc}/LICENSE" overwrite="true"/>
 <!-- Zip It  -->
-  	<copy file="${dist.loc}/bin/${project.name.versioned}.swc" 
-  		tofile="${dist.loc}/${project.name.versioned}.swc" overwrite="true" />
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
     </zip>
+  	<copy file="${dist.loc}/bin/${project.name.versioned}.swc" 
+  		tofile="${dist.loc}/${project.name.versioned}.swc" overwrite="true" />
 <!-- Clean Up  -->
     <delete file="${dist.loc}/README"/>
     <delete file="${dist.loc}/LICENSE"/>
     <delete dir="${dist.loc}/bin"/>
     <delete dir="${dist.loc}/src"/>
-    <delete dir="${dist.loc}/libs"/>
     <delete dir="${dist.loc}/docs"/>
     <echo>[package] Release packaged successfully</echo>
   </target>

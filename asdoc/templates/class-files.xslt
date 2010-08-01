@@ -4732,10 +4732,10 @@
 										<xsl:variable name="gfile" select="concat($baseRef,$destination,'.html')"/>
 										<xsl:variable name="hyperLink">
 											<xsl:if test="contains($destination,'.')">
-												<xsl:value-of select="$file"/>
+                        <xsl:value-of select="$file"/>
 											</xsl:if>
 											<xsl:if test="not(contains($destination,'.'))">
-												<xsl:value-of select="$gfile"/>
+                       <xsl:value-of select="$file"/>
 											</xsl:if>
 										</xsl:variable>
 										<xsl:if test="$hyperLink = ''">

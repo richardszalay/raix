@@ -3,7 +3,7 @@ package rx.scheduling
 	import rx.*;
 	
 	/**
-	 * Provides static helpers to sche
+	 * Provides static helpers to schedulers
 	 */
 	public class Scheduler
 	{

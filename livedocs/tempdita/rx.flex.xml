@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="rx.flex"><apiName>rx.flex</apiName><apiDetail/><apiClassifier id="rx.flex:IObservableResponder"><apiName>IObservableResponder</apiName><shortdesc>
+	 An observable sequence that is also an mx.rpc.IResponse
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>mx.rpc:IResponder</apiBaseInterface><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 An observable sequence that is also an mx.rpc.IResponse
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx.flex:ObservableResponder"><apiName>ObservableResponder</apiName><shortdesc>
+	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.flex:IObservableResponder</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+	 </apiDesc></apiClassifierDetail><apiConstructor id="rx.flex:ObservableResponder:ObservableResponder"><apiName>ObservableResponder</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="rx.flex:ObservableResponder:fault"><apiName>fault</apiName><shortdesc>
+		 Implementation of mx.rpc.IResponder.fault()
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>info</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 Implementation of mx.rpc.IResponder.fault()
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:ObservableResponder:result"><apiName>result</apiName><shortdesc>
+		 Implementation of mx.rpc.IResponder.result()
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>data</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 Implementation of mx.rpc.IResponder.result()
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:ObservableResponder:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="rx.flex:ObservableResponder:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.flex:FlexObservable"><apiName>FlexObservable</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx.flex:FlexObservable:FlexObservable"><apiName>FlexObservable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="rx.flex:FlexObservable:fromAsyncPattern"><apiName>fromAsyncPattern</apiName><shortdesc>
+		 Creates an observable sequence from a function that returns an AsyncToken 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An observable sequence of valueClass
+		 </apiDesc><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the value returned by the AsyncToken
+		 </apiDesc></apiParam><apiParam><apiItemName>asyncMethod</apiItemName><apiType value="Function"/><apiDesc>The method to execute when a new subscription occurs. This method must return AsyncToken
+		 </apiDesc></apiParam><apiParam><apiItemName>args</apiItemName><apiType value="Array"/><apiDesc>The arguments to supply to asyncMethod
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an observable sequence from a function that returns an AsyncToken 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromCollection"><apiName>fromCollection</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a collection 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An observable sequence of elementType
+		 </apiDesc><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>collection</apiItemName><apiType value="mx.collections:ICollectionView"/><apiDesc>The collection of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a collection 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromList"><apiName>fromList</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a list 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An observable sequence of elementType
+		 </apiDesc><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>list</apiItemName><apiType value="mx.collections:IList"/><apiDesc>The list of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a list 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromViewCursor"><apiName>fromViewCursor</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a view cursor 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An observable sequence of elementClass
+		 </apiDesc><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>cursor</apiItemName><apiType value="mx.collections:IViewCursor"/><apiDesc>The view cursor of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a view cursor 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:responder"><apiName>responder</apiName><shortdesc>
+		 Creates an observable sequence that is also an IResponder 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An observable sequence of valueClass
+		 </apiDesc><apiOperationClassifier>rx.flex:IObservableResponder</apiOperationClassifier></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the returned sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an observable sequence that is also an IResponder 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier></apiPackage>

@@ -1,0 +1,1513 @@
+<?xml version="1.0" encoding="UTF-8"?><allClasses><apiPackage id="rx.flex"><apiName>rx.flex</apiName><apiClassifier id="rx.flex:IObservableResponder"><apiName>IObservableResponder</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>mx.rpc:IResponder</apiBaseInterface><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail></apiClassifier><apiClassifier id="rx.flex:ObservableResponder"><apiName>ObservableResponder</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.flex:IObservableResponder</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.flex:ObservableResponder:fault"><apiName>fault</apiName><shortdesc>
+		 Implementation of mx.rpc.IResponder.fault()
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>info</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 Implementation of mx.rpc.IResponder.fault()
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:ObservableResponder:result"><apiName>result</apiName><shortdesc>
+		 Implementation of mx.rpc.IResponder.result()
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>data</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 Implementation of mx.rpc.IResponder.result()
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:ObservableResponder:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx.flex:ObservableResponder:ObservableResponder"><apiName>ObservableResponder</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx.flex:FlexObservable"><apiName>FlexObservable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.flex:FlexObservable:fromAsyncPattern"><apiName>fromAsyncPattern</apiName><shortdesc>
+		 Creates an observable sequence from a function that returns an AsyncToken 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the value returned by the AsyncToken
+		 </apiDesc></apiParam><apiParam><apiItemName>asyncMethod</apiItemName><apiType value="Function"/><apiDesc>The method to execute when a new subscription occurs. This method must return AsyncToken
+		 </apiDesc></apiParam><apiParam><apiItemName>args</apiItemName><apiType value="Array"/><apiDesc>The arguments to supply to asyncMethod
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an observable sequence from a function that returns an AsyncToken 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromCollection"><apiName>fromCollection</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a collection 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of elementType
+		 </apiDesc></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>collection</apiItemName><apiType value="mx.collections:ICollectionView"/><apiDesc>The collection of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a collection 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromList"><apiName>fromList</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a list 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of elementType
+		 </apiDesc></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>list</apiItemName><apiType value="mx.collections:IList"/><apiDesc>The list of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a list 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:fromViewCursor"><apiName>fromViewCursor</apiName><shortdesc>
+		 Creates a sequence consisting of the values in a view cursor 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of elementClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>cursor</apiItemName><apiType value="mx.collections:IViewCursor"/><apiDesc>The view cursor of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in a view cursor 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.flex:FlexObservable:responder"><apiName>responder</apiName><shortdesc>
+		 Creates an observable sequence that is also an IResponder 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx.flex:IObservableResponder</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the returned sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an observable sequence that is also an IResponder 
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx.flex:FlexObservable:FlexObservable"><apiName>FlexObservable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier></apiPackage><apiPackage id="rx.scheduling"><apiName>rx.scheduling</apiName><apiClassifier id="rx.scheduling:GreenThreadScheduler"><apiName>GreenThreadScheduler</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.scheduling:GreenThreadScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx.scheduling:GreenThreadScheduler:GreenThreadScheduler"><apiName>GreenThreadScheduler</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>contextSwitchObservable</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx.scheduling:Scheduler"><apiName>Scheduler</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.scheduling:Scheduler:scheduleRecursive"><apiName>scheduleRecursive</apiName><shortdesc>
+		 Schedules a recursive action on an IScheduler 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An ICancelable that can be used to cancel the recursive schedule at any time
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler that will schedule each recursive call
+		 </apiDesc></apiParam><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The action to call. The action will be called with one argument: a Function that call be called to reschedule the original action
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The amount of time to delay the call to ation
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Schedules a recursive action on an IScheduler 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="rx.scheduling:IScheduler"><apiName>IScheduler</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.scheduling:IScheduler:rx.scheduling:IScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="rx.scheduling:ImmediateScheduler"><apiName>ImmediateScheduler</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.scheduling:ImmediateScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier></apiPackage><apiPackage id="rx.subjects"><apiName>rx.subjects</apiName><apiClassifier id="rx.subjects:ConnectableObservable"><apiName>ConnectableObservable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.subjects:IConnectableObservable</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.subjects:ConnectableObservable:connect"><apiName>connect</apiName><shortdesc>
+		 
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:ConnectableObservable:refCount"><apiName>refCount</apiName><shortdesc>
+		 
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:ConnectableObservable:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx.subjects:ConnectableObservable:ConnectableObservable"><apiName>ConnectableObservable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>source</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiParam><apiParam><apiItemName>subject</apiItemName><apiData>null</apiData><apiOperationClassifier>rx:ISubject</apiOperationClassifier></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx.subjects:AsyncSubject"><apiName>AsyncSubject</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.subjects:AsyncSubject:lastValue"><apiName>lastValue</apiName><shortdesc>
+		 Gets the last value received, or throws an IllegalOperationError if no value 
+		 has been received.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Object"/></apiReturn></apiOperationDef><apiDesc>
+		 Gets the last value received, or throws an IllegalOperationError if no value 
+		 has been received.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:AsyncSubject:onCompleted"><apiName>onCompleted</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:AsyncSubject:onError"><apiName>onError</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>err</apiItemName><apiType value="Error"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:AsyncSubject:onNext"><apiName>onNext</apiName><shortdesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:AsyncSubject:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx.subjects:AsyncSubject:AsyncSubject"><apiName>AsyncSubject</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx.subjects:ReplaySubject"><apiName>ReplaySubject</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.subjects:ReplaySubject:onCompleted"><apiName>onCompleted</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:ReplaySubject:onError"><apiName>onError</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>err</apiItemName><apiType value="Error"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:ReplaySubject:onNext"><apiName>onNext</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:ReplaySubject:subscribeWith"><apiName>subscribeWith</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiConstructor id="rx.subjects:ReplaySubject:ReplaySubject"><apiName>ReplaySubject</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/></apiParam><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx.subjects:IConnectableObservable"><apiName>IConnectableObservable</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail><apiOperation id="rx.subjects:IConnectableObservable:rx.subjects:IConnectableObservable:connect"><apiName>connect</apiName><shortdesc>
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx.subjects:IConnectableObservable:rx.subjects:IConnectableObservable:refCount"><apiName>refCount</apiName><shortdesc>
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier></apiPackage><apiPackage id="rx"><apiName>rx</apiName><apiClassifier id="rx:AbsObservable"><apiName>AbsObservable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:AbsObservable:aggregate"><apiName>aggregate</apiName><shortdesc>
+		  
+		 Runs calculation functions over every value in the source sequence and emits the final result
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass (or this instance's valueClass if valueClass is null)
+		 </apiDesc></apiReturn><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that accumulates the aggregate value
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The class of the values returned by accumulator
+		 </apiDesc></apiParam><apiParam><apiItemName>initialValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>The value to start with
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		  
+		 Runs calculation functions over every value in the source sequence and emits the final result
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:all"><apiName>all</apiName><shortdesc>
+		 
+		 Determines if all values in the source sequence satisfy a condition
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if all values in the source sequence satisfy a condition
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:and"><apiName>and</apiName><shortdesc>
+		  
+		 Creates a pattern by combining the current source with right.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:Pattern</apiOperationClassifier><apiDesc>A pattern representing both sequences
+		 </apiDesc></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence to combine with the pattern.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		  
+		 Creates a pattern by combining the current source with right.
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:any"><apiName>any</apiName><shortdesc>
+		 
+		 Determines if the source sequence contains a value that satisfies a condition
+		  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if the source sequence contains a value that satisfies a condition
+		  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:asObservable"><apiName>asObservable</apiName><shortdesc>
+		 
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:average"><apiName>average</apiName><shortdesc>
+		 
+		 Returns the average value of all the elements in the source sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence (which should be numeric)
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Returns the average value of all the elements in the source sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:bufferWithCount"><apiName>bufferWithCount</apiName><shortdesc>
+		 
+		 Emits the values from a source sequence in groups of a specific size  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to buffer
+		 </apiDesc></apiParam><apiParam><apiItemName>skip</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values to offset after the buffer is emitted.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Emits the values from a source sequence in groups of a specific size  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:bufferWithTime"><apiName>bufferWithTime</apiName><shortdesc>
+		 
+		 Emits the values from a source sequence in groups of a specific size  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>timeMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time to buffer before the values are released
+		 </apiDesc></apiParam><apiParam><apiItemName>timeShiftMs</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The amount of time to offset after the buffer is emitted
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Emits the values from a source sequence in groups of a specific size  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:cast"><apiName>cast</apiName><shortdesc>
+		 
+		 Forces values from a source sequence to be of a specific valueClass
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass 
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the output sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Forces values from a source sequence to be of a specific valueClass
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:catchErrorDefer"><apiName>catchErrorDefer</apiName><shortdesc>
+		 
+		 Runs a specific sequence, determined at runtime, when an error occurs
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>errorClass</apiItemName><apiType value="Class"/><apiDesc>The class (and superclass) of error to act on
+		 </apiDesc></apiParam><apiParam><apiItemName>deferFunc</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event of an error. Signature is <codeph>function(e : Error) : IObservable</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Runs a specific sequence, determined at runtime, when an error occurs
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:catchError"><apiName>catchError</apiName><shortdesc>
+		 
+		 Runs a specific sequence when an error occurs
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>second</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to when an error occurs
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Runs a specific sequence when an error occurs
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:combineLatest"><apiName>combineLatest</apiName><shortdesc>
+		 
+		 Merges two sequences through a mapping function, using the latest value from either source 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of returnType 
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the values returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to combine with
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function that combines values from the two sources. Signature is <codeph>function(left : this.valueClass, right : right.valueClass) : returnType</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Merges two sequences through a mapping function, using the latest value from either source 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:concat"><apiName>concat</apiName><shortdesc>
+		 
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The sequences to concatonate after the current sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:contains"><apiName>contains</apiName><shortdesc>
+		 
+		 Determines if the source sequence contains a specific value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to check against the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function used to compare values. Default equality will be used if comparer is null.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if the source sequence contains a specific value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:count"><apiName>count</apiName><shortdesc>
+		 
+		 Returns the number of elements in the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of int
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Returns the number of elements in the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:delayUntil"><apiName>delayUntil</apiName><shortdesc>
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>dt</apiItemName><apiType value="Date"/></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 </apiDesc></apiOperationDetail><apiInheritDoc/></apiOperation><apiOperation id="rx:AbsObservable:delay"><apiName>delay</apiName><shortdesc>
+		 
+		 Delays all values in a sequences by a specified time 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>delayMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time, in milliseconds, to delay
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to delay the values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Delays all values in a sequences by a specified time 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:dematerialize"><apiName>dematerialize</apiName><shortdesc>
+		 
+		 Converts materialized values back into messages  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Converts materialized values back into messages  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:distinctUntilChanged"><apiName>distinctUntilChanged</apiName><shortdesc>
+		 
+		 Filters out consecutive duplicates from a source sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function used to compare values. Default equality will be used if comparer is null.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Filters out consecutive duplicates from a source sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:doAction"><apiName>doAction</apiName><shortdesc>
+		 
+		 Allows custom code to be run when messages arrive without affecting the observer  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>nextAction</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event of a value (onNext)
+		 </apiDesc></apiParam><apiParam><apiItemName>completeAction</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to execute in the event the sequence completes (onComplete)
+		 </apiDesc></apiParam><apiParam><apiItemName>errorAction</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to execute in the event of an error (onError)
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Allows custom code to be run when messages arrive without affecting the observer  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:finallyAction"><apiName>finallyAction</apiName><shortdesc>
+		 
+		 Executes a function when the sequence completes or errors
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event the sequence completes or errors
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Executes a function when the sequence completes or errors
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:firstOrDefault"><apiName>firstOrDefault</apiName><shortdesc>
+		 
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:first"><apiName>first</apiName><shortdesc>
+		 
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:forkJoin"><apiName>forkJoin</apiName><shortdesc>
+		 
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass resultClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>resultClass</apiItemName><apiType value="Class"/><apiDesc>The class of the valueClass returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to, along with the current sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function that accepts the last values of both sequences and returns the output value 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:lastOrDefault"><apiName>lastOrDefault</apiName><shortdesc>
+		 
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:last"><apiName>last</apiName><shortdesc>
+		 
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:let"><apiName>let</apiName><shortdesc>
+		 
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The observable sequence returned by func 
+		 </apiDesc></apiReturn><apiParam><apiItemName>func</apiItemName><apiType value="Function"/><apiDesc>The function to send the current sequence through, and return a new sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:materialize"><apiName>materialize</apiName><shortdesc>
+		 
+		 Converts all messages (next, complete, error) into values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of rx.Notification
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Converts all messages (next, complete, error) into values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:merge"><apiName>merge</apiName><shortdesc>
+		 
+		 Emits the values from multiple sources in the order that they arrive 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequences from which the values will be merged with the current sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Emits the values from multiple sources in the order that they arrive 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:observeOn"><apiName>observeOn</apiName><shortdesc>
+		 
+		 Defers messages to subscribers through a scheduler  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The subscriber to send messages to subscribers through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Defers messages to subscribers through a scheduler  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:ofClass"><apiName>ofClass</apiName><shortdesc>
+		 
+		 Filters out values from a source sequence that are not of a specific valueClass 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class (or subsclass) of all values to emit 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Filters out values from a source sequence that are not of a specific valueClass 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:onErrorResumeNext"><apiName>onErrorResumeNext</apiName><shortdesc>
+		 
+		 Subscribes down a list of sequence as each one errors or complete 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>second</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to run after the current sequence completes or errors
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use to subscribe to the new sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes down a list of sequence as each one errors or complete 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:pruneAndConnect"><apiName>pruneAndConnect</apiName><shortdesc>
+		 
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:prune"><apiName>prune</apiName><shortdesc>
+		 
+		 Creates a shared sequence that emits the last value of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Creates a shared sequence that emits the last value of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:publishAndConnect"><apiName>publishAndConnect</apiName><shortdesc>
+		 
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:publish"><apiName>publish</apiName><shortdesc>
+		 
+		 Creates a connectable sequence that can be shared by multiple observers  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Creates a connectable sequence that can be shared by multiple observers  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:removeTimeInterval"><apiName>removeTimeInterval</apiName><shortdesc>
+		 
+		 Removes time interval information added with timeInterval  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Removes time interval information added with timeInterval  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:removeTimestamp"><apiName>removeTimestamp</apiName><shortdesc>
+		 
+		 Removes timestamp information added with timestamp  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Removes timestamp information added with timestamp  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:repeat"><apiName>repeat</apiName><shortdesc>
+		 
+		 Repeats the source sequence a specific number of times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>repeatCount</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of times to repeat the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Repeats the source sequence a specific number of times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:replayAndConnect"><apiName>replayAndConnect</apiName><shortdesc>
+		 
+		 Records the output of the source sequence and replays it to future subscribers
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through 
+		 </apiDesc></apiParam><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values at the end of the sequence to replay, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Records the output of the source sequence and replays it to future subscribers
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:replay"><apiName>replay</apiName><shortdesc>
+		 
+		 Records the output of the source sequence and replays it to future subscribers 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values at the end of the sequence to replay, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Records the output of the source sequence and replays it to future subscribers 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:retry"><apiName>retry</apiName><shortdesc>
+		 
+		 Repeats the source sequence when an error occurs 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>retryCount</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of times to retry the sequence in the event of an error
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Repeats the source sequence when an error occurs 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:sample"><apiName>sample</apiName><shortdesc>
+		 
+		 Emits the latest value on a time interval from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>intervalMs</apiItemName><apiType value="uint"/><apiDesc>The interval of time, in milliseconds, to sample the current value after
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Emits the latest value on a time interval from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:scan"><apiName>scan</apiName><shortdesc>
+		 
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>The function that accumulates values
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The class of the returned sequence and return value of accumulator
+		 </apiDesc></apiParam><apiParam><apiItemName>initialValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>The value to start with
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:selectMany"><apiName>selectMany</apiName><shortdesc>
+		 
+		 Starts a new sequence for every value in the source sequence and merges their values
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass result
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the sequences returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed with each value
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Starts a new sequence for every value in the source sequence and merges their values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:select"><apiName>select</apiName><shortdesc>
+		 
+		 Maps the values from a source sequence through a function to change their value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass result
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the returned sequence and return value of accumulator 
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed with each value
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Maps the values from a source sequence through a function to change their value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:singleOrDefault"><apiName>singleOrDefault</apiName><shortdesc>
+		 
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+		 an error if more than one value is emitted.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+		 an error if more than one value is emitted.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:single"><apiName>single</apiName><shortdesc>
+		 
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:skipLast"><apiName>skipLast</apiName><shortdesc>
+		 
+		 Ignores a set number of values from the end of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to skip from the end of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Ignores a set number of values from the end of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:skipUntil"><apiName>skipUntil</apiName><shortdesc>
+		 
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>other</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence that will mark the start of values being used from the current sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:skipWhile"><apiName>skipWhile</apiName><shortdesc>
+		 
+		 Ignores values from a source sequence until a condition is no longer met
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The function to be executed as each value is emitted. When this function returns false, values will be used from the current sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Ignores values from a source sequence until a condition is no longer met
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:skip"><apiName>skip</apiName><shortdesc>
+		 
+		 Ignores a set number of values from the start of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to skip from the start of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Ignores a set number of values from the start of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:startWith"><apiName>startWith</apiName><shortdesc>
+		 
+		 Emits the specified values at the start of a sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>values</apiItemName><apiType value="Array"/><apiDesc>The value to emit at the start of the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Emits the specified values at the start of a sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:subscribeOn"><apiName>subscribeOn</apiName><shortdesc>
+		 
+		 Defers subscriptions to the source through a scheduler  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The subscriber to schedule subscriptions through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Defers subscriptions to the source through a scheduler  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:subscribe"><apiName>subscribe</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied functions 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling <codeph>unsubscribe()</codeph> 
+		 </apiDesc></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/><apiDesc>Function to be called for every payload. Signature is <codeph>function(payload : T) : void</codeph>
+		 </apiDesc></apiParam><apiParam><apiItemName>onComplete</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>Optional. Function to be called when the sequence completes. Signature is <codeph>function():void</codeph>
+		 </apiDesc></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>Optional. Function to be called when an error occurs in the sequence. Signature is <codeph>function(err:Error):void</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied functions 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:sum"><apiName>sum</apiName><shortdesc>
+		 
+		 Returns the summed value of all the elements in the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Number
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Returns the summed value of all the elements in the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:takeLast"><apiName>takeLast</apiName><shortdesc>
+		 
+		 Takes only the last set number of values from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to use from the end of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Takes only the last set number of values from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:takeUntil"><apiName>takeUntil</apiName><shortdesc>
+		 
+		 Takes values from a source sequence until a value is received from a specified sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>other</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence that will mark the end of values being used from the current sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Takes values from a source sequence until a value is received from a specified sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:takeWhile"><apiName>takeWhile</apiName><shortdesc>
+		 
+		 Takes values from a source sequence until a condition is no longer met 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The function to be executed as each value is emitted. When this function returns false, values will no longer be used from the current sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Takes values from a source sequence until a condition is no longer met 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:take"><apiName>take</apiName><shortdesc>
+		 
+		 Takes only the first set number of values from a source sequenc
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to use from the start of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Takes only the first set number of values from a source sequenc
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:throttle"><apiName>throttle</apiName><shortdesc>
+		 
+		 Limits how often values from a source sequence will be accepted from a source
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>dueTimeMs</apiItemName><apiType value="uint"/><apiDesc>The interval of time, in milliseconds, during which only one value from the source sequence will be accepted
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Limits how often values from a source sequence will be accepted from a source
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:timeInterval"><apiName>timeInterval</apiName><shortdesc>
+		 
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of TimeInterval
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use to determine time
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:timeout"><apiName>timeout</apiName><shortdesc>
+		 
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>timeoutMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time, in milliseconds, after which to raise an error (or subscribe to other)
+		 </apiDesc></apiParam><apiParam><apiItemName>other</apiItemName><apiData>null</apiData><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to in the event of a timeout. If null, a TimeoutError will be emitted.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:timestamp"><apiName>timestamp</apiName><shortdesc>
+		 
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Timestamped 
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:where"><apiName>where</apiName><shortdesc>
+		 
+		 Filters out values from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The predicate function to execute for each value to determine if it will be include in the output
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Filters out values from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:AbsObservable:zip"><apiName>zip</apiName><shortdesc>
+		 
+		 Merges two sequences through a mapping function while only ever using each value once 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the returned sequence and return value of selector
+		 </apiDesc></apiParam><apiParam><apiItemName>rightSource</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to combine with the current
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed when values are received from both sequences. The return value will be included in the output
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Merges two sequences through a mapping function while only ever using each value once 
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:AbsObservable:AbsObservable"><apiName>AbsObservable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:CompositeCancelable"><apiName>CompositeCancelable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:CompositeCancelable:add"><apiName>add</apiName><shortdesc>
+		 Adds a cancelable resource to the list of cancelable resources.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>cancelable</apiItemName><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 Adds a cancelable resource to the list of cancelable resources. If 
+		 this instance has already been canceled, the resource will be immediately 
+		 canceled and not added to the list.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:CompositeCancelable:cancel"><apiName>cancel</apiName><shortdesc>
+		 Cancels (and removes) all resources in this instance
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Cancels (and removes) all resources in this instance
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:CompositeCancelable:remove"><apiName>remove</apiName><shortdesc>
+		 Removes a cancelable resource from the list
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>cancelable</apiItemName><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 Removes a cancelable resource from the list
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:CompositeCancelable:CompositeCancelable"><apiName>CompositeCancelable</apiName><shortdesc>
+		 Creates a composite cancelable instance with the cancelable 
+		 instances to start with
+		 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>values</apiItemName><apiType value="Array"/><apiData>null</apiData></apiParam></apiConstructorDef><apiDesc>
+		 Creates a composite cancelable instance with the cancelable 
+		 instances to start with
+		 </apiDesc></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Subject"><apiName>Subject</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Subject:onCompleted"><apiName>onCompleted</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Subject:onError"><apiName>onError</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>error</apiItemName><apiType value="Error"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Subject:onNext"><apiName>onNext</apiName><shortdesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>pl</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Subject:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Subject:Subject"><apiName>Subject</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>type</apiItemName><apiType value="Class"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Cancelable"><apiName>Cancelable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Cancelable:create"><apiName>create</apiName><shortdesc>
+		 Creates a cancelable resource that calls a function when canceled
+		  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to call when the resource is canceled 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a cancelable resource that calls a function when canceled
+		  
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Cancelable:Cancelable"><apiName>Cancelable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:IObservable"><apiName>IObservable</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:IObservable:rx:IObservable:aggregate"><apiName>aggregate</apiName><shortdesc> 
+		 Runs calculation functions over every value in the source sequence and emits the final result
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass (or this instance's valueClass if valueClass is null)
+		 </apiDesc></apiReturn><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that accumulates the aggregate value
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The class of the values returned by accumulator
+		 </apiDesc></apiParam><apiParam><apiItemName>initialValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>The value to start with
+		 </apiDesc></apiParam></apiOperationDef><apiDesc> 
+		 Runs calculation functions over every value in the source sequence and emits the final result
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:all"><apiName>all</apiName><shortdesc>
+		 Determines if all values in the source sequence satisfy a condition
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if all values in the source sequence satisfy a condition
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:and"><apiName>and</apiName><shortdesc> 
+		 Creates a pattern by combining the current source with right.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:Pattern</apiOperationClassifier><apiDesc>A pattern representing both sequences
+		 </apiDesc></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence to combine with the pattern.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc> 
+		 Creates a pattern by combining the current source with right.
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:any"><apiName>any</apiName><shortdesc>
+		 Determines if the source sequence contains a value that satisfies a condition
+		  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if the source sequence contains a value that satisfies a condition
+		  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:asObservable"><apiName>asObservable</apiName><shortdesc>
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:average"><apiName>average</apiName><shortdesc>
+		 Returns the average value of all the elements in the source sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence (which should be numeric)
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Returns the average value of all the elements in the source sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:bufferWithCount"><apiName>bufferWithCount</apiName><shortdesc>
+		 Emits the values from a source sequence in groups of a specific size  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to buffer
+		 </apiDesc></apiParam><apiParam><apiItemName>skip</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values to offset after the buffer is emitted.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the values from a source sequence in groups of a specific size  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:bufferWithTime"><apiName>bufferWithTime</apiName><shortdesc>
+		 Emits the values from a source sequence in groups of a specific size  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>timeMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time to buffer before the values are released
+		 </apiDesc></apiParam><apiParam><apiItemName>timeShiftMs</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The amount of time to offset after the buffer is emitted
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the values from a source sequence in groups of a specific size  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:cast"><apiName>cast</apiName><shortdesc>
+		 Forces values from a source sequence to be of a specific valueClass
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass 
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the output sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Forces values from a source sequence to be of a specific valueClass
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:catchErrorDefer"><apiName>catchErrorDefer</apiName><shortdesc>
+		 Runs a specific sequence, determined at runtime, when an error occurs
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>errorClass</apiItemName><apiType value="Class"/><apiDesc>The class (and superclass) of error to act on
+		 </apiDesc></apiParam><apiParam><apiItemName>deferFunc</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event of an error. Signature is <codeph>function(e : Error) : IObservable</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Runs a specific sequence, determined at runtime, when an error occurs
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:catchError"><apiName>catchError</apiName><shortdesc>
+		 Runs a specific sequence when an error occurs
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>second</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to when an error occurs
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Runs a specific sequence when an error occurs
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:combineLatest"><apiName>combineLatest</apiName><shortdesc>
+		 Merges two sequences through a mapping function, using the latest value from either source 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of returnType 
+		 </apiDesc></apiReturn><apiParam><apiItemName>returnClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the values returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to combine with
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function that combines values from the two sources. Signature is <codeph>function(left : this.valueClass, right : right.valueClass) : returnType</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Merges two sequences through a mapping function, using the latest value from either source 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:concat"><apiName>concat</apiName><shortdesc>
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The sequences to concatonate after the current sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:contains"><apiName>contains</apiName><shortdesc>
+		 Determines if the source sequence contains a specific value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Boolean
+		 </apiDesc></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to check against the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function used to compare values. Default equality will be used if comparer is null.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if the source sequence contains a specific value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:count"><apiName>count</apiName><shortdesc>
+		 Returns the number of elements in the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of int
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Returns the number of elements in the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:delay"><apiName>delay</apiName><shortdesc>
+		 Delays all values in a sequences by a specified time 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>delayMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time, in milliseconds, to delay
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to delay the values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Delays all values in a sequences by a specified time 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:dematerialize"><apiName>dematerialize</apiName><shortdesc>
+		 Converts materialized values back into messages  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Converts materialized values back into messages  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:distinctUntilChanged"><apiName>distinctUntilChanged</apiName><shortdesc>
+		 Filters out consecutive duplicates from a source sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function used to compare values. Default equality will be used if comparer is null.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Filters out consecutive duplicates from a source sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:doAction"><apiName>doAction</apiName><shortdesc>
+		 Allows custom code to be run when messages arrive without affecting the observer  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>next</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event of a value (onNext)
+		 </apiDesc></apiParam><apiParam><apiItemName>complete</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to execute in the event the sequence completes (onComplete)
+		 </apiDesc></apiParam><apiParam><apiItemName>error</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to execute in the event of an error (onError)
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Allows custom code to be run when messages arrive without affecting the observer  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:finallyAction"><apiName>finallyAction</apiName><shortdesc>
+		 Executes a function when the sequence completes or errors
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>finallyAction</apiItemName><apiType value="Function"/><apiDesc>The function to execute in the event the sequence completes or errors
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Executes a function when the sequence completes or errors
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:firstOrDefault"><apiName>firstOrDefault</apiName><shortdesc>
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:first"><apiName>first</apiName><shortdesc>
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:forkJoin"><apiName>forkJoin</apiName><shortdesc>
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass resultClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>resultClass</apiItemName><apiType value="Class"/><apiDesc>The class of the valueClass returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to, along with the current sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function that accepts the last values of both sequences and returns the output value 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:lastOrDefault"><apiName>lastOrDefault</apiName><shortdesc>
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:last"><apiName>last</apiName><shortdesc>
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:let"><apiName>let</apiName><shortdesc>
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The observable sequence returned by func 
+		 </apiDesc></apiReturn><apiParam><apiItemName>func</apiItemName><apiType value="Function"/><apiDesc>The function to send the current sequence through, and return a new sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:materialize"><apiName>materialize</apiName><shortdesc>
+		 Converts all messages (next, complete, error) into values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of rx.Notification
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Converts all messages (next, complete, error) into values 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:merge"><apiName>merge</apiName><shortdesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequences from which the values will be merged with the current sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:observeOn"><apiName>observeOn</apiName><shortdesc>
+		 Defers messages to subscribers through a scheduler  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The subscriber to send messages to subscribers through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Defers messages to subscribers through a scheduler  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:ofClass"><apiName>ofClass</apiName><shortdesc>
+		 Filters out values from a source sequence that are not of a specific valueClass 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class (or subsclass) of all values to emit 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Filters out values from a source sequence that are not of a specific valueClass 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:onErrorResumeNext"><apiName>onErrorResumeNext</apiName><shortdesc>
+		 Subscribes down a list of sequence as each one errors or complete 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>second</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to run after the current sequence completes or errors
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use to subscribe to the new sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Subscribes down a list of sequence as each one errors or complete 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:pruneAndConnect"><apiName>pruneAndConnect</apiName><shortdesc>
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:prune"><apiName>prune</apiName><shortdesc>
+		 Creates a shared sequence that emits the last value of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a shared sequence that emits the last value of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:publishAndConnect"><apiName>publishAndConnect</apiName><shortdesc>
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:publish"><apiName>publish</apiName><shortdesc>
+		 Creates a connectable sequence that can be shared by multiple observers  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Creates a connectable sequence that can be shared by multiple observers  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:removeTimeInterval"><apiName>removeTimeInterval</apiName><shortdesc>
+		 Removes time interval information added with timeInterval  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Removes time interval information added with timeInterval  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:removeTimestamp"><apiName>removeTimestamp</apiName><shortdesc>
+		 Removes timestamp information added with timestamp  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the original values
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Removes timestamp information added with timestamp  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:repeat"><apiName>repeat</apiName><shortdesc>
+		 Repeats the source sequence a specific number of times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>repeatCount</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of times to repeat the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Repeats the source sequence a specific number of times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:replayAndConnect"><apiName>replayAndConnect</apiName><shortdesc>
+		 Records the output of the source sequence and replays it to future subscribers
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to map the connected sequence through 
+		 </apiDesc></apiParam><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values at the end of the sequence to replay, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Records the output of the source sequence and replays it to future subscribers
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:replay"><apiName>replay</apiName><shortdesc>
+		 Records the output of the source sequence and replays it to future subscribers 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx.subjects:IConnectableObservable</apiOperationClassifier><apiDesc>A connectable observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of values at the end of the sequence to replay, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Records the output of the source sequence and replays it to future subscribers 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:retry"><apiName>retry</apiName><shortdesc>
+		 Repeats the source sequence when an error occurs 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>retryCount</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of times to retry the sequence in the event of an error
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Repeats the source sequence when an error occurs 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:sample"><apiName>sample</apiName><shortdesc>
+		 Emits the latest value on a time interval from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>intervalMs</apiItemName><apiType value="uint"/><apiDesc>The interval of time, in milliseconds, to sample the current value after
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the latest value on a time interval from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:scan"><apiName>scan</apiName><shortdesc>
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>The function that accumulates values
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The class of the returned sequence and return value of accumulator
+		 </apiDesc></apiParam><apiParam><apiItemName>initialValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>The value to start with
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:selectMany"><apiName>selectMany</apiName><shortdesc>
+		 Starts a new sequence for every value in the source sequence and merges their values
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass result
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the sequences returned by selector
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed with each value
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Starts a new sequence for every value in the source sequence and merges their values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:select"><apiName>select</apiName><shortdesc>
+		 Maps the values from a source sequence through a function to change their value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass result
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the returned sequence and return value of accumulator 
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed with each value
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Maps the values from a source sequence through a function to change their value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:singleOrDefault"><apiName>singleOrDefault</apiName><shortdesc>
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+		 an error if more than one value is emitted.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+		 an error if more than one value is emitted.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:single"><apiName>single</apiName><shortdesc>
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:skipLast"><apiName>skipLast</apiName><shortdesc>
+		 Ignores a set number of values from the end of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to skip from the end of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Ignores a set number of values from the end of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:skipUntil"><apiName>skipUntil</apiName><shortdesc>
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>other</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence that will mark the start of values being used from the current sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:skipWhile"><apiName>skipWhile</apiName><shortdesc>
+		 Ignores values from a source sequence until a condition is no longer met
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The function to be executed as each value is emitted. When this function returns false, values will be used from the current sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Ignores values from a source sequence until a condition is no longer met
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:skip"><apiName>skip</apiName><shortdesc>
+		 Ignores a set number of values from the start of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to skip from the start of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Ignores a set number of values from the start of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:startWith"><apiName>startWith</apiName><shortdesc>
+		 Emits the specified values at the start of a sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Array"/><apiDesc>The value to emit at the start of the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the specified values at the start of a sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:subscribeOn"><apiName>subscribeOn</apiName><shortdesc>
+		 Defers subscriptions to the source through a scheduler  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The subscriber to schedule subscriptions through
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Defers subscriptions to the source through a scheduler  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 </apiDesc></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:subscribe"><apiName>subscribe</apiName><shortdesc>
+		 Subscribes to this observable using the supplied functions 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:ICancelable</apiOperationClassifier><apiDesc>An instance of ISubscription that can be used to unsubscribe at anytime by calling <codeph>unsubscribe()</codeph> 
+		 </apiDesc></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/><apiDesc>Function to be called for every payload. Signature is <codeph>function(payload : T) : void</codeph>
+		 </apiDesc></apiParam><apiParam><apiItemName>onComplete</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>Optional. Function to be called when the sequence completes. Signature is <codeph>function():void</codeph>
+		 </apiDesc></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>Optional. Function to be called when an error occurs in the sequence. Signature is <codeph>function(err:Error):void</codeph>
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Subscribes to this observable using the supplied functions 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:sum"><apiName>sum</apiName><shortdesc>
+		 Returns the summed value of all the elements in the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Number
+		 </apiDesc></apiReturn></apiOperationDef><apiDesc>
+		 Returns the summed value of all the elements in the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:takeLast"><apiName>takeLast</apiName><shortdesc>
+		 Takes only the last set number of values from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to use from the end of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Takes only the last set number of values from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:takeUntil"><apiName>takeUntil</apiName><shortdesc>
+		 Takes values from a source sequence until a value is received from a specified sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>other</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The other sequence that will mark the end of values being used from the current sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Takes values from a source sequence until a value is received from a specified sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:takeWhile"><apiName>takeWhile</apiName><shortdesc>
+		 Takes values from a source sequence until a condition is no longer met 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The function to be executed as each value is emitted. When this function returns false, values will no longer be used from the current sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Takes values from a source sequence until a condition is no longer met 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:take"><apiName>take</apiName><shortdesc>
+		 Takes only the first set number of values from a source sequenc
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values to use from the start of the sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Takes only the first set number of values from a source sequenc
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:throttle"><apiName>throttle</apiName><shortdesc>
+		 Limits how often values from a source sequence will be accepted from a source
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>dueTimeMs</apiItemName><apiType value="uint"/><apiDesc>The interval of time, in milliseconds, during which only one value from the source sequence will be accepted
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Limits how often values from a source sequence will be accepted from a source
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:timeInterval"><apiName>timeInterval</apiName><shortdesc>
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of TimeInterval
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use to determine time
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:timeout"><apiName>timeout</apiName><shortdesc>
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence 
+		 </apiDesc></apiReturn><apiParam><apiItemName>timeoutMs</apiItemName><apiType value="uint"/><apiDesc>The amount of time, in milliseconds, after which to raise an error (or subscribe to other)
+		 </apiDesc></apiParam><apiParam><apiItemName>other</apiItemName><apiData>null</apiData><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to in the event of a timeout. If null, a TimeoutError will be emitted.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:timestamp"><apiName>timestamp</apiName><shortdesc>
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Timestamped 
+		 </apiDesc></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:where"><apiName>where</apiName><shortdesc>
+		 Filters out values from a source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the current sequence
+		 </apiDesc></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The predicate function to execute for each value to determine if it will be include in the output
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Filters out values from a source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObservable:rx:IObservable:zip"><apiName>zip</apiName><shortdesc>
+		 Merges two sequences through a mapping function while only ever using each value once 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class of the returned sequence and return value of selector
+		 </apiDesc></apiParam><apiParam><apiItemName>rightSource</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to combine with the current
+		 </apiDesc></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>The function to be executed when values are received from both sequences. The return value will be included in the output
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Merges two sequences through a mapping function while only ever using each value once 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="rx:TimeStamped"><apiName>TimeStamped</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx:TimeStamped:TimeStamped"><apiName>TimeStamped</apiName><shortdesc>
+		 Creates a TimeStamped wrapper 
+		 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value from the original sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>time</apiItemName><apiType value="Number"/><apiDesc>The timestamp value
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a TimeStamped wrapper 
+		 </apiDesc></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:FutureCancelable"><apiName>FutureCancelable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:FutureCancelable:cancel"><apiName>cancel</apiName><shortdesc>
+		 Cancels the operation for current and future innerCancelable values
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Cancels the operation for current and future innerCancelable values
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:FutureCancelable:FutureCancelable"><apiName>FutureCancelable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Observer"><apiName>Observer</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Observer:create"><apiName>create</apiName><shortdesc>
+		 Creates an IObserver from onNext, onCompleted and onError functions
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/><apiDesc>The function to call when a value is received
+		 </apiDesc></apiParam><apiParam><apiItemName>onCompleted</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to call when the sequence has complted
+		 </apiDesc></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function to call if an error occurs in the sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an IObserver from onNext, onCompleted and onError functions
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Observer:Observer"><apiName>Observer</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:TimeInterval"><apiName>TimeInterval</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx:TimeInterval:TimeInterval"><apiName>TimeInterval</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam><apiParam><apiItemName>interval</apiItemName><apiType value="Number"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Notification"><apiName>Notification</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Notification:acceptWith"><apiName>acceptWith</apiName><shortdesc>
+		 Calls the appropriate method on an observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>rx:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 Calls the appropriate method on an observer
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Notification:accept"><apiName>accept</apiName><shortdesc>
+		 Calls the appropriate method
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/></apiParam><apiParam><apiItemName>onCompleted</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Calls the appropriate method
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Notification:Notification"><apiName>Notification</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Unit"><apiName>Unit</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx:Unit:Unit"><apiName>Unit</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Observable"><apiName>Observable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Observable:amb"><apiName>amb</apiName><shortdesc>
+		 Takes multiple source sequences and returns values from the first sequence to emit a value  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the same valueClass as the first sequence in sources
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The sources that will be subscribed to
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Takes multiple source sequences and returns values from the first sequence to emit a value  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:catchErrors"><apiName>catchErrors</apiName><shortdesc>
+		 Concatonates a list of sequences as each one errors.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence with the valueClass of the first sequence in sources
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The list of sequence to concatonate.
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Concatonates a list of sequences as each one errors. A successful sequence ends the concatonation.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:concat"><apiName>concat</apiName><shortdesc>
+		 Concatonates multiple sequences by running each sequence as the previous one finishes 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all sequences in sources
+		 </apiDesc></apiParam><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The sequences to concatonate
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Concatonates multiple sequences by running each sequence as the previous one finishes 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:createWithCancelable"><apiName>createWithCancelable</apiName><shortdesc>
+		 Creates a custom observable sequence that uses cancelable resources 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the created sequence 
+		 </apiDesc></apiParam><apiParam><apiItemName>subscribeFunc</apiItemName><apiType value="Function"/><apiDesc>The function that will be executed when a subscriber subscribes, the return value of which is an ICancelable to be canceled when the sequence is terminated
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a custom observable sequence that uses cancelable resources 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:create"><apiName>create</apiName><shortdesc>
+		 Creates a custom observable sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the created sequence 
+		 </apiDesc></apiParam><apiParam><apiItemName>subscribeFunc</apiItemName><apiType value="Function"/><apiDesc>The function that will be executed when a subscriber subscribes, the return value of which is a function to be run when the sequence is terminated
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a custom observable sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:defer"><apiName>defer</apiName><shortdesc>
+		 Defers selection of a sequence until the sequence is subscribed to  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the returned sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>observableFactory</apiItemName><apiType value="Function"/><apiDesc>The function that will be executed when a new subscription occurs, the returned sequence will be used for the subscriber.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Defers selection of a sequence until the sequence is subscribed to  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:empty"><apiName>empty</apiName><shortdesc>
+		 Creates a sequence that immediately completes  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The value class for the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence that immediately completes  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:forkJoin"><apiName>forkJoin</apiName><shortdesc>
+		 Subscribes to multiple source sequence and emits the last values of each after all have completed 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Array
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The sequences to subscribe to
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Subscribes to multiple source sequence and emits the last values of each after all have completed 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:fromArray"><apiName>fromArray</apiName><shortdesc>
+		 Creates a sequence consisting of the values in an Array 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of elementClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>elementClass</apiItemName><apiType value="Class"/><apiDesc>The class common to all values in values
+		 </apiDesc></apiParam><apiParam><apiItemName>values</apiItemName><apiType value="Array"/><apiDesc>The array of values to iterate through
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence consisting of the values in an Array 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:fromErrorEvents"><apiName>fromErrorEvents</apiName><shortdesc>
+		 Creates a sequence that emits an error when one of several event valueClasss is received from an IEventDispatcher
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of 
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass for the output sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>eventDispatcher</apiItemName><apiType value="flash.events:IEventDispatcher"/><apiDesc>The IEventDispatcher that dispatches the event
+		 </apiDesc></apiParam><apiParam><apiItemName>eventTypes</apiItemName><apiType value="Array"/><apiDesc>The event valueClasss that signify an error
+		 </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>Whether to pass useCapture when subscribing to and unsubscribing from the event
+		 </apiDesc></apiParam><apiParam><apiItemName>priority</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The priority of the event
+		 </apiDesc></apiParam><apiParam><apiItemName>errorMap</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function that maps an event to an Error. null can be used if the event will be ErrorEvent
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence that emits an error when one of several event valueClasss is received from an IEventDispatcher
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:fromErrorEvent"><apiName>fromErrorEvent</apiName><shortdesc>
+		 Creates a sequence that emits an error when an event is received from an IEventDispatcher  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass, or Object if valueClass is null 
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass for the output sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>eventDispatcher</apiItemName><apiType value="flash.events:IEventDispatcher"/><apiDesc>The IEventDispatcher that dispatches the event
+		 </apiDesc></apiParam><apiParam><apiItemName>eventType</apiItemName><apiType value="String"/><apiDesc>The event valueClass name
+		 </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>Whether to pass useCapture when subscribing to and unsubscribing from the event
+		 </apiDesc></apiParam><apiParam><apiItemName>priority</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The priority of the event
+		 </apiDesc></apiParam><apiParam><apiItemName>errorMap</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>The function that maps an event to an Error. null can be used if the event will be ErrorEvent
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence that emits an error when an event is received from an IEventDispatcher  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:fromEvents"><apiName>fromEvents</apiName><shortdesc>
+		 Creates Combines events from multiple event valueClasss 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of commonValueClass, or Event if commonValueClass is null 
+		 </apiDesc></apiReturn><apiParam><apiItemName>eventDispatcher</apiItemName><apiType value="flash.events:IEventDispatcher"/><apiDesc>The IEventDispatcher that dispatches the event
+		 </apiDesc></apiParam><apiParam><apiItemName>eventTypes</apiItemName><apiType value="Array"/><apiDesc>An array event type names
+		 </apiDesc></apiParam><apiParam><apiItemName>commonValueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The valueClass of event common to all events. Event will be used if this argument is null.
+		 </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>Whether to pass useCapture when subscribing to and unsubscribing from the event
+		 </apiDesc></apiParam><apiParam><apiItemName>priority</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The priority of the event
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates Combines events from multiple event valueClasss 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:fromEvent"><apiName>fromEvent</apiName><shortdesc>
+		 Creates a sequence of events from an IEventDispatcher 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of eventType, or Event if eventType is null
+		 </apiDesc></apiReturn><apiParam><apiItemName>eventDispatcher</apiItemName><apiType value="flash.events:IEventDispatcher"/><apiDesc>The IEventDispatcher that dispatches the event
+		 </apiDesc></apiParam><apiParam><apiItemName>eventType</apiItemName><apiType value="String"/><apiDesc>The event valueClass name
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The valueClass of event dispatched by eventDispatcher. Event will be used if this argument is null.
+		 </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>Whether to pass useCapture when subscribing to and unsubscribing from the event
+		 </apiDesc></apiParam><apiParam><apiItemName>priority</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The priority of the event
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence of events from an IEventDispatcher 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:generate"><apiName>generate</apiName><shortdesc>
+		 Creates a custom observable sequence that is controlled by methods supplied as arguments 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of values emitted by the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>initialState</apiItemName><apiType value="Object"/><apiDesc>The initial state value to use (of class valueClass)
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The predicate to determine whether the sequence has completed
+		 </apiDesc></apiParam><apiParam><apiItemName>iterate</apiItemName><apiType value="Function"/><apiDesc>The function executed between iterations
+		 </apiDesc></apiParam><apiParam><apiItemName>resultMap</apiItemName><apiType value="Function"/><apiDesc>The function that maps the current state to an output value
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a custom observable sequence that is controlled by methods supplied as arguments 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:ifElse"><apiName>ifElse</apiName><shortdesc>
+		 Defers selection of one of two sequences until the sequence is subscribed to
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the returned sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>The function to execute when a subscription occurs to determine which sequence to subscribe to
+		 </apiDesc></apiParam><apiParam><apiItemName>ifTrue</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to if predicate returns true
+		 </apiDesc></apiParam><apiParam><apiItemName>ifFalse</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The sequence to subscribe to if predicate returns false
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Defers selection of one of two sequences until the sequence is subscribed to
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:interval"><apiName>interval</apiName><shortdesc>
+		 Creates an unending observable sequence of integers that are incremented at a regular interval 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of int
+		 </apiDesc></apiReturn><apiParam><apiItemName>intervalMs</apiItemName><apiType value="uint"/><apiDesc>The interval, in milliseconds, to wait in between values
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used for timing
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an unending observable sequence of integers that are incremented at a regular interval 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:join"><apiName>join</apiName><shortdesc>
+		 Matches join multiple plans (source sequence combinations) in the order they are specified 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The common value class shared between the output of all plans in plans 
+		 </apiDesc></apiParam><apiParam><apiItemName>plans</apiItemName><apiType value="Array"/><apiDesc>The array of rx.Plan objects creates using 'and' and 'then'
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Matches join multiple plans (source sequence combinations) in the order they are specified 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:lookup"><apiName>lookup</apiName><shortdesc>
+		 Defers selection of the sequence to use by using a function that returns a key into a dictionary of sequences 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the return sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>The function that, at the moment of subscription, will return the key into dictionary
+		 </apiDesc></apiParam><apiParam><apiItemName>dictionary</apiItemName><apiType value="flash.utils:Dictionary"/><apiDesc>The dictionary of sequences
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Defers selection of the sequence to use by using a function that returns a key into a dictionary of sequences 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:mergeMany"><apiName>mergeMany</apiName><shortdesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass common to all sequences emitted by source
+		 </apiDesc></apiParam><apiParam><apiItemName>source</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An IObservable with valueClass IObservable, the values of which will be merged
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:merge"><apiName>merge</apiName><shortdesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass common to all sequences emitted by source
+		 </apiDesc></apiParam><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>An array of IObservable sequences
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Emits the values from multiple sources in the order that they arrive 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:never"><apiName>never</apiName><shortdesc>
+		 Returns an IObservable that never completes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns an IObservable that never completes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:onErrorResumeNext"><apiName>onErrorResumeNext</apiName><shortdesc>
+		 Concatonates a list of sequence as each one errors or complete 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of the valueClass of the value sequence in sources
+		 </apiDesc></apiReturn><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/><apiDesc>The list of sequences to concatonate
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Concatonates a list of sequence as each one errors or complete 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:range"><apiName>range</apiName><shortdesc>
+		 Creates a sequence of consecutive integers  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of int
+		 </apiDesc></apiReturn><apiParam><apiItemName>start</apiItemName><apiType value="int"/><apiDesc>The inclusive start value of the range
+		 </apiDesc></apiParam><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of values, including start, to emit
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence of consecutive integers  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:repeatValue"><apiName>repeatValue</apiName><shortdesc>
+		 Repeats a value a specification number of times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the sequence and of value
+		 </apiDesc></apiParam><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to repeat
+		 </apiDesc></apiParam><apiParam><apiItemName>repeatCount</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>The number of times to emit the value
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Repeats a value a specification number of times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:returnValue"><apiName>returnValue</apiName><shortdesc>
+		 Create a sequence consisting of exactly one value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiDesc>The valueClass of the sequence and of value
+		 </apiDesc></apiParam><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to emit
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use to control flow
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Create a sequence consisting of exactly one value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:start"><apiName>start</apiName><shortdesc>
+		 Creates a sequence based on a call to a function  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to call
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The valueClass of the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence based on a call to a function  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:throwError"><apiName>throwError</apiName><shortdesc>
+		 Creates a sequence that immediately throws an Error  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>error</apiItemName><apiType value="Error"/><apiDesc>The error to raise when a new subscription occurs
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The Class of the returned sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence that immediately throws an Error  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:timer"><apiName>timer</apiName><shortdesc>
+		 Creates an unending observable sequence of integers that begin after a delay and are incremented at a regular interval 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of int
+		 </apiDesc></apiReturn><apiParam><apiItemName>delayMs</apiItemName><apiType value="uint"/><apiDesc>The interval, in milliseconds, to wait before the first value
+		 </apiDesc></apiParam><apiParam><apiItemName>intervalMs</apiItemName><apiType value="uint"/><apiDesc>The interval, in milliseconds, to wait in between subsequent values
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler used for timing
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an unending observable sequence of integers that begin after a delay and are incremented at a regular interval 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:toAsync"><apiName>toAsync</apiName><shortdesc>
+		 Converts a function into an observable sequence  
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="Function"/><apiDesc>An observable sequence of valueClass
+		 </apiDesc></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to call
+		 </apiDesc></apiParam><apiParam><apiItemName>valueClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>The valueClass of the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiData>null</apiData><apiOperationClassifier>rx.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Converts a function into an observable sequence  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:urlLoader"><apiName>urlLoader</apiName><shortdesc>
+		 Creates an observable sequence that loads an object from a URLRequest 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An observable sequence of Object
+		 </apiDesc></apiReturn><apiParam><apiItemName>request</apiItemName><apiType value="flash.net:URLRequest"/><apiDesc>The URLRequest to load
+		 </apiDesc></apiParam><apiParam><apiItemName>dataFormat</apiItemName><apiType value="String"/><apiData>text</apiData><apiDesc>A value of flash.net.URLLoaderDataFormat
+		 </apiDesc></apiParam><apiParam><apiItemName>loaderContext</apiItemName><apiType value="flash.system:LoaderContext"/><apiData>null</apiData><apiDesc>The optional LoaderContext to use
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an observable sequence that loads an object from a URLRequest 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Observable:xml"><apiName>xml</apiName><shortdesc>
+		 Loads an XML document
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>An IObservable sequence of XMLDocument 
+		 </apiDesc></apiReturn><apiParam><apiItemName>request</apiItemName><apiType value="flash.net:URLRequest"/><apiDesc>The URLRequest to load
+		 </apiDesc></apiParam><apiParam><apiItemName>loaderContext</apiItemName><apiType value="flash.system:LoaderContext"/><apiData>null</apiData><apiDesc>Whether to ignore whitespace when parsing the XML
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Loads an XML document
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Observable:Observable"><apiName>Observable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:ICancelable"><apiName>ICancelable</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:ICancelable:rx:ICancelable:cancel"><apiName>cancel</apiName><shortdesc>
+		 Cancels the operation
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Cancels the operation
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="rx:NotificationKind"><apiName>NotificationKind</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail></apiClassifier><apiClassifier id="rx:BooleanCancelable"><apiName>BooleanCancelable</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:BooleanCancelable:cancel"><apiName>cancel</apiName><shortdesc>
+		 Cancels the operation.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Cancels the operation. isCanceled will return true after this call.
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:BooleanCancelable:BooleanCancelable"><apiName>BooleanCancelable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:OnError"><apiName>OnError</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:OnError:accept"><apiName>accept</apiName><shortdesc>
+		 Calls onError if it's not null
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/></apiParam><apiParam><apiItemName>onCompleted</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Calls onError if it's not null
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:OnError:OnError"><apiName>OnError</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>error</apiItemName><apiType value="Error"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:ISubject"><apiName>ISubject</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseInterface>rx:IObserver</apiBaseInterface><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail></apiClassifier><apiClassifier id="rx:Pattern"><apiName>Pattern</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:Pattern:and"><apiName>and</apiName><shortdesc>
+		 Creates another pattern that combines the IObservable sequences 
+		 of this Pattern with another IObservable sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:Pattern</apiOperationClassifier><apiDesc>A Pattern with the new set of sequences
+		 
+		 </apiDesc></apiReturn><apiParam><apiItemName>source</apiItemName><apiOperationClassifier>rx:IObservable</apiOperationClassifier><apiDesc>The IObservable sequence to add
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates another pattern that combines the IObservable sequences 
+		 of this Pattern with another IObservable sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Pattern:then"><apiName>then</apiName><shortdesc>
+		 Creates a Plan from this Pattern, by supplying a 
+		 valueClass and a mappingFunction for the values from each 
+		 sequence in this Pattern 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>rx:Plan</apiOperationClassifier><apiDesc>A Plan that can be used with Observable.join
+		 </apiDesc></apiReturn><apiParam><apiItemName>type</apiItemName><apiType value="Class"/><apiDesc>The valueClass that will be returned by thenFunction
+		 </apiDesc></apiParam><apiParam><apiItemName>thenFunction</apiItemName><apiType value="Function"/><apiDesc>The function that will accept one argument for each 
+		 sequence in the pattern and output a valueClass
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a Plan from this Pattern, by supplying a 
+		 valueClass and a mappingFunction for the values from each 
+		 sequence in this Pattern 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:Pattern:types"><apiName>types</apiName><shortdesc>
+		 Gets the types associated with this Pattern in an immutable array
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Array"/></apiReturn></apiOperationDef><apiDesc>
+		 Gets the types associated with this Pattern in an immutable array
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:Pattern:Pattern"><apiName>Pattern</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:IObserver"><apiName>IObserver</apiName><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:IObserver:rx:IObserver:onCompleted"><apiName>onCompleted</apiName><shortdesc>
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObserver:rx:IObserver:onError"><apiName>onError</apiName><shortdesc>
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>error</apiItemName><apiType value="Error"/></apiParam></apiOperationDef><apiDesc>
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="rx:IObserver:rx:IObserver:onNext"><apiName>onNext</apiName><shortdesc>
+		 Notifies the subscriber that a value has been received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 Notifies the subscriber that a value has been received
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="rx:OnNext"><apiName>OnNext</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:OnNext:accept"><apiName>accept</apiName><shortdesc>
+		 Calls onNext if it's not null
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/></apiParam><apiParam><apiItemName>onCompleted</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Calls onNext if it's not null
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:OnNext:OnNext"><apiName>OnNext</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:TimeoutError"><apiName>TimeoutError</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Error</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx:TimeoutError:TimeoutError"><apiName>TimeoutError</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>message</apiItemName><apiType value="String"/></apiParam><apiParam><apiItemName>id</apiItemName><apiType value="int"/><apiData>0</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:OnCompleted"><apiName>OnCompleted</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="rx:OnCompleted:accept"><apiName>accept</apiName><shortdesc>
+		 Calls onCompleted if it's not null
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>onNext</apiItemName><apiType value="Function"/></apiParam><apiParam><apiItemName>onCompleted</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam><apiParam><apiItemName>onError</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Calls onCompleted if it's not null
+		 </apiDesc></apiOperationDetail></apiOperation><apiConstructor id="rx:OnCompleted:OnCompleted"><apiName>OnCompleted</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier><apiClassifier id="rx:Plan"><apiName>Plan</apiName><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="rx:Plan:Plan"><apiName>Plan</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>type</apiItemName><apiType value="Class"/></apiParam><apiParam><apiItemName>sources</apiItemName><apiType value="Array"/></apiParam><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor></apiClassifier></apiPackage></allClasses>

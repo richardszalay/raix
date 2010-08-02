@@ -1,0 +1,31 @@
+
+<overviews>
+    
+	
+<all-classes>
+		
+<description>Documentation for classes includes syntax, usage information, and code samples for methods, properties, and event handlers and listeners for those APIs that belong to a specific class in ActionScript. The classes are listed alphabetically. If you are not sure to which class a certain method or property belongs, you can look it up in the Index.</description>
+	</all-classes>
+	
+<deprecated>
+		
+<shortDescription>A list of deprecated items and suggested alternatives when available.</shortDescription>
+		
+<description></description>
+	</deprecated>
+	
+
+<packages>
+<package name="rx">
+<shortDescription>Primary classes used when working with RxAs</shortDescription><longDescription>Primary classes used when working with RxAs</longDescription>
+</package>
+<package name="rx.flex">
+<shortDescription>Flex integration classes</shortDescription><longDescription>Flex integration classes</longDescription>
+</package>
+<package name="rx.subjects">
+<shortDescription>Subject implementations</shortDescription><longDescription>Subject implementations</longDescription>
+</package>
+<package name="rx.scheduling">
+<shortDescription>Classes that schedule execution for RxAs classes</shortDescription><longDescription>Classes that schedule execution for RxAs classes</longDescription>
+</package>
+</packages></overviews>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?><allClasses><apiPackage id="rx.flex"><apiName>rx.flex</apiName><apiClassifier id="rx.flex:IObservableResponder"><apiName>IObservableResponder</apiName><shortdesc>
+	 An observable sequence that is also an mx.rpc.IResponse
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>mx.rpc:IResponder</apiBaseInterface><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 An observable sequence that is also an mx.rpc.IResponse
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx.flex:ObservableResponder"><apiName>ObservableResponder</apiName><shortdesc>
+	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.flex:IObservableResponder</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.flex:ObservableResponder:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.flex:FlexObservable"><apiName>FlexObservable</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail></apiClassifier></apiPackage><apiPackage id="rx.scheduling"><apiName>rx.scheduling</apiName><apiClassifier id="rx.scheduling:GreenThreadScheduler"><apiName>GreenThreadScheduler</apiName><shortdesc>
+	 A scheduler that distributes work on a timer, limiting the total execution 
+	 time per 'switch' to maintain a framerate
+	 
+	 Adding more work results in the work taking longer to complete, but the 
+	 framerate remaining constant
+	 
+	 To benefit from GreenThreadScheduler, scheduled actions should execute in 
+	 this smallest possible time (ie.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A scheduler that distributes work on a timer, limiting the total execution 
+	 time per 'switch' to maintain a framerate
+	 
+	 <p>Adding more work results in the work taking longer to complete, but the 
+	 framerate remaining constant</p>
+	 
+	 <p>To benefit from GreenThreadScheduler, scheduled actions should execute in 
+	 this smallest possible time (ie. be designed to be run many times</p>
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.scheduling:GreenThreadScheduler:contextSwitchTime:get"><apiName>contextSwitchTime</apiName><shortdesc>
+		 Gets or sets the amount of time, in milliseconds, to allocate to 
+		 execution on every context 'switch' 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Gets or sets the amount of time, in milliseconds, to allocate to 
+		 execution on every context 'switch' 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:GreenThreadScheduler:instance:get"><apiName>instance</apiName><shortdesc>
+		 Gets the singleton instance of this scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:GreenThreadScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the singleton instance of this scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:GreenThreadScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.scheduling:Scheduler"><apiName>Scheduler</apiName><shortdesc>
+	 Provides static helpers to schedulers
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static helpers to schedulers
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.scheduling:Scheduler:asynchronous:get"><apiName>asynchronous</apiName><shortdesc>
+		 Gets the default asynchronous scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default asynchronous scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:Scheduler:defaultScheduler:get"><apiName>defaultScheduler</apiName><shortdesc>
+		 Gets the default scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:Scheduler:greenThread:get"><apiName>greenThread</apiName><shortdesc>
+		 Gets the GreenThreadScheduler singleton instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:GreenThreadScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the GreenThreadScheduler singleton instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:Scheduler:immediate:get"><apiName>immediate</apiName><shortdesc>
+		 Gets the ImmediateScheduler singleton instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:ImmediateScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the ImmediateScheduler singleton instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:Scheduler:synchronous:get"><apiName>synchronous</apiName><shortdesc>
+		 Gets the default synchronous scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default synchronous scheduler
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.scheduling:IScheduler"><apiName>IScheduler</apiName><shortdesc>
+	 Used to distribute workload
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Used to distribute workload
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.scheduling:IScheduler:rx.scheduling:IScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.scheduling:ImmediateScheduler"><apiName>ImmediateScheduler</apiName><shortdesc>
+	 A scheduler that executes actions immediately, or immediately
+	 after their dueTime (if specified).</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A scheduler that executes actions immediately, or immediately
+	 after their dueTime (if specified).
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.scheduling:ImmediateScheduler:instance:get"><apiName>instance</apiName><shortdesc>
+		 Gets the singleton instance of this scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx.scheduling:ImmediateScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the singleton instance of this scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx.scheduling:ImmediateScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage><apiPackage id="rx.subjects"><apiName>rx.subjects</apiName><apiClassifier id="rx.subjects:ConnectableObservable"><apiName>ConnectableObservable</apiName><shortdesc>
+	 Concrete implementation of IConnectableObservable
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx.subjects:IConnectableObservable</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Concrete implementation of IConnectableObservable
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx.subjects:AsyncSubject"><apiName>AsyncSubject</apiName><shortdesc>
+	 A subject that replays the last value (or error) received to observers that subscribe 
+	 after the sequence has completed
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A subject that replays the last value (or error) received to observers that subscribe 
+	 after the sequence has completed
+	 </apiDesc></apiClassifierDetail><apiValue id="rx.subjects:AsyncSubject:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx.subjects:ReplaySubject"><apiName>ReplaySubject</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail></apiClassifier><apiClassifier id="rx.subjects:IConnectableObservable"><apiName>IConnectableObservable</apiName><shortdesc>
+	 Represents a 'pending' hot observable.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Represents a 'pending' hot observable. Calling connect will turn the observable 
+	 into a hot observable. Calling refCount will turn the observable into a hot observable 
+	 when the first observer subscribes
+	 </apiDesc></apiClassifierDetail></apiClassifier></apiPackage><apiPackage id="rx"><apiName>rx</apiName><apiClassifier id="rx:AbsObservable"><apiName>AbsObservable</apiName><shortdesc>
+	 Subclass this class only if you want to implement a completely custom IObservable.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Subclass this class only if you want to implement a completely custom IObservable.
+	 
+	 <p>If you can avoid it, however, try to stick to subclassing Subject or using 
+	 one of the creation methods.</p>
+	 
+	 <p>This class may be made inaccessible in future revisions</p>
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:AbsObservable:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:CompositeCancelable"><apiName>CompositeCancelable</apiName><shortdesc>
+	 Represents a cancelable resource that controls multiple 
+	 other cancelable resources 
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Represents a cancelable resource that controls multiple 
+	 other cancelable resources 
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:CompositeCancelable:cancelables:get"><apiName>cancelables</apiName><shortdesc>
+		 Gets the list of cancelable resources in this instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Array"/></apiValueDef><apiDesc>
+		 Gets the list of cancelable resources in this instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:CompositeCancelable:count:get"><apiName>count</apiName><shortdesc>
+		 Gets the number of resources in this list
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="uint"/></apiValueDef><apiDesc>
+		 Gets the number of resources in this list
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Subject"><apiName>Subject</apiName><shortdesc>
+	 A Subject is both an IObservable and an IObserver, so it can be 
+	 returned as an IObservable and fed values through the IObserver 
+	 methods.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ISubject</apiBaseInterface><apiBaseClassifier>rx:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A Subject is both an IObservable and an IObserver, so it can be 
+	 returned as an IObservable and fed values through the IObserver 
+	 methods.
+	 
+	 <p>When returning a Subject as an IObservable, it's recommended that you
+	 return subject.asObservable() to hide the original instance</p>
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:Subject:hasSubscriptions:get"><apiName>hasSubscriptions</apiName><shortdesc>
+		 Determines whether this subject has any subscriptions
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Determines whether this subject has any subscriptions
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Subject:subscriptionCount:get"><apiName>subscriptionCount</apiName><shortdesc>
+		 Gets the number of subscriptions this subject has
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Gets the number of subscriptions this subject has
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Subject:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Cancelable"><apiName>Cancelable</apiName><shortdesc>
+	 Provides static methods that create cancelable resources
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static methods that create cancelable resources
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:Cancelable:empty:get"><apiName>empty</apiName><shortdesc>
+		 Returns a cancelable resource that does nothing when canceled
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>rx:ICancelable</apiValueClassifier></apiValueDef><apiDesc>
+		 Returns a cancelable resource that does nothing when canceled
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:IObservable"><apiName>IObservable</apiName><shortdesc>
+	 An observable sequence of values
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 An observable sequence of values
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:IObservable:rx:IObservable:valueClass:get"><apiName>valueClass</apiName><shortdesc>
+		 The class of the values emitted by this observable sequence 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Class"/></apiValueDef><apiDesc>
+		 The class of the values emitted by this observable sequence 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:TimeStamped"><apiName>TimeStamped</apiName><shortdesc>
+	 A wrapper that adds a timestamp to a value
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A wrapper that adds a timestamp to a value
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:TimeStamped:timestamp:get"><apiName>timestamp</apiName><shortdesc>
+		 Gets the timestamp value 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Gets the timestamp value 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:TimeStamped:value:get"><apiName>value</apiName><shortdesc>
+		 Gets the original value 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Gets the original value 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:FutureCancelable"><apiName>FutureCancelable</apiName><shortdesc>
+	A cancelable resource than is not immediately available
+	</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	A cancelable resource than is not immediately available
+	</apiDesc></apiClassifierDetail><apiValue id="rx:FutureCancelable:innerCancelable:set"><apiName>innerCancelable</apiName><shortdesc>
+		 Assigns the cancelable operation.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiValueClassifier>rx:ICancelable</apiValueClassifier></apiValueDef><apiDesc>
+		 Assigns the cancelable operation.
+		 
+		 If an existing value exists for innerCancelable, it will be canceled.
+		 
+		 If cancel() has already been called on this FutureCancelable, the value 
+		 will be instantly canceled and innerCancelable will be null
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Observer"><apiName>Observer</apiName><shortdesc>
+	 Provides static methods that create observers
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static methods that create observers
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:TimeInterval"><apiName>TimeInterval</apiName><shortdesc>
+	 A wrapper that adds the time interval, in milliseconds,
+	 since the last values 
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A wrapper that adds the time interval, in milliseconds,
+	 since the last values 
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:TimeInterval:interval:get"><apiName>interval</apiName><shortdesc>
+		 Gets the internal, in milliseconds, 
+		 since the last value
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Gets the internal, in milliseconds, 
+		 since the last value
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:TimeInterval:value:get"><apiName>value</apiName><shortdesc>
+		 Gets the original value
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Gets the original value
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Notification"><apiName>Notification</apiName><shortdesc>
+	 Represents one of the three messages that can be sent to 
+	 an observer.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Represents one of the three messages that can be sent to 
+	 an observer.
+	 
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:Notification:error:get"><apiName>error</apiName><shortdesc>
+		 Gets the error associated with this message or null if there is no error.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Error"/></apiValueDef><apiDesc>
+		 Gets the error associated with this message or null if there is no error.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Notification:hasValue:get"><apiName>hasValue</apiName><shortdesc>
+		 Determined whether this instance has a value property available
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Determined whether this instance has a value property available
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Notification:kind:get"><apiName>kind</apiName><shortdesc>
+		 Gets the NotificationKind of this instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Gets the NotificationKind of this instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Notification:value:get"><apiName>value</apiName><shortdesc>
+		 Gets the value associated with this message
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Gets the value associated with this message
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Unit"><apiName>Unit</apiName><shortdesc>
+	 Represents a valueClass that can be used when 
+	 an observable sequence logically has no valueClass
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Represents a valueClass that can be used when 
+	 an observable sequence logically has no valueClass
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:Observable"><apiName>Observable</apiName><shortdesc>
+	 Provides static methods that create observable sequences
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static methods that create observable sequences
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:ICancelable"><apiName>ICancelable</apiName><shortdesc>
+	 Represents a handle that can be used to cancel an operation 
+	 
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Represents a handle that can be used to cancel an operation 
+	 
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:NotificationKind"><apiName>NotificationKind</apiName><shortdesc>
+	 Enumeration for the different types of Notification
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Enumeration for the different types of Notification
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:NotificationKind:ON_COMPLETED"><apiName>ON_COMPLETED</apiName><shortdesc>
+		 An onCompleted message
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 An onCompleted message
+		 
+		 </apiDesc></apiValueDetail><related-links><link href="rx.xml#OnCompleted"><linktext>rx.OnCompleted</linktext></link></related-links></apiValue><apiValue id="rx:NotificationKind:ON_ERROR"><apiName>ON_ERROR</apiName><shortdesc>
+		 An onError message
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 An onError message
+		 
+		 </apiDesc></apiValueDetail><related-links><link href="rx.xml#OnError"><linktext>rx.OnError</linktext></link></related-links></apiValue><apiValue id="rx:NotificationKind:ON_NEXT"><apiName>ON_NEXT</apiName><shortdesc>
+		 An onNext (value) message
+		 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 An onNext (value) message
+		 
+		 </apiDesc></apiValueDetail><related-links><link href="rx.xml#OnNext"><linktext>rx.OnNext</linktext></link></related-links></apiValue></apiClassifier><apiClassifier id="rx:BooleanCancelable"><apiName>BooleanCancelable</apiName><shortdesc>
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:ICancelable</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</apiDesc></apiClassifierDetail><apiValue id="rx:BooleanCancelable:isCanceled:get"><apiName>isCanceled</apiName><shortdesc>
+		 Determines if canceled() has been called on this instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Determines if canceled() has been called on this instance
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:OnError"><apiName>OnError</apiName><shortdesc>
+	 A Notification for an onError call
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A Notification for an onError call
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:OnError:error:get"><apiName>error</apiName><shortdesc>
+		 Gets the error for this message 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Error"/></apiValueDef><apiDesc>
+		 Gets the error for this message 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnError:hasValue:get"><apiName>hasValue</apiName><shortdesc>
+		 Always returns false since no values are associated with errors 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Always returns false since no values are associated with errors 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnError:kind:get"><apiName>kind</apiName><shortdesc>
+		 Always returns NotificationKind.ON_ERROR 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Always returns NotificationKind.ON_ERROR 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnError:value:get"><apiName>value</apiName><shortdesc>
+		 Always returns null since no values are associated with errors 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Always returns null since no values are associated with errors 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:ISubject"><apiName>ISubject</apiName><shortdesc>
+	 A resource that is both observable and an observer
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>rx:IObservable</apiBaseInterface><apiBaseInterface>rx:IObserver</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 A resource that is both observable and an observer
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:Pattern"><apiName>Pattern</apiName><shortdesc>
+	 A combination of multiple IObservable sequences that can be combined 
+	 into a Plan
+	 
+	 Generally, a Pattern will be created using IObservable.and or 
+	 Pattern.and(), rather than creating a Pattern directly
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A combination of multiple IObservable sequences that can be combined 
+	 into a Plan
+	 
+	 <p>Generally, a Pattern will be created using IObservable.and or 
+	 Pattern.and(), rather than creating a Pattern directly</p>
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:IObserver"><apiName>IObserver</apiName><shortdesc>
+	 An object that receives messages from an IObservable sequence
+	 
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 An object that receives messages from an IObservable sequence
+	 
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:OnNext"><apiName>OnNext</apiName><shortdesc>
+	 A Notification for an onNext call
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A Notification for an onNext call
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:OnNext:error:get"><apiName>error</apiName><shortdesc>
+		 Always returns false since no errors are associated with values 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Error"/></apiValueDef><apiDesc>
+		 Always returns false since no errors are associated with values 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnNext:hasValue:get"><apiName>hasValue</apiName><shortdesc>
+		 Always returns true 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Always returns true 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnNext:kind:get"><apiName>kind</apiName><shortdesc>
+		 Always returns NotificationKind.ON_NEXT 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Always returns NotificationKind.ON_NEXT 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnNext:value:get"><apiName>value</apiName><shortdesc>
+		 Gets the value from the message 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Gets the value from the message 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:TimeoutError"><apiName>TimeoutError</apiName><shortdesc>
+	 An error thrown by Observable.timeout by default
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Error</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 An error thrown by Observable.timeout by default
+	 </apiDesc></apiClassifierDetail></apiClassifier><apiClassifier id="rx:OnCompleted"><apiName>OnCompleted</apiName><shortdesc>
+	 A Notification for an onCompleted call
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>rx:Notification</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A Notification for an onCompleted call
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:OnCompleted:error:get"><apiName>error</apiName><shortdesc>
+		 Always returns false since no errors are associated with completion 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Error"/></apiValueDef><apiDesc>
+		 Always returns false since no errors are associated with completion 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnCompleted:hasValue:get"><apiName>hasValue</apiName><shortdesc>
+		 Always returns false since no values are associated with completion 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Always returns false since no values are associated with completion 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnCompleted:kind:get"><apiName>kind</apiName><shortdesc>
+		 Always returns NotificationKind.ON_COMPLETED 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Always returns NotificationKind.ON_COMPLETED 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:OnCompleted:value:get"><apiName>value</apiName><shortdesc>
+		 Always returns null since no values are associated with completion 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Always returns null since no values are associated with completion 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="rx:Plan"><apiName>Plan</apiName><shortdesc>
+	 A combination of IObservable sequences and a selector that will 
+	 map the values of those sequences to an output value.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A combination of IObservable sequences and a selector that will 
+	 map the values of those sequences to an output value. A plan is intended 
+	 to be used with Observable.join
+	 
+	 <p>Generally, a Plan will be created using Pattern.then(), rather 
+	 than creating a Plan directly</p>
+	 </apiDesc></apiClassifierDetail><apiValue id="rx:Plan:selector:get"><apiName>selector</apiName><shortdesc>
+		 Gets the function selector that will accept one argument for each 
+		 sequence in sources and return the output value
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Function"/></apiValueDef><apiDesc>
+		 Gets the function selector that will accept one argument for each 
+		 sequence in sources and return the output value
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="rx:Plan:sources:get"><apiName>sources</apiName><shortdesc>
+		 Gets the observable sequences in this plan
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Array"/></apiValueDef><apiDesc>
+		 Gets the observable sequences in this plan
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage></allClasses>

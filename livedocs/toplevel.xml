@@ -1,0 +1,4087 @@
+<asdoc>
+
+<classRec name='NotificationKind' fullname='rx:NotificationKind' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\NotificationKind.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Enumeration for the different types of Notification
+
+	 ]]></description>
+</classRec>
+<field name='ON_COMPLETED' fullname='rx:NotificationKind/ON_COMPLETED' type='int' isStatic='true' isConst='true' defaultValue='2' >
+<description><![CDATA[
+
+		 An onCompleted message
+
+		 
+
+		 ]]></description>
+<see><![CDATA[rx.OnCompleted
+
+		 ]]></see>
+</field>
+<field name='ON_ERROR' fullname='rx:NotificationKind/ON_ERROR' type='int' isStatic='true' isConst='true' defaultValue='1' >
+<description><![CDATA[
+
+		 An onError message
+
+		 
+
+		 ]]></description>
+<see><![CDATA[rx.OnError
+
+		 ]]></see>
+</field>
+<field name='ON_NEXT' fullname='rx:NotificationKind/ON_NEXT' type='int' isStatic='true' isConst='true' defaultValue='0' >
+<description><![CDATA[
+
+		 An onNext (value) message
+
+		 
+
+		 ]]></description>
+<see><![CDATA[rx.OnNext
+
+		 ]]></see>
+</field>
+<interfaceRec name='IObserver' fullname='rx:IObserver' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\IObserver.as' namespace='rx' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 An object that receives messages from an IObservable sequence
+
+	 
+
+	 ]]></description>
+<see><![CDATA[Observer
+
+	 ]]></see>
+</interfaceRec>
+<method name='onCompleted' fullname='rx:IObserver/rx:IObserver:onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Notifies the subscriber that the sequence has completed and 
+
+		 that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onError' fullname='rx:IObserver/rx:IObserver:onError' isStatic='false' isFinal='false' isOverride='false'  param_names='error' param_types='Error' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Notifies the subscriber that the sequence has halted with an error 
+
+		 and that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onNext' fullname='rx:IObserver/rx:IObserver:onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Notifies the subscriber that a value has been received
+
+		 ]]></description>
+</method>
+<interfaceRec name='ICancelable' fullname='rx:ICancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\ICancelable.as' namespace='rx' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents a handle that can be used to cancel an operation 
+
+	 
+
+	 ]]></description>
+<see><![CDATA[rx.CompositeCancelable, rx.BooleanCancelable, rx.FutureCancelable, rx.Cancelable
+
+	]]></see>
+</interfaceRec>
+<method name='cancel' fullname='rx:ICancelable/rx:ICancelable:cancel' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Cancels the operation
+
+		 ]]></description>
+</method>
+<classRec name='Unit' fullname='rx:Unit' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Unit.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents a valueClass that can be used when 
+
+	 an observable sequence logically has no valueClass
+
+	 ]]></description>
+</classRec>
+<method name='Unit' fullname='rx:Unit/Unit' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<classRec name='TimeStamped' fullname='rx:TimeStamped' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\TimeStamped.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A wrapper that adds a timestamp to a value
+
+	 ]]></description>
+</classRec>
+<method name='TimeStamped' fullname='rx:TimeStamped/TimeStamped' isStatic='false' isFinal='false' isOverride='false'  param_names='value;time' param_types='Object;Number' param_defaults='undefined;undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a TimeStamped wrapper 
+
+		 ]]></description>
+<param><![CDATA[value The value from the original sequence
+
+		 ]]></param>
+<param><![CDATA[time The timestamp value
+
+		 ]]></param>
+</method>
+<method name='timestamp' fullname='rx:TimeStamped/timestamp/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Number'>
+<description><![CDATA[
+
+		 Gets the timestamp value 
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:TimeStamped/value/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[
+
+		 Gets the original value 
+
+		 ]]></description>
+</method>
+<field name='_time' fullname='rx:TimeStamped/private:_time' type='Number' isStatic='false' isConst='false' >
+</field>
+<field name='_value' fullname='rx:TimeStamped/private:_value' type='Object' isStatic='false' isConst='false' >
+</field>
+<classRec name='Plan' fullname='rx:Plan' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Plan.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A combination of IObservable sequences and a selector that will 
+
+	 map the values of those sequences to an output value. A plan is intended 
+
+	 to be used with Observable.join
+
+	 
+
+	 <p>Generally, a Plan will be created using Pattern.then(), rather 
+
+	 than creating a Plan directly</p>
+
+	 ]]></description>
+</classRec>
+<method name='Plan' fullname='rx:Plan/Plan' isStatic='false' isFinal='false' isOverride='false'  param_names='type;sources;selector' param_types='Class;Array;Function' param_defaults='undefined;undefined;undefined' result_type='*'>
+</method>
+<method name='selector' fullname='rx:Plan/selector/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Function'>
+<description><![CDATA[
+
+		 Gets the function selector that will accept one argument for each 
+
+		 sequence in sources and return the output value
+
+		 ]]></description>
+</method>
+<method name='sources' fullname='rx:Plan/sources/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 Gets the observable sequences in this plan
+
+		 ]]></description>
+</method>
+<field name='_selector' fullname='rx:Plan/private:_selector' type='Function' isStatic='false' isConst='false' >
+</field>
+<field name='_sources' fullname='rx:Plan/private:_sources' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='_type' fullname='rx:Plan/private:_type' type='Class' isStatic='false' isConst='false' >
+</field>
+<classRec name='TimeInterval' fullname='rx:TimeInterval' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\TimeInterval.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A wrapper that adds the time interval, in milliseconds,
+
+	 since the last values 
+
+	 ]]></description>
+</classRec>
+<method name='TimeInterval' fullname='rx:TimeInterval/TimeInterval' isStatic='false' isFinal='false' isOverride='false'  param_names='value;interval' param_types='Object;Number' param_defaults='undefined;undefined' result_type='*'>
+</method>
+<method name='interval' fullname='rx:TimeInterval/interval/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Number'>
+<description><![CDATA[
+
+		 Gets the internal, in milliseconds, 
+
+		 since the last value
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:TimeInterval/value/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[
+
+		 Gets the original value
+
+		 ]]></description>
+</method>
+<field name='_interval' fullname='rx:TimeInterval/private:_interval' type='Number' isStatic='false' isConst='false' >
+</field>
+<field name='_value' fullname='rx:TimeInterval/private:_value' type='Object' isStatic='false' isConst='false' >
+</field>
+<classRec name='SafetyObserver' fullname='rx:SafetyObserver' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\SafetyObserver.as' namespace='rx' access='internal' baseclass='Object' interfaces='rx:IObserver' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='SafetyObserver' fullname='rx:SafetyObserver/SafetyObserver' isStatic='false' isFinal='false' isOverride='false'  param_names='innerObserver' param_types='rx:IObserver' param_defaults='undefined' result_type='*'>
+</method>
+<method name='onCompleted' fullname='rx:SafetyObserver/onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='onError' fullname='rx:SafetyObserver/onError' isStatic='false' isFinal='false' isOverride='false'  param_names='error' param_types='Error' param_defaults='undefined' result_type='void'>
+</method>
+<method name='onNext' fullname='rx:SafetyObserver/onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<method name='setInactive' fullname='rx:SafetyObserver/private:setInactive' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='setSubscription' fullname='rx:SafetyObserver/setSubscription' isStatic='false' isFinal='false' isOverride='false'  param_names='subscription' param_types='rx:ICancelable' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_active' fullname='rx:SafetyObserver/private:_active' type='Boolean' isStatic='false' isConst='false' >
+</field>
+<field name='_innerObserver' fullname='rx:SafetyObserver/private:_innerObserver' type='rx:IObserver' isStatic='false' isConst='false' >
+</field>
+<field name='_subscription' fullname='rx:SafetyObserver/private:_subscription' type='rx:ICancelable' isStatic='false' isConst='false' >
+</field>
+<classRec name='ClosureObserver' fullname='rx:ClosureObserver' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\ClosureObserver.as' namespace='rx' access='internal' baseclass='Object' interfaces='rx:IObserver' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='ClosureObserver' fullname='rx:ClosureObserver/ClosureObserver' isStatic='false' isFinal='false' isOverride='false'  param_names='onNext;onComplete;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='*'>
+</method>
+<method name='onCompleted' fullname='rx:ClosureObserver/onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='onError' fullname='rx:ClosureObserver/onError' isStatic='false' isFinal='false' isOverride='false'  param_names='error' param_types='Error' param_defaults='undefined' result_type='void'>
+</method>
+<method name='onNext' fullname='rx:ClosureObserver/onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_onComplete' fullname='rx:ClosureObserver/private:_onComplete' type='Function' isStatic='false' isConst='false' >
+</field>
+<field name='_onError' fullname='rx:ClosureObserver/private:_onError' type='Function' isStatic='false' isConst='false' >
+</field>
+<field name='_onNext' fullname='rx:ClosureObserver/private:_onNext' type='Function' isStatic='false' isConst='false' >
+</field>
+<classRec name='CompositeCancelable' fullname='rx:CompositeCancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\CompositeCancelable.as' namespace='rx' access='public' baseclass='Object' interfaces='rx:ICancelable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents a cancelable resource that controls multiple 
+
+	 other cancelable resources 
+
+	 ]]></description>
+</classRec>
+<method name='CompositeCancelable' fullname='rx:CompositeCancelable/CompositeCancelable' isStatic='false' isFinal='false' isOverride='false'  param_names='values' param_types='Array' param_defaults='null' result_type='*'>
+<description><![CDATA[
+
+		 Creates a composite cancelable instance with the cancelable 
+
+		 instances to start with
+
+		 ]]></description>
+</method>
+<method name='add' fullname='rx:CompositeCancelable/add' isStatic='false' isFinal='false' isOverride='false'  param_names='cancelable' param_types='rx:ICancelable' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Adds a cancelable resource to the list of cancelable resources. If 
+
+		 this instance has already been canceled, the resource will be immediately 
+
+		 canceled and not added to the list.
+
+		 ]]></description>
+</method>
+<method name='cancel' fullname='rx:CompositeCancelable/cancel' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Cancels (and removes) all resources in this instance
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='rx:CompositeCancelable/remove' isStatic='false' isFinal='false' isOverride='false'  param_names='cancelable' param_types='rx:ICancelable' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Removes a cancelable resource from the list
+
+		 ]]></description>
+</method>
+<method name='cancelables' fullname='rx:CompositeCancelable/cancelables/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 Gets the list of cancelable resources in this instance
+
+		 ]]></description>
+</method>
+<method name='count' fullname='rx:CompositeCancelable/count/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[
+
+		 Gets the number of resources in this list
+
+		 ]]></description>
+</method>
+<field name='_cancelables' fullname='rx:CompositeCancelable/private:_cancelables' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='_cancelled' fullname='rx:CompositeCancelable/private:_cancelled' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<classRec name='FutureCancelable' fullname='rx:FutureCancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\FutureCancelable.as' namespace='rx' access='public' baseclass='Object' interfaces='rx:ICancelable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	A cancelable resource than is not immediately available
+
+	]]></description>
+</classRec>
+<method name='FutureCancelable' fullname='rx:FutureCancelable/FutureCancelable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='cancel' fullname='rx:FutureCancelable/cancel' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Cancels the operation for current and future innerCancelable values
+
+		 ]]></description>
+</method>
+<method name='innerCancelable' fullname='rx:FutureCancelable/innerCancelable/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='rx:ICancelable' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Assigns the cancelable operation.
+
+		 
+
+		 If an existing value exists for innerCancelable, it will be canceled.
+
+		 
+
+		 If cancel() has already been called on this FutureCancelable, the value 
+
+		 will be instantly canceled and innerCancelable will be null
+
+		 ]]></description>
+</method>
+<field name='_canceled' fullname='rx:FutureCancelable/private:_canceled' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_innerCancelable' fullname='rx:FutureCancelable/private:_innerCancelable' type='rx:ICancelable' isStatic='false' isConst='false' defaultValue='null' >
+</field>
+<classRec name='ClosureCancelable' fullname='rx:ClosureCancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\ClosureCancelable.as' namespace='rx' access='internal' baseclass='Object' interfaces='rx:ICancelable' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='ClosureCancelable' fullname='rx:ClosureCancelable/ClosureCancelable' isStatic='false' isFinal='false' isOverride='false'  param_names='unsubscribeFunc' param_types='Function' param_defaults='undefined' result_type='*'>
+</method>
+<method name='cancel' fullname='rx:ClosureCancelable/cancel' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='empty' fullname='rx:ClosureCancelable/empty' isStatic='true' isFinal='false' isOverride='false'  result_type='rx:ClosureCancelable'>
+</method>
+<field name='_isUnsubscribed' fullname='rx:ClosureCancelable/private:_isUnsubscribed' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_unsubscribeFunc' fullname='rx:ClosureCancelable/private:_unsubscribeFunc' type='Function' isStatic='false' isConst='false' >
+</field>
+<classRec name='TimeoutError' fullname='rx:TimeoutError' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\TimeoutError.as' namespace='rx' access='public' baseclass='Error' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 An error thrown by Observable.timeout by default
+
+	 ]]></description>
+</classRec>
+<method name='TimeoutError' fullname='rx:TimeoutError/TimeoutError' isStatic='false' isFinal='false' isOverride='false'  param_names='message;id' param_types='String;int' param_defaults='undefined;0' result_type='*'>
+</method>
+<classRec name='BooleanCancelable' fullname='rx:BooleanCancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\BooleanCancelable.as' namespace='rx' access='public' baseclass='Object' interfaces='rx:ICancelable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents a cancelable operation, the canceled status of which can 
+
+	 be checked by isCanceled 
+
+	]]></description>
+</classRec>
+<method name='BooleanCancelable' fullname='rx:BooleanCancelable/BooleanCancelable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='cancel' fullname='rx:BooleanCancelable/cancel' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Cancels the operation. isCanceled will return true after this call.
+
+		 ]]></description>
+</method>
+<method name='isCanceled' fullname='rx:BooleanCancelable/isCanceled/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Determines if canceled() has been called on this instance
+
+		 ]]></description>
+</method>
+<field name='_isCanceled' fullname='rx:BooleanCancelable/private:_isCanceled' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<classRec name='Pattern' fullname='rx:Pattern' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Pattern.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A combination of multiple IObservable sequences that can be combined 
+
+	 into a Plan
+
+	 
+
+	 <p>Generally, a Pattern will be created using IObservable.and or 
+
+	 Pattern.and(), rather than creating a Pattern directly</p>
+
+	 ]]></description>
+</classRec>
+<method name='Pattern' fullname='rx:Pattern/Pattern' isStatic='false' isFinal='false' isOverride='false'  param_names='sources' param_types='Array' param_defaults='undefined' result_type='*'>
+</method>
+<method name='and' fullname='rx:Pattern/and' isStatic='false' isFinal='false' isOverride='false'  param_names='source' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:Pattern'>
+<description><![CDATA[
+
+		 Creates another pattern that combines the IObservable sequences 
+
+		 of this Pattern with another IObservable sequence 
+
+		 ]]></description>
+<param><![CDATA[source The IObservable sequence to add
+
+		 ]]></param>
+<return><![CDATA[A Pattern with the new set of sequences
+
+		 
+
+		 ]]></return>
+</method>
+<method name='then' fullname='rx:Pattern/then' isStatic='false' isFinal='false' isOverride='false'  param_names='type;thenFunction' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:Plan'>
+<description><![CDATA[
+
+		 Creates a Plan from this Pattern, by supplying a 
+
+		 valueClass and a mappingFunction for the values from each 
+
+		 sequence in this Pattern 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass that will be returned by thenFunction
+
+		 ]]></param>
+<param><![CDATA[thenFunction The function that will accept one argument for each 
+
+		 sequence in the pattern and output a valueClass
+
+		 ]]></param>
+<return><![CDATA[A Plan that can be used with Observable.join
+
+		 ]]></return>
+</method>
+<method name='types' fullname='rx:Pattern/types' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 Gets the types associated with this Pattern in an immutable array
+
+		 ]]></description>
+</method>
+<field name='_sources' fullname='rx:Pattern/private:_sources' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='_types' fullname='rx:Pattern/private:_types' type='Array' isStatic='false' isConst='false' >
+</field>
+<classRec name='Notification' fullname='rx:Notification' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Notification.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents one of the three messages that can be sent to 
+
+	 an observer.
+
+	 
+
+	 ]]></description>
+<see><![CDATA[rx.OnNext 
+
+	 ]]></see>
+<see><![CDATA[rx.OnCompleted 
+
+	 ]]></see>
+<see><![CDATA[rx.OnError
+
+	 ]]></see>
+</classRec>
+<method name='Notification' fullname='rx:Notification/Notification' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='acceptWith' fullname='rx:Notification/acceptWith' isStatic='false' isFinal='false' isOverride='false'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Calls the appropriate method on an observer
+
+		 ]]></description>
+</method>
+<method name='accept' fullname='rx:Notification/accept' isStatic='false' isFinal='false' isOverride='false'  param_names='onNext;onCompleted;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='void'>
+<description><![CDATA[
+
+		 Calls the appropriate method
+
+		 ]]></description>
+</method>
+<method name='error' fullname='rx:Notification/error/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Error'>
+<description><![CDATA[
+
+		 Gets the error associated with this message or null if there is no error.
+
+		 ]]></description>
+</method>
+<method name='hasValue' fullname='rx:Notification/hasValue/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Determined whether this instance has a value property available
+
+		 ]]></description>
+</method>
+<method name='kind' fullname='rx:Notification/kind/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+<description><![CDATA[
+
+		 Gets the NotificationKind of this instance
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:Notification/value/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[
+
+		 Gets the value associated with this message
+
+		 ]]></description>
+</method>
+<interfaceRec name='IObservable' fullname='rx:IObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\IObservable.as' namespace='rx' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 An observable sequence of values
+
+	 ]]></description>
+</interfaceRec>
+<method name='aggregate' fullname='rx:IObservable/rx:IObservable:aggregate' isStatic='false' isFinal='false' isOverride='false'  param_names='accumulator;valueClass;initialValue' param_types='Function;Class;Object' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[ 
+
+		 Runs calculation functions over every value in the source sequence and emits the final result
+
+		 ]]></description>
+<param><![CDATA[accumulator A function that accumulates the aggregate value
+
+		 ]]></param>
+<param><![CDATA[valueClass The class of the values returned by accumulator
+
+		 ]]></param>
+<param><![CDATA[initialValue The value to start with
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass (or this instance's valueClass if valueClass is null)
+
+		 ]]></return>
+</method>
+<method name='all' fullname='rx:IObservable/rx:IObservable:all' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Determines if all values in the source sequence satisfy a condition
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='and' fullname='rx:IObservable/rx:IObservable:and' isStatic='false' isFinal='false' isOverride='false'  param_names='right' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:Pattern'>
+<description><![CDATA[ 
+
+		 Creates a pattern by combining the current source with right.
+
+		 
+
+		 ]]></description>
+<param><![CDATA[right The other sequence to combine with the pattern.
+
+		 ]]></param>
+<return><![CDATA[A pattern representing both sequences
+
+		 ]]></return>
+</method>
+<method name='any' fullname='rx:IObservable/rx:IObservable:any' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Determines if the source sequence contains a value that satisfies a condition
+
+		  
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='asObservable' fullname='rx:IObservable/rx:IObservable:asObservable' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='average' fullname='rx:IObservable/rx:IObservable:average' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Returns the average value of all the elements in the source sequence  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence (which should be numeric)
+
+		 ]]></return>
+</method>
+<method name='bufferWithCount' fullname='rx:IObservable/rx:IObservable:bufferWithCount' isStatic='false' isFinal='false' isOverride='false'  param_names='count;skip' param_types='uint;uint' param_defaults='undefined;0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the values from a source sequence in groups of a specific size  
+
+		 ]]></description>
+<param><![CDATA[count The number of values to buffer
+
+		 ]]></param>
+<param><![CDATA[skip The number of values to offset after the buffer is emitted.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='bufferWithTime' fullname='rx:IObservable/rx:IObservable:bufferWithTime' isStatic='false' isFinal='false' isOverride='false'  param_names='timeMs;timeShiftMs;scheduler' param_types='uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the values from a source sequence in groups of a specific size  
+
+		 ]]></description>
+<param><![CDATA[timeMs The amount of time to buffer before the values are released
+
+		 ]]></param>
+<param><![CDATA[timeShiftMs The amount of time to offset after the buffer is emitted
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='cast' fullname='rx:IObservable/rx:IObservable:cast' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Forces values from a source sequence to be of a specific valueClass
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the output sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass 
+
+		 ]]></return>
+</method>
+<method name='catchErrorDefer' fullname='rx:IObservable/rx:IObservable:catchErrorDefer' isStatic='false' isFinal='false' isOverride='false'  param_names='errorClass;deferFunc' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Runs a specific sequence, determined at runtime, when an error occurs
+
+		 ]]></description>
+<param><![CDATA[errorClass The class (and superclass) of error to act on
+
+		 ]]></param>
+<param><![CDATA[deferFunc The function to execute in the event of an error. Signature is <code>function(e : Error) : IObservable</code>
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='catchError' fullname='rx:IObservable/rx:IObservable:catchError' isStatic='false' isFinal='false' isOverride='false'  param_names='second' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Runs a specific sequence when an error occurs
+
+		 ]]></description>
+<param><![CDATA[second The sequence to subscribe to when an error occurs
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='combineLatest' fullname='rx:IObservable/rx:IObservable:combineLatest' isStatic='false' isFinal='false' isOverride='false'  param_names='returnClass;right;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Merges two sequences through a mapping function, using the latest value from either source 
+
+		 ]]></description>
+<param><![CDATA[returnClass The valueClass of the values returned by selector
+
+		 ]]></param>
+<param><![CDATA[right The sequence to combine with
+
+		 ]]></param>
+<param><![CDATA[selector The function that combines values from the two sources. Signature is <code>function(left : this.valueClass, right : right.valueClass) : returnType</code>
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of returnType 
+
+		 ]]></return>
+</method>
+<method name='concat' fullname='rx:IObservable/rx:IObservable:concat' isStatic='false' isFinal='false' isOverride='false'  param_names='sources' param_types='Array' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+
+		 ]]></description>
+<param><![CDATA[sources The sequences to concatonate after the current sequence 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='contains' fullname='rx:IObservable/rx:IObservable:contains' isStatic='false' isFinal='false' isOverride='false'  param_names='value;comparer' param_types='Object;Function' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Determines if the source sequence contains a specific value 
+
+		 ]]></description>
+<param><![CDATA[value The value to check against the sequence
+
+		 ]]></param>
+<param><![CDATA[comparer The function used to compare values. Default equality will be used if comparer is null.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='count' fullname='rx:IObservable/rx:IObservable:count' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Returns the number of elements in the source sequence 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of int
+
+		 ]]></return>
+</method>
+<method name='delay' fullname='rx:IObservable/rx:IObservable:delay' isStatic='false' isFinal='false' isOverride='false'  param_names='delayMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Delays all values in a sequences by a specified time 
+
+		 ]]></description>
+<param><![CDATA[delayMs The amount of time, in milliseconds, to delay
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to delay the values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='dematerialize' fullname='rx:IObservable/rx:IObservable:dematerialize' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Converts materialized values back into messages  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='distinctUntilChanged' fullname='rx:IObservable/rx:IObservable:distinctUntilChanged' isStatic='false' isFinal='false' isOverride='false'  param_names='comparer' param_types='Function' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Filters out consecutive duplicates from a source sequence  
+
+		 ]]></description>
+<param><![CDATA[comparer The function used to compare values. Default equality will be used if comparer is null.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='doAction' fullname='rx:IObservable/rx:IObservable:doAction' isStatic='false' isFinal='false' isOverride='false'  param_names='next;complete;error' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Allows custom code to be run when messages arrive without affecting the observer  
+
+		 ]]></description>
+<param><![CDATA[next The function to execute in the event of a value (onNext)
+
+		 ]]></param>
+<param><![CDATA[complete The function to execute in the event the sequence completes (onComplete)
+
+		 ]]></param>
+<param><![CDATA[error The function to execute in the event of an error (onError)
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='finallyAction' fullname='rx:IObservable/rx:IObservable:finallyAction' isStatic='false' isFinal='false' isOverride='false'  param_names='finallyAction' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Executes a function when the sequence completes or errors
+
+		 ]]></description>
+<param><![CDATA[finallyAction The function to execute in the event the sequence completes or errors
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='firstOrDefault' fullname='rx:IObservable/rx:IObservable:firstOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='first' fullname='rx:IObservable/rx:IObservable:first' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='forkJoin' fullname='rx:IObservable/rx:IObservable:forkJoin' isStatic='false' isFinal='false' isOverride='false'  param_names='resultClass;right;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+
+		 ]]></description>
+<param><![CDATA[resultClass The class of the valueClass returned by selector
+
+		 ]]></param>
+<param><![CDATA[right The sequence to subscribe to, along with the current sequence
+
+		 ]]></param>
+<param><![CDATA[selector The function that accepts the last values of both sequences and returns the output value 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass resultClass
+
+		 ]]></return>
+</method>
+<method name='lastOrDefault' fullname='rx:IObservable/rx:IObservable:lastOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='last' fullname='rx:IObservable/rx:IObservable:last' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='let' fullname='rx:IObservable/rx:IObservable:let' isStatic='false' isFinal='false' isOverride='false'  param_names='func' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+
+		 ]]></description>
+<param><![CDATA[func The function to send the current sequence through, and return a new sequence 
+
+		 ]]></param>
+<return><![CDATA[The observable sequence returned by func 
+
+		 ]]></return>
+</method>
+<method name='materialize' fullname='rx:IObservable/rx:IObservable:materialize' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Converts all messages (next, complete, error) into values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of rx.Notification
+
+		 ]]></return>
+</method>
+<method name='merge' fullname='rx:IObservable/rx:IObservable:merge' isStatic='false' isFinal='false' isOverride='false'  param_names='sources;scheduler' param_types='rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the values from multiple sources in the order that they arrive 
+
+		 ]]></description>
+<param><![CDATA[sources The other sequences from which the values will be merged with the current sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='observeOn' fullname='rx:IObservable/rx:IObservable:observeOn' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Defers messages to subscribers through a scheduler  
+
+		 ]]></description>
+<param><![CDATA[scheduler The subscriber to send messages to subscribers through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='ofClass' fullname='rx:IObservable/rx:IObservable:ofClass' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Filters out values from a source sequence that are not of a specific valueClass 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class (or subsclass) of all values to emit 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='onErrorResumeNext' fullname='rx:IObservable/rx:IObservable:onErrorResumeNext' isStatic='false' isFinal='false' isOverride='false'  param_names='second;scheduler' param_types='rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Subscribes down a list of sequence as each one errors or complete 
+
+		 ]]></description>
+<param><![CDATA[second The sequence to run after the current sequence completes or errors
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use to subscribe to the new sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='pruneAndConnect' fullname='rx:IObservable/rx:IObservable:pruneAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector;scheduler' param_types='Function;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='prune' fullname='rx:IObservable/rx:IObservable:prune' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 Creates a shared sequence that emits the last value of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='publishAndConnect' fullname='rx:IObservable/rx:IObservable:publishAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='publish' fullname='rx:IObservable/rx:IObservable:publish' isStatic='false' isFinal='false' isOverride='false'  result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 Creates a connectable sequence that can be shared by multiple observers  
+
+		 ]]></description>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='removeTimeInterval' fullname='rx:IObservable/rx:IObservable:removeTimeInterval' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Removes time interval information added with timeInterval  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='removeTimestamp' fullname='rx:IObservable/rx:IObservable:removeTimestamp' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Removes timestamp information added with timestamp  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='repeat' fullname='rx:IObservable/rx:IObservable:repeat' isStatic='false' isFinal='false' isOverride='false'  param_names='repeatCount' param_types='uint' param_defaults='0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Repeats the source sequence a specific number of times 
+
+		 ]]></description>
+<param><![CDATA[repeatCount The number of times to repeat the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='replayAndConnect' fullname='rx:IObservable/rx:IObservable:replayAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector;bufferSize;window;scheduler' param_types='Function;uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;0;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Records the output of the source sequence and replays it to future subscribers
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through 
+
+		 ]]></param>
+<param><![CDATA[bufferSize The number of values at the end of the sequence to replay, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='replay' fullname='rx:IObservable/rx:IObservable:replay' isStatic='false' isFinal='false' isOverride='false'  param_names='bufferSize;window;scheduler' param_types='uint;uint;rx.scheduling:IScheduler' param_defaults='0;0;null' result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 Records the output of the source sequence and replays it to future subscribers 
+
+		 ]]></description>
+<param><![CDATA[bufferSize The number of values at the end of the sequence to replay, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='retry' fullname='rx:IObservable/rx:IObservable:retry' isStatic='false' isFinal='false' isOverride='false'  param_names='retryCount' param_types='uint' param_defaults='0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Repeats the source sequence when an error occurs 
+
+		 ]]></description>
+<param><![CDATA[retryCount The number of times to retry the sequence in the event of an error
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='sample' fullname='rx:IObservable/rx:IObservable:sample' isStatic='false' isFinal='false' isOverride='false'  param_names='intervalMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the latest value on a time interval from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[intervalMs The interval of time, in milliseconds, to sample the current value after
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='scan' fullname='rx:IObservable/rx:IObservable:scan' isStatic='false' isFinal='false' isOverride='false'  param_names='accumulator;valueClass;initialValue' param_types='Function;Class;Object' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+
+		 ]]></description>
+<param><![CDATA[accumulator The function that accumulates values
+
+		 ]]></param>
+<param><![CDATA[valueClass The class of the returned sequence and return value of accumulator
+
+		 ]]></param>
+<param><![CDATA[initialValue The value to start with
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='selectMany' fullname='rx:IObservable/rx:IObservable:selectMany' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;selector' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Starts a new sequence for every value in the source sequence and merges their values
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the sequences returned by selector
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed with each value
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass result
+
+		 ]]></return>
+</method>
+<method name='select' fullname='rx:IObservable/rx:IObservable:select' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;selector' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Maps the values from a source sequence through a function to change their value 
+
+		 ]]></description>
+<param><![CDATA[result The class of the returned sequence and return value of accumulator 
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed with each value
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass result
+
+		 ]]></return>
+</method>
+<method name='singleOrDefault' fullname='rx:IObservable/rx:IObservable:singleOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+
+		 an error if more than one value is emitted.  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='single' fullname='rx:IObservable/rx:IObservable:single' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted. 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='skipLast' fullname='rx:IObservable/rx:IObservable:skipLast' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Ignores a set number of values from the end of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to skip from the end of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='skipUntil' fullname='rx:IObservable/rx:IObservable:skipUntil' isStatic='false' isFinal='false' isOverride='false'  param_names='other' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+
+		 ]]></description>
+<param><![CDATA[other The other sequence that will mark the start of values being used from the current sequence 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='skipWhile' fullname='rx:IObservable/rx:IObservable:skipWhile' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Ignores values from a source sequence until a condition is no longer met
+
+		 ]]></description>
+<param><![CDATA[predicate The function to be executed as each value is emitted. When this function returns false, values will be used from the current sequence.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='skip' fullname='rx:IObservable/rx:IObservable:skip' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Ignores a set number of values from the start of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to skip from the start of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='startWith' fullname='rx:IObservable/rx:IObservable:startWith' isStatic='false' isFinal='false' isOverride='false'  param_names='value;scheduler' param_types='Array;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the specified values at the start of a sequence 
+
+		 ]]></description>
+<param><![CDATA[value The value to emit at the start of the sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='subscribeOn' fullname='rx:IObservable/rx:IObservable:subscribeOn' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Defers subscriptions to the source through a scheduler  
+
+		 ]]></description>
+<param><![CDATA[scheduler The subscriber to schedule subscriptions through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='subscribeWith' fullname='rx:IObservable/rx:IObservable:subscribeWith' isStatic='false' isFinal='false' isOverride='false'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<method name='subscribe' fullname='rx:IObservable/rx:IObservable:subscribe' isStatic='false' isFinal='false' isOverride='false'  param_names='onNext;onComplete;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Subscribes to this observable using the supplied functions 
+
+		 ]]></description>
+<param><![CDATA[onNext Function to be called for every payload. Signature is <code>function(payload : T) : void</code>
+
+		 ]]></param>
+<param><![CDATA[onComplete Optional. Function to be called when the sequence completes. Signature is <code>function():void</code>
+
+		 ]]></param>
+<param><![CDATA[onError Optional. Function to be called when an error occurs in the sequence. Signature is <code>function(err:Error):void</code>
+
+		 ]]></param>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling <code>unsubscribe()</code> 
+
+		 ]]></return>
+</method>
+<method name='sum' fullname='rx:IObservable/rx:IObservable:sum' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Returns the summed value of all the elements in the source sequence 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of Number
+
+		 ]]></return>
+</method>
+<method name='takeLast' fullname='rx:IObservable/rx:IObservable:takeLast' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Takes only the last set number of values from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to use from the end of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='takeUntil' fullname='rx:IObservable/rx:IObservable:takeUntil' isStatic='false' isFinal='false' isOverride='false'  param_names='other' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Takes values from a source sequence until a value is received from a specified sequence  
+
+		 ]]></description>
+<param><![CDATA[other The other sequence that will mark the end of values being used from the current sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='takeWhile' fullname='rx:IObservable/rx:IObservable:takeWhile' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Takes values from a source sequence until a condition is no longer met 
+
+		 ]]></description>
+<param><![CDATA[predicate The function to be executed as each value is emitted. When this function returns false, values will no longer be used from the current sequence.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='take' fullname='rx:IObservable/rx:IObservable:take' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Takes only the first set number of values from a source sequenc
+
+		 ]]></description>
+<param><![CDATA[count The number of values to use from the start of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='throttle' fullname='rx:IObservable/rx:IObservable:throttle' isStatic='false' isFinal='false' isOverride='false'  param_names='dueTimeMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Limits how often values from a source sequence will be accepted from a source
+
+		 ]]></description>
+<param><![CDATA[intervalMs The interval of time, in milliseconds, during which only one value from the source sequence will be accepted
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='timeInterval' fullname='rx:IObservable/rx:IObservable:timeInterval' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use to determine time
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of TimeInterval
+
+		 ]]></return>
+</method>
+<method name='timeout' fullname='rx:IObservable/rx:IObservable:timeout' isStatic='false' isFinal='false' isOverride='false'  param_names='timeoutMs;other;scheduler' param_types='uint;rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+
+		 ]]></description>
+<param><![CDATA[timeoutMs The amount of time, in milliseconds, after which to raise an error (or subscribe to other)
+
+		 ]]></param>
+<param><![CDATA[other The sequence to subscribe to in the event of a timeout. If null, a TimeoutError will be emitted.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='timestamp' fullname='rx:IObservable/rx:IObservable:timestamp' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Timestamped 
+
+		 ]]></return>
+</method>
+<method name='where' fullname='rx:IObservable/rx:IObservable:where' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Filters out values from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate function to execute for each value to determine if it will be include in the output
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='zip' fullname='rx:IObservable/rx:IObservable:zip' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;rightSource;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Merges two sequences through a mapping function while only ever using each value once 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the returned sequence and return value of selector
+
+		 ]]></param>
+<param><![CDATA[rightSource The sequence to combine with the current
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed when values are received from both sequences. The return value will be included in the output
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='valueClass' fullname='rx:IObservable/rx:IObservable:valueClass/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Class'>
+<description><![CDATA[
+
+		 The class of the values emitted by this observable sequence 
+
+		 ]]></description>
+<return><![CDATA[Class
+
+		 ]]></return>
+</method>
+<classRec name='Cancelable' fullname='rx:Cancelable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Cancelable.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Provides static methods that create cancelable resources
+
+	 ]]></description>
+</classRec>
+<method name='Cancelable' fullname='rx:Cancelable/Cancelable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='create' fullname='rx:Cancelable/create' isStatic='true' isFinal='false' isOverride='false'  param_names='action' param_types='Function' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Creates a cancelable resource that calls a function when canceled
+
+		  
+
+		 ]]></description>
+<param><![CDATA[action The function to call when the resource is canceled 
+
+		 ]]></param>
+</method>
+<method name='empty' fullname='rx:Cancelable/empty/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Returns a cancelable resource that does nothing when canceled
+
+		 ]]></description>
+</method>
+<classRec name='Observer' fullname='rx:Observer' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Observer.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Provides static methods that create observers
+
+	 ]]></description>
+</classRec>
+<method name='Observer' fullname='rx:Observer/Observer' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='create' fullname='rx:Observer/create' isStatic='true' isFinal='false' isOverride='false'  param_names='onNext;onCompleted;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='rx:IObserver'>
+<description><![CDATA[
+
+		 Creates an IObserver from onNext, onCompleted and onError functions
+
+		 
+
+		 ]]></description>
+<param><![CDATA[onNext The function to call when a value is received
+
+		 ]]></param>
+<param><![CDATA[onCompleted The function to call when the sequence has complted
+
+		 ]]></param>
+<param><![CDATA[onError The function to call if an error occurs in the sequence 
+
+		 ]]></param>
+</method>
+<classRec name='OnError' fullname='rx:OnError' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\OnError.as' namespace='rx' access='public' baseclass='rx:Notification' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A Notification for an onError call
+
+	 ]]></description>
+</classRec>
+<method name='OnError' fullname='rx:OnError/OnError' isStatic='false' isFinal='false' isOverride='false'  param_names='error' param_types='Error' param_defaults='undefined' result_type='*'>
+</method>
+<method name='accept' fullname='rx:OnError/accept' isStatic='false' isFinal='false' isOverride='true'  param_names='onNext;onCompleted;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='void'>
+<description><![CDATA[
+
+		 Calls onError if it's not null
+
+		 ]]></description>
+</method>
+<method name='error' fullname='rx:OnError/error/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Error'>
+<description><![CDATA[
+
+		 Gets the error for this message 
+
+		 ]]></description>
+</method>
+<method name='hasValue' fullname='rx:OnError/hasValue/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Always returns false since no values are associated with errors 
+
+		 ]]></description>
+</method>
+<method name='kind' fullname='rx:OnError/kind/get' isStatic='false' isFinal='false' isOverride='true'  result_type='int'>
+<description><![CDATA[
+
+		 Always returns NotificationKind.ON_ERROR 
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:OnError/value/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Object'>
+<description><![CDATA[
+
+		 Always returns null since no values are associated with errors 
+
+		 ]]></description>
+</method>
+<field name='_error' fullname='rx:OnError/private:_error' type='Error' isStatic='false' isConst='false' >
+</field>
+<classRec name='OnNext' fullname='rx:OnNext' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\OnNext.as' namespace='rx' access='public' baseclass='rx:Notification' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A Notification for an onNext call
+
+	 ]]></description>
+</classRec>
+<method name='OnNext' fullname='rx:OnNext/OnNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='*'>
+</method>
+<method name='accept' fullname='rx:OnNext/accept' isStatic='false' isFinal='false' isOverride='true'  param_names='onNext;onCompleted;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='void'>
+<description><![CDATA[
+
+		 Calls onNext if it's not null
+
+		 ]]></description>
+</method>
+<method name='error' fullname='rx:OnNext/error/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Error'>
+<description><![CDATA[
+
+		 Always returns false since no errors are associated with values 
+
+		 ]]></description>
+</method>
+<method name='hasValue' fullname='rx:OnNext/hasValue/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Always returns true 
+
+		 ]]></description>
+</method>
+<method name='kind' fullname='rx:OnNext/kind/get' isStatic='false' isFinal='false' isOverride='true'  result_type='int'>
+<description><![CDATA[
+
+		 Always returns NotificationKind.ON_NEXT 
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:OnNext/value/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Object'>
+<description><![CDATA[
+
+		 Gets the value from the message 
+
+		 ]]></description>
+</method>
+<field name='_value' fullname='rx:OnNext/private:_value' type='Object' isStatic='false' isConst='false' >
+</field>
+<classRec name='OnCompleted' fullname='rx:OnCompleted' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\OnCompleted.as' namespace='rx' access='public' baseclass='rx:Notification' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A Notification for an onCompleted call
+
+	 ]]></description>
+</classRec>
+<method name='OnCompleted' fullname='rx:OnCompleted/OnCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='accept' fullname='rx:OnCompleted/accept' isStatic='false' isFinal='false' isOverride='true'  param_names='onNext;onCompleted;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='void'>
+<description><![CDATA[
+
+		 Calls onCompleted if it's not null
+
+		 ]]></description>
+</method>
+<method name='error' fullname='rx:OnCompleted/error/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Error'>
+<description><![CDATA[
+
+		 Always returns false since no errors are associated with completion 
+
+		 ]]></description>
+</method>
+<method name='hasValue' fullname='rx:OnCompleted/hasValue/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Always returns false since no values are associated with completion 
+
+		 ]]></description>
+</method>
+<method name='kind' fullname='rx:OnCompleted/kind/get' isStatic='false' isFinal='false' isOverride='true'  result_type='int'>
+<description><![CDATA[
+
+		 Always returns NotificationKind.ON_COMPLETED 
+
+		 ]]></description>
+</method>
+<method name='value' fullname='rx:OnCompleted/value/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Object'>
+<description><![CDATA[
+
+		 Always returns null since no values are associated with completion 
+
+		 ]]></description>
+</method>
+<interfaceRec name='ISubject' fullname='rx:ISubject' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\ISubject.as' namespace='rx' access='public' baseClasses='rx:IObservable;rx:IObserver' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A resource that is both observable and an observer
+
+	 ]]></description>
+</interfaceRec>
+<classRec name='AbsObservable' fullname='rx:AbsObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\AbsObservable.as' namespace='rx' access='public' baseclass='Object' interfaces='rx:IObservable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Subclass this class only if you want to implement a completely custom IObservable.
+
+	 
+
+	 <p>If you can avoid it, however, try to stick to subclassing Subject or using 
+
+	 one of the creation methods.</p>
+
+	 
+
+	 <p>This class may be made inaccessible in future revisions</p>
+
+	 ]]></description>
+</classRec>
+<method name='AbsObservable' fullname='rx:AbsObservable/AbsObservable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='aggregate' fullname='rx:AbsObservable/aggregate' isStatic='false' isFinal='false' isOverride='false'  param_names='accumulator;valueClass;initialValue' param_types='Function;Class;Object' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		  
+
+		 Runs calculation functions over every value in the source sequence and emits the final result
+
+		 ]]></description>
+<param><![CDATA[accumulator A function that accumulates the aggregate value
+
+		 ]]></param>
+<param><![CDATA[valueClass The class of the values returned by accumulator
+
+		 ]]></param>
+<param><![CDATA[initialValue The value to start with
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass (or this instance's valueClass if valueClass is null)
+
+		 ]]></return>
+</method>
+<method name='all' fullname='rx:AbsObservable/all' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Determines if all values in the source sequence satisfy a condition
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='and' fullname='rx:AbsObservable/and' isStatic='false' isFinal='false' isOverride='false'  param_names='right' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:Pattern'>
+<description><![CDATA[
+
+		  
+
+		 Creates a pattern by combining the current source with right.
+
+		 
+
+		 ]]></description>
+<param><![CDATA[right The other sequence to combine with the pattern.
+
+		 ]]></param>
+<return><![CDATA[A pattern representing both sequences
+
+		 ]]></return>
+</method>
+<method name='any' fullname='rx:AbsObservable/any' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Determines if the source sequence contains a value that satisfies a condition
+
+		  
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='asObservable' fullname='rx:AbsObservable/asObservable' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Hides the source sequence so it cannot be cast back to it’s concrete implementation  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='average' fullname='rx:AbsObservable/average' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Returns the average value of all the elements in the source sequence  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence (which should be numeric)
+
+		 ]]></return>
+</method>
+<method name='bufferWithCount' fullname='rx:AbsObservable/bufferWithCount' isStatic='false' isFinal='false' isOverride='false'  param_names='count;skip' param_types='uint;uint' param_defaults='undefined;0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the values from a source sequence in groups of a specific size  
+
+		 ]]></description>
+<param><![CDATA[count The number of values to buffer
+
+		 ]]></param>
+<param><![CDATA[skip The number of values to offset after the buffer is emitted.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='bufferWithTime' fullname='rx:AbsObservable/bufferWithTime' isStatic='false' isFinal='false' isOverride='false'  param_names='timeMs;timeShiftMs;scheduler' param_types='uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the values from a source sequence in groups of a specific size  
+
+		 ]]></description>
+<param><![CDATA[timeMs The amount of time to buffer before the values are released
+
+		 ]]></param>
+<param><![CDATA[timeShiftMs The amount of time to offset after the buffer is emitted
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='cast' fullname='rx:AbsObservable/cast' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Forces values from a source sequence to be of a specific valueClass
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the output sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass 
+
+		 ]]></return>
+</method>
+<method name='catchErrorDefer' fullname='rx:AbsObservable/catchErrorDefer' isStatic='false' isFinal='false' isOverride='false'  param_names='errorClass;deferFunc' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Runs a specific sequence, determined at runtime, when an error occurs
+
+		 ]]></description>
+<param><![CDATA[errorClass The class (and superclass) of error to act on
+
+		 ]]></param>
+<param><![CDATA[deferFunc The function to execute in the event of an error. Signature is <code>function(e : Error) : IObservable</code>
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='catchError' fullname='rx:AbsObservable/catchError' isStatic='false' isFinal='false' isOverride='false'  param_names='second' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Runs a specific sequence when an error occurs
+
+		 ]]></description>
+<param><![CDATA[second The sequence to subscribe to when an error occurs
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='combineLatest' fullname='rx:AbsObservable/combineLatest' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;right;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Merges two sequences through a mapping function, using the latest value from either source 
+
+		 ]]></description>
+<param><![CDATA[returnClass The valueClass of the values returned by selector
+
+		 ]]></param>
+<param><![CDATA[right The sequence to combine with
+
+		 ]]></param>
+<param><![CDATA[selector The function that combines values from the two sources. Signature is <code>function(left : this.valueClass, right : right.valueClass) : returnType</code>
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of returnType 
+
+		 ]]></return>
+</method>
+<method name='concat' fullname='rx:AbsObservable/concat' isStatic='false' isFinal='false' isOverride='false'  param_names='sources' param_types='Array' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Concatonates multiple sequences by running each sequence as the previous one finishes
+
+		 ]]></description>
+<param><![CDATA[sources The sequences to concatonate after the current sequence 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='contains' fullname='rx:AbsObservable/contains' isStatic='false' isFinal='false' isOverride='false'  param_names='value;comparer' param_types='Object;Function' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Determines if the source sequence contains a specific value 
+
+		 ]]></description>
+<param><![CDATA[value The value to check against the sequence
+
+		 ]]></param>
+<param><![CDATA[comparer The function used to compare values. Default equality will be used if comparer is null.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Boolean
+
+		 ]]></return>
+</method>
+<method name='count' fullname='rx:AbsObservable/count' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Returns the number of elements in the source sequence 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of int
+
+		 ]]></return>
+</method>
+<method name='delayUntil' fullname='rx:AbsObservable/delayUntil' isStatic='false' isFinal='false' isOverride='false'  param_names='dt;scheduler' param_types='Date;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 ]]></description>
+<inheritDoc><![CDATA[]]></inheritDoc>
+</method>
+<method name='delay' fullname='rx:AbsObservable/delay' isStatic='false' isFinal='false' isOverride='false'  param_names='delayMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Delays all values in a sequences by a specified time 
+
+		 ]]></description>
+<param><![CDATA[delayMs The amount of time, in milliseconds, to delay
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to delay the values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='dematerialize' fullname='rx:AbsObservable/dematerialize' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Converts materialized values back into messages  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='distinctUntilChanged' fullname='rx:AbsObservable/distinctUntilChanged' isStatic='false' isFinal='false' isOverride='false'  param_names='comparer' param_types='Function' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Filters out consecutive duplicates from a source sequence  
+
+		 ]]></description>
+<param><![CDATA[comparer The function used to compare values. Default equality will be used if comparer is null.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='doAction' fullname='rx:AbsObservable/doAction' isStatic='false' isFinal='false' isOverride='false'  param_names='nextAction;completeAction;errorAction' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Allows custom code to be run when messages arrive without affecting the observer  
+
+		 ]]></description>
+<param><![CDATA[next The function to execute in the event of a value (onNext)
+
+		 ]]></param>
+<param><![CDATA[complete The function to execute in the event the sequence completes (onComplete)
+
+		 ]]></param>
+<param><![CDATA[error The function to execute in the event of an error (onError)
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='finallyAction' fullname='rx:AbsObservable/finallyAction' isStatic='false' isFinal='false' isOverride='false'  param_names='action' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Executes a function when the sequence completes or errors
+
+		 ]]></description>
+<param><![CDATA[finallyAction The function to execute in the event the sequence completes or errors
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='firstOrDefault' fullname='rx:AbsObservable/firstOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the first value in the sequence, or a default value if the sequence completes with no values
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='first' fullname='rx:AbsObservable/first' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the first value in the sequence, or an error if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='forkJoin' fullname='rx:AbsObservable/forkJoin' isStatic='false' isFinal='false' isOverride='false'  param_names='resultClass;right;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Combines the current sequence with another, emitting the last values of both after both have completed 
+
+		 ]]></description>
+<param><![CDATA[resultClass The class of the valueClass returned by selector
+
+		 ]]></param>
+<param><![CDATA[right The sequence to subscribe to, along with the current sequence
+
+		 ]]></param>
+<param><![CDATA[selector The function that accepts the last values of both sequences and returns the output value 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass resultClass
+
+		 ]]></return>
+</method>
+<method name='lastOrDefault' fullname='rx:AbsObservable/lastOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the last value in the sequence, or the default value if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='last' fullname='rx:AbsObservable/last' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the last value in the sequence, or an error if the sequence completes with no values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='let' fullname='rx:AbsObservable/let' isStatic='false' isFinal='false' isOverride='false'  param_names='func' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Pipes a composed sequence to be mapped through a function so it can be used multiple times 
+
+		 ]]></description>
+<param><![CDATA[func The function to send the current sequence through, and return a new sequence 
+
+		 ]]></param>
+<return><![CDATA[The observable sequence returned by func 
+
+		 ]]></return>
+</method>
+<method name='materialize' fullname='rx:AbsObservable/materialize' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Converts all messages (next, complete, error) into values 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of rx.Notification
+
+		 ]]></return>
+</method>
+<method name='merge' fullname='rx:AbsObservable/merge' isStatic='false' isFinal='false' isOverride='false'  param_names='sources;scheduler' param_types='rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the values from multiple sources in the order that they arrive 
+
+		 ]]></description>
+<param><![CDATA[sources The other sequences from which the values will be merged with the current sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='normalizeComparer' fullname='rx:AbsObservable/private:normalizeComparer' isStatic='true' isFinal='false' isOverride='false'  param_names='source' param_types='Function' param_defaults='undefined' result_type='Function'>
+</method>
+<method name='observeOn' fullname='rx:AbsObservable/observeOn' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Defers messages to subscribers through a scheduler  
+
+		 ]]></description>
+<param><![CDATA[scheduler The subscriber to send messages to subscribers through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='ofClass' fullname='rx:AbsObservable/ofClass' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Filters out values from a source sequence that are not of a specific valueClass 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class (or subsclass) of all values to emit 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='onErrorResumeNext' fullname='rx:AbsObservable/onErrorResumeNext' isStatic='false' isFinal='false' isOverride='false'  param_names='second;scheduler' param_types='rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes down a list of sequence as each one errors or complete 
+
+		 ]]></description>
+<param><![CDATA[second The sequence to run after the current sequence completes or errors
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use to subscribe to the new sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='pruneAndConnect' fullname='rx:AbsObservable/pruneAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector;scheduler' param_types='Function;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='prune' fullname='rx:AbsObservable/prune' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 
+
+		 Creates a shared sequence that emits the last value of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='publishAndConnect' fullname='rx:AbsObservable/publishAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='publish' fullname='rx:AbsObservable/publish' isStatic='false' isFinal='false' isOverride='false'  result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 
+
+		 Creates a connectable sequence that can be shared by multiple observers  
+
+		 ]]></description>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='removeTimeInterval' fullname='rx:AbsObservable/removeTimeInterval' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Removes time interval information added with timeInterval  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='removeTimestamp' fullname='rx:AbsObservable/removeTimestamp' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Removes timestamp information added with timestamp  
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the original values
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='repeat' fullname='rx:AbsObservable/repeat' isStatic='false' isFinal='false' isOverride='false'  param_names='repeatCount' param_types='uint' param_defaults='0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Repeats the source sequence a specific number of times 
+
+		 ]]></description>
+<param><![CDATA[repeatCount The number of times to repeat the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='replayAndConnect' fullname='rx:AbsObservable/replayAndConnect' isStatic='false' isFinal='false' isOverride='false'  param_names='selector;bufferSize;window;scheduler' param_types='Function;uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;0;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Records the output of the source sequence and replays it to future subscribers
+
+		 ]]></description>
+<param><![CDATA[selector The function to map the connected sequence through 
+
+		 ]]></param>
+<param><![CDATA[bufferSize The number of values at the end of the sequence to replay, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='replay' fullname='rx:AbsObservable/replay' isStatic='false' isFinal='false' isOverride='false'  param_names='bufferSize;window;scheduler' param_types='uint;uint;rx.scheduling:IScheduler' param_defaults='0;0;null' result_type='rx.subjects:IConnectableObservable'>
+<description><![CDATA[
+
+		 
+
+		 Records the output of the source sequence and replays it to future subscribers 
+
+		 ]]></description>
+<param><![CDATA[bufferSize The number of values at the end of the sequence to replay, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[A connectable observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='retry' fullname='rx:AbsObservable/retry' isStatic='false' isFinal='false' isOverride='false'  param_names='retryCount' param_types='uint' param_defaults='0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Repeats the source sequence when an error occurs 
+
+		 ]]></description>
+<param><![CDATA[retryCount The number of times to retry the sequence in the event of an error
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='sample' fullname='rx:AbsObservable/sample' isStatic='false' isFinal='false' isOverride='false'  param_names='intervalMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the latest value on a time interval from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[intervalMs The interval of time, in milliseconds, to sample the current value after
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='scan' fullname='rx:AbsObservable/scan' isStatic='false' isFinal='false' isOverride='false'  param_names='accumulator;valueClass;initialValue' param_types='Function;Class;Object' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Runs calculation functions over every value in the source sequence and emits the value as it is calculated 
+
+		 ]]></description>
+<param><![CDATA[accumulator The function that accumulates values
+
+		 ]]></param>
+<param><![CDATA[valueClass The class of the returned sequence and return value of accumulator
+
+		 ]]></param>
+<param><![CDATA[initialValue The value to start with
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='selectInternal' fullname='rx:AbsObservable/private:selectInternal' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;selector' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+</method>
+<method name='selectMany' fullname='rx:AbsObservable/selectMany' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;selector' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Starts a new sequence for every value in the source sequence and merges their values
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the sequences returned by selector
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed with each value
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass result
+
+		 ]]></return>
+</method>
+<method name='select' fullname='rx:AbsObservable/select' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;selector' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Maps the values from a source sequence through a function to change their value 
+
+		 ]]></description>
+<param><![CDATA[result The class of the returned sequence and return value of accumulator 
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed with each value
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass result
+
+		 ]]></return>
+</method>
+<method name='singleOrDefault' fullname='rx:AbsObservable/singleOrDefault' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the only item from a source sequence, the default value if no values are emitted, or
+
+		 an error if more than one value is emitted.  
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='single' fullname='rx:AbsObservable/single' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the only item from a source sequence, or an error if any other number of values are emitted. 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='skipLast' fullname='rx:AbsObservable/skipLast' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Ignores a set number of values from the end of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to skip from the end of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='skipUntil' fullname='rx:AbsObservable/skipUntil' isStatic='false' isFinal='false' isOverride='false'  param_names='other' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Ignores values from a source sequence until a value is received from a specified sequence 
+
+		 ]]></description>
+<param><![CDATA[other The other sequence that will mark the start of values being used from the current sequence 
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='skipWhile' fullname='rx:AbsObservable/skipWhile' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Ignores values from a source sequence until a condition is no longer met
+
+		 ]]></description>
+<param><![CDATA[predicate The function to be executed as each value is emitted. When this function returns false, values will be used from the current sequence.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='skip' fullname='rx:AbsObservable/skip' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Ignores a set number of values from the start of the source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to skip from the start of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='startWith' fullname='rx:AbsObservable/startWith' isStatic='false' isFinal='false' isOverride='false'  param_names='values;scheduler' param_types='Array;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Emits the specified values at the start of a sequence 
+
+		 ]]></description>
+<param><![CDATA[value The value to emit at the start of the sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='subscribeOn' fullname='rx:AbsObservable/subscribeOn' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Defers subscriptions to the source through a scheduler  
+
+		 ]]></description>
+<param><![CDATA[scheduler The subscriber to schedule subscriptions through
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='subscribeWith' fullname='rx:AbsObservable/subscribeWith' isStatic='false' isFinal='false' isOverride='false'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<method name='subscribe' fullname='rx:AbsObservable/subscribe' isStatic='false' isFinal='false' isOverride='false'  param_names='onNext;onComplete;onError' param_types='Function;Function;Function' param_defaults='undefined;null;null' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied functions 
+
+		 ]]></description>
+<param><![CDATA[onNext Function to be called for every payload. Signature is <code>function(payload : T) : void</code>
+
+		 ]]></param>
+<param><![CDATA[onComplete Optional. Function to be called when the sequence completes. Signature is <code>function():void</code>
+
+		 ]]></param>
+<param><![CDATA[onError Optional. Function to be called when an error occurs in the sequence. Signature is <code>function(err:Error):void</code>
+
+		 ]]></param>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling <code>unsubscribe()</code> 
+
+		 ]]></return>
+</method>
+<method name='sum' fullname='rx:AbsObservable/sum' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Returns the summed value of all the elements in the source sequence 
+
+		 ]]></description>
+<return><![CDATA[An observable sequence of Number
+
+		 ]]></return>
+</method>
+<method name='takeLast' fullname='rx:AbsObservable/takeLast' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Takes only the last set number of values from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[count The number of values to use from the end of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='takeUntil' fullname='rx:AbsObservable/takeUntil' isStatic='false' isFinal='false' isOverride='false'  param_names='other' param_types='rx:IObservable' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Takes values from a source sequence until a value is received from a specified sequence  
+
+		 ]]></description>
+<param><![CDATA[other The other sequence that will mark the end of values being used from the current sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='takeWhile' fullname='rx:AbsObservable/takeWhile' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Takes values from a source sequence until a condition is no longer met 
+
+		 ]]></description>
+<param><![CDATA[predicate The function to be executed as each value is emitted. When this function returns false, values will no longer be used from the current sequence.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='take' fullname='rx:AbsObservable/take' isStatic='false' isFinal='false' isOverride='false'  param_names='count' param_types='uint' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Takes only the first set number of values from a source sequenc
+
+		 ]]></description>
+<param><![CDATA[count The number of values to use from the start of the sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='throttle' fullname='rx:AbsObservable/throttle' isStatic='false' isFinal='false' isOverride='false'  param_names='dueTimeMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Limits how often values from a source sequence will be accepted from a source
+
+		 ]]></description>
+<param><![CDATA[intervalMs The interval of time, in milliseconds, during which only one value from the source sequence will be accepted
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='timeInterval' fullname='rx:AbsObservable/timeInterval' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Includes, with every value emitted, the amount of time passed since the previous value 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use to determine time
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of TimeInterval
+
+		 ]]></return>
+</method>
+<method name='timeout' fullname='rx:AbsObservable/timeout' isStatic='false' isFinal='false' isOverride='false'  param_names='timeoutMs;other;scheduler' param_types='uint;rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Raises an error (or a specified sequence) after a certain period of inactivity 
+
+		 ]]></description>
+<param><![CDATA[timeoutMs The amount of time, in milliseconds, after which to raise an error (or subscribe to other)
+
+		 ]]></param>
+<param><![CDATA[other The sequence to subscribe to in the event of a timeout. If null, a TimeoutError will be emitted.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence 
+
+		 ]]></return>
+</method>
+<method name='timestamp' fullname='rx:AbsObservable/timestamp' isStatic='false' isFinal='false' isOverride='false'  param_names='scheduler' param_types='rx.scheduling:IScheduler' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Includes, with every value emitted, the timestamp of when the value was emitted from the source 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Timestamped 
+
+		 ]]></return>
+</method>
+<method name='where' fullname='rx:AbsObservable/where' isStatic='false' isFinal='false' isOverride='false'  param_names='predicate' param_types='Function' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Filters out values from a source sequence 
+
+		 ]]></description>
+<param><![CDATA[predicate The predicate function to execute for each value to determine if it will be include in the output
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the current sequence
+
+		 ]]></return>
+</method>
+<method name='zip' fullname='rx:AbsObservable/zip' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;rightSource;selector' param_types='Class;rx:IObservable;Function' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Merges two sequences through a mapping function while only ever using each value once 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the returned sequence and return value of selector
+
+		 ]]></param>
+<param><![CDATA[rightSource The sequence to combine with the current
+
+		 ]]></param>
+<param><![CDATA[selector The function to be executed when values are received from both sequences. The return value will be included in the output
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='valueClass' fullname='rx:AbsObservable/valueClass/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Class'>
+<description><![CDATA[
+
+		 
+
+		 The class of the values emitted by this observable sequence 
+
+		 ]]></description>
+<return><![CDATA[Class
+
+		 ]]></return>
+</method>
+<classRec name='Subject' fullname='rx:Subject' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Subject.as' namespace='rx' access='public' baseclass='rx:AbsObservable' interfaces='rx:ISubject' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A Subject is both an IObservable and an IObserver, so it can be 
+
+	 returned as an IObservable and fed values through the IObserver 
+
+	 methods.
+
+	 
+
+	 <p>When returning a Subject as an IObservable, it's recommended that you
+
+	 return subject.asObservable() to hide the original instance</p>
+
+	 ]]></description>
+</classRec>
+<method name='Subject' fullname='rx:Subject/Subject' isStatic='false' isFinal='false' isOverride='false'  param_names='type' param_types='Class' param_defaults='undefined' result_type='*'>
+</method>
+<method name='onCompleted' fullname='rx:Subject/onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that the sequence has completed and 
+
+		 that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onError' fullname='rx:Subject/onError' isStatic='false' isFinal='false' isOverride='false'  param_names='error' param_types='Error' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that the sequence has halted with an error 
+
+		 and that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onNext' fullname='rx:Subject/onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='pl' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that a value has been received
+
+		 ]]></description>
+</method>
+<method name='subscribeWith' fullname='rx:Subject/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<method name='hasSubscriptions' fullname='rx:Subject/hasSubscriptions/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Determines whether this subject has any subscriptions
+
+		 ]]></description>
+</method>
+<method name='subscriptionCount' fullname='rx:Subject/subscriptionCount/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+<description><![CDATA[
+
+		 Gets the number of subscriptions this subject has
+
+		 ]]></description>
+</method>
+<method name='valueClass' fullname='rx:Subject/valueClass/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Class'>
+<description><![CDATA[
+
+		 
+
+		 The class of the values emitted by this observable sequence 
+
+		 ]]></description>
+<return><![CDATA[Class
+
+		 ]]></return>
+</method>
+<field name='_isFinished' fullname='rx:Subject/private:_isFinished' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_observers' fullname='rx:Subject/private:_observers' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_subscriptionCount' fullname='rx:Subject/private:_subscriptionCount' type='uint' isStatic='false' isConst='false' defaultValue='0' >
+</field>
+<field name='_type' fullname='rx:Subject/private:_type' type='Class' isStatic='false' isConst='false' >
+</field>
+<classRec name='ClosureObservable' fullname='rx:ClosureObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\ClosureObservable.as' namespace='rx' access='internal' baseclass='rx:AbsObservable' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='ClosureObservable' fullname='rx:ClosureObservable/ClosureObservable' isStatic='false' isFinal='false' isOverride='false'  param_names='type;observeFunc' param_types='Class;Function' param_defaults='undefined;undefined' result_type='*'>
+</method>
+<method name='subscribeWith' fullname='rx:ClosureObservable/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+</method>
+<method name='valueClass' fullname='rx:ClosureObservable/valueClass/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Class'>
+</method>
+<field name='_observeFunc' fullname='rx:ClosureObservable/private:_observeFunc' type='Function' isStatic='false' isConst='false' >
+</field>
+<field name='_type' fullname='rx:ClosureObservable/private:_type' type='Class' isStatic='false' isConst='false' >
+</field>
+<classRec name='Observable' fullname='rx:Observable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\Observable.as' namespace='rx' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Provides static methods that create observable sequences
+
+	 ]]></description>
+</classRec>
+<method name='Observable' fullname='rx:Observable/Observable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='amb' fullname='rx:Observable/amb' isStatic='true' isFinal='false' isOverride='false'  param_names='sources' param_types='Array' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Takes multiple source sequences and returns values from the first sequence to emit a value  
+
+		 ]]></description>
+<param><![CDATA[sources The sources that will be subscribed to
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the same valueClass as the first sequence in sources
+
+		 ]]></return>
+</method>
+<method name='catchErrors' fullname='rx:Observable/catchErrors' isStatic='true' isFinal='false' isOverride='false'  param_names='sources;scheduler' param_types='Array;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Concatonates a list of sequences as each one errors. A successful sequence ends the concatonation.  
+
+		 ]]></description>
+<param><![CDATA[sources The list of sequence to concatonate.
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence with the valueClass of the first sequence in sources
+
+		 ]]></return>
+</method>
+<method name='concat' fullname='rx:Observable/concat' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;sources' param_types='Class;Array' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Concatonates multiple sequences by running each sequence as the previous one finishes 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class common to all sequences in sources
+
+		 ]]></param>
+<param><![CDATA[sources The sequences to concatonate
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='createWithCancelable' fullname='rx:Observable/createWithCancelable' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;subscribeFunc' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a custom observable sequence that uses cancelable resources 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the created sequence 
+
+		 ]]></param>
+<param><![CDATA[subscribeFunc The function that will be executed when a subscriber subscribes, the return value of which is an ICancelable to be canceled when the sequence is terminated
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='create' fullname='rx:Observable/create' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;subscribeFunc' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a custom observable sequence 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the created sequence 
+
+		 ]]></param>
+<param><![CDATA[subscribeFunc The function that will be executed when a subscriber subscribes, the return value of which is a function to be run when the sequence is terminated
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='defer' fullname='rx:Observable/defer' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;observableFactory' param_types='Class;Function' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Defers selection of a sequence until the sequence is subscribed to  
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the returned sequence
+
+		 ]]></param>
+<param><![CDATA[observableFactory The function that will be executed when a new subscription occurs, the returned sequence will be used for the subscriber.
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='empty' fullname='rx:Observable/empty' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;scheduler' param_types='Class;rx.scheduling:IScheduler' param_defaults='null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence that immediately completes  
+
+		 ]]></description>
+<param><![CDATA[valueClass The value class for the sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='forkJoin' fullname='rx:Observable/forkJoin' isStatic='true' isFinal='false' isOverride='false'  param_names='sources' param_types='Array' param_defaults='undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Subscribes to multiple source sequence and emits the last values of each after all have completed 
+
+		 ]]></description>
+<param><![CDATA[sources The sequences to subscribe to
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Array
+
+		 ]]></return>
+</method>
+<method name='fromArray' fullname='rx:Observable/fromArray' isStatic='true' isFinal='false' isOverride='false'  param_names='elementClass;values;scheduler' param_types='Class;Array;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence consisting of the values in an Array 
+
+		 ]]></description>
+<param><![CDATA[elementClass The class common to all values in values
+
+		 ]]></param>
+<param><![CDATA[values The array of values to iterate through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of elementClass
+
+		 ]]></return>
+</method>
+<method name='fromErrorEvents' fullname='rx:Observable/fromErrorEvents' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;eventDispatcher;eventTypes;useCapture;priority;errorMap' param_types='Class;flash.events:IEventDispatcher;Array;Boolean;int;Function' param_defaults='undefined;undefined;undefined;false;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence that emits an error when one of several event valueClasss is received from an IEventDispatcher
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass for the output sequence
+
+		 ]]></param>
+<param><![CDATA[eventDispatcher The IEventDispatcher that dispatches the event
+
+		 ]]></param>
+<param><![CDATA[valueClasss The event valueClasss that signify an error
+
+		 ]]></param>
+<param><![CDATA[useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
+
+		 ]]></param>
+<param><![CDATA[priority The priority of the event
+
+		 ]]></param>
+<param><![CDATA[errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of 
+
+		 ]]></return>
+</method>
+<method name='fromErrorEvent' fullname='rx:Observable/fromErrorEvent' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;eventDispatcher;eventType;useCapture;priority;errorMap' param_types='Class;flash.events:IEventDispatcher;String;Boolean;int;Function' param_defaults='undefined;undefined;undefined;false;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence that emits an error when an event is received from an IEventDispatcher  
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass for the output sequence
+
+		 ]]></param>
+<param><![CDATA[eventDispatcher The IEventDispatcher that dispatches the event
+
+		 ]]></param>
+<param><![CDATA[valueClass The event valueClass name
+
+		 ]]></param>
+<param><![CDATA[useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
+
+		 ]]></param>
+<param><![CDATA[priority The priority of the event
+
+		 ]]></param>
+<param><![CDATA[errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass, or Object if valueClass is null 
+
+		 ]]></return>
+</method>
+<method name='fromEvents' fullname='rx:Observable/fromEvents' isStatic='true' isFinal='false' isOverride='false'  param_names='eventDispatcher;eventTypes;commonValueClass;useCapture;priority' param_types='flash.events:IEventDispatcher;Array;Class;Boolean;int' param_defaults='undefined;undefined;null;false;0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates Combines events from multiple event valueClasss 
+
+		 ]]></description>
+<param><![CDATA[eventDispatcher The IEventDispatcher that dispatches the event
+
+		 ]]></param>
+<param><![CDATA[eventTypes An array event type names
+
+		 ]]></param>
+<param><![CDATA[commonValueClass The valueClass of event common to all events. Event will be used if this argument is null.
+
+		 ]]></param>
+<param><![CDATA[useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
+
+		 ]]></param>
+<param><![CDATA[priority The priority of the event
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of commonValueClass, or Event if commonValueClass is null 
+
+		 ]]></return>
+</method>
+<method name='fromEvent' fullname='rx:Observable/fromEvent' isStatic='true' isFinal='false' isOverride='false'  param_names='eventDispatcher;eventType;valueClass;useCapture;priority' param_types='flash.events:IEventDispatcher;String;Class;Boolean;int' param_defaults='undefined;undefined;null;false;0' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence of events from an IEventDispatcher 
+
+		 ]]></description>
+<param><![CDATA[eventDispatcher The IEventDispatcher that dispatches the event
+
+		 ]]></param>
+<param><![CDATA[valueClass The event valueClass name
+
+		 ]]></param>
+<param><![CDATA[eventType The valueClass of event dispatched by eventDispatcher. Event will be used if this argument is null.
+
+		 ]]></param>
+<param><![CDATA[useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
+
+		 ]]></param>
+<param><![CDATA[priority The priority of the event
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of eventType, or Event if eventType is null
+
+		 ]]></return>
+</method>
+<method name='generate' fullname='rx:Observable/generate' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;initialState;predicate;iterate;resultMap;scheduler' param_types='Class;Object;Function;Function;Function;rx.scheduling:IScheduler' param_defaults='undefined;undefined;undefined;undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a custom observable sequence that is controlled by methods supplied as arguments 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of values emitted by the sequence
+
+		 ]]></param>
+<param><![CDATA[initialState The initial state value to use (of class valueClass)
+
+		 ]]></param>
+<param><![CDATA[predicate The predicate to determine whether the sequence has completed
+
+		 ]]></param>
+<param><![CDATA[iterate The function executed between iterations
+
+		 ]]></param>
+<param><![CDATA[resultMap The function that maps the current state to an output value
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='ifElse' fullname='rx:Observable/ifElse' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;predicate;ifTrue;ifFalse' param_types='Class;Function;rx:IObservable;rx:IObservable' param_defaults='undefined;undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Defers selection of one of two sequences until the sequence is subscribed to
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the returned sequence
+
+		 ]]></param>
+<param><![CDATA[predicate The function to execute when a subscription occurs to determine which sequence to subscribe to
+
+		 ]]></param>
+<param><![CDATA[ifTrue The sequence to subscribe to if predicate returns true
+
+		 ]]></param>
+<param><![CDATA[ifFalse The sequence to subscribe to if predicate returns false
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='interval' fullname='rx:Observable/interval' isStatic='true' isFinal='false' isOverride='false'  param_names='intervalMs;scheduler' param_types='uint;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates an unending observable sequence of integers that are incremented at a regular interval 
+
+		 ]]></description>
+<param><![CDATA[intervalMs The interval, in milliseconds, to wait in between values
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used for timing
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of int
+
+		 ]]></return>
+</method>
+<method name='join' fullname='rx:Observable/join' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;plans' param_types='Class;Array' param_defaults='undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Matches join multiple plans (source sequence combinations) in the order they are specified 
+
+		 ]]></description>
+<param><![CDATA[valueClass The common value class shared between the output of all plans in plans 
+
+		 ]]></param>
+<param><![CDATA[plans The array of rx.Plan objects creates using 'and' and 'then'
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='lookup' fullname='rx:Observable/lookup' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;keySelector;dictionary' param_types='Class;Function;flash.utils:Dictionary' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Defers selection of the sequence to use by using a function that returns a key into a dictionary of sequences 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the return sequence
+
+		 ]]></param>
+<param><![CDATA[keySelector The function that, at the moment of subscription, will return the key into dictionary
+
+		 ]]></param>
+<param><![CDATA[dictionary The dictionary of sequences
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='mapErrorEvents' fullname='rx:Observable/private:mapErrorEvents' isStatic='true' isFinal='false' isOverride='false'  param_names='source;errorMap' param_types='rx:IObservable;Function' param_defaults='undefined;null' result_type='rx:IObservable'>
+</method>
+<method name='mergeMany' fullname='rx:Observable/mergeMany' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;source;scheduler' param_types='Class;rx:IObservable;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the values from multiple sources in the order that they arrive 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass common to all sequences emitted by source
+
+		 ]]></param>
+<param><![CDATA[source An IObservable with valueClass IObservable, the values of which will be merged
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='merge' fullname='rx:Observable/merge' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;sources;scheduler' param_types='Class;Array;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Emits the values from multiple sources in the order that they arrive 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass common to all sequences emitted by source
+
+		 ]]></param>
+<param><![CDATA[source An array of IObservable sequences
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='never' fullname='rx:Observable/never' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Returns an IObservable that never completes
+
+		 ]]></description>
+</method>
+<method name='onErrorResumeNext' fullname='rx:Observable/onErrorResumeNext' isStatic='true' isFinal='false' isOverride='false'  param_names='sources;scheduler' param_types='Array;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Concatonates a list of sequence as each one errors or complete 
+
+		 ]]></description>
+<param><![CDATA[sources The list of sequences to concatonate
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of the valueClass of the value sequence in sources
+
+		 ]]></return>
+</method>
+<method name='range' fullname='rx:Observable/range' isStatic='true' isFinal='false' isOverride='false'  param_names='start;count;scheduler' param_types='int;uint;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence of consecutive integers  
+
+		 ]]></description>
+<param><![CDATA[start The inclusive start value of the range
+
+		 ]]></param>
+<param><![CDATA[count The number of values, including start, to emit
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of int
+
+		 ]]></return>
+</method>
+<method name='repeatValue' fullname='rx:Observable/repeatValue' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;value;repeatCount;scheduler' param_types='Class;Object;uint;rx.scheduling:IScheduler' param_defaults='undefined;undefined;0;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Repeats a value a specification number of times 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the sequence and of value
+
+		 ]]></param>
+<param><![CDATA[value The value to repeat
+
+		 ]]></param>
+<param><![CDATA[repeatCount The number of times to emit the value
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='returnValue' fullname='rx:Observable/returnValue' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;value;scheduler' param_types='Class;Object;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Create a sequence consisting of exactly one value 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the sequence and of value
+
+		 ]]></param>
+<param><![CDATA[value The value to emit
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='start' fullname='rx:Observable/start' isStatic='true' isFinal='false' isOverride='false'  param_names='action;valueClass;scheduler' param_types='Function;Class;rx.scheduling:IScheduler' param_defaults='undefined;null;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence based on a call to a function  
+
+		 ]]></description>
+<param><![CDATA[action The function to call
+
+		 ]]></param>
+<param><![CDATA[valueClass The valueClass of the sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='throwError' fullname='rx:Observable/throwError' isStatic='true' isFinal='false' isOverride='false'  param_names='error;valueClass' param_types='Error;Class' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence that immediately throws an Error  
+
+		 ]]></description>
+<param><![CDATA[error The error to raise when a new subscription occurs
+
+		 ]]></param>
+<param><![CDATA[valueClass The Class of the returned sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='timer' fullname='rx:Observable/timer' isStatic='true' isFinal='false' isOverride='false'  param_names='delayMs;intervalMs;scheduler' param_types='uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates an unending observable sequence of integers that begin after a delay and are incremented at a regular interval 
+
+		 ]]></description>
+<param><![CDATA[delayMs The interval, in milliseconds, to wait before the first value
+
+		 ]]></param>
+<param><![CDATA[intervalMs The interval, in milliseconds, to wait in between subsequent values
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used for timing
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of int
+
+		 ]]></return>
+</method>
+<method name='toAsync' fullname='rx:Observable/toAsync' isStatic='true' isFinal='false' isOverride='false'  param_names='action;valueClass;scheduler' param_types='Function;Class;rx.scheduling:IScheduler' param_defaults='undefined;null;null' result_type='Function'>
+<description><![CDATA[
+
+		 Converts a function into an observable sequence  
+
+		 ]]></description>
+<param><![CDATA[action The function to call
+
+		 ]]></param>
+<param><![CDATA[valueClass The valueClass of the sequence
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='urlLoader' fullname='rx:Observable/urlLoader' isStatic='true' isFinal='false' isOverride='false'  param_names='request;dataFormat;loaderContext' param_types='flash.net:URLRequest;String;flash.system:LoaderContext' param_defaults='undefined;text;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates an observable sequence that loads an object from a URLRequest 
+
+		 ]]></description>
+<param><![CDATA[request The URLRequest to load
+
+		 ]]></param>
+<param><![CDATA[dataFormat A value of flash.net.URLLoaderDataFormat
+
+		 ]]></param>
+<param><![CDATA[loaderContext The optional LoaderContext to use
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of Object
+
+		 ]]></return>
+</method>
+<method name='xml' fullname='rx:Observable/xml' isStatic='true' isFinal='false' isOverride='false'  param_names='request;loaderContext' param_types='flash.net:URLRequest;flash.system:LoaderContext' param_defaults='undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Loads an XML document
+
+		 ]]></description>
+<param><![CDATA[request The URLRequest to load
+
+		 ]]></param>
+<param><![CDATA[ignoreWhite Whether to ignore whitespace when parsing the XML
+
+		 ]]></param>
+<param><![CDATA[loaderContext The optional LoaderContext to use
+
+		 ]]></param>
+<return><![CDATA[An IObservable sequence of XMLDocument 
+
+		 ]]></return>
+</method>
+<field name='_unhandledErrorsSubject' fullname='rx:Observable/private:_unhandledErrorsSubject' type='rx:Subject' isStatic='true' isConst='false' defaultValue='unknown' >
+</field>
+<interfaceRec name='IScheduler' fullname='rx.scheduling:IScheduler' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\scheduling\IScheduler.as' namespace='rx.scheduling' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Used to distribute workload
+
+	 ]]></description>
+</interfaceRec>
+<method name='schedule' fullname='rx.scheduling:IScheduler/rx.scheduling:IScheduler:schedule' isStatic='false' isFinal='false' isOverride='false'  param_names='action;dueTime' param_types='Function;int' param_defaults='undefined;0' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Schedules a function to be run, either immediately or in the future 
+
+		 ]]></description>
+<param><![CDATA[action The function to run
+
+		 ]]></param>
+<param><![CDATA[dueTime The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+
+		 ]]></param>
+<return><![CDATA[An ICancelable that will stop the action from being run, if it hasn't already
+
+		 ]]></return>
+</method>
+<method name='now' fullname='rx.scheduling:IScheduler/rx.scheduling:IScheduler:now/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Date'>
+<description><![CDATA[
+
+		 Gets the current Date and time
+
+		 ]]></description>
+</method>
+<classRec name='TimerPool' fullname='rx.scheduling:TimerPool' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\scheduling\TimerPool.as' namespace='rx.scheduling' access='internal' baseclass='Object' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='TimerPool' fullname='rx.scheduling:TimerPool/TimerPool' isStatic='false' isFinal='false' isOverride='false'  param_names='capacity' param_types='int' param_defaults='undefined' result_type='*'>
+</method>
+<method name='obtain' fullname='rx.scheduling:TimerPool/obtain' isStatic='false' isFinal='false' isOverride='false'  result_type='flash.utils:Timer'>
+</method>
+<method name='release' fullname='rx.scheduling:TimerPool/release' isStatic='false' isFinal='false' isOverride='false'  param_names='timer' param_types='flash.utils:Timer' param_defaults='undefined' result_type='void'>
+</method>
+<method name='instance' fullname='rx.scheduling:TimerPool/instance/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:TimerPool'>
+</method>
+<method name='size' fullname='rx.scheduling:TimerPool/size/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+</method>
+<field name='DEFAULT_CAPACITY' fullname='rx.scheduling:TimerPool/private:DEFAULT_CAPACITY' type='int' isStatic='true' isConst='true' defaultValue='10' >
+</field>
+<field name='_capacity' fullname='rx.scheduling:TimerPool/private:_capacity' type='int' isStatic='false' isConst='false' >
+</field>
+<field name='_createCount' fullname='rx.scheduling:TimerPool/private:_createCount' type='int' isStatic='false' isConst='false' defaultValue='0' >
+</field>
+<field name='_instance' fullname='rx.scheduling:TimerPool/private:_instance' type='rx.scheduling:TimerPool' isStatic='true' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_maxCreated' fullname='rx.scheduling:TimerPool/private:_maxCreated' type='int' isStatic='false' isConst='false' defaultValue='0' >
+</field>
+<field name='_pool' fullname='rx.scheduling:TimerPool/private:_pool' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<classRec name='ImmediateScheduler' fullname='rx.scheduling:ImmediateScheduler' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\scheduling\ImmediateScheduler.as' namespace='rx.scheduling' access='public' baseclass='Object' interfaces='rx.scheduling:IScheduler' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A scheduler that executes actions immediately, or immediately
+
+	 after their dueTime (if specified).
+
+	 ]]></description>
+</classRec>
+<method name='schedule' fullname='rx.scheduling:ImmediateScheduler/schedule' isStatic='false' isFinal='false' isOverride='false'  param_names='action;dueTime' param_types='Function;int' param_defaults='undefined;0' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Schedules a function to be run, either immediately or in the future 
+
+		 ]]></description>
+<param><![CDATA[action The function to run
+
+		 ]]></param>
+<param><![CDATA[dueTime The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+
+		 ]]></param>
+<return><![CDATA[An ICancelable that will stop the action from being run, if it hasn't already
+
+		 ]]></return>
+</method>
+<method name='instance' fullname='rx.scheduling:ImmediateScheduler/instance/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:ImmediateScheduler'>
+<description><![CDATA[
+
+		 Gets the singleton instance of this scheduler
+
+		 ]]></description>
+</method>
+<method name='now' fullname='rx.scheduling:ImmediateScheduler/now/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Date'>
+<description><![CDATA[
+
+		 
+
+		 Gets the current Date and time
+
+		 ]]></description>
+</method>
+<field name='_instance' fullname='rx.scheduling:ImmediateScheduler/private:_instance' type='rx.scheduling:ImmediateScheduler' isStatic='true' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_pendingActions' fullname='rx.scheduling:ImmediateScheduler/private:_pendingActions' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_runningAction' fullname='rx.scheduling:ImmediateScheduler/private:_runningAction' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<classRec name='Scheduler' fullname='rx.scheduling:Scheduler' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\scheduling\Scheduler.as' namespace='rx.scheduling' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Provides static helpers to schedulers
+
+	 ]]></description>
+</classRec>
+<method name='scheduleRecursive' fullname='rx.scheduling:Scheduler/scheduleRecursive' isStatic='true' isFinal='false' isOverride='false'  param_names='scheduler;action;dueTime' param_types='rx.scheduling:IScheduler;Function;int' param_defaults='undefined;undefined;0' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Schedules a recursive action on an IScheduler 
+
+		 ]]></description>
+<param><![CDATA[scheduler The scheduler that will schedule each recursive call
+
+		 ]]></param>
+<param><![CDATA[action The action to call. The action will be called with one argument: a Function that call be called to reschedule the original action
+
+		 ]]></param>
+<param><![CDATA[dueTime The amount of time to delay the call to ation
+
+		 ]]></param>
+<return><![CDATA[An ICancelable that can be used to cancel the recursive schedule at any time
+
+		 ]]></return>
+</method>
+<method name='asynchronous' fullname='rx.scheduling:Scheduler/asynchronous/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:IScheduler'>
+<description><![CDATA[
+
+		 Gets the default asynchronous scheduler
+
+		 ]]></description>
+</method>
+<method name='defaultScheduler' fullname='rx.scheduling:Scheduler/defaultScheduler/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:IScheduler'>
+<description><![CDATA[
+
+		 Gets the default scheduler
+
+		 ]]></description>
+</method>
+<method name='greenThread' fullname='rx.scheduling:Scheduler/greenThread/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:GreenThreadScheduler'>
+<description><![CDATA[
+
+		 Gets the GreenThreadScheduler singleton instance
+
+		 ]]></description>
+</method>
+<method name='immediate' fullname='rx.scheduling:Scheduler/immediate/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:ImmediateScheduler'>
+<description><![CDATA[
+
+		 Gets the ImmediateScheduler singleton instance
+
+		 ]]></description>
+</method>
+<method name='synchronous' fullname='rx.scheduling:Scheduler/synchronous/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:IScheduler'>
+<description><![CDATA[
+
+		 Gets the default synchronous scheduler
+
+		 ]]></description>
+</method>
+<classRec name='GreenThreadScheduler' fullname='rx.scheduling:GreenThreadScheduler' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\scheduling\GreenThreadScheduler.as' namespace='rx.scheduling' access='public' baseclass='Object' interfaces='rx.scheduling:IScheduler' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A scheduler that distributes work on a timer, limiting the total execution 
+
+	 time per 'switch' to maintain a framerate
+
+	 
+
+	 <p>Adding more work results in the work taking longer to complete, but the 
+
+	 framerate remaining constant</p>
+
+	 
+
+	 <p>To benefit from GreenThreadScheduler, scheduled actions should execute in 
+
+	 this smallest possible time (ie. be designed to be run many times</p>
+
+	 ]]></description>
+</classRec>
+<method name='GreenThreadScheduler' fullname='rx.scheduling:GreenThreadScheduler/GreenThreadScheduler' isStatic='false' isFinal='false' isOverride='false'  param_names='contextSwitchObservable' param_types='rx:IObservable' param_defaults='undefined' result_type='*'>
+</method>
+<method name='executeGreenThread' fullname='rx.scheduling:GreenThreadScheduler/private:executeGreenThread' isStatic='false' isFinal='false' isOverride='false'  param_names='args' param_types='restParam' param_defaults='undefined' result_type='void'>
+</method>
+<method name='schedule' fullname='rx.scheduling:GreenThreadScheduler/schedule' isStatic='false' isFinal='false' isOverride='false'  param_names='action;dueTime' param_types='Function;int' param_defaults='undefined;0' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Schedules a function to be run, either immediately or in the future 
+
+		 ]]></description>
+<param><![CDATA[action The function to run
+
+		 ]]></param>
+<param><![CDATA[dueTime The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+
+		 ]]></param>
+<return><![CDATA[An ICancelable that will stop the action from being run, if it hasn't already
+
+		 ]]></return>
+</method>
+<method name='stopSwitching' fullname='rx.scheduling:GreenThreadScheduler/private:stopSwitching' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='contextSwitchTime' fullname='rx.scheduling:GreenThreadScheduler/contextSwitchTime/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Number'>
+<description><![CDATA[
+
+		 Gets or sets the amount of time, in milliseconds, to allocate to 
+
+		 execution on every context 'switch' 
+
+		 ]]></description>
+</method>
+<method name='instance' fullname='rx.scheduling:GreenThreadScheduler/instance/get' isStatic='true' isFinal='false' isOverride='false'  result_type='rx.scheduling:GreenThreadScheduler'>
+<description><![CDATA[
+
+		 Gets the singleton instance of this scheduler
+
+		 ]]></description>
+</method>
+<method name='now' fullname='rx.scheduling:GreenThreadScheduler/now/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Date'>
+<description><![CDATA[
+
+		 
+
+		 Gets the current Date and time
+
+		 ]]></description>
+</method>
+<method name='contextSwitchTime' fullname='rx.scheduling:GreenThreadScheduler/contextSwitchTime/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Number' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_contextSwitchObservable' fullname='rx.scheduling:GreenThreadScheduler/private:_contextSwitchObservable' type='rx:IObservable' isStatic='false' isConst='false' >
+</field>
+<field name='_contextSwitchSubscription' fullname='rx.scheduling:GreenThreadScheduler/private:_contextSwitchSubscription' type='rx:ICancelable' isStatic='false' isConst='false' >
+</field>
+<field name='_contextSwitchTime' fullname='rx.scheduling:GreenThreadScheduler/private:_contextSwitchTime' type='Number' isStatic='false' isConst='false' defaultValue='100' >
+</field>
+<field name='_instance' fullname='rx.scheduling:GreenThreadScheduler/private:_instance' type='rx.scheduling:GreenThreadScheduler' isStatic='true' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_pendingActions' fullname='rx.scheduling:GreenThreadScheduler/private:_pendingActions' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_runningAction' fullname='rx.scheduling:GreenThreadScheduler/private:_runningAction' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<interfaceRec name='IObservableResponder' fullname='rx.flex:IObservableResponder' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\flex\IObservableResponder.as' namespace='rx.flex' access='public' baseClasses='mx.rpc:IResponder;rx:IObservable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 An observable sequence that is also an mx.rpc.IResponse
+
+	 ]]></description>
+</interfaceRec>
+<classRec name='FlexObservable' fullname='rx.flex:FlexObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\flex\FlexObservable.as' namespace='rx.flex' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='FlexObservable' fullname='rx.flex:FlexObservable/FlexObservable' isStatic='false' isFinal='false' isOverride='false'  result_type='*'>
+</method>
+<method name='fromAsyncPattern' fullname='rx.flex:FlexObservable/fromAsyncPattern' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass;asyncMethod;args' param_types='Class;Function;Array' param_defaults='undefined;undefined;undefined' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates an observable sequence from a function that returns an AsyncToken 
+
+		 ]]></description>
+<param><![CDATA[valueClass The class of the value returned by the AsyncToken
+
+		 ]]></param>
+<param><![CDATA[asyncMethod The method to execute when a new subscription occurs. This method must return AsyncToken
+
+		 ]]></param>
+<param><![CDATA[args The arguments to supply to asyncMethod
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<method name='fromCollection' fullname='rx.flex:FlexObservable/fromCollection' isStatic='true' isFinal='false' isOverride='false'  param_names='elementClass;collection;scheduler' param_types='Class;mx.collections:ICollectionView;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence consisting of the values in a collection 
+
+		 ]]></description>
+<param><![CDATA[elementClass The class common to all values in values
+
+		 ]]></param>
+<param><![CDATA[values The collection of values to iterate through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of elementType
+
+		 ]]></return>
+</method>
+<method name='fromList' fullname='rx.flex:FlexObservable/fromList' isStatic='true' isFinal='false' isOverride='false'  param_names='elementClass;list;scheduler' param_types='Class;mx.collections:IList;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence consisting of the values in a list 
+
+		 ]]></description>
+<param><![CDATA[elementClass The class common to all values in values
+
+		 ]]></param>
+<param><![CDATA[values The list of values to iterate through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of elementType
+
+		 ]]></return>
+</method>
+<method name='fromViewCursor' fullname='rx.flex:FlexObservable/fromViewCursor' isStatic='true' isFinal='false' isOverride='false'  param_names='elementClass;cursor;scheduler' param_types='Class;mx.collections:IViewCursor;rx.scheduling:IScheduler' param_defaults='undefined;undefined;null' result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Creates a sequence consisting of the values in a view cursor 
+
+		 ]]></description>
+<param><![CDATA[elementClass The class common to all values in values
+
+		 ]]></param>
+<param><![CDATA[values The view cursor of values to iterate through
+
+		 ]]></param>
+<param><![CDATA[scheduler The scheduler used to control flow
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of elementClass
+
+		 ]]></return>
+</method>
+<method name='responder' fullname='rx.flex:FlexObservable/responder' isStatic='true' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='rx.flex:IObservableResponder'>
+<description><![CDATA[
+
+		 Creates an observable sequence that is also an IResponder 
+
+		 ]]></description>
+<param><![CDATA[valueClass The valueClass of the returned sequence
+
+		 ]]></param>
+<return><![CDATA[An observable sequence of valueClass
+
+		 ]]></return>
+</method>
+<classRec name='ObservableResponder' fullname='rx.flex:ObservableResponder' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\flex\ObservableResponder.as' namespace='rx.flex' access='public' baseclass='rx:AbsObservable' interfaces='rx.flex:IObservableResponder' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
+
+	 ]]></description>
+</classRec>
+<method name='ObservableResponder' fullname='rx.flex:ObservableResponder/ObservableResponder' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass' param_types='Class' param_defaults='undefined' result_type='*'>
+</method>
+<method name='fault' fullname='rx.flex:ObservableResponder/fault' isStatic='false' isFinal='false' isOverride='false'  param_names='info' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Implementation of mx.rpc.IResponder.fault()
+
+		 ]]></description>
+</method>
+<method name='getFaultError' fullname='rx.flex:ObservableResponder/private:getFaultError' isStatic='false' isFinal='false' isOverride='false'  param_names='info' param_types='Object' param_defaults='undefined' result_type='Error'>
+</method>
+<method name='result' fullname='rx.flex:ObservableResponder/result' isStatic='false' isFinal='false' isOverride='false'  param_names='data' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Implementation of mx.rpc.IResponder.result()
+
+		 ]]></description>
+</method>
+<method name='subscribeWith' fullname='rx.flex:ObservableResponder/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<method name='valueClass' fullname='rx.flex:ObservableResponder/valueClass/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Class'>
+<description><![CDATA[
+
+		 
+
+		 The class of the values emitted by this observable sequence 
+
+		 ]]></description>
+<return><![CDATA[Class
+
+		 ]]></return>
+</method>
+<field name='_isComplete' fullname='rx.flex:ObservableResponder/private:_isComplete' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_observers' fullname='rx.flex:ObservableResponder/private:_observers' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_valueClass' fullname='rx.flex:ObservableResponder/private:_valueClass' type='Class' isStatic='false' isConst='false' >
+</field>
+<interfaceRec name='IConnectableObservable' fullname='rx.subjects:IConnectableObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\subjects\IConnectableObservable.as' namespace='rx.subjects' access='public' baseClasses='rx:IObservable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Represents a 'pending' hot observable. Calling connect will turn the observable 
+
+	 into a hot observable. Calling refCount will turn the observable into a hot observable 
+
+	 when the first observer subscribes
+
+	 ]]></description>
+</interfaceRec>
+<method name='connect' fullname='rx.subjects:IConnectableObservable/rx.subjects:IConnectableObservable:connect' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 Makes this observable 'hot', so that values will be 
+
+		 emitted whether there is a subscriber connected or not.
+
+		 ]]></description>
+</method>
+<method name='refCount' fullname='rx.subjects:IConnectableObservable/rx.subjects:IConnectableObservable:refCount' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 Makes this observable 'hot' when an observer subscribes, and 
+
+		 will cancel the source subscription when the last observer unsubscribes
+
+		 ]]></description>
+</method>
+<classRec name='ReplaySubject' fullname='rx.subjects:ReplaySubject' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\subjects\ReplaySubject.as' namespace='rx.subjects' access='public' baseclass='rx:AbsObservable' interfaces='rx:ISubject' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='ReplaySubject' fullname='rx.subjects:ReplaySubject/ReplaySubject' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;bufferSize;window;scheduler' param_types='Class;uint;uint;rx.scheduling:IScheduler' param_defaults='undefined;0;0;null' result_type='*'>
+</method>
+<method name='addValue' fullname='rx.subjects:ReplaySubject/private:addValue' isStatic='false' isFinal='false' isOverride='false'  param_names='notification' param_types='rx:Notification' param_defaults='undefined' result_type='void'>
+</method>
+<method name='onCompleted' fullname='rx.subjects:ReplaySubject/onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='onError' fullname='rx.subjects:ReplaySubject/onError' isStatic='false' isFinal='false' isOverride='false'  param_names='err' param_types='Error' param_defaults='undefined' result_type='void'>
+</method>
+<method name='onNext' fullname='rx.subjects:ReplaySubject/onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<method name='removeInvalidValues' fullname='rx.subjects:ReplaySubject/private:removeInvalidValues' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='subscribeWith' fullname='rx.subjects:ReplaySubject/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+</method>
+<field name='_bufferSize' fullname='rx.subjects:ReplaySubject/private:_bufferSize' type='uint' isStatic='false' isConst='false' >
+</field>
+<field name='_complete' fullname='rx.subjects:ReplaySubject/private:_complete' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_liveObservers' fullname='rx.subjects:ReplaySubject/private:_liveObservers' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_observerValues' fullname='rx.subjects:ReplaySubject/private:_observerValues' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_scheduler' fullname='rx.subjects:ReplaySubject/private:_scheduler' type='rx.scheduling:IScheduler' isStatic='false' isConst='false' >
+</field>
+<field name='_valueClass' fullname='rx.subjects:ReplaySubject/private:_valueClass' type='Class' isStatic='false' isConst='false' >
+</field>
+<field name='_values' fullname='rx.subjects:ReplaySubject/private:_values' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_window' fullname='rx.subjects:ReplaySubject/private:_window' type='uint' isStatic='false' isConst='false' >
+</field>
+<classRec name='AsyncSubject' fullname='rx.subjects:AsyncSubject' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\subjects\AsyncSubject.as' namespace='rx.subjects' access='public' baseclass='rx:AbsObservable' interfaces='rx:ISubject' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A subject that replays the last value (or error) received to observers that subscribe 
+
+	 after the sequence has completed
+
+	 ]]></description>
+</classRec>
+<method name='AsyncSubject' fullname='rx.subjects:AsyncSubject/AsyncSubject' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClass;scheduler' param_types='Class;rx.scheduling:IScheduler' param_defaults='undefined;null' result_type='*'>
+</method>
+<method name='dispatchAll' fullname='rx.subjects:AsyncSubject/private:dispatchAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+</method>
+<method name='dispatch' fullname='rx.subjects:AsyncSubject/private:dispatch' isStatic='false' isFinal='false' isOverride='false'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='void'>
+</method>
+<method name='lastValue' fullname='rx.subjects:AsyncSubject/lastValue' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[
+
+		 Gets the last value received, or throws an IllegalOperationError if no value 
+
+		 has been received.
+
+		 ]]></description>
+</method>
+<method name='onCompleted' fullname='rx.subjects:AsyncSubject/onCompleted' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that the sequence has completed and 
+
+		 that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onError' fullname='rx.subjects:AsyncSubject/onError' isStatic='false' isFinal='false' isOverride='false'  param_names='err' param_types='Error' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that the sequence has halted with an error 
+
+		 and that no more messages will be received
+
+		 ]]></description>
+</method>
+<method name='onNext' fullname='rx.subjects:AsyncSubject/onNext' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Notifies the subscriber that a value has been received
+
+		 ]]></description>
+</method>
+<method name='subscribeWith' fullname='rx.subjects:AsyncSubject/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<method name='valueClass' fullname='rx.subjects:AsyncSubject/valueClass/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Class'>
+<description><![CDATA[
+
+		 
+
+		 The class of the values emitted by this observable sequence 
+
+		 ]]></description>
+<return><![CDATA[Class
+
+		 ]]></return>
+</method>
+<field name='_complete' fullname='rx.subjects:AsyncSubject/private:_complete' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_lastValue' fullname='rx.subjects:AsyncSubject/private:_lastValue' type='rx:Notification' isStatic='false' isConst='false' >
+</field>
+<field name='_observers' fullname='rx.subjects:AsyncSubject/private:_observers' type='Array' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<field name='_scheduler' fullname='rx.subjects:AsyncSubject/private:_scheduler' type='rx.scheduling:IScheduler' isStatic='false' isConst='false' >
+</field>
+<field name='_valueClass' fullname='rx.subjects:AsyncSubject/private:_valueClass' type='Class' isStatic='false' isConst='false' >
+</field>
+<classRec name='ConnectableObservable' fullname='rx.subjects:ConnectableObservable' sourcefile='C:\Users\richard.szalay\Personal\RxAs\master\source\RxAs\src\rx\subjects\ConnectableObservable.as' namespace='rx.subjects' access='public' baseclass='rx:AbsObservable' interfaces='rx.subjects:IConnectableObservable' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Concrete implementation of IConnectableObservable
+
+	 ]]></description>
+</classRec>
+<method name='ConnectableObservable' fullname='rx.subjects:ConnectableObservable/ConnectableObservable' isStatic='false' isFinal='false' isOverride='false'  param_names='source;subject' param_types='rx:IObservable;rx:ISubject' param_defaults='undefined;null' result_type='*'>
+</method>
+<method name='connect' fullname='rx.subjects:ConnectableObservable/connect' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Makes this observable 'hot', so that values will be 
+
+		 emitted whether there is a subscriber connected or not.
+
+		 ]]></description>
+</method>
+<method name='refCount' fullname='rx.subjects:ConnectableObservable/refCount' isStatic='false' isFinal='false' isOverride='false'  result_type='rx:IObservable'>
+<description><![CDATA[
+
+		 
+
+		 Makes this observable 'hot' when an observer subscribes, and 
+
+		 will cancel the source subscription when the last observer unsubscribes
+
+		 ]]></description>
+</method>
+<method name='subscribeWith' fullname='rx.subjects:ConnectableObservable/subscribeWith' isStatic='false' isFinal='false' isOverride='true'  param_names='observer' param_types='rx:IObserver' param_defaults='undefined' result_type='rx:ICancelable'>
+<description><![CDATA[
+
+		 
+
+		 Subscribes to this observable using the supplied observer
+
+		 ]]></description>
+<return><![CDATA[An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+
+		 ]]></return>
+</method>
+<field name='_source' fullname='rx.subjects:ConnectableObservable/private:_source' type='rx:IObservable' isStatic='false' isConst='false' >
+</field>
+<field name='_subject' fullname='rx.subjects:ConnectableObservable/private:_subject' type='rx:ISubject' isStatic='false' isConst='false' >
+</field>
+<field name='_subscription' fullname='rx.subjects:ConnectableObservable/private:_subscription' type='rx:ICancelable' isStatic='false' isConst='false' >
+</field>
+</asdoc>

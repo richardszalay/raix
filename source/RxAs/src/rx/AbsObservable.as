@@ -3,12 +3,12 @@ package rx
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
+	import rx.impl.*;
 	import rx.scheduling.*;
 	import rx.subjects.AsyncSubject;
 	import rx.subjects.ConnectableObservable;
 	import rx.subjects.IConnectableObservable;
 	import rx.subjects.ReplaySubject;
-	import rx.impl.*;
 	
 	/**
 	 * Subclass this class only if you want to implement a completely custom IObservable.
@@ -1694,6 +1694,53 @@ package rx
 				.fromArray(this.valueClass, values, scheduler)
 				.concat([this]);
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function switchMany(valueClass : Class, selector : Function) : IObservable
+		{
+			var source : IObservable = this.select(IObservable, selector);
+			
+			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			{
+				var parentCancelable : FutureCancelable = new FutureCancelable();
+				var parentCompleted : Boolean = false;
+				
+				var childCancelable : FutureCancelable = new FutureCancelable();
+				var childCompleted : Boolean = false;
+				
+				parentCancelable.innerCancelable = source.subscribe(
+					function(child : IObservable) : void
+					{
+						childCancelable.innerCancelable = child.subscribe(
+							observer.onNext,
+							function() : void 
+							{
+								childCompleted = true;
+						
+								if (parentCompleted)
+								{
+									observer.onCompleted();
+								}
+							},
+							observer.onError);
+					},
+					function() : void
+					{
+						parentCompleted = true;
+						
+						if (childCompleted)
+						{
+							observer.onCompleted();
+						}
+					},
+					observer.onError);
+				
+				
+				return new CompositeCancelable([childCancelable, parentCancelable]);
+			});
+		}
 
 		/**
 		 * @inheritDoc
@@ -1857,6 +1904,14 @@ package rx
 					observer.onError
 					);
 			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function then(type : Class, thenFunction : Function) : Plan
+		{
+			return new Plan(type, [this], thenFunction);
 		}
 		
 		/**

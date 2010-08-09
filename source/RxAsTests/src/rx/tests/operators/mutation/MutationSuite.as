@@ -12,5 +12,6 @@ package rx.tests.operators.mutation
 		public var delay : DelayFixture;
 		public var select : SelectFixture;
 		public var selectMany : SelectManyFixture;
+		public var switchMany : SwitchManyFixture;
 	}
 }

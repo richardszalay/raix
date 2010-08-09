@@ -422,6 +422,13 @@ package rx
 		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
 		
 		/**
+		 * Like selectMany, starts a new sequence for every value in the source 
+		 * sequence but cancels the previous sequence each time.
+		 * @return An observable sequence of valueClass
+		 */		
+		function switchMany(valueClass : Class, selector : Function) : IObservable;
+		
+		/**
 		 * Returns the summed value of all the elements in the source sequence 
 		 * @return An observable sequence of Number
 		 */
@@ -454,6 +461,16 @@ package rx
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */
 		function takeWhile(predicate : Function) : IObservable;
+		
+		/**
+		 * Creates a Plan from this sequence, by supplying a 
+		 * valueClass and a mappingFunction for the values from each 
+		 * sequence in this Pattern 
+		 * @param valueClass The valueClass that will be returned by thenFunction
+		 * @param thenFunction The function that will accept this sequence as an argument
+		 * @return A Plan that can be used with Observable.join
+		 */		
+		function then(type : Class, thenFunction : Function) : Plan;
 		
 		/**
 		 * Limits how often values from a source sequence will be accepted from a source

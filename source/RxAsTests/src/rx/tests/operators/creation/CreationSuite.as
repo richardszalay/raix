@@ -20,6 +20,7 @@ package rx.tests.operators.creation
 		public var interval : IntervalFixture;
 		public var lookup : LookupFixture;
 		public var never : NeverFixture;
+		public var queue : QueueFixture;
 		public var range : RangeFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timer : TimerFixture;

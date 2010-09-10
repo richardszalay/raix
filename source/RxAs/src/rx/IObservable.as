@@ -293,6 +293,17 @@ package rx
 		function publishAndConnect(selector : Function) : IObservable;
 		
 		/**
+		 * Enqueues a sequence onto a queue created by Observable.queue so that it will not be executed 
+		 * in parallel with any other item in the queue
+		 * @param queue A value returned by Observable.queue that will queue the sequence 
+		 * @param source The sequence to enqueue
+		 * @return A queued sequence that can be subscribed to immediately. Subscribing to this sequence 
+		 * multiple times will enqueue the source sequence multiple times. Canceling a subscription to this 
+		 * sequence will dequeue the sequence.
+		 */		
+		function queued(queue : IObserver) : IObservable;
+		
+		/**
 		 * Removes time interval information added with timeInterval  
 		 * @param valueClass The class of the original values
 		 * @return An observable sequence of valueClass

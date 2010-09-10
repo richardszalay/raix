@@ -1,6 +1,7 @@
 package rx
 {
 	import flash.display.LoaderInfo;
+	import flash.errors.IOError;
 	import flash.errors.IllegalOperationError;
 	import flash.events.*;
 	import flash.net.URLLoader;
@@ -11,8 +12,8 @@ package rx
 	import flash.utils.getQualifiedClassName;
 	
 	import rx.flex.*;
-	import rx.scheduling.*;
 	import rx.impl.*;
+	import rx.scheduling.*;
 
 	/**
 	 * Provides static methods that create observable sequences
@@ -165,46 +166,75 @@ package rx
 		 */		
 		public static function concat(valueClass : Class, sources : Array) : IObservable
 		{
-			if (sources == null || sources.length == 0)
-			{
-				throw new ArgumentError("");
-			}
+			return concatMany(valueClass, fromArray(IObservable, sources));
+		}
+		
+		/**
+		 * Concatonates multiple sequences by running each sequence as the previous one finishes 
+		 * @param valueClass The class common to all sequences in sources
+		 * @param sources The sequences to concatonate
+		 * @return An observable sequence of valueClass
+		 */		
+		public static function concatMany(valueClass : Class, sources : IObservable) : IObservable
+		{
+			if (sources == null)
+				throw new ArgumentError("sources cannot be null");
 			
-			sources = sources.slice();
+			if (sources.valueClass != IObservable) 
+				throw new ArgumentError("sources must have a valueClass of IObservable");
 			
 			return new ClosureObservable(valueClass, function(observer : IObserver):ICancelable
 			{
-				var remainingSources : Array = sources.slice();
-				var currentSource : IObservable = remainingSources.shift();
-			
-				var schedule : FutureCancelable = new FutureCancelable();
+				var complete : Boolean = false;
+				var bufferedSources : Array = new Array();
+				var currentSource : IObservable = null;
+				
 				var subscription : FutureCancelable = new FutureCancelable();
 				
-				var composite : CompositeCancelable = new CompositeCancelable([schedule, subscription]);
-
 				var innerObserver : IObserver = null;
 				
 				innerObserver = new ClosureObserver(
 					observer.onNext,
 					function () : void
 					{
-						if (remainingSources.length > 0)
+						if (bufferedSources.length > 0)
 						{
-							currentSource = IObservable(remainingSources.shift());
-							
+							currentSource = IObservable(bufferedSources.shift());
 							subscription.innerCancelable = currentSource.subscribeWith(innerObserver);
 						}
-						else
+						else if (complete)
 						{
 							observer.onCompleted();
 						}
+						else
+						{
+							currentSource = null;
+						}
 					},
 					observer.onError
-					);
+				);
 				
-				subscription.innerCancelable = currentSource.subscribeWith(innerObserver);
+				sources.subscribe(
+					function(source : IObservable) : void
+					{
+						if (currentSource == null)
+						{
+							currentSource = source;
+							subscription.innerCancelable = source.subscribeWith(innerObserver);
+						}
+						else
+						{
+							bufferedSources.push(source);
+						}
+					},
+					function () : void
+					{
+						complete = true;
+					},
+					observer.onError);
+					
 				
-				return composite;
+				return subscription;
 			});
 		}
 		
@@ -356,12 +386,12 @@ package rx
 				
 				scheduledAction.innerCancelable = scheduler.schedule(function():void
 					{
-						observer.onNext(++intervalIndex);
+						observer.onNext(intervalIndex++);
 						
 						scheduledAction.innerCancelable = Scheduler.scheduleRecursive(scheduler,
 							function(recurse : Function):void
 							{
-								observer.onNext(++intervalIndex);
+								observer.onNext(intervalIndex++);
 								
 								recurse();
 							}, intervalMs);
@@ -1154,50 +1184,74 @@ package rx
 		 */
 		public static function urlLoader(request : URLRequest, dataFormat : String = "text", loaderContext : LoaderContext = null) : IObservable
 		{
-			var progress : Subject = new Subject(int);
+			if (_urlLoaderQueue == null)
+			{
+				_urlLoaderQueue = queue(Object);
+			}
 			
 			return new ClosureObservable(Object, function(observer : IObserver) : ICancelable
 			{
 				var loader : URLLoader = new URLLoader();
+				var loading : Boolean = false;
+				
+				var cancelable : ICancelable = new CompositeCancelable([
+					Observable.fromEvent(loader, Event.COMPLETE)
+					.subscribe(function(completeEvent : Event) : void
+					{
+						loading = false;
+						observer.onNext(loader.data);
+						observer.onCompleted();
+					}),
+					Observable.fromErrorEvents(Event, loader, 
+						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
+					.subscribe(null, null, function(e : Error) : void
+					{
+						loading = false;
+						observer.onError(e);
+					}),
+					Cancelable.create(function():void
+					{
+						if (loading)
+						{
+							try
+							{
+								loader.close();
+							}
+							catch(e:IOError) {}
+						}
+					})
+				]);
 				
 				try
 				{
+					loading = true;
 					loader.load(request);
 				}
 				catch(err : Error)
 				{
 					observer.onError(err);
-					return ClosureCancelable.empty();
 				}
 				
-				progress.onNext(0);
-				
-				return new CompositeCancelable([
-					/*Observable.fromEvent(loader, ProgressEvent.PROGRESS)
-						.subscribe(function(progressEvent : ProgressEvent):void
-						{
-							if (progressEvent.bytesTotal == 0)
-							{
-								progress.onNext(0);
-							}
-							else
-							{
-								progress.onNext(progressEvent.bytesLoaded / progressEvent.bytesTotal);
-							}
-						}),*/
-					Observable.fromEvent(loader, Event.COMPLETE)
-						.subscribe(function(completeEvent : Event) : void
-						{
-							observer.onNext(loader.data);
-							observer.onCompleted();
-						}),
-					Observable.fromErrorEvents(Event, loader, 
-						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
-						.subscribeWith(observer)
-				]);
-
-			});
+				return cancelable;
+			}).queued(_urlLoaderQueue);
 		}
+
+		/**
+		 * Creates a queue of unrelated observable sequences that can only be executed 
+		 * one at a time 
+		 * @return An IObserver that can be passed to Observable.enqueue
+		 */
+		public static function queue(valueClass : Class) : IObserver
+		{
+			var queue : Subject = new Subject(IObservable);
+			
+			Observable.concatMany(valueClass, queue)
+				.subscribe(null, null, null);
+				
+			return queue;
+		}
+		
+		private static var _urlLoaderQueue : IObserver;
 		
 		/**
 		 * Loads an XML document

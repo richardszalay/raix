@@ -104,7 +104,7 @@
 					<samples:Throttle width="100%" height="100%" id="throttle" />
 					<samples:SelectMany width="100%" height="100%" id="selectMany" />
 					<samples:Zip width="100%" height="100%" id="zip" />
-					<samples:UncaughtErrors width="100%" height="100%" id="uncaughtErrors" />
+					<!--<samples:UncaughtErrors width="100%" height="100%" id="uncaughtErrors" />-->
 					<samples:AutoComplete width="100%" height="100%" id="autoComplete" />
 					<samples:KeySequence width="100%" height="100%" id="keySequence" />
 					<samples:Schedulers width="100%" height="100%" id="schedulers" />
@@ -127,7 +127,7 @@
 				<node label="throttle" sampleID="throttle" />
 				<node label="selectMany" sampleID="selectMany" />
 				<node label="zip" sampleID="zip" />
-				<node label="uncaughtErrors" sampleID="uncaughtErrors" />
+				<!--<node label="uncaughtErrors" sampleID="uncaughtErrors" />-->
 			</node>
 			<node label="Samples">
 				<node label="Auto Complete" sampleID="autoComplete" />

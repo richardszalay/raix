@@ -1149,6 +1149,40 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
+		public function queued(queue : IObserver) : IObservable
+		{
+			var source : IObservable = this;
+			
+			return new ClosureObservable(source.valueClass, function(observer:IObserver):ICancelable
+			{
+				var queueCancelable : BooleanCancelable = new BooleanCancelable();
+				var sourceCancelable : FutureCancelable = new FutureCancelable();
+				
+				queue.onNext(new ClosureObservable(source.valueClass, function(queueObserver:IObserver):ICancelable
+				{
+					if (queueCancelable.isCanceled)
+					{
+						queueObserver.onCompleted();
+						return Cancelable.empty;
+					}
+					
+					sourceCancelable.innerCancelable = source
+					.finallyAction(function():void
+					{
+						queueObserver.onCompleted();
+					})
+					.subscribeWith(observer);
+					
+					return sourceCancelable;
+				}));
+				
+				return new CompositeCancelable([queueCancelable, sourceCancelable]);
+			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function removeTimeInterval(valueClass : Class) : IObservable
 		{
 			if (this.valueClass != TimeInterval)
@@ -2008,7 +2042,7 @@ package rx
 				subscription.innerCancelable = source.subscribe(
 					function (value : Object) : void
 					{
-						timeout.innerCancelable = scheduler.schedule(timeout, timeoutMs);
+						timeout.cancel();
 						
 						observer.onNext(value);
 					},

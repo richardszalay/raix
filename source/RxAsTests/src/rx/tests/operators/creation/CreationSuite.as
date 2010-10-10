@@ -17,13 +17,13 @@ package rx.tests.operators.creation
 		public var fromEvent : FromEventFixture;
 		public var fromEvents : FromEventsFixture;
 		public var ifElse : IfElseFixture;
-		//public var interval : IntervalFixture;
+		public var interval : IntervalFixture;
 		public var lookup : LookupFixture;
 		public var never : NeverFixture;
 		public var queue : QueueFixture;
 		public var range : RangeFixture;
 		public var throwError : ThrowErrorFixture;
-		//public var timer : TimerFixture;
+		public var timer : TimerFixture;
 		public var uncaughtErrors : UncaughtErrorsFixture;
 		public var urlLoader : URLLoaderFixture;
 		public var xml : XMLFixture;

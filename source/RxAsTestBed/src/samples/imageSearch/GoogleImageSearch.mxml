@@ -83,8 +83,8 @@
 imageContainer.removeAllChildren();
 				
 var searchTerm : String = searchTermInput.text;
-var useThumbnail : Boolean = useThumbnailsCheckbox.selected;
-var preloadImages : Boolean = preloadImagesCheckbox.selected;
+var useThumbnail : Boolean = useThumbnailsCheckbox.maped;
+var preloadImages : Boolean = preloadImagesCheckbox.maped;
 
 var imageRequest : IObservable = imageLoaderService.getObservable(
 	imageSearchService.getObservable(searchTerm),

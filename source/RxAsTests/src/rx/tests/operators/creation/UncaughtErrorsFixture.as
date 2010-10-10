@@ -2,8 +2,11 @@ package rx.tests.operators.creation
 {
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	
+	import mx.core.Application;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
@@ -18,12 +21,12 @@ package rx.tests.operators.creation
 		[Test(async)]
         public function create_calls_delegate() : void
         {
-			var throwTimer : Timer = new Timer(50, 1);
-        	//var loaderInfo : LoaderInfo = LoaderInfo.getLoaderInfoByDefinition(RxAsTests);
+        	var loaderInfo : LoaderInfo = Application.application.stage.loaderInfo;
 
         	if (!loaderInfo.hasOwnProperty('uncaughtErrorEvents'))
         	{
         		Assert.fail("Uncaught errors cannot be tested in Flash Player < 10.1");
+        		return;
         	}
         	
         	var stats : StatsObserver = new StatsObserver();

@@ -19,11 +19,11 @@ package samples.imageSearch
 			var urlRequest : URLRequest = getGisUrlRequest(searchTerm);
 			
 			return _jsonService.getObservable(urlRequest)
-			 	.selectMany(Object, function(result:Object) : IObservable
+			 	.mapMany(Object, function(result:Object) : IObservable
 				{
 					return Observable.fromArray(Object, result.responseData.results);
 				})
-				.select(ImageResult, function(result:Object) : ImageResult
+				.map(ImageResult, function(result:Object) : ImageResult
 				{
 					return new ImageResult(
 						result.url,

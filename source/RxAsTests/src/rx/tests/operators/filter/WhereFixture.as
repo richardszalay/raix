@@ -11,7 +11,7 @@ package rx.tests.operators.filter
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.where(function(pl:Object) : Boolean { return true; });
+			return source.filter(function(pl:Object) : Boolean { return true; });
 		}
 		
 		[Test]
@@ -19,7 +19,7 @@ package rx.tests.operators.filter
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.filter(function(pl:uint) : Boolean
 			{
 				return (pl % 2) == 0;
 			});
@@ -46,7 +46,7 @@ package rx.tests.operators.filter
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.filter(function(pl:uint) : Boolean
 			{
 				throw new Error();
 			});
@@ -71,7 +71,7 @@ package rx.tests.operators.filter
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.where(function(pl:uint) : Boolean
+			var obs : IObservable = manObs.filter(function(pl:uint) : Boolean
 			{
 				return true;
 			});

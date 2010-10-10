@@ -677,7 +677,7 @@ package rx
 		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, commonValueClass : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
 		{
 			return Observable.fromArray(String, eventTypes)
-					.selectMany(commonValueClass, function(valueClass : String) : IObservable
+					.mapMany(commonValueClass, function(valueClass : String) : IObservable
 					{
 						return fromEvent(eventDispatcher, valueClass, commonValueClass, useCapture, priority);
 					});
@@ -726,7 +726,7 @@ package rx
 			
 			return source
 				.take(1)
-				.selectMany(Error, function(event : Event) : IObservable
+				.mapMany(Error, function(event : Event) : IObservable
 				{
 					var error : Error = null;
 					
@@ -865,16 +865,19 @@ package rx
 		 * Creates a sequences that accesses uncaught errors if supported by the platform (Flash Player 10.1+)
 		 * @param loaderInfo The LoaderInfo to catch uncaught errors from, or the LoaderInfo into which rx.Observable was loaded if the argument is null
 		 * @return An observable sequence of errors 
-		 		
+		*/
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
 			return Observable.mergeMany(Error, Observable.fromArray(IObservable, 
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
-		private static function getNativeUncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
+		private static function getNativeUncaughtErrors(loaderInfo : LoaderInfo) : IObservable
 		{
-			loaderInfo = loaderInfo || LoaderInfo.getLoaderInfoByDefinition(Observable);
+			if (loaderInfo == null)
+			{
+				throw new ArgumentError("loaderInfo cannot be null. Try stage.loaderInfo");
+			}
 			
 			var uncaughtErrorsSupported : Boolean = 
 				loaderInfo.hasOwnProperty("uncaughtErrorEvents");
@@ -890,7 +893,7 @@ package rx
 			{
 				return never();
 			}
-		}*/
+		}
 		
 		/**
 		 * Creates a sequence of consecutive integers  
@@ -1263,7 +1266,7 @@ package rx
 		public static function xml(request : URLRequest, loaderContext : LoaderContext = null) : IObservable
 		{
 			return urlLoader(request, URLLoaderDataFormat.TEXT, loaderContext)
-				.select(XML, function(xml : String) : XML 
+				.map(XML, function(xml : String) : XML 
 				{
 					return XML(xml);
 				});

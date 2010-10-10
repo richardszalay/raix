@@ -39,7 +39,7 @@
 				var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
 				
 				return mouseDown
-					.selectMany(MouseEvent, function(e:MouseEvent):IObservable
+					.mapMany(MouseEvent, function(e:MouseEvent):IObservable
 					{
 						sprite.graphics.moveTo(e.localX, e.localY);
 						
@@ -97,7 +97,7 @@ private function drawOn(sprite : Sprite) : ICancelable
     var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
 	
     return mouseDown
-        .selectMany(MouseEvent, function(e:MouseEvent):IObservable
+        .mapMany(MouseEvent, function(e:MouseEvent):IObservable
         {
             sprite.graphics.moveTo(e.localX, e.localY);
             

@@ -110,7 +110,7 @@ package rx.tests.operators.metadata
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map(Boolean, function(pl:uint) : Boolean
 			{
 				return true;
 			});

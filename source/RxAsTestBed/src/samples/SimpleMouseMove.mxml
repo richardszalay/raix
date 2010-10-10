@@ -14,7 +14,7 @@
 			{
 				// Filter mouse movement events so that they are ignored within the top 50x50 box
 				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE)
-					.where(function(me : MouseEvent) : Boolean { return me.localX > 50 || me.localY > 50; });
+					.filter(function(me : MouseEvent) : Boolean { return me.localX > 50 || me.localY > 50; });
 				
 				subscription = mm.subscribe(function(me : MouseEvent) : void
 				{

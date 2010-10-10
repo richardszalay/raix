@@ -23,14 +23,14 @@
 					Observable.fromEvent(textInput, KeyboardEvent.KEY_UP);
 					
 				var searchObservable : IObservable = keyDownObservable
-					.select(String, function(e:Event):String { return textInput.text; })
+					.map(String, function(e:Event):String { return textInput.text; })
 					.throttle(250)
-					.selectMany(Object, function(input:String) : IObservable
+					.mapMany(Object, function(input:String) : IObservable
 					{
 						var urlRequest : URLRequest = new URLRequest(SEARCH_URL + input);
 						return jsonService.getObservable(urlRequest);
 					})
-					.select(String, function(data:Object) : Array
+					.map(String, function(data:Object) : Array
 					{
 						return data.responseData.results
 							.map(function(v:Object,...args):String { return v.titleNoFormatting; });
@@ -67,10 +67,10 @@ var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOW
 var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
 var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
 
-var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
+var x : IObservable = mm.map(function(me:MouseEvent):int { return me.localX; });
 
 var obs : IObservable = md
-	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
+	.mapMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); });
 
 subscription = obs.subscribeFunc(function(me : MouseEvent) : void
 {

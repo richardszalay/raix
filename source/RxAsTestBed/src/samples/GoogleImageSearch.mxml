@@ -20,9 +20,9 @@
 				imageContainer.removeAllChildren();
 				
 				var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
-					useThumbnailsCheckbox.selected);
+					useThumbnailsCheckbox.maped);
 				
-				if (preloadImagesCheckbox.selected)
+				if (preloadImagesCheckbox.maped)
 				{
 					imageRequest = preloadImages(imageRequest);
 				}
@@ -45,10 +45,10 @@
 			private function preloadImages(observable : IObservable) : IObservable
 			{
 				return observable
-					.selectMany(Image, function(image:Image) : IObservable
+					.mapMany(Image, function(image:Image) : IObservable
 					{
 						return Observable.fromEvent(image, Event.COMPLETE)
-							.select(Image, function():Image { return image; })
+							.map(Image, function():Image { return image; })
 							.take(1)
 							.timeout(3000)
 							.catchError(Observable.empty(Image));
@@ -58,11 +58,11 @@
 			private function getImageObservable(searchTerm : String, thumbnails : Boolean) : IObservable
 			{
 				 return getObservableJSON(getGisUrlRequest(searchTerm))
-				 	.selectMany(Object, function(result:Object) : IObservable
+				 	.mapMany(Object, function(result:Object) : IObservable
 					{
 						return Observable.fromArray(Object, result.responseData.results);
 					})
-					.select(Image, function(result:Object) : Image
+					.map(Image, function(result:Object) : Image
 					{
 						var image : Image = new Image();
 						image.toolTip = result.titleNoFormatting;
@@ -87,7 +87,7 @@
 						loader.load(request)
 						
 						return Observable.fromEvent(loader, Event.COMPLETE)
-							.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
+							.map(Object, function(s:String):Object { return JSON.decode(loader.data); })
 							.take(1);
 					}
 					catch(error : Error)
@@ -155,9 +155,9 @@ public override function setup() : void
 	imageContainer.removeAllChildren();
 	
 	var imageRequest : IObservable = getImageObservable(searchTermInput.text, 
-		useThumbnailsCheckbox.selected);
+		useThumbnailsCheckbox.maped);
 	
-	if (preloadImagesCheckbox.selected)
+	if (preloadImagesCheckbox.maped)
 	{
 		imageRequest = preloadImages(imageRequest);
 	}
@@ -176,10 +176,10 @@ public override function setup() : void
 private function preloadImages(observable : IObservable) : IObservable
 {
 	return observable
-		.selectMany(Image, function(image:Image) : IObservable
+		.mapMany(Image, function(image:Image) : IObservable
 		{
 			return Observable.fromEvent(image, Event.COMPLETE)
-				.select(Image, function():Image { return image; })
+				.map(Image, function():Image { return image; })
 				.take(1)
 				.timeout(3000)
 				.catchError(Observable.empty(Image));
@@ -189,11 +189,11 @@ private function preloadImages(observable : IObservable) : IObservable
 private function getImageObservable(searchTerm : String, thumbnails : Boolean) : IObservable
 {
 	 return getObservableJSON(getGisUrlRequest(searchTerm))
-	 	.selectMany(Object, function(result:Object) : IObservable
+	 	.mapMany(Object, function(result:Object) : IObservable
 		{
 			return ObsfromArrayrnValues(Object, result.responseData.results);
 		})
-		.select(Image, function(result:Object) : Image
+		.map(Image, function(result:Object) : Image
 		{
 			var image : Image = new Image();
 			image.toolTip = result.titleNoFormatting;
@@ -218,7 +218,7 @@ private function getObservableJSON(request : URLRequest) : IObservable
 			loader.load(request)
 			
 			return Observable.fromEvent(loader, Event.COMPLETE)
-				.select(Object, function(s:String):Object { return JSON.decode(loader.data); })
+				.map(Object, function(s:String):Object { return JSON.decode(loader.data); })
 				.take(1);
 		}
 		catch(error : Error)

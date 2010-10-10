@@ -18,7 +18,7 @@ package samples.imageSearch
 		public function getObservable(source : IObservable, thumbnail : Boolean, preload : Boolean) : IObservable
 		{
 			return source
-				.select(Image, function(result : ImageResult) : Image
+				.map(Image, function(result : ImageResult) : Image
 				{
 					return createImage(result, thumbnail);
 				})
@@ -46,10 +46,10 @@ package samples.imageSearch
 		private function preloadImages(observable : IObservable) : IObservable
 		{
 			return observable
-				.selectMany(Image, function(image:Image) : IObservable
+				.mapMany(Image, function(image:Image) : IObservable
 				{
 					return Observable.fromEvent(image, Event.COMPLETE)
-						.select(Image, function():Image { return image; })
+						.map(Image, function():Image { return image; })
 						.take(1)
 						.timeout(PRELOAD_TIMEOUT)
 						.catchError(Observable.empty(Image));

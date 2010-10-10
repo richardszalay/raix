@@ -11,11 +11,11 @@ package rx.tests.operators.mutation
 	import rx.tests.mocks.StatsObserver;
 	import rx.tests.operators.AbsDecoratorOperatorFixture;
 	
-	public class SelectManyFixture extends AbsDecoratorOperatorFixture
+	public class MapManyFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.selectMany(source.valueClass, function(pl:Object):IObservable
+			return source.mapMany(source.valueClass, function(pl:Object):IObservable
 			{
 				return Observable.returnValue(source.valueClass, pl);
 			});
@@ -27,7 +27,7 @@ package rx.tests.operators.mutation
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-                .selectMany(int, function(x:int):IObservable { return Observable.range(x * 2, 2); })
+                .mapMany(int, function(x:int):IObservable { return Observable.range(x * 2, 2); })
                 .subscribeWith(stats);
                 
             Assert.assertEquals(6, stats.nextCount);
@@ -53,7 +53,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -85,7 +85,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -116,7 +116,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -148,7 +148,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -180,7 +180,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -211,7 +211,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -240,7 +240,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -269,7 +269,7 @@ package rx.tests.operators.mutation
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .selectMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -292,7 +292,7 @@ package rx.tests.operators.mutation
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = Observable.range(0, 1).selectMany(int, function(i:int):IObservable
+			var obs : IObservable = Observable.range(0, 1).mapMany(int, function(i:int):IObservable
 			{
 				return null;
 			});
@@ -306,7 +306,7 @@ package rx.tests.operators.mutation
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = Observable.range(0, 1).selectMany(int, function(i:int):IObservable
+			var obs : IObservable = Observable.range(0, 1).mapMany(int, function(i:int):IObservable
 			{
 				throw new IllegalOperationError();
 			});

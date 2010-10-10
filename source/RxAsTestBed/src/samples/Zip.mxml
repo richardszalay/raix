@@ -19,7 +19,7 @@
 				var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
 				
 				var obs : IObservable = md
-					.selectMany(MouseEvent, function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); })
+					.mapMany(MouseEvent, function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); })
 					.let(function(mm:IObservable) : IObservable
 					{
 						return mm.zip(Point, mm.skip(1), function(x:MouseEvent, y:MouseEvent) : Point
@@ -67,10 +67,10 @@ var md : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_DOW
 var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE);					
 var mu : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_UP);
 
-var x : IObservable = mm.select(function(me:MouseEvent):int { return me.localX; });
+var x : IObservable = mm.map(function(me:MouseEvent):int { return me.localX; });
 
 var obs : IObservable = md
-	.selectMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); })
+	.mapMany(function(pl:MouseEvent):IObservable { return mm.takeUntil(mu); })
 	.let(function(mm:IObservable) : IObservable
 	{
 		return mm.zip(mm.skip(1), function(x:MouseEvent, y:MouseEvent) : Point

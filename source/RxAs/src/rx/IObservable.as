@@ -373,14 +373,32 @@ package rx
 		 * @param selector The function to be executed with each value
 		 * @return An observable sequence of valueClass result
 		 */
+		function map(valueClass : Class, selector:Function):IObservable;
+		
+		[Deprecated(replacement="map")]
+		/**
+		 * Maps the values from a source sequence through a function to change their value 
+		 * @param result The class of the returned sequence and return value of accumulator 
+		 * @param selector The function to be executed with each value
+		 * @return An observable sequence of valueClass result
+		 */
 		function select(valueClass : Class, selector:Function):IObservable;
 		
 		/**
-		 * Starts a new sequence for every value in the source sequence and merges their values
+		 * Starts a new sequence, returned by selector, for every value in the source sequence and merges their values
 		 * @param valueClass The valueClass of the sequences returned by selector
 		 * @param selector The function to be executed with each value
 		 * @return An observable sequence of valueClass result
 		 */		
+		function mapMany(valueClass : Class, selector : Function) : IObservable;
+		
+		[Deprecated(replacement="mapMany")]
+		/**
+		 * Starts a new sequence, returned by selector, for every value in the source sequence and merges their values
+		 * @param valueClass The valueClass of the sequences returned by selector
+		 * @param selector The function to be executed with each value
+		 * @return An observable sequence of valueClass result
+		 */
 		function selectMany(valueClass : Class, selector : Function) : IObservable;
 		
 		/**
@@ -519,6 +537,14 @@ package rx
 		 * @param predicate The predicate function to execute for each value to determine if it will be include in the output
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
+		function filter(predicate : Function) : IObservable;
+		
+		[Deprecated(replacement="filter")]
+		/**
+		 * Filters out values from a source sequence 
+		 * @param predicate The predicate function to execute for each value to determine if it will be include in the output
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 */
 		function where(predicate : Function) : IObservable;
 		
 		/**

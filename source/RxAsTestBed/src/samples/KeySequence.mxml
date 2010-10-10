@@ -12,13 +12,13 @@
 			
 			private function getKeyObservable(keyDownObservable : IObservable, char : String) : IObservable
 			{
-				return keyDownObservable.where(function(c:String) : Boolean { return c==char; });
+				return keyDownObservable.filter(function(c:String) : Boolean { return c==char; });
 			}
 			
 			public override function setup() : void
 			{
 				var mouseDownChar : IObservable = Observable.fromEvent(stage, KeyboardEvent.KEY_DOWN)
-					.select(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
+					.map(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
 					.take(1);
 					
 				var testString : String = "reactive";
@@ -29,7 +29,7 @@
 				{
 					obs = (function(i:int):IObservable
 					{
-						return obs.selectMany(String, function(c:String):IObservable
+						return obs.mapMany(String, function(c:String):IObservable
 						{
 							return getKeyObservable(mouseDownChar, testString.charAt(i));
 						});
@@ -84,7 +84,7 @@ private function getKeyObservable(keyDownObservable : IObservable, char : String
 public override function setup() : void
 {
 	var mouseDownChar : IObservable = Observable.fromEvent(stage, KeyboardEvent.KEY_DOWN)
-		.select(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
+		.map(String, function(e:KeyboardEvent) : String { return String.fromCharCode(e.charCode); })
 		.take(1);
 		
 	var testString : String = "reactive";
@@ -95,7 +95,7 @@ public override function setup() : void
 	{
 		obs = (function(i:int):IObservable
 		{
-			return obs.selectMany(String, function(c:String):IObservable
+			return obs.mapMany(String, function(c:String):IObservable
 			{
 				return getKeyObservable(mouseDownChar, testString.charAt(i));
 			});

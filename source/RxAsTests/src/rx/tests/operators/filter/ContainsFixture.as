@@ -13,7 +13,7 @@ package rx.tests.operators.filter
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.where(function(a:Object,b:Object) : Boolean { return true; });
+			return source.filter(function(a:Object,b:Object) : Boolean { return true; });
 		}
 		
 		[Test]

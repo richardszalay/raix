@@ -14,7 +14,7 @@ package rx.tests.operators.composition
 		{
 			return source.let(function(x:IObservable) : IObservable
 			{
-				return x.select(int, function(y:int):int { return y; });
+				return x.map(int, function(y:int):int { return y; });
 			});
 		}
 		

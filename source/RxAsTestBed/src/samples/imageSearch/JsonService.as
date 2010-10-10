@@ -28,7 +28,7 @@ package samples.imageSearch
 					loader.load(urlRequest)
 					
 					return Observable.fromEvent(loader, Event.COMPLETE)
-						.select(Object, function(e:Event):Object { return JSON.decode(loader.data); })
+						.map(Object, function(e:Event):Object { return JSON.decode(loader.data); })
 						.take(1);
 				}
 				catch(error : Error)

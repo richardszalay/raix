@@ -1035,7 +1035,7 @@ package rx
 		 */
 		public function ofClass(valueClass : Class) : IObservable
 		{
-			return this.where(function(x:Object):Boolean
+			return this.filter(function(x:Object):Boolean
 			{
 				return x is valueClass;
 			});
@@ -1191,7 +1191,7 @@ package rx
 					getQualifiedClassName(this.valueClass));
 			}
 			
-			return this.select(valueClass, function(ts:TimeInterval):Object
+			return this.map(valueClass, function(ts:TimeInterval):Object
 			{
 				return ts.value;
 			});
@@ -1208,7 +1208,7 @@ package rx
 					getQualifiedClassName(this.valueClass));
 			}
 			
-			return this.select(valueClass, function(ts:TimeStamped):Object
+			return this.map(valueClass, function(ts:TimeStamped):Object
 			{
 				return ts.value;
 			});
@@ -1400,7 +1400,7 @@ package rx
 					accumulatedValue = initialValue;
 				}
 				
-				return source.select(valueClass, function(value:Object):Object
+				return source.map(valueClass, function(value:Object):Object
 				{
 					if (skipFirst) 
 					{
@@ -1428,19 +1428,26 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
-		public function select(valueClass : Class, selector:Function):IObservable
+		public function map(valueClass : Class, selector:Function):IObservable
 		{
-			return selectInternal(valueClass, selector);
+			return mapInternal(valueClass, selector);
 		}
 		
-		private function selectInternal(valueClass : Class, selector:Function):IObservable
+		/**
+		 * @inheritDoc
+		 */
+		[Deprecated(replacement="map")]
+		public function select(valueClass : Class, selector:Function):IObservable
+		{
+			return map(valueClass, selector);
+		}
+		
+		private function mapInternal(valueClass : Class, selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
 			return new ClosureObservable(valueClass, function (observer : IObserver) : ICancelable
 			{
-				var countSoFar : uint = 0;
-				
 				var subscription : FutureCancelable = new FutureCancelable();
 				
 				subscription.innerCancelable = source.subscribe(
@@ -1466,14 +1473,23 @@ package rx
 			});
 		}
 		
+		[Deprecated(replacement="mapMany")]
 		/**
 		 * @inheritDoc
 		 */
 		public function selectMany(valueClass : Class, selector:Function):IObservable
 		{
+			return mapMany(valueClass, selector);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function mapMany(valueClass : Class, selector:Function):IObservable
+		{
 			var source : IObservable = this;
 			
-			return Observable.mergeMany(valueClass, this.select(IObservable, selector)); 
+			return Observable.mergeMany(valueClass, this.map(IObservable, selector)); 
 		}
 		
 		/**
@@ -1734,7 +1750,7 @@ package rx
 		 */
 		public function switchMany(valueClass : Class, selector : Function) : IObservable
 		{
-			var source : IObservable = this.select(IObservable, selector);
+			var source : IObservable = this.map(IObservable, selector);
 			
 			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
 			{
@@ -2065,16 +2081,25 @@ package rx
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return selectInternal(TimeStamped, function(value : Object) : TimeStamped
+			return mapInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);
 			});
 		}
 		
+		[Deprecated(replacement="filter")]
 		/**
 		 * @inheritDoc
 		 */
 		public function where(predicate:Function):IObservable
+		{
+			return filter(predicate);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function filter(predicate:Function):IObservable
 		{
 			var source : IObservable = this;
 			

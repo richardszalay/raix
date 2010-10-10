@@ -7,11 +7,11 @@ package rx.tests.operators.mutation
 	import rx.tests.operators.AbsDecoratorOperatorFixture;
 	
 	[TestCase]
-	public class SelectFixture extends AbsDecoratorOperatorFixture
+	public class MapFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.select(source.valueClass, function(pl:Object) : Object { return pl; });
+			return source.map(source.valueClass, function(pl:Object) : Object { return pl; });
 		}
 		
 		[Test]
@@ -21,7 +21,7 @@ package rx.tests.operators.mutation
 			
 			var index : int = 0;
 			
-			var obs : IObservable = manObs.select(int, function(pl:Object) : int
+			var obs : IObservable = manObs.map(int, function(pl:Object) : int
 			{
 				return index++;
 			});
@@ -42,7 +42,7 @@ package rx.tests.operators.mutation
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.select(Object, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map(Object, function(pl:uint) : Boolean
 			{
 				throw new Error();
 			});
@@ -67,7 +67,7 @@ package rx.tests.operators.mutation
 		{
 			var manObs : Subject = new Subject(int);
 			
-			var obs : IObservable = manObs.select(Boolean, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map(Boolean, function(pl:uint) : Boolean
 			{
 				return true;
 			});

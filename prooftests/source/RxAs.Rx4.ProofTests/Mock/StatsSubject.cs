@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace RxAs.Rx4.ProofTests.Mock
 {
-    public class StatsSubject<T> : ISubject<T>
+    public class StatsSubject<T> : StatsObserver<T>, ISubject<T>
     {
         private int totalSubscriptionCount;
         private int subscriptionCount;
@@ -36,16 +36,19 @@ namespace RxAs.Rx4.ProofTests.Mock
 
         public void OnCompleted()
         {
+            base.OnCompleted();
             innerSubject.OnCompleted();
         }
 
         public void OnError(Exception exception)
         {
+            base.OnError(exception);
             innerSubject.OnError(exception);
         }
 
         public void OnNext(T value)
         {
+            base.OnNext(value);
             innerSubject.OnNext(value);
         }
 

@@ -14,18 +14,18 @@ namespace RxAs.Rx4.ProofTests.Operators
     public class BufferWithTimeFixture
     {
         [Test]
-        public void zero_length_list_is_emitted_when_no_values_are_available()
+        public void empty_list()
         {
             var stats = new StatsObserver<IList<int>>();
 
-            var scheduler = new ManualScheduler();
+            TestScheduler scheduler = new TestScheduler();
 
             var manObs = Observable.Never<int>()
                 .BufferWithTime(TimeSpan.FromMilliseconds(1), scheduler)
                 .Take(1)
                 .Subscribe(stats);
 
-            scheduler.RunNext();
+            scheduler.Run();
 
             Assert.AreEqual(1, stats.NextCount);
             Assert.AreEqual(0, stats.NextValues[0].Count);
@@ -36,10 +36,13 @@ namespace RxAs.Rx4.ProofTests.Operators
         {
             var stats = new StatsObserver<IList<int>>();
 
+            TestScheduler scheduler = new TestScheduler();
+
             var manObs = Observable.Range(0, 2)
-                .BufferWithTime(TimeSpan.FromMilliseconds(200), new ManualScheduler())
-                .Take(1)
+                .BufferWithTime(TimeSpan.FromMilliseconds(200), scheduler)
                 .Subscribe(stats);
+
+            scheduler.Run();
 
             Assert.AreEqual(1, stats.NextCount);
             Assert.AreEqual(2, stats.NextValues[0].Count);
@@ -50,10 +53,14 @@ namespace RxAs.Rx4.ProofTests.Operators
         {
             var stats = new StatsObserver<IList<int>>();
 
+            var scheduler = new TestScheduler();
+
             var manObs = Observable.Empty<int>()
-                .BufferWithTime(TimeSpan.FromMilliseconds(1000), new ManualScheduler())
+                .BufferWithTime(TimeSpan.FromMilliseconds(1000), scheduler)
                 .Take(1)
                 .Subscribe(stats);
+
+            scheduler.Run();
 
             Assert.AreEqual(1, stats.NextCount);
             Assert.AreEqual(0, stats.NextValues[0].Count);
@@ -64,31 +71,26 @@ namespace RxAs.Rx4.ProofTests.Operators
         {
             var stats = new StatsObserver<IList<int>>();
 
-            var valueScheduler = new ManualScheduler();
-            var bufferScheduler = new ManualScheduler();
+            var values = new Subject<int>();
+            var bufferScheduler = new TestScheduler();
 
-            DateTimeOffset startTime = DateTimeOffset.UtcNow;
-
-            Observable.Range(0, 5, valueScheduler)
+            values
                 .BufferWithTime(TimeSpan.FromMilliseconds(30), TimeSpan.FromMilliseconds(20), bufferScheduler)
                 .Subscribe(stats);
 
             Assert.IsFalse(stats.NextCalled);
 
-            bufferScheduler.Now = startTime.AddMilliseconds(10);
-            valueScheduler.RunNext();
+            values.OnNext(0);
+            bufferScheduler.RunTo(10);
 
-            bufferScheduler.Now = startTime.AddMilliseconds(20); // exact offset value
-            valueScheduler.RunNext();
+            values.OnNext(1);
+            bufferScheduler.RunTo(50);
+            bufferScheduler.RunTo(50);
 
-            bufferScheduler.Now = startTime.AddMilliseconds(30);
-            valueScheduler.RunNext();
+            values.OnNext(2);
 
-            bufferScheduler.RunNext();
-            bufferScheduler.RunNext();
-
-            Assert.AreEqual(2, stats.NextCount);
-            Assert.AreEqual(1, stats.NextValues[1].Count);
+            Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(2, stats.NextValues[0].Count);
         }
 
         [Test]
@@ -104,6 +106,8 @@ namespace RxAs.Rx4.ProofTests.Operators
                 .BufferWithTime(TimeSpan.FromMilliseconds(30), bufferScheduler)
                 .Subscribe(stats);
 
+            bufferScheduler.RunNext();
+
             Assert.IsTrue(stats.ErrorCalled);
             Assert.AreEqual(0, stats.NextCount);
             //Assert.AreEqual(5, stats.NextValues[0].Count);
@@ -118,13 +122,37 @@ namespace RxAs.Rx4.ProofTests.Operators
 
             DateTimeOffset startTime = DateTimeOffset.UtcNow;
 
-            Observable.Empty<int>().Concat(Observable.Throw<int>(new Exception()))
+            Observable.Throw<int>(new Exception())
                 .BufferWithTime(TimeSpan.FromMilliseconds(30), bufferScheduler)
                 .Subscribe(stats);
 
+            Assert.AreEqual(bufferScheduler.QueueSize, 1);
+
+            bufferScheduler.RunNext();
+
             Assert.IsTrue(stats.ErrorCalled);
             Assert.AreEqual(0, stats.NextCount);
-            //Assert.AreEqual(0, stats.NextValues[0].Count);
+        }
+
+        [Test]
+        public void error_is_emitted_through_scheduler()
+        {
+            var stats = new StatsObserver<IList<int>>();
+
+            var bufferScheduler = new ManualScheduler();
+
+            DateTimeOffset startTime = DateTimeOffset.UtcNow;
+
+            Observable.Range(0, 5).Concat(Observable.Throw<int>(new Exception()))
+                .BufferWithTime(TimeSpan.FromMilliseconds(30), bufferScheduler)
+                .Subscribe(stats);
+
+            Assert.AreEqual(bufferScheduler.QueueSize, 1);
+            Assert.IsFalse(stats.ErrorCalled);
+
+            bufferScheduler.RunNext();
+
+            Assert.IsTrue(stats.ErrorCalled);
         }
     }
 }

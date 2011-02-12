@@ -83,15 +83,14 @@ package rx.tests.operators.creation
             Assert.assertTrue(disposeCalled);
         }
 
-        [Test(expects=ArgumentError)]
-        public function throws_argument_error_when_return_value_is_null() : void
+        [Test]
+        public function supports_null_cancelable_value() : void
         {
             var stats : StatsObserver = new StatsObserver();
 
             Observable.createWithCancelable(int, function(x:IObserver) : ICancelable { return null; })
-                .subscribeWith(stats);
-
-            Assert.assertTrue(stats.errorCalled);
+                .subscribeWith(stats)
+                .cancel();
         }
 	}
 }

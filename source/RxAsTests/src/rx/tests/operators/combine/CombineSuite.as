@@ -9,8 +9,9 @@ package rx.tests.operators.combine
 		public var concat : ConcatFixture;
 		public var forkJoin : ForkJoinFixture;
 		public var forkJoinInstance : ForkJoinInstanceFixture;
-		public var joinCounter : JoinCounterFixture;
 		public var join : JoinFixture;
+		public var groupJoin : GroupJoinFixture;
 		public var merge : MergeFixture;
+		public var patternJoinCounter : PatternJoinCounterFixture;
 	}
 }

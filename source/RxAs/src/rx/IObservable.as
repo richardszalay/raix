@@ -190,10 +190,30 @@ package rx
 		function forkJoin(resultClass : Class, right : IObservable, selector : Function):IObservable;
 		
 		/**
+		 * Combines values from two streams based on the "lifetime" of each value, represented by an IObservable 
+		 * selected for each value. All combinations of values from both streams that occur during this "lifetime" window 
+		 * are sent to a selector to be combined. The output of this selector is emitted to the output stream  
+		 * @param right The right hand side of the join
+		 * @param leftWindowSelector A function that will be called for each value from the left ("this") and will 
+		 *                           return the IObservable that represents the lifetime window of that value
+		 * @param rightWindowSelector A function that will be called for each value from right and will 
+		 *                            return the IObservable that represents the lifetime window of that value
+		 * @param resultClass The class of the values returned by joinSelector
+		 * @param joinSelector A function that will accept "live" left/right value combinations and return a new value. 
+		 *                     The output of this function will be received by any subscribers 
+		 * @return An observable sequence of valueClass resultClass
+		 */		 
+		function join(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, resultClass : Class, joinSelector : Function) : IObservable;
+		
+		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, resultClass : Class, joinSelector : Function) : IObservable;
+		
+		/**
 		 * Hides the source sequence so it cannot be cast back to it’s concrete implementation  
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
 		function asObservable() : IObservable;
+		
+		function ignoreValues() : IObservable;
 		
 		/**
 		 * Filters out consecutive duplicates from a source sequence  

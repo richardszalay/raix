@@ -14,6 +14,11 @@ package rx
 		
 		public function SafetyObserver(innerObserver : IObserver)
 		{
+			if (innerObserver == null)
+			{
+				throw new ArgumentError("innerObserver cannot be null");
+			}
+			
 			_innerObserver = innerObserver;
 			_active = true;
 		}

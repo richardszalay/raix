@@ -6,7 +6,7 @@ package rx.tests.operators.combine
 	
 	// Implementation of Erik Meijer's join sample from the Rx forums:
 	// http://social.msdn.microsoft.com/Forums/en-US/rx/thread/3ca3a0d4-ac61-4325-9fa2-ed622830b518/#d0d84a8c-2e23-4175-923b-37aa066d15a4
-	public class JoinCounterFixture
+	public class PatternJoinCounterFixture
 	{
 		[Test]
 		public function counter_works() : void 

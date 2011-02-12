@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace RxAs.Rx4.ProofTests.Operators
 {
     [TestFixture]
-    public class JoinsFixture
+    public class PatternJoinsFixture
     {
         [Test]
         public void combines_values()

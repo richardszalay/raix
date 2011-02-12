@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RxAs.Rx4.ProofTests.Mock;
+using System.Disposables;
+using System.Diagnostics;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
     [TestFixture]
-    public class JoinFixture
+    public class GroupJoinFixture
     {
-        StatsObserver<string> stats;
+        StatsSubject<Tuple<int, IObservable<int>>> groupedValues;
 
         StatsSubject<int> left;
         StatsSubject<int> right;
@@ -19,13 +21,16 @@ namespace RxAs.Rx4.ProofTests.Operators
         List<StatsSubject<Unit>> rightWindows;
 
         Action leftValueAction, rightValueAction;
-        Func<int, int, string> combineAction;
+        Action<int, IObservable<int>> combineAction;
 
-        IDisposable subscription;
+        StatsObserver<string> stats;
+
+        CompositeDisposable subscription;
 
         [SetUp]
         public void SetUp()
         {
+            groupedValues = new StatsSubject<Tuple<int, IObservable<int>>>();
             stats = new StatsObserver<string>();
 
             left = new StatsSubject<int>();
@@ -36,26 +41,37 @@ namespace RxAs.Rx4.ProofTests.Operators
 
             leftValueAction = rightValueAction = () => { };
 
-            combineAction = (l, r) => String.Format("{0},{1}", l, r);
+            combineAction = (l, r) => {};
 
-            subscription = left.Join(right,
-                leftVal => 
-                    {
-                        leftValueAction();
-                        var leftWindow = new StatsSubject<Unit>();
-                        leftWindows.Add(leftWindow);
-                        return leftWindow;
-                    },
-                rightVal => 
-                    {
-                        rightValueAction();
-                        var rightWindow = new StatsSubject<Unit>();
-                        rightWindows.Add(rightWindow);
-                        return rightWindow;
-                    },
-                (l, r) => combineAction(l,r)
-                )
-                .Subscribe(stats);
+            subscription = new CompositeDisposable();
+
+            subscription.Add(left.GroupJoin(right,
+                leftVal =>
+                {
+                    leftValueAction();
+                    var leftWindow = new StatsSubject<Unit>();
+                    leftWindows.Add(leftWindow);
+                    return leftWindow;
+                },
+                rightVal =>
+                {
+                    rightValueAction();
+                    var rightWindow = new StatsSubject<Unit>();
+                    rightWindows.Add(rightWindow);
+                    return rightWindow;
+                },
+                (l, r) =>
+                {
+                    combineAction(l,r);
+
+                    return new Tuple<int, IObservable<int>>(l, r);
+                })
+                .Subscribe(groupedValues));
+
+            subscription.Add(groupedValues
+                .SelectMany(input => input.Item2.Select(r => new Tuple<int, int>(input.Item1, r)))
+                .Select(t => String.Format("{0},{1}", t.Item1, t.Item2))
+                .Subscribe(stats));
         }
 
         [Test]
@@ -154,16 +170,18 @@ namespace RxAs.Rx4.ProofTests.Operators
             left.OnNext(1);
             right.OnNext(1);
 
+
+
             subscription.Dispose();
 
             Assert.AreEqual(
-                leftWindows.Select(_ => false),
-                leftWindows.Select(w => w.HasSubscriptions),
+                leftWindows.Select(_ => false).ToArray(),
+                leftWindows.Select(w => w.HasSubscriptions).ToArray(),
                 "Left window not unsubscribed from");
 
             Assert.AreEqual(
-                rightWindows.Select(_ => false),
-                rightWindows.Select(w => w.HasSubscriptions),
+                rightWindows.Select(_ => false).ToArray(),
+                rightWindows.Select(w => w.HasSubscriptions).ToArray(),
                 "Right window not unsubscribed from");
         }
 
@@ -278,11 +296,45 @@ namespace RxAs.Rx4.ProofTests.Operators
             left.OnNext(0);
             right.OnNext(0);
 
-            left.OnCompleted();
+            rightWindows[0].OnCompleted();
             Assert.IsFalse(stats.CompletedCalled);
 
-            leftWindows[0].OnCompleted();
-            Assert.IsTrue(stats.CompletedCalled);
+            right.OnCompleted();
+            Assert.IsTrue(stats.CompletedCalled); 
+        }
+
+        [Test]
+        public void GroupJoinBugRepro()
+        {
+            Subject<int> left = new Subject<int>();
+            Subject<int> right = new Subject<int>();
+
+            Subject<Tuple<int,IObservable<int>>> groups = 
+                new Subject<Tuple<int,IObservable<int>>>();
+
+            var groupJoinSubscription = left.GroupJoin(right,
+                l => Observable.Never<Unit>().Finally(() => Debug.WriteLine("Left window subscription terminated")),
+                r => Observable.Never<Unit>().Finally(() => Debug.WriteLine("Right window subscription terminated")),
+                (l, rs) => new Tuple<int, IObservable<int>>(l, rs)
+                )
+                .Subscribe(groups);
+
+
+            var groupsSubscription = groups
+                .SelectMany(g => g.Item2.Select(r => new Tuple<int, int>(g.Item1, r)))
+                .Select(t => String.Format("{0},{1}", t.Item1, t.Item2))
+                .Subscribe(x => Debug.WriteLine(x));
+
+            left.OnNext(0);
+            left.OnNext(1);
+
+            right.OnNext(2);
+
+            Debug.WriteLine("Cancelling GroupJoin");
+            groupJoinSubscription.Dispose();
+
+            Debug.WriteLine("Cancelling Groups");
+            groupsSubscription.Dispose();
         }
     }
 }

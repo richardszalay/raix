@@ -149,12 +149,7 @@ package rx
 			{
 				var cancelable : ICancelable = subscribeFunc(observer) as ICancelable;
 				
-				if (cancelable == null)
-				{
-					throw new ArgumentError("Expected an ICancelable to be returned from subscribeFunc");
-				}
-				
-				return cancelable;
+				return cancelable || Cancelable.empty;
 			});
 		}
 		

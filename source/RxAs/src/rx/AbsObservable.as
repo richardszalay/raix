@@ -1,6 +1,7 @@
 package rx
 {
 	import flash.errors.IllegalOperationError;
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
 	import rx.impl.*;
@@ -866,6 +867,208 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
+		public function join(right : IObservable, 
+			leftWindowSelector : Function, rightWindowSelector : Function, 
+			resultClass : Class, joinSelector : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			return Observable.createWithCancelable(resultClass, function(observer:IObserver) : ICancelable
+			{
+				return source.groupJoin(right, leftWindowSelector, rightWindowSelector, Object, function(leftValue:Object, joinedRightValues:IObservable) : Object
+				{
+					// TODO: Should we bother track subscriptions here? groupJoin should avoid any memleaks
+					return joinedRightValues.subscribe(function(rightValue:Object) : void
+						{
+							var resultValue : Object;
+							
+							try
+							{
+								resultValue = joinSelector(leftValue, rightValue);
+							}
+							catch(error : Error)
+							{
+								observer.onError(error);
+								return;
+							}
+							
+							observer.onNext(resultValue);
+						});
+				})
+				.ignoreValues()
+				.subscribeWith(observer);
+			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function groupJoin(right : IObservable, 
+			leftWindowSelector : Function, rightWindowSelector : Function, 
+			resultClass : Class, joinSelector : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			return Observable.createWithCancelable(resultClass, function(observer:IObserver) : ICancelable
+			{
+				var leftSubscription : FutureCancelable = new FutureCancelable();
+				var rightSubscription : FutureCancelable = new FutureCancelable();
+				
+				var windowSubscriptions : CompositeCancelable = new CompositeCancelable();
+				var rightWindowSubscriptions : CompositeCancelable = new CompositeCancelable();
+				
+				var activeLeftSubjects : Array = new Array();
+				var activeRightValues : Dictionary = new Dictionary();
+				var activeRightValuesCount : int = 0;
+				var rightID : int = int.MIN_VALUE;
+				
+				var subscription : CompositeCancelable = new CompositeCancelable([
+					leftSubscription, rightSubscription, windowSubscriptions, rightWindowSubscriptions]);
+				
+				var leftComplete : Boolean = false;
+				var rightComplete : Boolean = false;
+				
+				leftSubscription.innerCancelable = source
+					.subscribe(function(leftValue : Object) : void
+					{
+						var leftWindow : IObservable;
+						var rightValuesSubject : Subject = new Subject(right.valueClass);
+						var returnValue : Object;
+						
+						try
+						{
+							leftWindow = IObservable(leftWindowSelector(leftValue));
+							
+							returnValue = joinSelector(leftValue, rightValuesSubject.asObservable());
+						}
+						catch(error : Error)
+						{
+							// TODO
+							
+							observer.onError(error);
+							return;
+						}
+						
+						observer.onNext(returnValue);
+						
+						for each(var activeRightValue : Object in activeRightValues)
+						{
+							rightValuesSubject.onNext(activeRightValue);
+						}
+						
+						var windowSubscription : FutureCancelable = new FutureCancelable();
+						windowSubscriptions.add(windowSubscription);
+						
+						activeLeftSubjects.push(rightValuesSubject);
+							
+						windowSubscription.innerCancelable = leftWindow.take(1)
+							.subscribe(null, function():void
+							{
+								rightValuesSubject.onCompleted();
+								activeLeftSubjects.splice(activeLeftSubjects.indexOf(rightValuesSubject), 1);
+								windowSubscriptions.remove(windowSubscription);
+								
+								if (leftComplete && activeLeftSubjects.length == 0)
+								{
+									observer.onCompleted();
+								}
+								
+							}, function(e:Error) : void
+							{
+								// TODO
+								
+								activeLeftSubjects.splice(activeLeftSubjects.indexOf(rightValuesSubject), 1);
+								windowSubscriptions.remove(windowSubscription);
+								observer.onError(e);
+							});
+					},
+					function():void
+					{
+						leftComplete = true;
+						
+						if (rightComplete || activeLeftSubjects.length == 0)
+						{
+							observer.onCompleted();
+						}
+					});
+					
+				rightSubscription.innerCancelable = right.subscribe(
+					function(rightValue : Object) : void
+					{
+						var rightWindow : IObservable;
+						var activeRightValueID : int = rightID++;
+						
+						for each(var subject : Subject in activeLeftSubjects)
+						{
+							subject.onNext(rightValue);
+						} 
+						
+						try
+						{
+							rightWindow = IObservable(rightWindowSelector(rightWindow));
+						}
+						catch(error : Error)
+						{
+							// TODO
+							
+							observer.onError(error);
+							return;
+						}
+						
+						activeRightValues[activeRightValueID] = rightValue;
+						activeRightValuesCount++;
+						
+						var windowSubscription : FutureCancelable = new FutureCancelable();
+						windowSubscriptions.add(windowSubscription);
+						
+						windowSubscription.innerCancelable = rightWindow.take(1)
+							.subscribe(null, function():void
+							{
+								delete activeRightValues[activeRightValueID];
+								activeRightValuesCount--;
+								rightWindowSubscriptions.remove(windowSubscription);
+								
+								if (rightComplete && activeRightValuesCount == 0)
+								{
+									for each(var activeSubject : Subject in activeLeftSubjects)
+									{
+										activeSubject.onCompleted();
+									}
+									
+									observer.onCompleted();
+								}
+							}, function(e:Error) : void
+							{
+								// TODO
+								
+								delete activeRightValues[activeRightValueID];
+								activeRightValuesCount--;
+								rightWindowSubscriptions.remove(windowSubscription);
+								observer.onError(e);
+							});
+					},
+					function() : void
+					{
+						rightComplete = true;
+						
+						if ((leftComplete && activeLeftSubjects.length == 0) || activeRightValuesCount == 0)
+						{
+							for each(var activeSubject : Subject in activeLeftSubjects)
+							{
+								activeSubject.onCompleted();
+							}
+							
+							observer.onCompleted();
+						}
+					});
+					
+				return subscription;
+			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function asObservable():IObservable
 		{
 			var source : IObservable = this;
@@ -873,6 +1076,19 @@ package rx
 			return Observable.defer(source.valueClass, function():IObservable
 			{
 				return source;
+			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function ignoreValues() : IObservable
+		{
+			var source : IObservable = this;
+			
+			return Observable.createWithCancelable(this.valueClass, function(observer : IObserver) : ICancelable
+			{
+				return source.subscribe(null, observer.onCompleted, observer.onError); 
 			});
 		}
 		

@@ -73,15 +73,14 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.IsTrue(disposeCalled);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
-        public void throws_argument_error_when_return_value_is_null()
+        [Test]
+        public void supports_null_cancelable_value()
         {
             StatsObserver<int> stats = new StatsObserver<int>();
 
             Observable.CreateWithDisposable<int>(x => null)
-                .Subscribe(stats);
-
-            Assert.IsTrue(stats.ErrorCalled);
+                .Subscribe(stats)
+                .Dispose();
         }
     }
 }

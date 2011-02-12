@@ -6,8 +6,9 @@ package rx.tests.operators.combine
 	import rx.tests.AssertEx;
 	import rx.tests.mocks.StatsObserver;
 	
-	public class JoinFixture
+	public class GroupJoinFixture
 	{
+		private var groupedValues : Subject;
 		private var stats : StatsObserver;
 
         private var left : Subject;
@@ -20,7 +21,7 @@ package rx.tests.operators.combine
         private var rightValueAction : Function;
         private var combineAction : Function;
 
-        private var subscription : ICancelable;
+        private var subscription : CompositeCancelable;
 		
 		[Before]
 		public function setup() : void
@@ -29,18 +30,22 @@ package rx.tests.operators.combine
 
             left = new Subject(int);
             right = new Subject(int);
+            
+            groupedValues = new Subject(Object);
 
             leftWindows = new Array(); // .<Subject>
             rightWindows = new Array(); // .<Subject>
 
             leftValueAction = rightValueAction = function():void{};
+            
+            subscription = new CompositeCancelable();
 
             combineAction = function(l:int, r:int) : String
             {
             	return l + "," + r;
             };
 
-            subscription = left.join(right,
+            subscription.add(left.groupJoin(right,
                 function(leftVal:int) : IObservable
                     {
                         leftValueAction();
@@ -55,11 +60,24 @@ package rx.tests.operators.combine
                         rightWindows.push(rightWindow);
                         return rightWindow;
                     },
-                String, function(l:int, r:int) : String
+                Object, function(l:int, r:IObservable) : Object
 				{
-					return combineAction(l,r)
-				})
-                .subscribeWith(stats);
+                    combineAction(l,r);
+
+                    return { key:l, values:r };
+                })
+                .subscribeWith(groupedValues));
+                
+           subscription.add(groupedValues
+                .mapMany(Object, function (group : Object) : IObservable
+                {
+                	return IObservable(group.values).map(Object, function(r:int):Object
+                	{
+                		return {l:group.key, r:r};
+                	});
+                })
+                .map(String, function(tuple : Object) : String { return tuple.l+","+tuple.r; })
+                .subscribeWith(stats));
 		}
 		
 		[Test]
@@ -278,10 +296,10 @@ package rx.tests.operators.combine
             left.onNext(0);
             right.onNext(0);
 
-            left.onCompleted();
+            rightWindows[0].onCompleted();
             Assert.assertFalse(stats.completedCalled);
 
-            leftWindows[0].onCompleted();
+            right.onCompleted();
             Assert.assertTrue(stats.completedCalled);
         }
 

@@ -80,7 +80,7 @@ package rx.tests.operators.mutation
 		}
 		
 		[Test]
-		public function zero_length_array_is_emitted_when_no_values_are_available() : void
+		public function empty_list_is_emitted_with_source_is_empty() : void
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
@@ -90,12 +90,32 @@ package rx.tests.operators.mutation
 			
 			Observable.never(int)
 				.bufferWithTime(30, 20, bufferScheduler)
+				.take(1)
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			
 			bufferScheduler.runNext();
 			
+			Assert.assertEquals(1, stats.nextCount);
+			Assert.assertEquals(0, stats.nextValues[0].length);
+		}
+		
+		[Test]
+		public function empty_values_are_released_on_completion() : void
+		{
+			var stats : StatsObserver = new StatsObserver();
+			
+			var bufferScheduler : ManualScheduler = new ManualScheduler();
+			
+			var startTime : Date = new Date();
+			
+			Observable.empty(int)
+				.bufferWithTime(30, 20, bufferScheduler)
+				.take(1)
+				.subscribeWith(stats);
+				
+		
 			Assert.assertEquals(1, stats.nextCount);
 			Assert.assertEquals(0, stats.nextValues[0].length);
 		}

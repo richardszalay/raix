@@ -18,18 +18,18 @@ namespace RxAs.Rx4.ProofTests.Mock
 		{
 		}
 
-		public void OnCompleted()
+		public virtual void OnCompleted()
 		{
 			_completedCount++;
 		}
-		
-		public void OnError(Exception exception)
+
+        public virtual void OnError(Exception exception)
 		{
 			_error = exception;
 			_errorCount++;
 		}
-		
-		public void OnNext(T value)
+
+        public virtual void OnNext(T value)
 		{
 			_nextValues.Add(value);
 			

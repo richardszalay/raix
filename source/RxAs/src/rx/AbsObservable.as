@@ -1069,6 +1069,149 @@ package rx
 		/**
 		 * @inheritDoc
 		 */
+		public function groupBy(elementClass : Class, keySelector : Function, elementSelector : Function = null, 
+			keyComparer : Function = null) : IObservable
+		{
+			return groupByUntil(elementClass, keySelector, 
+				function(groupedObservable : IGroupedObservable) : IObservable
+				{
+					return Observable.never(Object);
+				},
+				elementSelector, keyComparer);
+		}
+		
+		public function groupByUntil(elementClass : Class, keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable
+		{
+			var source : IObservable = this;
+			
+			var defaultComparer : Function = function(a:Object, b:Object) : Boolean { return a == b; }
+			
+			keyComparer = (keyComparer == null)
+				? defaultComparer
+				: normalizeComparer(keyComparer);
+				
+			elementSelector = (elementSelector == null)
+				? function(x:Object) : Object { return x; }
+				: elementSelector;
+			
+			return Observable.createWithCancelable(IGroupedObservable, function(observer : IObserver) : ICancelable
+			{
+				var activeGroupKeys : Array = new Array();
+				var activeGroupSubjects : Array = new Array();
+				
+				var onError : Function = function(error : Error) : void
+				{
+					for each(var activeGroupSubject : Subject in activeGroupSubjects)
+					{
+						activeGroupSubject.onError(error);
+					}
+					
+					observer.onError(error);
+				};
+				
+				var findKey : Function = function(key : Object) : int
+				{
+					for (var i:int=0; i<activeGroupKeys.length; i++)
+					{
+						if (keyComparer(activeGroupKeys[i], key))
+						{
+							return i;
+						}
+					}
+					
+					return -1;
+				};
+				
+				var sourceSubscription : FutureCancelable = new FutureCancelable();
+				var durationSubscriptions : CompositeCancelable = new CompositeCancelable();
+				
+				sourceSubscription.innerCancelable = source.subscribe(
+					function(sourceValue : Object) : void
+					{
+						var key : Object;
+						var element : Object;
+						var keyIndex : int = -1;
+						
+						try
+						{
+							key = keySelector(sourceValue);
+							element = elementSelector(sourceValue);
+							
+							keyIndex = findKey(key);
+						}
+						catch(error : Error)
+						{
+							onError(error);
+							return;
+						}
+						
+						var groupSubject : Subject = null;
+						
+						if (keyIndex != -1)
+						{
+							groupSubject = activeGroupSubjects[keyIndex] as Subject;
+							
+							groupSubject.onNext(element);
+						}
+						else
+						{
+							groupSubject = new Subject(elementClass);
+							
+							activeGroupKeys.push(key);
+							activeGroupSubjects.push(groupSubject);
+							
+							var group : IGroupedObservable = new GroupedObservable(key, groupSubject);
+							
+							var groupDuration : IObservable;
+							
+							try
+							{
+								groupDuration = IObservable(durationSelector(group));
+							}
+							catch(error : Error)
+							{
+								onError(error);
+								return;
+							}
+							
+							var durationSubscription : FutureCancelable = new FutureCancelable();
+
+						    durationSubscriptions.add(durationSubscription);
+						    
+						    observer.onNext(group);
+						    groupSubject.onNext(element);
+							
+							durationSubscription.innerCancelable = groupDuration
+								//.take(1).ignoreValues().subscribe(null, function():void
+								.take(1).subscribe(null, function():void
+								{
+									var keyIndex : int = -1;
+									
+									try
+									{
+										keyIndex = findKey(key);
+									}
+									catch(error : Error)
+									{
+										onError(error);
+										return;
+									}
+									
+									durationSubscriptions.remove(durationSubscription);
+									groupSubject.onCompleted();
+									activeGroupKeys.splice(keyIndex, 1);
+									activeGroupSubjects.splice(keyIndex, 1);
+								});
+						}
+					}, observer.onCompleted, onError);
+					
+				return new CompositeCancelable([sourceSubscription, durationSubscriptions]);
+			});
+		}
+		 
+		/**
+		 * @inheritDoc
+		 */
 		public function asObservable():IObservable
 		{
 			var source : IObservable = this;
@@ -1315,7 +1458,7 @@ package rx
 		 */
 		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return new ConnectableObservable(this, new AsyncSubject(this.valueClass, scheduler));
+			return multicast(new AsyncSubject(this.valueClass, scheduler));
 		}
 		
 		/**
@@ -1323,17 +1466,12 @@ package rx
 		 */
 		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
-			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
-			{
-				var connectable : IConnectableObservable = prune(scheduler);
-				
-				var subscription : CompositeCancelable = new CompositeCancelable([]);
-				 
-				subscription.add( IConnectableObservable(selector(connectable)).subscribeWith(obs) );
-				subscription.add( connectable.connect() );
-				
-				return subscription;
-			});
+			var valueClass : Class = this.valueClass;
+			
+			return multicastAndConnect(
+				function():ISubject { return new AsyncSubject(valueClass, scheduler); },
+				selector
+			);
 		}
 		
 		/**
@@ -1341,7 +1479,7 @@ package rx
 		 */
 		public function publish() : IConnectableObservable
 		{
-			return new ConnectableObservable(this, new Subject(this.valueClass));
+			return multicast(new Subject(this.valueClass));
 		}
 		
 		/**
@@ -1349,16 +1487,36 @@ package rx
 		 */
 		public function publishAndConnect(selector : Function) : IObservable
 		{
+			var valueClass : Class = this.valueClass;
+			
+			return multicastAndConnect(
+				function():ISubject { return new Subject(valueClass); },
+				selector
+			);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function multicast(subject : ISubject) : IConnectableObservable
+		{
+			return new ConnectableObservable(this, subject);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function multicastAndConnect(subjectSelector : Function, selector : Function) : IObservable
+		{
 			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
 			{
-				var connectable : IConnectableObservable = publish();
+				var subject : ISubject = subjectSelector();
+				var connectable : IConnectableObservable = multicast(subject);
 				
-				var subscription : CompositeCancelable = new CompositeCancelable([]);
-				 
-				subscription.add( IConnectableObservable(selector(connectable)).subscribeWith(obs) );
-				subscription.add( connectable.connect() );
-				
-				return subscription;
+				return new CompositeCancelable([
+					IObservable(selector(connectable)).subscribeWith(obs),
+					connectable.connect()
+				]);
 			});
 		}
 		
@@ -1436,27 +1594,21 @@ package rx
 		public function replay(bufferSize : uint = 0, window : uint = 0, 
 			scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return new ConnectableObservable(this, 
-				new ReplaySubject(this.valueClass, bufferSize, window, scheduler));
+			return multicast(new ReplaySubject(this.valueClass, bufferSize, window, scheduler));
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function replayAndConnect(selector : Function, bufferSize : uint = 0, 
-			window : uint = 0, scheduler : IScheduler = null) : IObservable
+		public function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, 
+			scheduler : IScheduler = null) : IObservable
 		{
-			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
-			{
-				var connectable : IConnectableObservable = replay(bufferSize, window, scheduler);
-				
-				var subscription : CompositeCancelable = new CompositeCancelable([]);
-				 
-				subscription.add( IConnectableObservable(selector(connectable)).subscribeWith(obs) );
-				subscription.add( connectable.connect() );
-				
-				return subscription;
-			});
+			var valueClass : Class = this.valueClass;
+			
+			return multicastAndConnect(
+				function():ISubject { return new ReplaySubject(this.valueClass, bufferSize, window, scheduler); },
+				selector
+			);
 		}
 		
 		/**
@@ -2051,10 +2203,7 @@ package rx
 					observer.onError
 					);
 				
-				Scheduler.immediate.schedule(function():void
-				{
-					subscription.innerCancelable = source.subscribeWith(decoratorObserver);
-				});
+				subscription.innerCancelable = source.subscribeWith(decoratorObserver);
 				
 				return subscription;
 			});

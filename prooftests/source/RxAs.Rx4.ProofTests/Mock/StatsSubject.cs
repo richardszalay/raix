@@ -34,19 +34,19 @@ namespace RxAs.Rx4.ProofTests.Mock
             get { return subscriptionCount > 0; }
         }
 
-        public void OnCompleted()
+        public override void OnCompleted()
         {
             base.OnCompleted();
             innerSubject.OnCompleted();
         }
 
-        public void OnError(Exception exception)
+        public override void OnError(Exception exception)
         {
             base.OnError(exception);
             innerSubject.OnError(exception);
         }
 
-        public void OnNext(T value)
+        public override void OnNext(T value)
         {
             base.OnNext(value);
             innerSubject.OnNext(value);

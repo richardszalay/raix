@@ -207,6 +207,10 @@ package rx
 		
 		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, resultClass : Class, joinSelector : Function) : IObservable;
 		
+		function groupBy(elementClass : Class, keySelector : Function, elementSelector : Function = null, keyComparer : Function = null) : IObservable;
+		
+		function groupByUntil(elementClass : Class, keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable;
+		
 		/**
 		 * Hides the source sequence so it cannot be cast back to it’s concrete implementation  
 		 * @return An observable sequence of the same valueClass as the current sequence

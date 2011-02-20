@@ -2497,6 +2497,53 @@ package rx
 			});
 		}
 		
+		public function window(windowClosingSelector : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			return Observable.defer(IObservable, function():IObservable
+			{
+				var windows : Subject = new Subject(Unit);
+				
+				return multiWindow(windows.startWith([null]), 
+					function(u:Unit):IObservable
+					{
+						var subject : AsyncSubject = new AsyncSubject(this.valueClass);
+						
+						var closing : IObservable = IObservable(windowClosingSelector());
+						
+						closing.subscribe(function(v:Object):void
+						{
+							subject.onNext(v);
+							windows.onNext(null);
+						},
+						function():void
+						{
+							subject.onCompleted();
+						},
+						subject.onError);
+						
+						return subject;
+					});
+					
+				return mainSubscription;
+			});
+		}
+		
+		public function multiWindow(windowOpenings : IObservable, windowClosingSelector : Function) : IObservable
+		{
+			var source : IObservable = this;
+			
+			return windowOpenings.groupJoin(this, 
+				windowClosingSelector,
+				function(x:Object) : IObservable { return Observable.empty(Unit); },
+				IObservable,
+				function(w:Object, values : IObservable) : IObservable
+				{
+					return values;
+				});
+		}
+		
 		/**
 		 * @inheritDoc
 		 */

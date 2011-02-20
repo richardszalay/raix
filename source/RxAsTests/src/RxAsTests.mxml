@@ -5,6 +5,7 @@
      
      <mx:Script>
      	<![CDATA[
+     		import rx.tests.operators.creation.WindowFixture;
      		import rx.tests.operators.mutation.GroupByUntilFixture;
      		import rx.tests.operators.flex.FlexSuite;
      		import org.flexunit.internals.TraceListener;

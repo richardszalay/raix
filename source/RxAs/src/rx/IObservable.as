@@ -572,6 +572,14 @@ package rx
 		function where(predicate : Function) : IObservable;
 		
 		/**
+		 * Splits values into child-observable windows which are closed by the caller
+		 * @param windowClosingSelector Returns an IObservable that will emit a value or complete to indicate that the active 
+		 * 		  window has closed. Called on subscription and immediately after each window closes. 
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 */
+		function window(windowClosingSelector : Function) : IObservable;
+		
+		/**
 		 * Merges two sequences through a mapping function while only ever using each value once 
 		 * @param valueClass The class of the returned sequence and return value of selector
 		 * @param rightSource The sequence to combine with the current

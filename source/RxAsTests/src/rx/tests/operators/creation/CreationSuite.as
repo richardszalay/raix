@@ -27,5 +27,6 @@ package rx.tests.operators.creation
 		public var uncaughtErrors : UncaughtErrorsFixture;
 		public var urlLoader : URLLoaderFixture;
 		public var xml : XMLFixture;
+		public var window : WindowFixture;
 	}
 }

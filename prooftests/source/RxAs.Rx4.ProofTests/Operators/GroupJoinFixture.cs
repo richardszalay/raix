@@ -336,5 +336,42 @@ namespace RxAs.Rx4.ProofTests.Operators
             Debug.WriteLine("Cancelling Groups");
             groupsSubscription.Dispose();
         }
+
+        [Test]
+        public void RightWindowBug()
+        {
+            var left = new Subject<int>();
+            var right = new Subject<int>();
+
+            var leftWindows = new List<Subject<Unit>>();
+            var rightWindows = new List<Subject<Unit>>();
+
+            bool completed = false;
+
+            left.GroupJoin(right,
+                leftVal =>
+                {
+                    var leftWindow = new Subject<Unit>();
+                    leftWindows.Add(leftWindow);
+                    return leftWindow;
+                },
+                rightVal =>
+                {
+                    var rightWindow = new Subject<Unit>();
+                    rightWindows.Add(rightWindow);
+                    return rightWindow;
+                },
+                (l, r) => l)
+                .Subscribe(_ => {}, () => completed = true);
+
+            left.OnNext(0);
+            right.OnNext(0);
+
+            rightWindows[0].OnCompleted(); 
+            Assert.IsFalse(completed);
+
+            right.OnCompleted();
+            Assert.IsTrue(completed);
+        }
     }
 }

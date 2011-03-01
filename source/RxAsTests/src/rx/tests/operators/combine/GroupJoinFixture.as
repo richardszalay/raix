@@ -81,6 +81,20 @@ package rx.tests.operators.combine
 		}
 		
 		[Test]
+        public function values_can_be_emitted_from_the_right_first() : void
+        {
+            right.onNext(0);
+            left.onNext(0);
+
+            left.onNext(1);
+            right.onNext(1);
+
+            AssertEx.assertArrayEquals([
+                "0,0","1,0","0,1","1,1"
+            ], stats.nextValues);
+        }
+		
+		[Test]
         public function values_are_emitted_during_open_windows() : void
         {
             left.onNext(0);
@@ -91,6 +105,7 @@ package rx.tests.operators.combine
             right.onNext(2);
 
             AssertEx.assertArrayEquals(
+                             // !
                 ["0,0","0,1","1,0","1,1","0,2","1,2"],
             	stats.nextValues);
         }

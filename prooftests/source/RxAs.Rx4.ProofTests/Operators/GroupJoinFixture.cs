@@ -75,6 +75,21 @@ namespace RxAs.Rx4.ProofTests.Operators
         }
 
         [Test]
+        public void values_can_be_emitted_from_the_right_first()
+        {
+            right.OnNext(0);
+            left.OnNext(0);
+
+            left.OnNext(1);
+            right.OnNext(1);
+
+            Assert.AreEqual(new string[]
+            {
+                "0,0","1,0","0,1","1,1"
+            }, stats.NextValues);
+        }
+
+        [Test]
         public void values_are_emitted_during_open_windows()
         {
             left.OnNext(0);

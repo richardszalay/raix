@@ -9,7 +9,6 @@ package rx
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 	
 	import rx.flex.*;
 	import rx.impl.*;
@@ -129,7 +128,6 @@ package rx
 				
 				if (cancelFunc == null)
 				{
-					trace(getQualifiedClassName(cancelFunc));
 					throw new ArgumentError("Expected a Function to be returned from subscribeFunc");
 				}
 				
@@ -147,9 +145,19 @@ package rx
 		{
 			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
 			{
-				var cancelable : ICancelable = subscribeFunc(observer) as ICancelable;
+				var cancelable : FutureCancelable = new FutureCancelable(); 
 				
-				return cancelable || Cancelable.empty;
+				try
+				{
+					cancelable.innerCancelable = subscribeFunc(observer) as ICancelable;
+				}
+				catch(error : Error)
+				{
+					observer.onError(error);
+					return Cancelable.empty;
+				}
+				
+				return cancelable;
 			});
 		}
 		

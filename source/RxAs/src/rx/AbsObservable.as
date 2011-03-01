@@ -1,7 +1,6 @@
 package rx
 {
 	import flash.errors.IllegalOperationError;
-	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
 	import rx.impl.*;
@@ -915,18 +914,29 @@ package rx
 				var rightSubscription : FutureCancelable = new FutureCancelable();
 				
 				var windowSubscriptions : CompositeCancelable = new CompositeCancelable();
-				var rightWindowSubscriptions : CompositeCancelable = new CompositeCancelable();
 				
 				var activeLeftSubjects : Array = new Array();
-				var activeRightValues : Dictionary = new Dictionary();
-				var activeRightValuesCount : int = 0;
+				// Need to track key/values seperately because Dictionary does not 
+				// guarantee enumeration order
+				var activeRightKeys : Array = new Array();
+				var activeRightValues : Array = new Array();
 				var rightID : int = int.MIN_VALUE;
 				
 				var subscription : CompositeCancelable = new CompositeCancelable([
-					leftSubscription, rightSubscription, windowSubscriptions, rightWindowSubscriptions]);
+					leftSubscription, rightSubscription, windowSubscriptions]);
 				
 				var leftComplete : Boolean = false;
 				var rightComplete : Boolean = false;
+				
+				var onError : Function = function(error : Error) : void
+				{
+					for each(var leftWindow : Subject in activeLeftSubjects)
+					{
+						leftWindow.onError(error)						
+					}
+					
+					observer.onError(error);
+				};
 				
 				leftSubscription.innerCancelable = source
 					.subscribe(function(leftValue : Object) : void
@@ -943,9 +953,7 @@ package rx
 						}
 						catch(error : Error)
 						{
-							// TODO
-							
-							observer.onError(error);
+							onError(error);
 							return;
 						}
 						
@@ -956,31 +964,28 @@ package rx
 							rightValuesSubject.onNext(activeRightValue);
 						}
 						
-						var windowSubscription : FutureCancelable = new FutureCancelable();
-						windowSubscriptions.add(windowSubscription);
+						var leftWindowSubscription : FutureCancelable = new FutureCancelable();
+						windowSubscriptions.add(leftWindowSubscription);
 						
 						activeLeftSubjects.push(rightValuesSubject);
 							
-						windowSubscription.innerCancelable = leftWindow.take(1)
+						leftWindowSubscription.innerCancelable = leftWindow
+							.take(1)
+							.finallyAction(function():void
+							{
+								activeLeftSubjects.splice(activeLeftSubjects.indexOf(rightValuesSubject), 1);
+								windowSubscriptions.remove(leftWindowSubscription);
+							})
 							.subscribe(null, function():void
 							{
 								rightValuesSubject.onCompleted();
-								activeLeftSubjects.splice(activeLeftSubjects.indexOf(rightValuesSubject), 1);
-								windowSubscriptions.remove(windowSubscription);
 								
-								if (leftComplete && activeLeftSubjects.length == 0)
+								if (leftComplete && activeLeftSubjects.length == 1)
 								{
 									observer.onCompleted();
 								}
 								
-							}, function(e:Error) : void
-							{
-								// TODO
-								
-								activeLeftSubjects.splice(activeLeftSubjects.indexOf(rightValuesSubject), 1);
-								windowSubscriptions.remove(windowSubscription);
-								observer.onError(e);
-							});
+							}, onError);
 					},
 					function():void
 					{
@@ -990,7 +995,8 @@ package rx
 						{
 							observer.onCompleted();
 						}
-					});
+					},
+					onError);
 					
 				rightSubscription.innerCancelable = right.subscribe(
 					function(rightValue : Object) : void
@@ -1009,26 +1015,29 @@ package rx
 						}
 						catch(error : Error)
 						{
-							// TODO
-							
-							observer.onError(error);
+							onError(error);
 							return;
 						}
 						
-						activeRightValues[activeRightValueID] = rightValue;
-						activeRightValuesCount++;
+						activeRightKeys.push(activeRightValueID);;
+						activeRightValues.push(rightValue);
 						
-						var windowSubscription : FutureCancelable = new FutureCancelable();
-						windowSubscriptions.add(windowSubscription);
+						var rightWindowSubscription : FutureCancelable = new FutureCancelable();
+						windowSubscriptions.add(rightWindowSubscription);
 						
-						windowSubscription.innerCancelable = rightWindow.take(1)
+						rightWindowSubscription.innerCancelable = rightWindow
+							.take(1)
+							.finallyAction(function():void
+							{
+								var index : int = activeRightKeys.indexOf(activeRightValueID);
+								activeRightKeys.splice(index, 1);
+								activeRightValues.splice(index, 1);
+
+								windowSubscriptions.remove(rightWindowSubscription);
+							})
 							.subscribe(null, function():void
 							{
-								delete activeRightValues[activeRightValueID];
-								activeRightValuesCount--;
-								rightWindowSubscriptions.remove(windowSubscription);
-								
-								if (rightComplete && activeRightValuesCount == 0)
+								if (rightComplete && activeRightValues.length == 1)
 								{
 									for each(var activeSubject : Subject in activeLeftSubjects)
 									{
@@ -1037,21 +1046,13 @@ package rx
 									
 									observer.onCompleted();
 								}
-							}, function(e:Error) : void
-							{
-								// TODO
-								
-								delete activeRightValues[activeRightValueID];
-								activeRightValuesCount--;
-								rightWindowSubscriptions.remove(windowSubscription);
-								observer.onError(e);
-							});
+							}, onError);
 					},
 					function() : void
 					{
 						rightComplete = true;
 						
-						if ((leftComplete && activeLeftSubjects.length == 0) || activeRightValuesCount == 0)
+						if ((leftComplete && activeLeftSubjects.length == 0) || activeRightValues.length == 0)
 						{
 							for each(var activeSubject : Subject in activeLeftSubjects)
 							{
@@ -1060,7 +1061,8 @@ package rx
 							
 							observer.onCompleted();
 						}
-					});
+					},
+					onError);
 					
 				return subscription;
 			});
@@ -2503,27 +2505,24 @@ package rx
 			
 			return Observable.defer(IObservable, function():IObservable
 			{
-				var windows : Subject = new Subject(Unit);
+				var windowOpenings : Subject = new Subject(Unit);
 				
-				return multiWindow(windows.startWith([null]), 
+				return multiWindow(windowOpenings.startWith([null]), 
 					function(u:Unit):IObservable
 					{
-						var subject : AsyncSubject = new AsyncSubject(this.valueClass);
+						var windowValues : AsyncSubject = new AsyncSubject(this.valueClass);
 						
 						var closing : IObservable = IObservable(windowClosingSelector());
 						
-						closing.subscribe(function(v:Object):void
-						{
-							subject.onNext(v);
-							windows.onNext(null);
-						},
-						function():void
-						{
-							subject.onCompleted();
-						},
-						subject.onError);
+						closing.take(1).subscribe(null,
+							function():void
+							{
+								windowValues.onCompleted();
+								windowOpenings.onNext(null);
+							},
+							windowValues.onError);
 						
-						return subject;
+						return windowValues;
 					});
 					
 				return mainSubscription;

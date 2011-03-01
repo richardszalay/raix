@@ -24,7 +24,7 @@ package rx.tests.operators.creation
 		public var range : RangeFixture;
 		public var throwError : ThrowErrorFixture;
 		public var timer : TimerFixture;
-		public var uncaughtErrors : UncaughtErrorsFixture;
+		//public var uncaughtErrors : UncaughtErrorsFixture;
 		public var urlLoader : URLLoaderFixture;
 		public var xml : XMLFixture;
 		public var window : WindowFixture;

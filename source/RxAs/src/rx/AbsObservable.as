@@ -194,29 +194,100 @@ package rx
 		 */
 		public function bufferWithCount(count:uint, skip:uint=0):IObservable
 		{
+			return windowWithCount(count, skip)
+				.mapMany(Array, function(v:IObservable):IObservable
+				{
+					return v.toArray();
+				})
+				.filter(function(v:Array):Boolean { return v.length > 0; });
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function windowWithCount(count:uint, skip:uint=0):IObservable
+		{
 			if (count == 0)
 			{
 				throw new ArgumentError("count must be > 0");
 			}
 			
 			// skip == count and skip == 0 are functionally equivalent
-			if (skip == count)
+			if (skip == 0)
 			{
-				skip = 0;
+				skip = count;
 			}
 			
 			var source : IObservable = this;
-
+			
 			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
-				var buffer : Array = new Array();
+				var activeWindows : Array = new Array();
+				var valueCount : int = 0;
 				
-				var valuesToSkip : uint = 0;
+				var createWindow : Function = function():void
+				{
+					var window : Subject = new Subject(source.valueClass);
+					activeWindows.push(window);
+					observer.onNext(window);
+				};
+				
+				createWindow();
+				
+				return source.subscribe(
+						function(v:Object) : void
+						{
+							for each(var subject : Subject in activeWindows)
+							{
+								subject.onNext(v);
+							}
+							
+							var unusedValues : int = (valueCount - count + 1);
+							
+							if (unusedValues >= 0 && (unusedValues % skip) == 0)
+							{
+								activeWindows.splice(0, 1)[0].onCompleted();
+							}
+							
+							valueCount++;
+							
+							if ((valueCount % skip) == 0)
+							{
+								createWindow();
+							}
+						},
+						function():void
+						{
+							for (var i:int=0; i<activeWindows.length; i++)
+							{
+								activeWindows[i].onCompleted();
+							}
+							
+							activeWindows = [];
+							
+							observer.onCompleted();
+							
+						}, function(e:Error):void
+						{
+							for (var i:int=0; i<activeWindows.length; i++)
+							{
+								activeWindows[i].onError(e);
+							}
+							
+							activeWindows = [];
+							
+							observer.onError(e);
+						});
+			});
+				/*
+				var currentWindow : Subject = new Subject(source.valueClass);
+				
+				observer.onNext(currentWindow.asObservable());
 				
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
 					{
-						buffer.push(pl);
+						currentWindow.onNext(pl);
 						
 						while(buffer.length > 0 && valuesToSkip > 0)
 						{
@@ -262,9 +333,9 @@ package rx
 						}
 						observer.onError(error);
 					});
-					
+				
 				return source.subscribeWith(dec);
-			});
+			});*/
 		}
 		
 		
@@ -2452,6 +2523,35 @@ package rx
 			return mapInternal(TimeStamped, function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);
+			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function toArray():IObservable
+		{
+			var source : IObservable = this;
+			
+			return Observable.createWithCancelable(Array, function(observer : IObserver):ICancelable
+			{
+				var buffer : Array = new Array();
+				
+				return source.finallyAction(function():void
+					{
+						buffer = [];
+					})
+					.subscribe(
+					function(v:Object):void
+					{
+						buffer.push(v);
+					},
+					function():void
+					{
+						observer.onNext(buffer);
+						observer.onCompleted();
+					},
+					observer.onError);
 			});
 		}
 		

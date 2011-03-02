@@ -123,15 +123,14 @@ package rx.tests.operators.mutation
 		}
 		
 		[Test]
-		public function remaining_items_are_released_on_error() : void
+		public function remaining_items_are_not_released_on_error() : void
 		{
 			var manObs : Subject = new Subject(int);
 			
 			var obs : IObservable = manObs.bufferWithCount(2);
 			
 			var expectedValues : Array = [
-				[0, 1],
-				[2]
+				[0, 1]
 				];
 			
 			testBufferResults(obs, expectedValues);

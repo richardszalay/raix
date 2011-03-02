@@ -86,7 +86,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 		}
 		
 		[Test]
-		public void remaining_items_are_released_on_error()
+		public void remaining_items_are_not_released_on_error()
 		{
             Observable.Range(0, 3)
                 .Concat<int>(Observable.Throw<int>(new Exception()))
@@ -102,8 +102,7 @@ namespace RxAs.Rx4.ProofTests.Operators
 
 			var expectedValues = new List<int[]>(new int[][]
                 {
-                    new int[] { 0, 1 },
-                    new int[] { 2 }
+                    new int[] { 0, 1 }
                 });
 
             TestBufferResults(obs, expectedValues);

@@ -72,9 +72,17 @@ package rx
 		 * Emits the values from a source sequence in groups of a specific size  
 		 * @param count The number of values to buffer
 		 * @param skip The number of values to offset after the buffer is emitted.
-		 * @return An observable sequence of the same valueClass as the current sequence
+		 * @return An observable sequence of arrays of the the same valueClass as the current sequence
 		 */		
 		function bufferWithCount(count : uint, skip : uint = 0) : IObservable;
+		
+		/**
+		 * Emits the values from a source sequence in groups of a specific size  
+		 * @param count The number of values to buffer
+		 * @param skip The number of values to offset after the buffer is emitted.
+		 * @return An observable sequence of observable sequences with the same valueClass as the current sequence
+		 */		
+		function windowWithCount(count : uint, skip : uint = 0) : IObservable;
 		
 		/**
 		 * Emits the values from a source sequence in groups of a specific size  
@@ -562,6 +570,12 @@ package rx
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
 		function filter(predicate : Function) : IObservable;
+		
+		/**
+		 * Delivers all the results as a single array when the source completes 
+		 * @return An observable sequence of Array that will contain the same valueClass as the current sequence
+		 */
+		function toArray():IObservable;
 		
 		[Deprecated(replacement="filter")]
 		/**

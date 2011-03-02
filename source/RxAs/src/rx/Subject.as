@@ -85,6 +85,8 @@ package rx
 				{
 					obs.onCompleted();
 				}
+				
+				_observers = [];
 			}
 		}
 		
@@ -103,6 +105,8 @@ package rx
 				{
 					obs.onError(error);
 				}
+				
+				_observers = [];
 			}
 		}
 		

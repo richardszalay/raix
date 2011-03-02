@@ -1074,10 +1074,12 @@ package rx
 		public function groupBy(elementClass : Class, keySelector : Function, elementSelector : Function = null, 
 			keyComparer : Function = null) : IObservable
 		{
+			var never : IObservable = Observable.never(Object);
+			
 			return groupByUntil(elementClass, keySelector, 
 				function(groupedObservable : IGroupedObservable) : IObservable
 				{
-					return Observable.never(Object);
+					return never;
 				},
 				elementSelector, keyComparer);
 		}
@@ -1184,7 +1186,6 @@ package rx
 						    groupSubject.onNext(element);
 							
 							durationSubscription.innerCancelable = groupDuration
-								//.take(1).ignoreValues().subscribe(null, function():void
 								.take(1).subscribe(null, function():void
 								{
 									var keyIndex : int = -1;
@@ -2503,19 +2504,23 @@ package rx
 		{
 			var source : IObservable = this;
 			
-			return Observable.defer(IObservable, function():IObservable
+			return Observable.createWithCancelable(IObservable, function(observer : IObserver):ICancelable
 			{
 				var windowOpenings : Subject = new Subject(Unit);
 				
-				return multiWindow(windowOpenings.startWith([null]), 
+				var multiWindowSubscription : FutureCancelable = new FutureCancelable();
+				var activeWindowSubscription : FutureCancelable = new FutureCancelable();
+				
+				multiWindowSubscription.innerCancelable = multiWindow(windowOpenings.startWith([null]), 
 					function(u:Unit):IObservable
 					{
 						var windowValues : AsyncSubject = new AsyncSubject(this.valueClass);
 						
 						var closing : IObservable = IObservable(windowClosingSelector());
 						
-						closing.take(1).subscribe(null,
-							function():void
+						activeWindowSubscription.innerCancelable = closing
+							.take(1)
+							.subscribe(null, function():void
 							{
 								windowValues.onCompleted();
 								windowOpenings.onNext(null);
@@ -2523,9 +2528,10 @@ package rx
 							windowValues.onError);
 						
 						return windowValues;
-					});
-					
-				return mainSubscription;
+					})
+					.subscribeWith(observer);
+				
+				return new CompositeCancelable([multiWindowSubscription, activeWindowSubscription]);
 			});
 		}
 		

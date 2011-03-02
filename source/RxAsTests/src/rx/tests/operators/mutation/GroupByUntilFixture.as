@@ -43,19 +43,29 @@ package rx.tests.operators.mutation
         [Test]
         public function group_duration_can_be_completed_by_a_value() : void
         {
-            var groupKeys : Array = new Array();
-
-            source.groupByUntil(int, mapKey, function(g : IGroupedObservable):IObservable
-	            {
-	            	 return Observable.returnValue(int, 1)
-	            	 	.concat([Observable.never(int)]);
-	            }, mapValue)
-                .subscribe(function(group : IGroupedObservable):void
-                {
-                    groupKeys.push(group.key);
-                });
-
-            Assert.assertEquals(6, groupKeys.Count);
+			var groupKeys : Array = new Array();
+			
+			var subjectSource : Subject = new Subject(GroupableObject);
+			
+			subjectSource.groupByUntil(int, mapKey, function(g:IGroupedObservable):IObservable
+				{
+					return Observable.returnValue(int, 1)
+						.concat([Observable.never(int)]);
+				}, mapValue)
+				.subscribe(function (group : IGroupedObservable) : void
+				{
+					groupKeys.push(group.key);
+				});
+		
+			subjectSource.onNext(new GroupableObject(0, 1));
+			subjectSource.onNext(new GroupableObject(1, 2));
+			subjectSource.onNext(new GroupableObject(2, 3));
+			subjectSource.onNext(new GroupableObject(0, 4));
+			subjectSource.onNext(new GroupableObject(1, 5));
+			subjectSource.onNext(new GroupableObject(2, 6));
+			subjectSource.onCompleted();
+			
+			Assert.assertEquals(6, groupKeys.length);
         }
 
         [Test]

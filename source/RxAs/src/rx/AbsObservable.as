@@ -279,63 +279,6 @@ package rx
 							observer.onError(e);
 						});
 			});
-				/*
-				var currentWindow : Subject = new Subject(source.valueClass);
-				
-				observer.onNext(currentWindow.asObservable());
-				
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						currentWindow.onNext(pl);
-						
-						while(buffer.length > 0 && valuesToSkip > 0)
-						{
-							buffer.shift();
-							valuesToSkip--;
-						}
-						
-						if (buffer.length == count)
-						{
-							observer.onNext(buffer);
-							
-							if (skip == 0)
-							{
-								buffer = [];
-							}
-							else
-							{
-								valuesToSkip = skip;
-								
-								while(buffer.length > 0 && valuesToSkip > 0)
-								{
-									buffer.shift();
-									valuesToSkip--;
-								}
-							}
-						}
-					},
-					function () : void
-					{
-						if (buffer.length > 0)
-						{
-							observer.onNext(buffer);
-							buffer = [];
-						}
-						observer.onCompleted();
-					},
-					function (error : Error) : void
-					{
-						if (buffer.length > 0)
-						{
-							observer.onNext(buffer);
-							buffer = [];
-						}
-						observer.onError(error);
-					});
-				
-				return source.subscribeWith(dec);
-			});*/
 		}
 		
 		
@@ -344,77 +287,98 @@ package rx
 		 */
 		public function bufferWithTime(timeMs:uint, timeShiftMs:uint=0, scheduler:IScheduler=null):IObservable
 		{
+			return windowWithTime(timeMs, timeShiftMs, scheduler)
+				.mapMany(Array, function(v:IObservable):IObservable
+				{
+					return v.toArray();
+				})
+				.filter(function(v:Array):Boolean { return v.length > 0; });
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function windowWithTime(timeMs:uint, timeShiftMs:uint=0, scheduler:IScheduler=null):IObservable
+		{
 			if (timeMs == 0)
 			{
 				throw new ArgumentError("timeMs must be > 0");
 			}
 			
 			// skip == count and skip == 0 are functionally equivalent
-			if (timeShiftMs == timeMs)
+			if (timeShiftMs == 0)
 			{
-				timeShiftMs = 0;
+				timeShiftMs = timeMs;
 			}
+			
+			scheduler = scheduler || Scheduler.synchronous;
 			
 			var source : IObservable = this;
 			
-			scheduler = scheduler || Scheduler.synchronous;
-
 			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
 			{
-				var buffer : Array = new Array();
+				var activeWindows : Array = new Array();
+				var elapsedTime : int = 0;
 				var startTime : Number = scheduler.now.time;
 				
-				var flushBuffer : Function = function():void
+				var windowSubscriptions : CompositeCancelable = new CompositeCancelable([]);
+				
+				var createWindow : Function = function():void
 				{
-					var outBuffer : Array = new Array(buffer.length);
+					var window : Subject = new Subject(source.valueClass);
+					activeWindows.push(window);
+					observer.onNext(window);
+					
+					var windowSubscription : FutureCancelable = new FutureCancelable();
+					
+					windowSubscriptions.add(windowSubscription);
+					
+					windowSubscription.innerCancelable = scheduler.schedule(function():void
+						{
+							windowSubscriptions.remove(windowSubscription);
+							activeWindows.splice(0, 1)[0].onCompleted();							
+						}, timeMs);
+				};
+				
+				createWindow();
+				
+				return source.subscribe(
+					function(v:Object) : void
+					{
+						for each(var subject : Subject in activeWindows)
+						{
+							subject.onNext(v);
+						}
 						
-					for (var i:int=0; i<buffer.length; i++)
-					{
-						outBuffer[i] = buffer[i].value;
-					}
-					
-					observer.onNext(outBuffer);
-				};
-				
-				var intervalFunc : Function = function(i:int):void
-				{
-					flushBuffer();
-					
-					startTime += timeShiftMs;
-					
-					while(buffer.length > 0 && buffer[0].timestamp <= startTime)
-					{
-						buffer.shift();
-					}
-				};
-				
-				var intervalSubscription : ICancelable = Observable.interval(timeMs, scheduler)
-					.subscribe(intervalFunc);
-				
-				var dec : IObserver = new ClosureObserver(
-					function(pl : Object) : void
-					{
-						buffer.push(pl);
+						elapsedTime = scheduler.now.time - startTime;
+						
+						if ((elapsedTime % timeShiftMs) == 0)
+						{
+							createWindow();
+						}
 					},
-					function () : void
+					function():void
 					{
-						flushBuffer();
+						for (var i:int=0; i<activeWindows.length; i++)
+						{
+							activeWindows[i].onCompleted();
+						}
+						
+						activeWindows = [];
+						
 						observer.onCompleted();
-					},
-					function (error : Error) : void
+						
+					}, function(e:Error):void
 					{
-						buffer = [];
-						observer.onError(error);
+						for (var i:int=0; i<activeWindows.length; i++)
+						{
+							activeWindows[i].onError(e);
+						}
+						
+						activeWindows = [];
+						
+						observer.onError(e);
 					});
-					
-				var subscription : ICancelable = 
-					source.timestamp(scheduler).subscribeWith(dec);
-				
-				return new ClosureCancelable(function():void 
-				{
-					subscription.cancel();
-					intervalSubscription.cancel();
-				});
 			});
 		}
 		

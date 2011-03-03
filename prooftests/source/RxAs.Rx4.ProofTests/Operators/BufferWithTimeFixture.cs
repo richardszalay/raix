@@ -74,18 +74,20 @@ namespace RxAs.Rx4.ProofTests.Operators
             var values = new Subject<int>();
             var bufferScheduler = new TestScheduler();
 
+            var timeSpan = TimeSpan.FromMilliseconds(30);
+            var timeShift = TimeSpan.FromMilliseconds(20);
+
             values
-                .BufferWithTime(TimeSpan.FromMilliseconds(30), TimeSpan.FromMilliseconds(20), bufferScheduler)
+                .BufferWithTime(timeSpan, timeShift, bufferScheduler)
                 .Subscribe(stats);
 
             Assert.IsFalse(stats.NextCalled);
 
             values.OnNext(0);
-            bufferScheduler.RunTo(10);
+            bufferScheduler.RunTo(TimeSpan.FromMilliseconds(10).Ticks);
 
             values.OnNext(1);
-            bufferScheduler.RunTo(50);
-            bufferScheduler.RunTo(50);
+            bufferScheduler.RunTo(TimeSpan.FromMilliseconds(40).Ticks);
 
             values.OnNext(2);
 
@@ -94,7 +96,7 @@ namespace RxAs.Rx4.ProofTests.Operators
         }
 
         [Test]
-        public void buffer_is_abortrd_on_error()
+        public void buffer_is_aborted_on_error()
         {
             var stats = new StatsObserver<IList<int>>();
 
@@ -110,7 +112,6 @@ namespace RxAs.Rx4.ProofTests.Operators
 
             Assert.IsTrue(stats.ErrorCalled);
             Assert.AreEqual(0, stats.NextCount);
-            //Assert.AreEqual(5, stats.NextValues[0].Count);
         }
 
         [Test]

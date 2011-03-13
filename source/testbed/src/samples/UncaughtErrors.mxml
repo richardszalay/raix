@@ -4,9 +4,9 @@
 	<mx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var subscription : ICancelable;
 			

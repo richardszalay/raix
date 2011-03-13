@@ -4,7 +4,7 @@ package samples.imageSearch
 	
 	import mx.controls.Image;
 	
-	import rx.*;
+	import raix.reactive.*;
 	
 	public class GoogleImageSearchService
 	{

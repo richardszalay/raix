@@ -15,5 +15,9 @@ package raix.interactive.tests.operators.filter
 		public var last : LastFixture;
 		public var lastOrDefault : LastOrDefaultFixture;
 		public var defaultIfEmpty : DefaultIfEmptyFixture;
+		public var distinct : DistinctFixture;
+		public var union : UnionFixture;
+		public var intersect : IntersectFixture;
+		public var except : ExceptFixture;
 	}
 }

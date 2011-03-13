@@ -1,6 +1,7 @@
 package raix.interactive
 {
 	import flash.errors.IllegalOperationError;
+	import flash.utils.Dictionary;
 	import flash.utils.Proxy;
 	import flash.utils.flash_proxy;
 	
@@ -184,6 +185,164 @@ package raix.interactive
 			}
 			
 			return defaultValue;
+		}
+		
+		public function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object
+		{
+			var lastScanResult : Object = this.scan(seed, accumulator, null).lastOrDefault(seed);
+			
+			return resultSelector == null
+				? lastScanResult
+				: resultSelector(lastScanResult);
+		}
+		
+		public function scan(seed : Object, accumulator : Function, resultSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var accumulate : Object = seed;
+				var currentValue : Object = null;
+				
+				var innerEnumerator : IEnumerator = source.getEnumerator();
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					if (innerEnumerator.moveNext())
+					{
+						accumulate = accumulator(accumulate, innerEnumerator.current);
+						
+						currentValue = (resultSelector == null)
+							? accumulate
+							: resultSelector(accumulate);
+						
+						return true;
+					}
+					
+					return false;
+					
+				}, function():Object { return currentValue; });
+			});
+		}
+		
+		public function distinct(hashSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var hashSet : Dictionary = new Dictionary();
+				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					while (innerEnumerator.moveNext())
+					{
+						var hash : Object = (hashSelector == null)
+							? innerEnumerator.current
+							: hashSelector(innerEnumerator.current);
+							
+						if (hashSet[hash] === undefined)
+						{
+							hashSet[hash] = true;
+							return true;
+						}
+					}
+					
+					return false;
+					
+				}, function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function union(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		{
+			return this.concat(right).distinct(hashSelector);
+		}
+		
+		public function intersect(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var hashSet : Dictionary = new Dictionary();
+				var innerEnumerator : IEnumerator = source.getEnumerator();
+				
+				for each(var rightValue : Object in right)
+				{
+					var hash : Object = (hashSelector == null)
+						? rightValue
+						: hashSelector(rightValue);
+						
+					if (hashSet[hash] === undefined)
+					{
+						hashSet[hash] = true;
+					}
+				} 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					while (innerEnumerator.moveNext())
+					{
+						var hash : Object = (hashSelector == null)
+							? innerEnumerator.current
+							: hashSelector(innerEnumerator.current);
+							
+						if (hashSet[hash] == true)
+						{
+							delete hashSet[hash];
+							return true;
+						}
+					}
+					
+					return false;
+					
+				}, function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function except(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var hashSet : Dictionary = new Dictionary();
+				var innerEnumerator : IEnumerator = source.getEnumerator();
+				
+				for each(var rightValue : Object in right)
+				{
+					var hash : Object = (hashSelector == null)
+						? rightValue
+						: hashSelector(rightValue);
+						
+					if (hashSet[hash] === undefined)
+					{
+						hashSet[hash] = true;
+					}
+				} 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					while (innerEnumerator.moveNext())
+					{
+						var hash : Object = (hashSelector == null)
+							? innerEnumerator.current
+							: hashSelector(innerEnumerator.current);
+							
+						if (hashSet[hash] === undefined)
+						{
+							hashSet[hash] = true;
+							return true;
+						}
+					}
+					
+					return false;
+					
+				}, function():Object { return innerEnumerator.current; });
+			});
 		}
 		
 		public function defaultIfEmpty(defaultValue : Object = null) : IEnumerable

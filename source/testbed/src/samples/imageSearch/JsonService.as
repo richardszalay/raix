@@ -6,8 +6,8 @@ package samples.imageSearch
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
-	import rx.IObservable;
-	import rx.Observable;
+	import raix.reactive.IObservable;
+	import raix.reactive.Observable;
 	
 	public class JsonService
 	{

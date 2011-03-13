@@ -2,13 +2,13 @@
 <samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
-			import rx.CompositeCancelable;
-			import rx.Observer;
+			import raix.reactive.CompositeCancelable;
+			import raix.reactive.Observer;
 			import mx.controls.Label;
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var subscriptions : CompositeCancelable = new CompositeCancelable([]);
 			

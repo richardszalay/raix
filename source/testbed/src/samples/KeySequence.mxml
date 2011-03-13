@@ -3,10 +3,10 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
-			import rx.ICancelable;
+			import raix.reactive.ICancelable;
 			import mx.events.FlexEvent;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var subscription : ICancelable;
 			

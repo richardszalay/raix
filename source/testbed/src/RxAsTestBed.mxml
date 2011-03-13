@@ -9,7 +9,7 @@
 		<![CDATA[
 			import mx.events.FlexEvent;
 			import mx.managers.SystemManager;
-			import rx.AbsObservable;
+			import raix.reactive.AbsObservable;
 			import samples.AbsSample;
 			import mx.events.ItemClickEvent;
 			

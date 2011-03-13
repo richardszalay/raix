@@ -4,8 +4,8 @@ package samples.imageSearch
 	
 	import mx.controls.Image;
 	
-	import rx.IObservable;
-	import rx.Observable;
+	import raix.reactive.IObservable;
+	import raix.reactive.Observable;
 	
 	public class ImageResultLoaderService
 	{

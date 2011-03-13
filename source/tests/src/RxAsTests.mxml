@@ -5,19 +5,21 @@
      
      <mx:Script>
      	<![CDATA[
-     		import rx.tests.operators.creation.WindowFixture;
-     		import rx.tests.operators.mutation.GroupByUntilFixture;
-     		import rx.tests.operators.flex.FlexSuite;
+     		import raix.interactive.tests.InteractiveSuite;
+     		import raix.reactive.tests.ReactiveSuite;
+     		import raix.reactive.tests.operators.creation.WindowFixture;
+     		import raix.reactive.tests.operators.mutation.GroupByUntilFixture;
+     		import raix.reactive.tests.operators.flex.FlexSuite;
      		import org.flexunit.internals.TraceListener;
      		import org.flexunit.listeners.CIListener;
-     		import rx.tests.misc.UtilitiesSuite;
-     		import rx.flex.IObservableResponder;
+     		import raix.reactive.tests.misc.UtilitiesSuite;
+     		import raix.reactive.flex.IObservableResponder;
      		import mx.rpc.IResponder;
-     		import rx.IObservable;
+     		import raix.reactive.IObservable;
      		import mx.rpc.AsyncToken;
-     		import rx.Observable;
-     		import rx.tests.subjects.SubjectSuite;
-     		import rx.tests.operators.OperatorSuite;
+     		import raix.reactive.Observable;
+     		import raix.reactive.tests.subjects.SubjectSuite;
+     		import raix.reactive.tests.operators.OperatorSuite;
 			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.FlexUnitCore;
 			
@@ -28,7 +30,7 @@
 				
 				addTestListeners(core);				
 				
-				core.run( OperatorSuite, FlexSuite, SubjectSuite, UtilitiesSuite );
+				core.run( ReactiveSuite, InteractiveSuite );
 			}
 			
 			private function addTestListeners(core : FlexUnitCore) : void

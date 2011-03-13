@@ -57,10 +57,12 @@ package raix.interactive
 				);
 		}
 		
-		public static function range(start:int, end:int) : IEnumerable
+		public static function range(start:int, count:int) : IEnumerable
 		{
+			var end : int = start + count - 1;
+			
 			return generate(start,
-				function(i:int):Boolean { return i<end; },
+				function(i:int):Boolean { return i<=end; },
 				function(i:int):int { return i+1; },
 				function(i:int):int { return i; }
 				);

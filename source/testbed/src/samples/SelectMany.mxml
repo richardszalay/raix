@@ -5,12 +5,12 @@
 		<![CDATA[
 			import mx.core.FlexSprite;
 			import mx.containers.Panel;
-			import rx.CompositeCancelable;
-			import rx.IObserver;
+			import raix.reactive.CompositeCancelable;
+			import raix.reactive.IObserver;
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var innerRect : Canvas = new Canvas();
 			private var subscription : ICancelable;

@@ -3,21 +3,21 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
-			import rx.FutureCancelable;
-			import rx.Cancelable;
-			import rx.CompositeCancelable;
+			import raix.reactive.FutureCancelable;
+			import raix.reactive.Cancelable;
+			import raix.reactive.CompositeCancelable;
 			import mx.controls.Button;
 			import mx.containers.HBox;
-			import rx.scheduling.GreenThreadScheduler;
-			import rx.scheduling.IScheduler;
+			import raix.reactive.scheduling.GreenThreadScheduler;
+			import raix.reactive.scheduling.IScheduler;
 			import mx.controls.Label;
-			import rx.scheduling.Scheduler;
+			import raix.reactive.scheduling.Scheduler;
 			import samples.imageSearch.JsonService;
-			import rx.IObserver;
+			import raix.reactive.IObserver;
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var subscription : CompositeCancelable;
 			

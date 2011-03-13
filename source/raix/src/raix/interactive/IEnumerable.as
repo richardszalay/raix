@@ -21,6 +21,15 @@ package raix.interactive
 
 		function last(predicate : Function = null) : Object;
 		function lastOrDefault(defaultValue : Object = null, predicate : Function = null) : Object;
+		
+		function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object;
+		function scan(seed : Object, accumulator : Function, resultSelector : Function = null) : IEnumerable;
+		
+		function distinct(hashSelector : Function = null) : IEnumerable;
+		
+		function union(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
+		function intersect(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
+		function except(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
 			
 		function concat(second : IEnumerable) : IEnumerable;	
 		

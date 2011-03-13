@@ -9,9 +9,9 @@
 			import mx.messaging.SubscriptionInfo;
 			import com.adobe.serialization.json.JSON;
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var imageSearchService : GoogleImageSearchService = new GoogleImageSearchService();
 			private var imageLoaderService : ImageResultLoaderService = new ImageResultLoaderService();

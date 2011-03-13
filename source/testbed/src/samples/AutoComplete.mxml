@@ -3,13 +3,13 @@
 	xmlns:samples="samples.*">
 	<mx:Script>
 		<![CDATA[
-			import rx.Observer;
+			import raix.reactive.Observer;
 			import samples.imageSearch.JsonService;
-			import rx.IObserver;
+			import raix.reactive.IObserver;
 			import mx.events.FlexEvent;
-			import rx.ICancelable;
-			import rx.IObservable;
-			import rx.Observable;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
 			
 			private var subscription : ICancelable;
 			

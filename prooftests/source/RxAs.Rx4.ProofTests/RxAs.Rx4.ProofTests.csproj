@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\Rx4\System.Reactive.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.Testing, Version=1.0.2856.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Rx4\System.Reactive.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\MockObserverExtensions.cs" />
     <Compile Include="Mock\ClosureDisposable.cs" />
     <Compile Include="Mock\ClosureScheduler.cs" />
     <Compile Include="Mock\EventOwner.cs" />

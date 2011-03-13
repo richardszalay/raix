@@ -4,67 +4,75 @@ using System.Linq;
 using System.Text;
 using RxAs.Rx4.ProofTests.Mock;
 using NUnit.Framework;
+using System.Concurrency;
+using System.Reactive.Testing;
+using System.Reactive.Testing.Mocks;
+using System.Diagnostics;
+using RxAs.Rx4.ProofTests.Extensions;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
     public class ThrottleFixture
     {
-        [Test]
-        public void scheduler_is_used_to_reset_throttle()
+        private TestScheduler scheduler;
+        private MockObserver<int> observer;
+
+        [SetUp]
+        public void SetUp()
         {
-            ManualScheduler scheduler = new ManualScheduler();
+            scheduler = new TestScheduler();
 
-            scheduler.Now = DateTime.Now;
+            var observable = scheduler.CreateColdObservable(
+                Next(10, 1),
+                Next(15, 2),
+                Next(20, 3),
+                Next(35, 4),
+                Next(40, 5));
 
-            Subject<int> subject = new Subject<int>();
-
-            var stats = new StatsObserver<int>();
-
-            subject.Throttle(TimeSpan.FromSeconds(1), scheduler).Subscribe(stats);
-
-            subject.OnNext(0);
-            Assert.AreEqual(1, scheduler.QueueSize);
-            scheduler.RunNext();
-
-            scheduler.Now = scheduler.Now.AddMilliseconds(500);
-            subject.OnNext(1);
-            Assert.AreEqual(1, scheduler.QueueSize);
-            scheduler.RunNext();
-
-            scheduler.Now = scheduler.Now.AddMilliseconds(1500);
-            subject.OnNext(2);
-            Assert.AreEqual(1, scheduler.QueueSize);
-            scheduler.RunNext();
-
-            Assert.AreEqual(3, stats.NextCount);
-            Assert.AreEqual(0, stats.NextValues[0]);
-            Assert.AreEqual(1, stats.NextValues[1]);
-            Assert.AreEqual(2, stats.NextValues[2]);
+            observer = new MockObserver<int>(scheduler);
+            observable
+                .Throttle(TimeSpan.FromTicks(5), scheduler)
+                .Do(x => Debugger.Break())
+                .Subscribe(observer);
         }
 
-        [Test, Ignore]
-        public void exact_time_is_not_allowed()
+        [Test]
+        public void values_are_not_released_when_emitted()
         {
-            ManualScheduler scheduler = new ManualScheduler();
+            scheduler.RunTo(10);
 
-            StatsSubject<int> subject = new StatsSubject<int>();
+            Assert.AreEqual(0, observer.Count);
+        }
 
-            var stats = new StatsObserver<int>();
+        [Test]
+        public void value_is_released_after_no_values_received_in_duration()
+        {
+            scheduler.RunTo(25);
 
-            scheduler.Now = DateTime.Now;
+            Assert.AreEqual(1, observer.Count);
+        }
 
-            subject
-                .Throttle(TimeSpan.FromSeconds(1), scheduler)
-                .Subscribe(stats);
-            
-            subject.OnNext(0);
-            scheduler.RunAll();
+        [Test]
+        public void last_value_before_duration_is_emitted()
+        {
+            scheduler.RunTo(25);
 
-            scheduler.Now = scheduler.Now.Add(TimeSpan.FromMilliseconds(4999));
-            subject.OnNext(1);
-            scheduler.RunAll();
+            Assert.AreEqual(1, observer.Count);
+        }
 
-            Assert.AreEqual(1, stats.NextCount);
+        [Test]
+        public void timeout_is_reset_after_next_value_is_received()
+        {
+            scheduler.RunTo(45);
+
+            Assert.AreEqual(2, observer.Count);
+            Assert.AreEqual(5, observer.GetValue(1));
+        }
+
+        private Recorded<Notification<int>> Next(long ticks, int value)
+        {
+            return new Recorded<Notification<int>>(ticks,
+                new Notification<int>.OnNext(value));
         }
     }
 }

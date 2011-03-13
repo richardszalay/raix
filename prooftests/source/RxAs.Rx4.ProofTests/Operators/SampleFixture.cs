@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RxAs.Rx4.ProofTests.Mock;
+using System.Concurrency;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
@@ -57,6 +58,29 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.AreEqual(2, stats.NextCount);
             Assert.AreEqual(1, stats.NextValues[0]);
             Assert.AreEqual(3, stats.NextValues[1]);
+        }
+
+        [Test]
+        public void last_value_from_timeout_period_is_used()
+        {
+            TestScheduler scheduler = new TestScheduler();
+
+            Subject<int> subject = new Subject<int>();
+
+            var stats = new StatsObserver<int>();
+
+            subject.Sample(TimeSpan.FromSeconds(1), scheduler).Subscribe(stats);
+
+            subject.OnNext(0);
+            subject.OnNext(1);
+            scheduler.RunTo(TimeSpan.FromMilliseconds(200).Ticks);
+
+            subject.OnNext(2);
+            subject.OnNext(3);
+            scheduler.RunTo(TimeSpan.FromMilliseconds(1000).Ticks);
+
+            Assert.AreEqual(1, stats.NextCount);
+            Assert.AreEqual(3, stats.NextValues[0]);
         }
 
         [Test]

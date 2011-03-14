@@ -30,6 +30,9 @@ package raix.interactive
 		function union(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
 		function intersect(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
 		function except(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
+		
+		function toLookup(keySelector : Function, elementSelector : Function = null, keyHashSelector : Function = null) : ILookup;
+		function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, resultSelector : Function, keyHashSelector : Function = null) : IEnumerable;
 			
 		function concat(second : IEnumerable) : IEnumerable;	
 		

@@ -10,6 +10,11 @@ package raix.reactive.tests
 			
 			for (var i:int =0; i<left.length; i++)
 			{
+				if (left[i] == null && right[i] == null)
+				{
+					continue;
+				}
+				
 				Assert.assertEquals(message + "\nValues differed at "+i,
 					left[i], right[i]);
 			}
@@ -21,6 +26,11 @@ package raix.reactive.tests
 			
 			for (var i:int =0; i<left.length; i++)
 			{
+				if (left[i] == null && right[i] == null)
+				{
+					continue;
+				}
+				
 				Assert.assertStrictlyEquals(message + "\nValues differed at "+i,
 					left[i], right[i]);
 			}

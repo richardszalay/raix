@@ -8,6 +8,7 @@ package raix.interactive.tests.operators.mutation
 	{
 		public var map : MapFixture;
 		public var mapMany : MapManyFixture;
+		public var toLookup : ToLookupFixture;
 		public var toObservable : ToObservableFixture;
 	}
 }

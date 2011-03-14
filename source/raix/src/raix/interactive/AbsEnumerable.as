@@ -388,6 +388,80 @@ package raix.interactive
 			});
 		}
 		
+		public function toLookup(keySelector : Function, elementSelector : Function = null, 
+			keyHashSelector : Function = null) : ILookup
+		{
+			if (keySelector == null)
+			{
+				throw new ArgumentError("keySelector cannot be null");
+			}
+			
+			var lookup : Lookup = new Lookup(keyHashSelector);
+			
+			var hasElementSelector : Boolean = (elementSelector != null);
+			
+			for each(var item : Object in this)
+			{
+				var key : Object = keySelector(item);
+				
+				var element : Object = hasElementSelector
+					? elementSelector(item)
+					: item;
+					
+				lookup.add(key, element);
+			}
+			
+			return lookup;
+		}
+		
+		public function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, 
+			resultSelector : Function, keyHashSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var innerLookup : ILookup = inner.toLookup(innerKeySelector, null, keyHashSelector);
+				
+				var outerEnumerator : IEnumerator = source.getEnumerator();
+				var innerEnumerator : IEnumerator = null; 
+				var currentValue : Object;
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					do
+					{
+						if (innerEnumerator != null)
+						{
+							if (innerEnumerator.moveNext())
+							{
+								currentValue = resultSelector(
+									outerEnumerator.current,
+									innerEnumerator.current);
+								
+								return true;
+							}
+							else
+							{
+								innerEnumerator = null;
+							}
+						}
+						
+						if (outerEnumerator.moveNext())
+						{
+							var outerKey : Object = outerKeySelector(outerEnumerator.current);
+							
+							innerEnumerator = innerLookup.getValues(outerKey).getEnumerator();
+						}
+					}
+					while (innerEnumerator != null);
+					
+					return false;
+				},
+				function():Object { return currentValue; });
+			});
+		}
+		
 		public function concat(other : IEnumerable) : IEnumerable
 		{
 			var source : IEnumerable = this;

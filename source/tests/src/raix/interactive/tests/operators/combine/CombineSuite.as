@@ -7,5 +7,6 @@ package raix.interactive.tests.operators.combine
 	public class CombineSuite
 	{
 		public var concat : ConcatFixture;
+		public var join : JoinFixture;
 	}
 }

@@ -414,6 +414,33 @@ package raix.interactive
 			return lookup;
 		}
 		
+		public function toDictionary(keySelector : Function, elementSelector : Function = null) : Dictionary
+		{
+			var dictionary : Dictionary = new Dictionary();
+			
+			for each(var value : Object in this)
+			{
+				var key : Object = keySelector(value);
+				var element : Object = (elementSelector != null)
+					? elementSelector(value)
+					: value; 
+					
+				if (key == null)
+				{
+					throw new ArgumentError("Key cannot be null");
+				}
+					
+				if (dictionary[key] !== undefined)
+				{
+					throw new ArgumentError("Duplicate key defined: " + key);
+				}
+				
+				dictionary[key] = element;
+			}
+			
+			return dictionary
+		}
+		
 		public function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, 
 			resultSelector : Function, keyHashSelector : Function = null) : IEnumerable
 		{
@@ -852,6 +879,21 @@ package raix.interactive
 				},
 				function():Object { return innerEnumerator.current; });
 			});
+		}
+		
+		public function orderBy(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
+		{
+			return new OrderedEnumerable(this, 
+				Comparer.projection(keySelector, comparer || Comparer.defaultComparer));
+		}
+		
+		public function orderByDescending(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
+		{
+			var sourceComparer : Function = Comparer.projection(keySelector, 
+				comparer || Comparer.defaultComparer);
+				
+			return new OrderedEnumerable(this,
+				Comparer.reverse(sourceComparer));
 		}
 		
 		public function count() : uint

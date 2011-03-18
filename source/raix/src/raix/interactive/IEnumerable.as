@@ -1,5 +1,7 @@
 package raix.interactive
 {
+	import flash.utils.Dictionary;
+	
 	import raix.reactive.ICancelable;
 	import raix.reactive.IObservable;
 	import raix.reactive.scheduling.IScheduler;
@@ -32,6 +34,7 @@ package raix.interactive
 		function except(right : IEnumerable, hashSelector : Function = null) : IEnumerable;
 		
 		function toLookup(keySelector : Function, elementSelector : Function = null, keyHashSelector : Function = null) : ILookup;
+		function toDictionary(keySelector : Function, elementSelector : Function = null) : Dictionary;
 		function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, resultSelector : Function, keyHashSelector : Function = null) : IEnumerable;
 		function groupJoin(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, resultSelector : Function, keyHashSelector : Function = null) : IEnumerable;		
 		function groupBy(keySelector : Function, elementSelector : Function = null, keyHashSelector : Function = null) : IEnumerable;
@@ -56,6 +59,9 @@ package raix.interactive
 		function sequenceEqual(right : IEnumerable, comparer : Function = null) : Boolean;
 		
 		function repeat(count : uint = 0) : IEnumerable;
+		
+		function orderBy(keySelector : Function, comparer : Function = null) : IOrderedEnumerable;
+		function orderByDescending(keySelector : Function, comparer : Function = null) : IOrderedEnumerable;
 		
 		function count() : uint;
 		

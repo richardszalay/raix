@@ -43,12 +43,14 @@
 <classEntry path="raix.reactive.FutureCancelable"/>
 <classEntry path="raix.reactive.Pattern"/>
 <classEntry path="raix.reactive.SafetyObserver"/>
+<classEntry path="raix.interactive.OrderedEnumerable"/>
 <classEntry path="raix.reactive.scheduling.IScheduler"/>
 <classEntry path="raix.reactive.ClosureObserver"/>
 <classEntry path="raix.interactive.AbsEnumerable"/>
 <classEntry path="raix.reactive.Observable"/>
 <classEntry path="raix.reactive.flex.FlexObservable"/>
 <classEntry path="raix.reactive.AbsObservable"/>
+<classEntry path="raix.interactive.Comparer"/>
 <classEntry path="raix.reactive.ICancelable"/>
 <classEntry path="raix.reactive.NotificationKind"/>
 <classEntry path="raix.reactive.impl.ErrorUtil"/>

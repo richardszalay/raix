@@ -30,7 +30,10 @@
 				
 				addTestListeners(core);				
 				
-				core.run( ReactiveSuite, InteractiveSuite );
+				core.run( 
+					//ReactiveSuite, 
+					InteractiveSuite
+				);
 			}
 			
 			private function addTestListeners(core : FlexUnitCore) : void

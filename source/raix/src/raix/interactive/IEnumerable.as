@@ -15,6 +15,10 @@ package raix.interactive
 		
 		function defaultIfEmpty(defaultValue : Object = null) : IEnumerable;
 		
+		function elementAt(index : int) : Object;
+		function elementAtOrDefault(index : int, defaultValue : Object = null) : Object;
+		function contains(value : Object, equalityComparer : Function = null) : Boolean;
+		
 		function first(predicate : Function = null) : Object;
 		function firstOrDefault(defaultValue : Object = null, predicate : Function = null) : Object;
 		
@@ -26,6 +30,11 @@ package raix.interactive
 		
 		function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object;
 		function scan(seed : Object, accumulator : Function, resultSelector : Function = null) : IEnumerable;
+		
+		function sum(valueSelector : Function = null) : Number;
+		function min(valueSelector : Function = null, comparer : Function = null) : Object;
+		function max(valueSelector : Function = null, comparer : Function = null) : Object;
+		function average(valueSelector : Function = null) : Number;		
 		
 		function distinct(hashSelector : Function = null) : IEnumerable;
 		
@@ -46,6 +55,8 @@ package raix.interactive
 		function skip(count : uint) : IEnumerable; 
 		function skipLast(count : uint) : IEnumerable; 
 		function skipWhile(predicate : Function) : IEnumerable; 
+		
+		function reverse() : IEnumerable; 
 		
 		function concat(second : IEnumerable) : IEnumerable;	
 		

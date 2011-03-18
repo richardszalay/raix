@@ -22,8 +22,8 @@ package raix.interactive.tests.operators.mutation
 				function(x:String):String { return x.charAt(0); });
 			
 			Assert.assertEquals("o", dictionary["n"]);
-			Assert.assertEquals("w", dictionary["t"]);
-			Assert.assertEquals("h", dictionary["t"]);
+			Assert.assertEquals("t", dictionary["w"]);
+			Assert.assertEquals("t", dictionary["h"]);
 		}
 		
 		[Test]
@@ -36,9 +36,9 @@ package raix.interactive.tests.operators.mutation
 			var dictionary : Dictionary = toEnumerable(inputs).toDictionary(
 				function(x:String):String { return x.charAt(1); });
 			
-			Assert.assertEquals("o", dictionary["one"]);
-			Assert.assertEquals("w", dictionary["two"]);
-			Assert.assertEquals("h", dictionary["three"]);
+			Assert.assertEquals("one", dictionary["n"]);
+			Assert.assertEquals("two", dictionary["w"]);
+			Assert.assertEquals("three", dictionary["h"]);
 		}
 		
 		[Test(expects="ArgumentError")]

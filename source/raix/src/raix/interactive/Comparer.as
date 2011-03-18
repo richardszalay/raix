@@ -28,11 +28,11 @@ package raix.interactive
 			};
 		}
 		
-		public static function reverse(comparer : Function) : Function
+		public static function reverse(forwardComparer : Function) : Function
 		{
 			return function(l:Object, r:Object) : int
 			{
-				return defaultComparer(r, l);
+				return forwardComparer(r, l);
 			};
 		}
 		

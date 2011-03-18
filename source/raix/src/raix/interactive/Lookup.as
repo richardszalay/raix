@@ -70,7 +70,7 @@ package raix.interactive
 			return _count;
 		}
 		
-		public function contains(key : Object) : Boolean
+		public function containsKey(key : Object) : Boolean
 		{
 			return _hashMap[getHashedKey(key)] !== undefined;
 		}

@@ -59,6 +59,47 @@ package raix.interactive
 			return true;
 		}
 		
+		public function elementAt(index : int) : Object
+		{
+			var currentIndex : int = 0;
+			
+			for each(var value : Object in this)
+			{
+				if (currentIndex++ == index)
+				{
+					return value;
+				}
+			}
+			
+			throw new RangeError("index");
+		}
+		
+		public function elementAtOrDefault(index : int, defaultValue : Object = null) : Object
+		{
+			var currentIndex : int = 0;
+			
+			for each(var value : Object in this)
+			{
+				if (currentIndex++ == index)
+				{
+					return value;
+				}
+			}
+			
+			return defaultValue;
+		}
+		
+
+		public function contains(value : Object, equalityComparer : Function = null) : Boolean
+		{
+			return this.any(function(itemInSequence:Object) : Boolean
+			{
+				return (equalityComparer == null)
+					? itemInSequence == value
+					: equalityComparer(itemInSequence, value);
+			});
+		}
+		
 		public function first(predicate : Function = null) : Object
 		{
 			for each(var value : Object in this)
@@ -224,6 +265,110 @@ package raix.interactive
 					
 				}, function():Object { return currentValue; });
 			});
+		}
+		
+		public function sum(valueSelector : Function = null) : Number
+		{
+			var source : IEnumerable = (valueSelector == null)
+				? this
+				: this.map(valueSelector);
+			
+			var sum : Number = 0;
+			
+			for each(var number : Number in source)
+			{
+				sum += number;
+			}
+			
+			return sum;
+		}
+		
+		public function min(valueSelector : Function = null, comparer : Function = null) : Object
+		{
+			var source : IEnumerable = (valueSelector == null)
+				? this
+				: this.map(valueSelector);
+			
+			var enumerator : IEnumerator = source.getEnumerator();
+			
+			if (!enumerator.moveNext())
+			{
+				throw new IllegalOperationError("Sequence was empty");
+			}
+			
+			comparer = comparer || Comparer.defaultComparer;
+			
+			var min : Object = enumerator.current;
+			
+			while(enumerator.moveNext())
+			{
+				var value : Object = enumerator.current;
+				
+				if (comparer(value, min) < 0)
+				{
+					min = value;
+				}
+			}
+			
+			return min;
+		}
+		
+		public function max(valueSelector : Function = null, comparer : Function = null) : Object
+		{
+			var source : IEnumerable = (valueSelector == null)
+				? this
+				: this.map(valueSelector);
+			
+			var enumerator : IEnumerator = source.getEnumerator();
+			
+			if (!enumerator.moveNext())
+			{
+				throw new IllegalOperationError("Sequence was empty");
+			}
+			
+			comparer = comparer || Comparer.defaultComparer;
+			
+			var max : Object = enumerator.current;
+			
+			while(enumerator.moveNext())
+			{
+				var value : Object = enumerator.current;
+				
+				if (comparer(value, max) > 0)
+				{
+					max = value;
+				}
+			}
+			
+			return max;
+		}
+		
+		public function average(valueSelector : Function = null) : Number
+		{
+			var source : IEnumerable = (valueSelector == null)
+					? this
+					: this.map(valueSelector);
+			
+			var enumerator : IEnumerator = source.getEnumerator();
+			
+			if (!enumerator.moveNext())
+			{
+				throw new IllegalOperationError("Sequence was empty");
+			}
+			
+			var total : Number = Number(enumerator.current);
+			
+			var count : uint = 1;
+			
+			while(enumerator.moveNext())
+			{
+				var value : Number = Number(enumerator.current);
+				
+				total += value;
+				count ++;
+			}
+			
+			return total / count;
 		}
 		
 		public function distinct(hashSelector : Function = null) : IEnumerable
@@ -655,6 +800,30 @@ package raix.interactive
 			});
 		}
 		
+		public function reverse() : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var array : Array = source.toArray();
+				var index : int = array.length;
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					if (index > 0)
+					{
+						index--;
+						
+						return true;
+					}
+					
+					return false;
+				},
+				function():Object { return array[index]; });
+			});
+		}
+		
 		public function concat(other : IEnumerable) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -884,16 +1053,15 @@ package raix.interactive
 		public function orderBy(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
 		{
 			return new OrderedEnumerable(this, 
-				Comparer.projection(keySelector, comparer || Comparer.defaultComparer));
+				keySelector, comparer || Comparer.defaultComparer);
 		}
 		
 		public function orderByDescending(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
 		{
-			var sourceComparer : Function = Comparer.projection(keySelector, 
+			var sourceComparer : Function = Comparer.reverse(
 				comparer || Comparer.defaultComparer);
-				
-			return new OrderedEnumerable(this,
-				Comparer.reverse(sourceComparer));
+			
+			return new OrderedEnumerable(this, keySelector, sourceComparer);
 		}
 		
 		public function count() : uint

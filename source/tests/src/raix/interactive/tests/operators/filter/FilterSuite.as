@@ -25,5 +25,8 @@ package raix.interactive.tests.operators.filter
 		public var union : UnionFixture;
 		public var intersect : IntersectFixture;
 		public var except : ExceptFixture;
+		public var elementAt : ElementAtFixture;
+		public var elementAtOrDefault : ElementAtOrDefaultFixture;
+		public var contains : ContainsFixture;
 	}
 }

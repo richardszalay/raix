@@ -12,5 +12,8 @@ package raix.interactive.tests.operators.mutation
 		public var toLookup : ToLookupFixture;
 		public var toObservable : ToObservableFixture;
 		public var orderBy : OrderByFixture;
+		public var orderByDescending : OrderByDescendingFixture;
+		public var thenBy : ThenByFixture;
+		public var reverse : ReverseFixture;
 	}
 }

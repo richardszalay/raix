@@ -7,7 +7,13 @@ package raix.interactive.tests.operators.filter
 	public class FilterSuite
 	{
 		public var filter : FilterFixture;
+		public var ofType : OfTypeFixture;
 		public var take : TakeFixture;
+		public var takeLast : TakeLastFixture;
+		public var takeWhile : TakeWhileFixture;
+		public var skip : SkipFixture;
+		public var skipLast : SkipLastFixture;
+		public var skipWhile : SkipWhileFixture;
 		public var first : FirstFixture;
 		public var firstOrDefault : FirstOrDefaultFixture;
 		public var single : SingleFixture;

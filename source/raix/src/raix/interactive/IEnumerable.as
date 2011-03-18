@@ -33,14 +33,27 @@ package raix.interactive
 		
 		function toLookup(keySelector : Function, elementSelector : Function = null, keyHashSelector : Function = null) : ILookup;
 		function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, resultSelector : Function, keyHashSelector : Function = null) : IEnumerable;
-			
+		function groupJoin(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, resultSelector : Function, keyHashSelector : Function = null) : IEnumerable;		
+		function groupBy(keySelector : Function, elementSelector : Function = null, keyHashSelector : Function = null) : IEnumerable;
+		
+		function take(count : uint) : IEnumerable; 
+		function takeLast(count : uint) : IEnumerable; 
+		function takeWhile(predicate : Function) : IEnumerable;
+		
+		function skip(count : uint) : IEnumerable; 
+		function skipLast(count : uint) : IEnumerable; 
+		function skipWhile(predicate : Function) : IEnumerable; 
+		
 		function concat(second : IEnumerable) : IEnumerable;	
 		
-		function take(count : int) : IEnumerable;
 		function map(selector : Function) : IEnumerable;
 		function mapMany(collectionSelector : Function, resultSelector : Function = null) : IEnumerable;
 		
 		function filter(predicate : Function) : IEnumerable;
+		function ofType(cls : Class) : IEnumerable;
+		
+		function zip(right : IEnumerable, resultSelector : Function) : IEnumerable;
+		function sequenceEqual(right : IEnumerable, comparer : Function = null) : Boolean;
 		
 		function repeat(count : uint = 0) : IEnumerable;
 		

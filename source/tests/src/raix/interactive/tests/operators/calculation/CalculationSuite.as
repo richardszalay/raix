@@ -11,5 +11,6 @@ package raix.interactive.tests.operators.calculation
 		public var count : CountFixture;
 		public var all : AllFixture;
 		public var any : AnyFixture;
+		public var sequenceEqual : SequenceEqualFixture;
 	}
 }

@@ -8,5 +8,6 @@ package raix.interactive.tests.operators.combine
 	{
 		public var concat : ConcatFixture;
 		public var join : JoinFixture;
+		public var zip : ZipFixture;
 	}
 }

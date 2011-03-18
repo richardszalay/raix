@@ -5,26 +5,26 @@ package raix.interactive.tests.operators.filter
 	import raix.reactive.tests.AssertEx;
 	
 	[TestCase]
-	public class TakeFixture
+	public class SkipFixture
 	{
 		private var _source : IEnumerable = toEnumerable([
 			"zero", "one", "two", "three", "four", "five"
 		]);
 		
 		[Test]
-		public function limits_number_of_values_taken() : void
+		public function skips_number_of_values_from_start() : void
 		{
 			AssertEx.assertArrayEquals(
-				["zero", "one", "two"],
-				_source.take(3).toArray());
+				["three", "four", "five"],
+				_source.skip(3).toArray());
 		}
 		
 		[Test]
-		public function takes_less_if_less_are_available() : void
+		public function returns_empty_if_count_is_greater_than_source() : void
 		{
 			AssertEx.assertArrayEquals(
-				["zero", "one", "two"],
-				_source.take(3).take(4).toArray());
+				[],
+				_source.skip(6).toArray());
 		}
 	}
 }

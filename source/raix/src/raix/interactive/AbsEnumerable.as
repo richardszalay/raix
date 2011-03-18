@@ -462,6 +462,172 @@ package raix.interactive
 			});
 		}
 		
+		public function groupJoin(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, 
+			resultSelector : Function, keyHashSelector : Function = null) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var innerLookup : ILookup = inner.toLookup(innerKeySelector, null, keyHashSelector);
+				
+				var outerEnumerator : IEnumerator = source.getEnumerator();
+				var currentValue : Object;
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					if (outerEnumerator.moveNext())
+					{
+						var outerKey : Object = outerKeySelector(outerEnumerator.current);
+						
+						var values : IEnumerable = innerLookup.getValues(outerKey);
+						
+						currentValue = resultSelector(outerEnumerator.current, values);
+						
+						return true;
+					}
+					
+					return false;
+				},
+				function():Object { return currentValue; });
+			});
+		}
+		
+		public function groupBy(keySelector : Function, elementSelector : Function = null, 
+			keyHashSelector : Function = null) : IEnumerable
+		{
+			return toLookup(keySelector, elementSelector, keyHashSelector);			
+		}
+		
+		public function take(count : uint) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var currentCount : int = 0;
+				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					return (currentCount++ < count) && innerEnumerator.moveNext(); 
+				},
+				function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function takeLast(count : uint) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var array : Array = source.toArray();
+				var actualCount : uint = Math.min(count, array.length);
+				
+				array = array.slice(array.length - actualCount, array.length);
+				
+				return Enumerable.fromArray(array).getEnumerator();
+			});
+		}
+		
+		public function takeWhile(predicate : Function) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					if (innerEnumerator.moveNext() && 
+						predicate(innerEnumerator.current))
+					{
+						return true;
+					}
+					
+					return false;
+				},
+				function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function skip(count : uint) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var remaining : uint = count;
+				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					while(remaining > 0 && innerEnumerator.moveNext())
+					{
+						remaining--;
+					}
+					
+					return innerEnumerator.moveNext();
+				},
+				function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function skipLast(count : uint) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var array : Array = source.toArray();
+				var actualCount : uint = Math.max(0, array.length - count);
+				
+				if (actualCount > 0)
+				{
+					array = array.slice(0, actualCount);
+				
+					return Enumerable.fromArray(array).getEnumerator();
+				}
+				else
+				{
+					return Enumerable.empty().getEnumerator();					
+				}
+			});
+		}
+		
+		public function skipWhile(predicate : Function) : IEnumerable
+		{
+			var source : IEnumerable = this;
+			
+			return new ClosureEnumerable(function():IEnumerator
+			{
+				var isSkipping : Boolean = true;
+				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				
+				return new ClosureEnumerator(function():Boolean
+				{
+					if (isSkipping)
+					{
+						while (innerEnumerator.moveNext())
+						{
+							if (!predicate(innerEnumerator.current))
+							{
+								isSkipping = false;
+								break;
+							}
+						}
+						
+						return !isSkipping;
+					}
+					
+					return innerEnumerator.moveNext();
+				},
+				function():Object { return innerEnumerator.current; });
+			});
+		}
+		
 		public function concat(other : IEnumerable) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -494,21 +660,45 @@ package raix.interactive
 			});
 		}
 		
-		public function take(count : int) : IEnumerable
+		public function zip(right : IEnumerable, resultSelector : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
 			
 			return new ClosureEnumerable(function():IEnumerator
 			{
-				var currentCount : int = 0;
-				var innerEnumerator : IEnumerator = source.getEnumerator(); 
+				var leftEnumerator : IEnumerator = source.getEnumerator();
+				var rightEnumerator : IEnumerator = right.getEnumerator();
+				var currentValue : Object = null;
 				
 				return new ClosureEnumerator(function():Boolean
 				{
-					return (currentCount++ < count) && innerEnumerator.moveNext(); 
+					if (leftEnumerator.moveNext() &&
+						rightEnumerator.moveNext())
+					{
+						currentValue = resultSelector(
+							leftEnumerator.current,
+							rightEnumerator.current);
+							
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				},
-				function():Object { return innerEnumerator.current; });
+				function() : Object { return currentValue; });
 			});
+		}
+		
+		public function sequenceEqual(right : IEnumerable, comparer : Function = null) : Boolean
+		{
+			return this.zip(right, function(l:Object, r:Object) : Boolean
+			{
+				return (comparer == null)
+					? l == r
+					: comparer(l,r);
+			})
+			.all(function(v:Boolean):Boolean { return v; });
 		}
 		
 		public function map(selector : Function) : IEnumerable
@@ -622,6 +812,14 @@ package raix.interactive
 					return false;
 				},
 				function():Object { return innerEnumerator.current; });
+			});
+		}
+		
+		public function ofType(cls : Class) : IEnumerable
+		{
+			return filter(function(v:Object) : Boolean
+			{
+				return v is cls;
 			});
 		}
 		

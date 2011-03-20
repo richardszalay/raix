@@ -43,8 +43,15 @@ package raix.interactive.tests.operators.calculation
 			Assert.assertEquals(source[3],
 				toEnumerable(source).max(null, function(l:Object, r:Object):int
 				{
-					return Comparer.defaultComparer(l.value.charAt(1), r.value.charAt(1)); 
+					return compare(l.value.charAt(1), r.value.charAt(1)); 
 				}));
+		}
+		
+		private function compare(x : Object, y : Object) : int
+		{
+			return (x < y) ? -1
+				: (x > y) ? 1
+				: 0;
 		}
 	}
 }

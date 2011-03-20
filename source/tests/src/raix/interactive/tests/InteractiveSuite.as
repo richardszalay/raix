@@ -1,6 +1,7 @@
 package raix.interactive.tests
 {
 	import raix.interactive.tests.operators.OperatorSuite;
+	import raix.interactive.tests.utils.UtilsSuite;
 	
 	
 	[Suite]
@@ -8,5 +9,6 @@ package raix.interactive.tests
 	public class InteractiveSuite
 	{
 		public var operators : OperatorSuite;
+		public var utils : UtilsSuite;
 	}
 }

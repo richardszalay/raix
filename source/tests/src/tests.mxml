@@ -31,7 +31,7 @@
 				addTestListeners(core);				
 				
 				core.run( 
-					//ReactiveSuite, 
+					ReactiveSuite, 
 					InteractiveSuite
 				);
 			}

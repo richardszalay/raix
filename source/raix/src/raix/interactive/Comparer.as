@@ -1,6 +1,6 @@
 package raix.interactive
 {
-	public class Comparer
+	internal class Comparer
 	{
 		public static function defaultComparer(l:Object, r:Object) : int
 		{

@@ -3,7 +3,7 @@ package raix.reactive
 	/**
 	 * Represents a handle that can be used to cancel an operation 
 	 * 
-	 * @see rx.CompositeCancelable, rx.BooleanCancelable, rx.FutureCancelable, rx.Cancelable
+	 * @see raix.reactive.CompositeCancelable, raix.reactive.BooleanCancelable, raix.reactive.FutureCancelable, raix.reactive.Cancelable
 	*/	
 	public interface ICancelable
 	{

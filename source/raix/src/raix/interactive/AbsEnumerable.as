@@ -12,6 +12,9 @@ package raix.interactive
 	import raix.reactive.scheduling.IScheduler;
 	import raix.reactive.scheduling.Scheduler;
 	
+	/*
+	 * An abstract implementation of IEnumerable. This class may be made inaccessible in future revisions.
+	 */
 	public class AbsEnumerable extends Proxy implements IEnumerable
 	{
 		private var _currentEnumerator : IEnumerator;
@@ -21,6 +24,9 @@ package raix.interactive
 		{
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function any(predicate : Function = null) : Boolean
 		{
 			for each(var value : Object in this)
@@ -41,6 +47,9 @@ package raix.interactive
 			return false;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function all(predicate : Function) : Boolean
 		{
 			if (predicate == null)
@@ -59,6 +68,9 @@ package raix.interactive
 			return true;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function elementAt(index : int) : Object
 		{
 			var currentIndex : int = 0;
@@ -74,6 +86,9 @@ package raix.interactive
 			throw new RangeError("index");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function elementAtOrDefault(index : int, defaultValue : Object = null) : Object
 		{
 			var currentIndex : int = 0;
@@ -89,7 +104,9 @@ package raix.interactive
 			return defaultValue;
 		}
 		
-
+		/**
+		 * @inheritDoc
+		 */
 		public function contains(value : Object, equalityComparer : Function = null) : Boolean
 		{
 			return this.any(function(itemInSequence:Object) : Boolean
@@ -100,6 +117,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function first(predicate : Function = null) : Object
 		{
 			for each(var value : Object in this)
@@ -113,6 +133,9 @@ package raix.interactive
 			throw new IllegalOperationError("No matching items found");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function firstOrDefault(defaultValue : Object = null, predicate : Function = null) : Object
 		{
 			for each(var value : Object in this)
@@ -126,6 +149,9 @@ package raix.interactive
 			return defaultValue;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function single(predicate : Function = null) : Object
 		{
 			var matchedAny : Boolean = false;
@@ -155,6 +181,9 @@ package raix.interactive
 			throw new IllegalOperationError("No matching items found");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function singleOrDefault(defaultValue : Object = null, predicate : Function = null) : Object
 		{
 			var matchedAny : Boolean = false;
@@ -184,6 +213,9 @@ package raix.interactive
 			return defaultValue;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function last(predicate : Function = null) : Object
 		{
 			var matchedAny : Boolean = false;
@@ -206,6 +238,9 @@ package raix.interactive
 			throw new IllegalOperationError("No matching items found");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function lastOrDefault(defaultValue : Object = null, predicate : Function = null) : Object
 		{
 			var matchedAny : Boolean = false;
@@ -228,6 +263,9 @@ package raix.interactive
 			return defaultValue;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object
 		{
 			var lastScanResult : Object = this.scan(seed, accumulator, null).lastOrDefault(seed);
@@ -237,6 +275,9 @@ package raix.interactive
 				: resultSelector(lastScanResult);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function scan(seed : Object, accumulator : Function, resultSelector : Function = null) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -267,6 +308,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function sum(valueSelector : Function = null) : Number
 		{
 			var source : IEnumerable = (valueSelector == null)
@@ -283,6 +327,9 @@ package raix.interactive
 			return sum;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function min(valueSelector : Function = null, comparer : Function = null) : Object
 		{
 			var source : IEnumerable = (valueSelector == null)
@@ -313,6 +360,9 @@ package raix.interactive
 			return min;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function max(valueSelector : Function = null, comparer : Function = null) : Object
 		{
 			var source : IEnumerable = (valueSelector == null)
@@ -343,6 +393,9 @@ package raix.interactive
 			return max;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function average(valueSelector : Function = null) : Number
 		{
 			var source : IEnumerable = (valueSelector == null)
@@ -371,6 +424,9 @@ package raix.interactive
 			return total / count;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function distinct(hashSelector : Function = null) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -401,21 +457,31 @@ package raix.interactive
 			});
 		}
 		
-		public function union(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		/**
+		 * @inheritDoc
+		 */
+		public function union(right : *, hashSelector : Function = null) : IEnumerable
 		{
-			return this.concat(right).distinct(hashSelector);
+			var rightEnumerable : IEnumerable = toEnumerable(right);
+			
+			return this.concat(rightEnumerable).distinct(hashSelector);
 		}
 		
-		public function intersect(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		/**
+		 * @inheritDoc
+		 */
+		public function intersect(right : *, hashSelector : Function = null) : IEnumerable
 		{
 			var source : IEnumerable = this;
+			
+			var rightEnumerable : IEnumerable = toEnumerable(right);
 			
 			return new ClosureEnumerable(function():IEnumerator
 			{
 				var hashSet : Dictionary = new Dictionary();
 				var innerEnumerator : IEnumerator = source.getEnumerator();
 				
-				for each(var rightValue : Object in right)
+				for each(var rightValue : Object in rightEnumerable)
 				{
 					var hash : Object = (hashSelector == null)
 						? rightValue
@@ -448,16 +514,21 @@ package raix.interactive
 			});
 		}
 		
-		public function except(right : IEnumerable, hashSelector : Function = null) : IEnumerable
+		/**
+		 * @inheritDoc
+		 */
+		public function except(right : *, hashSelector : Function = null) : IEnumerable
 		{
 			var source : IEnumerable = this;
+			
+			var rightEnumerable : IEnumerable = toEnumerable(right);
 			
 			return new ClosureEnumerable(function():IEnumerator
 			{
 				var hashSet : Dictionary = new Dictionary();
 				var innerEnumerator : IEnumerator = source.getEnumerator();
 				
-				for each(var rightValue : Object in right)
+				for each(var rightValue : Object in rightEnumerable)
 				{
 					var hash : Object = (hashSelector == null)
 						? rightValue
@@ -490,6 +561,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function defaultIfEmpty(defaultValue : Object = null) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -533,6 +607,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function toLookup(keySelector : Function, elementSelector : Function = null, 
 			keyHashSelector : Function = null) : ILookup
 		{
@@ -559,6 +636,9 @@ package raix.interactive
 			return lookup;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function toDictionary(keySelector : Function, elementSelector : Function = null) : Dictionary
 		{
 			var dictionary : Dictionary = new Dictionary();
@@ -586,6 +666,9 @@ package raix.interactive
 			return dictionary
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function join(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, 
 			resultSelector : Function, keyHashSelector : Function = null) : IEnumerable
 		{
@@ -634,6 +717,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function groupJoin(inner : IEnumerable, outerKeySelector : Function, innerKeySelector : Function, 
 			resultSelector : Function, keyHashSelector : Function = null) : IEnumerable
 		{
@@ -665,12 +751,18 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function groupBy(keySelector : Function, elementSelector : Function = null, 
 			keyHashSelector : Function = null) : IEnumerable
 		{
 			return toLookup(keySelector, elementSelector, keyHashSelector);			
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function take(count : uint) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -688,6 +780,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function takeLast(count : uint) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -703,6 +798,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function takeWhile(predicate : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -725,6 +823,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skip(count : uint) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -747,6 +848,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skipLast(count : uint) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -769,6 +873,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function skipWhile(predicate : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -800,6 +907,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function reverse() : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -824,6 +934,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function concat(other : IEnumerable) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -856,6 +969,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function zip(right : IEnumerable, resultSelector : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -886,6 +1002,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function sequenceEqual(right : IEnumerable, comparer : Function = null) : Boolean
 		{
 			return this.zip(right, function(l:Object, r:Object) : Boolean
@@ -897,6 +1016,9 @@ package raix.interactive
 			.all(function(v:Boolean):Boolean { return v; });
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function map(selector : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -923,6 +1045,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function mapMany(collectionSelector : Function, resultSelector : Function = null) : IEnumerable
 		{
 			if (collectionSelector == null)
@@ -987,6 +1112,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function filter(predicate : Function) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -1011,6 +1139,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function ofType(cls : Class) : IEnumerable
 		{
 			return filter(function(v:Object) : Boolean
@@ -1019,6 +1150,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function repeat(count : uint = 0) : IEnumerable
 		{
 			var source : IEnumerable = this;
@@ -1050,12 +1184,18 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function orderBy(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
 		{
 			return new OrderedEnumerable(this, 
 				keySelector, comparer || Comparer.defaultComparer);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function orderByDescending(keySelector : Function, comparer : Function = null) : IOrderedEnumerable
 		{
 			var sourceComparer : Function = Comparer.reverse(
@@ -1064,6 +1204,9 @@ package raix.interactive
 			return new OrderedEnumerable(this, keySelector, sourceComparer);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function count() : uint
 		{
 			var count : uint = 0;
@@ -1076,6 +1219,9 @@ package raix.interactive
 			return count;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function toObservable(scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = scheduler || Scheduler.asynchronous;
@@ -1114,6 +1260,9 @@ package raix.interactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function toArray() : Array
 		{
 			var output : Array = new Array();
@@ -1126,6 +1275,9 @@ package raix.interactive
 			return output;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override flash_proxy function nextNameIndex(index:int):int
 		{
 			if (index == 0)
@@ -1156,14 +1308,19 @@ package raix.interactive
             }
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override flash_proxy function nextValue(index:int):*
 		{
             return _currentEnumerator.current;
         }
 		
+		/**
+		 * @inheritDoc
+		 */
         public function cancel() : void
         {
-        	
         }
 		
 		public function getEnumerator() : IEnumerator

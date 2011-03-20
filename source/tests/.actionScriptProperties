@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties mainApplicationPath="RxAsTests.mxml" version="3">
-  <compiler additionalCompilerArguments="-locale en_US -define+=CONFIG::AUTOMATED,false -includes asmock.integration.flexunit.ASMockClassRunner" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
-    <compilerSourcePath/>
-    <libraryPath defaultLinkType="1">
-      <libraryPathEntry kind="4" path=""/>
-      <libraryPathEntry kind="1" linkType="1" path="libs"/>
-      <libraryPathEntry kind="3" linkType="1" path="/raix/bin/raix.swc" useDefaultLinkType="false"/>
-    </libraryPath>
-    <sourceAttachmentPath/>
-  </compiler>
-  <applications>
-    <application path="RxAsTests.mxml"/>
-  </applications>
-  <modules/>
-  <buildCSSFiles/>
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="tests.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US -define+=CONFIG::AUTOMATED,false -includes asmock.integration.flexunit.ASMockClassRunner" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath/>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
+<libraryPathEntry kind="3" linkType="1" path="/raix/bin/raix.swc" useDefaultLinkType="false"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="tests.mxml"/>
+</applications>
+<modules/>
+<buildCSSFiles/>
 </actionScriptProperties>

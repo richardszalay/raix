@@ -4,7 +4,7 @@ package raix.interactive
 	import flash.utils.Proxy;
 	import flash.utils.flash_proxy;
 	
-	public class ClosureEnumerable extends AbsEnumerable
+	internal class ClosureEnumerable extends AbsEnumerable
 	{
 		private var _createEnumerator : Function;
 		

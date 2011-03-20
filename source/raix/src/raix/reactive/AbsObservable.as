@@ -3,6 +3,8 @@ package raix.reactive
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
+	import mx.controls.Spacer;
+	
 	import raix.reactive.impl.*;
 	import raix.reactive.scheduling.*;
 	import raix.reactive.subjects.AsyncSubject;
@@ -309,72 +311,111 @@ package raix.reactive
 			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var activeWindows : Array = new Array();
-				var elapsedTime : int = 0;
-				var startTime : Number = scheduler.now.time;
 				
-				var windowSubscriptions : CompositeCancelable = new CompositeCancelable([]);
+				var nextSpanTime : Number = timeMs;
+				var nextShiftTime : Number = timeShiftMs;
+				var totalTime : Number = 0;
 				
-				var createWindow : Function = function():void
+				var subscriptions : CompositeCancelable = new CompositeCancelable([]);
+				
+				var checkWindowSchedule : FutureCancelable = new FutureCancelable();
+				subscriptions.add(checkWindowSchedule);
+				
+				var checkWindow : Function;
+				 
+				checkWindow = function():void
+				{
+					var isSpan : Boolean = false,
+						isShift : Boolean = false;
+						
+					if (nextSpanTime == nextShiftTime)
+					{
+						isSpan = true;
+						isShift = true;
+					}
+					else if (nextSpanTime < nextShiftTime)
+					{
+						isSpan = true;
+					}
+					else
+					{
+						isShift = true;
+					}
+					
+					var scheduleMs : Number = isSpan ? nextSpanTime : nextShiftTime;
+					var dueTime : Number = totalTime - scheduleMs;
+					totalTime = scheduleMs;
+					
+					if (isSpan)
+					{
+						nextSpanTime += timeShiftMs;
+					}
+					if (isShift)
+					{
+						nextShiftTime += timeShiftMs;
+					}
+					
+					checkWindowSchedule.innerCancelable = scheduler.schedule(function():void
+					{
+						if (isShift)
+						{
+							var window : Subject = new Subject();
+							activeWindows.push(window);
+							observer.onNext(window);
+						}
+						if (isSpan)
+						{
+							activeWindows.splice(0, 1)[0].onCompleted();
+						}
+						
+						checkWindow();
+						
+					}, scheduleMs);
+				};
+				
+				subscriptions.add(scheduler.schedule(function():void
 				{
 					var window : Subject = new Subject();
 					activeWindows.push(window);
 					observer.onNext(window);
 					
-					var windowSubscription : FutureCancelable = new FutureCancelable();
+					checkWindow();
 					
-					windowSubscriptions.add(windowSubscription);
+					var sourceSubscription : FutureCancelable = new FutureCancelable();
 					
-					windowSubscription.innerCancelable = scheduler.schedule(function():void
+					subscriptions.add(sourceSubscription);
+					
+					sourceSubscription.innerCancelable = source.subscribe(
+						function(v:Object) : void
 						{
-							windowSubscriptions.remove(windowSubscription);
-							activeWindows.splice(0, 1);
+							for each(var subject : Subject in activeWindows)
+							{
+								subject.onNext(v);
+							}
+						},
+						function():void
+						{
+							for each(var subject : Subject in activeWindows)
+							{
+								subject.onCompleted();
+							}
 							
-							window.onCompleted();
-						}, timeMs);
-				};
-				
-				createWindow();
-				
-				return source.subscribe(
-					function(v:Object) : void
-					{
-						for each(var subject : Subject in activeWindows)
+							observer.onCompleted();
+							
+						}, function(e:Error):void
 						{
-							subject.onNext(v);
-						}
-						
-						elapsedTime = scheduler.now.time - startTime;
-						
-						if (scheduler.now.time != startTime && (elapsedTime % timeShiftMs) == 0)
-						{
-							createWindow();
-						}
-					},
-					function():void
-					{
-						for (var i:int=0; i<activeWindows.length; i++)
-						{
-							activeWindows[i].onCompleted();
-						}
-						
-						activeWindows = [];
-						
-						observer.onCompleted();
-						
-					}, function(e:Error):void
-					{
-						for (var i:int=0; i<activeWindows.length; i++)
-						{
-							activeWindows[i].onError(e);
-						}
-						
-						activeWindows = [];
-						
-						observer.onError(e);
-					});
+							for each(var subject : Subject in activeWindows)
+							{
+								subject.onError(e);
+							}
+							
+							observer.onError(e);
+						});
+				}));
+					
+				return subscriptions;
 			});
 		}
-		
 		
 		/**
 		 * @inheritDoc

@@ -13,8 +13,8 @@ package raix.reactive.tests.operators.creation
             var stats : StatsObserver = new StatsObserver();
 
             Observable.ifElse(function():Boolean { return true; },
-                Observable.returnValue(1),
-                Observable.returnValue(2)
+                Observable.value(1),
+                Observable.value(2)
                 )
                 .subscribeWith(stats);
 
@@ -29,8 +29,8 @@ package raix.reactive.tests.operators.creation
             var stats : StatsObserver = new StatsObserver();
 
             Observable.ifElse(function():Boolean { return false; },
-                Observable.returnValue(1),
-                Observable.returnValue(2)
+                Observable.value(1),
+                Observable.value(2)
                 )
                 .subscribeWith(stats);
 
@@ -47,8 +47,8 @@ package raix.reactive.tests.operators.creation
             var exception : Error = new ArgumentError();
 
             Observable.ifElse(function():Boolean { throw exception; },
-                Observable.returnValue(1),
-                Observable.returnValue(2)
+                Observable.value(1),
+                Observable.value(2)
                 )
                 .subscribeWith(stats);
 

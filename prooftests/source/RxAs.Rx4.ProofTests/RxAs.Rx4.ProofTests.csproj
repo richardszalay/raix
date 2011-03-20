@@ -151,6 +151,7 @@
     <Compile Include="Subjects\BehaviorSubjectFixture.cs" />
     <Compile Include="Subjects\ConnectableObservableFixture.cs" />
     <Compile Include="Subjects\ReplaySubjectFixture.cs" />
+    <Compile Include="Testing\TestSchedulerFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

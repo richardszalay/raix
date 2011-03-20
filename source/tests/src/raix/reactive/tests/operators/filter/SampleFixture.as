@@ -163,7 +163,7 @@ package raix.reactive.tests.operators.filter
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.throwError(new Error())
+            Observable.error(new Error())
                 .sample(1000, scheduler)
                 .subscribeWith(stats);
 
@@ -177,7 +177,7 @@ package raix.reactive.tests.operators.filter
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.throwError(new Error())
+            Observable.error(new Error())
                 .sample(1000, scheduler)
                 .subscribeWith(stats);
 

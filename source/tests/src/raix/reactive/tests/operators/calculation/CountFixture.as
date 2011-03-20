@@ -57,7 +57,7 @@ package raix.reactive.tests.operators.calculation
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error()).count().subscribeWith(stats);
+			Observable.error(new Error()).count().subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertTrue(stats.errorCalled);

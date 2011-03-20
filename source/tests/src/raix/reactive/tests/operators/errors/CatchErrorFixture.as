@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.errors
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.catchError(Observable.throwError(new Error()));
+			return source.catchError(Observable.error(new Error()));
 		}
 		
 		[Test]
@@ -23,7 +23,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.catchError(Observable.empty())
 				.subscribeWith(stats);
 			
@@ -35,8 +35,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
-				.catchError(Observable.throwError(new IllegalOperationError()))
+			Observable.error(new Error())
+				.catchError(Observable.error(new IllegalOperationError()))
 				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);

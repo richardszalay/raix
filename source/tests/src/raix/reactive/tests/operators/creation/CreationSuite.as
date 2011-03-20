@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.creation
 		public var never : NeverFixture;
 		public var queue : QueueFixture;
 		public var range : RangeFixture;
-		public var throwError : ThrowErrorFixture;
+		public var throwError : ErrorFixture;
 		public var timer : TimerFixture;
 		//public var uncaughtErrors : UncaughtErrorsFixture;
 		public var urlLoader : URLLoaderFixture;

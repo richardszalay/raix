@@ -49,7 +49,7 @@ package raix.reactive.tests.operators.mutation
 			
 			subjectSource.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
 				{
-					return Observable.returnValue(1)
+					return Observable.value(1)
 						.concat([Observable.never()]);
 				}, mapValue)
 				.subscribe(function (group : IGroupedObservable) : void
@@ -96,7 +96,7 @@ package raix.reactive.tests.operators.mutation
 
             var durationSubjects : Array = new Array();
 
-            source.concat([Observable.throwError(new Error())])
+            source.concat([Observable.error(new Error())])
             	.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
 	            {
 	                var duration : Subject = new Subject();
@@ -175,7 +175,7 @@ package raix.reactive.tests.operators.mutation
             var outsideError : Boolean = false;
             var groupStats : StatsObserver = new StatsObserver();
 
-            Observable.returnValue(1).concat([Observable.throwError(new Error())])
+            Observable.value(1).concat([Observable.error(new Error())])
                 .groupByUntil(mapSelf, neverDuration)
                 .subscribe(
                 	function(group : IGroupedObservable) : void

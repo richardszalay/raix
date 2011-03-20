@@ -41,7 +41,7 @@ package raix.reactive.tests.operators.filter
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
 			var obs : IObservable = Observable
-				.returnValue(1)
+				.value(1)
 				.skipWhile(function(pl:uint) : Boolean
 				{
 					throw new Error();
@@ -57,7 +57,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var obs : IObservable = createEmptyObservable(Observable.returnValue(1));
+			var obs : IObservable = createEmptyObservable(Observable.value(1));
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

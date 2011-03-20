@@ -17,7 +17,7 @@ package raix.reactive.tests.operators.mutation
 		{
 			return source.mapMany(function(pl:Object):IObservable
 			{
-				return Observable.returnValue(pl);
+				return Observable.value(pl);
 			});
 		}
 		

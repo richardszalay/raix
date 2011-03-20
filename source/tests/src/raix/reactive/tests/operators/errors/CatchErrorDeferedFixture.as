@@ -17,7 +17,7 @@ package raix.reactive.tests.operators.errors
 		{
 			return source.catchErrorDefer(Error, function(e:Error):IObservable
 			{
-				return Observable.throwError(e);
+				return Observable.error(e);
 			});
 		}
 		
@@ -26,7 +26,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable { return Observable.empty(); })
 				.subscribeWith(stats);
 			
@@ -38,10 +38,10 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
-					return Observable.throwError(new IllegalOperationError());
+					return Observable.error(new IllegalOperationError());
 				})
 				.subscribeWith(stats);
 			
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					throw new IllegalOperationError();
@@ -70,7 +70,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					return null;
@@ -86,7 +86,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new IllegalOperationError())
+			Observable.error(new IllegalOperationError())
 				.catchErrorDefer(ArgumentError, function(e:Error):IObservable
 				{
 					return null;

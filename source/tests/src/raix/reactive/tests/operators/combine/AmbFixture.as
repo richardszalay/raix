@@ -58,7 +58,7 @@ package raix.reactive.tests.operators.combine
 			
 			var subjectA : Subject = new Subject();
 			var subjectB : Subject = new Subject();
-			var subjectC : IObservable = Observable.throwError(new Error());
+			var subjectC : IObservable = Observable.error(new Error());
 			
 			Observable.amb([subjectA, subjectB, subjectC])
                 .subscribeWith(stats);

@@ -283,8 +283,7 @@ package raix.reactive
 				.mapMany(function(v:IObservable):IObservable
 				{
 					return v.toArray();
-				})
-				.filter(function(v:Array):Boolean { return v.length > 0; });
+				});
 		}
 		
 		/**
@@ -328,7 +327,9 @@ package raix.reactive
 					windowSubscription.innerCancelable = scheduler.schedule(function():void
 						{
 							windowSubscriptions.remove(windowSubscription);
-							activeWindows.splice(0, 1)[0].onCompleted();							
+							activeWindows.splice(0, 1);
+							
+							window.onCompleted();
 						}, timeMs);
 				};
 				
@@ -344,7 +345,7 @@ package raix.reactive
 						
 						elapsedTime = scheduler.now.time - startTime;
 						
-						if ((elapsedTime % timeShiftMs) == 0)
+						if (scheduler.now.time != startTime && (elapsedTime % timeShiftMs) == 0)
 						{
 							createWindow();
 						}
@@ -2167,7 +2168,7 @@ package raix.reactive
 			return aggregate(function(x:Number, y:Number):Number
 			{
 				return x+y;
-			}, 0).catchError(Observable.returnValue(0));
+			}, 0).catchError(Observable.value(0));
 		}
 		
 		/**
@@ -2402,7 +2403,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			other = other || Observable.throwError(new TimeoutError("Sequence timed out"));
+			other = other || Observable.error(new TimeoutError("Sequence timed out"));
 			
 			scheduler = scheduler || Scheduler.synchronous;
 			

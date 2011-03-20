@@ -7,12 +7,75 @@ using RxAs.Rx4.ProofTests.Mock;
 using System.Threading;
 using System.Concurrency;
 using System.Diagnostics;
+using System.Reactive.Testing;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
     [TestFixture]
     public class BufferWithTimeFixture
     {
+        private Notification<int> OnNext(int value)
+        {
+            return new Notification<int>.OnNext(value);
+        }
+
+        private Notification<int> OnCompleted()
+        {
+            return new Notification<int>.OnCompleted();
+        }
+
+        [Test]
+        public void using_test_scheduler()
+        {
+            var scheduler = new TestScheduler();
+			
+			var source = scheduler.CreateColdObservable(
+				new Recorded<Notification<int>>(0, OnNext(1)),
+				new Recorded<Notification<int>>(10, OnNext(2)),
+				new Recorded<Notification<int>>(20, OnNext(3)),
+				new Recorded<Notification<int>>(30, OnNext(4)),
+				new Recorded<Notification<int>>(31, OnCompleted())
+			);
+			
+			var stats = new StatsObserver<IList<int>>();
+			
+			source.BufferWithTime(new TimeSpan(15), scheduler)
+				.Subscribe(stats);
+			
+			scheduler.Run();
+			
+			Assert.AreEqual(3, stats.NextCount);
+            Assert.AreEqual(2, stats.NextValues[0].Count);
+            Assert.AreEqual(2, stats.NextValues[1].Count);
+            Assert.AreEqual(0, stats.NextValues[2].Count);
+        }
+
+        [Test]
+        public void empty_buffers()
+        {
+            var scheduler = new TestScheduler();
+
+            var source = scheduler.CreateColdObservable(
+                new Recorded<Notification<int>>(0, OnNext(1)),
+                new Recorded<Notification<int>>(10, OnNext(2)),
+                new Recorded<Notification<int>>(40, OnNext(3)),
+                new Recorded<Notification<int>>(50, OnNext(4)),
+                new Recorded<Notification<int>>(51, OnCompleted())
+            );
+
+            var stats = new StatsObserver<IList<int>>();
+
+            source.BufferWithTime(new TimeSpan(15), scheduler)
+                .Subscribe(stats);
+
+            scheduler.Run();
+
+            Assert.AreEqual(3, stats.NextCount);
+            Assert.AreEqual(2, stats.NextValues[0].Count);
+            Assert.AreEqual(2, stats.NextValues[1].Count);
+            Assert.AreEqual(0, stats.NextValues[2].Count);
+        }
+
         [Test]
         public void empty_list()
         {

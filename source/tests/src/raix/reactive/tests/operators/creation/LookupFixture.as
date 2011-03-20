@@ -13,9 +13,9 @@ package raix.reactive.tests.operators.creation
         public function lookup_value_is_subscribed_to() : void
         {
             var dictionary : Dictionary = new Dictionary();
-            dictionary["keyA"] = Observable.returnValue(1);
-            dictionary["keyB"] = Observable.returnValue(2);
-            dictionary["keyC"] = Observable.returnValue(3);
+            dictionary["keyA"] = Observable.value(1);
+            dictionary["keyB"] = Observable.value(2);
+            dictionary["keyC"] = Observable.value(3);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -31,9 +31,9 @@ package raix.reactive.tests.operators.creation
         public function empty_is_returned_if_lookup_key_is_invalid() : void
         {
             var dictionary : Dictionary = new Dictionary();
-            dictionary["keyA"] = Observable.returnValue(1);
-            dictionary["keyB"] = Observable.returnValue(2);
-            dictionary["keyC"] = Observable.returnValue(3);
+            dictionary["keyA"] = Observable.value(1);
+            dictionary["keyB"] = Observable.value(2);
+            dictionary["keyC"] = Observable.value(3);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -48,9 +48,9 @@ package raix.reactive.tests.operators.creation
         public function error_is_raised_if_selector_throws_exception() : void
         {
             var dictionary : Dictionary = new Dictionary();
-            dictionary["keyA"] = Observable.returnValue(1);
-            dictionary["keyB"] = Observable.returnValue(2);
-            dictionary["keyC"] = Observable.returnValue(3);
+            dictionary["keyA"] = Observable.value(1);
+            dictionary["keyB"] = Observable.value(2);
+            dictionary["keyC"] = Observable.value(3);
 
             var stats : StatsObserver = new StatsObserver();
 

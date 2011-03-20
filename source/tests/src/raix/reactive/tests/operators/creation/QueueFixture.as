@@ -17,8 +17,8 @@ package raix.reactive.tests.operators.creation
         {
             var queue : IObserver = Observable.queue();
 			
-			var queuedSourceA : IObservable = Observable.returnValue(1).queued(queue);
-			var queuedSourceB : IObservable = Observable.returnValue(2).queued(queue);
+			var queuedSourceA : IObservable = Observable.value(1).queued(queue);
+			var queuedSourceB : IObservable = Observable.value(2).queued(queue);
 			
 			var stats : StatsObserver = new StatsObserver();
 			

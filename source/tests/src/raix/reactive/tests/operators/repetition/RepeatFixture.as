@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(5)
+			Observable.value(5)
 				.repeat(3)
 				.subscribeWith(stats);
 				
@@ -34,7 +34,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(5)
+			Observable.value(5)
 				.repeat(3)
 				.subscribeWith(stats);
 				
@@ -50,7 +50,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(5)
+			Observable.value(5)
 				.repeat(500)
 				.subscribeWith(stats);
 		}

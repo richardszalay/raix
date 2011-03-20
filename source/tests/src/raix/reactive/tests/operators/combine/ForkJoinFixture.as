@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.combine
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.forkJoin([Observable.empty(), Observable.returnValue(1)])
+            Observable.forkJoin([Observable.empty(), Observable.value(1)])
                     .subscribeWith(stats);
 
             Assert.assertEquals(0, stats.nextCount);
@@ -27,7 +27,7 @@ package raix.reactive.tests.operators.combine
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.forkJoin([Observable.returnValue(1), Observable.returnValue(2)])
+            Observable.forkJoin([Observable.value(1), Observable.value(2)])
                     .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);

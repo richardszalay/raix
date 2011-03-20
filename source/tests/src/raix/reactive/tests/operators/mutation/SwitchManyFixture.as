@@ -16,7 +16,7 @@ package raix.reactive.tests.operators.mutation
 		{
 			return source.switchMany(function(pl:Object):IObservable
 			{
-				return Observable.returnValue(pl);
+				return Observable.value(pl);
 			});
 		}
 		
@@ -41,7 +41,7 @@ package raix.reactive.tests.operators.mutation
 		public function selector_can_map_value() : void
 		{
 			Observable.range(0, 3)
-				.switchMany(function(x:int):IObservable { return Observable.returnValue(x + 1); })
+				.switchMany(function(x:int):IObservable { return Observable.value(x + 1); })
                 .subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);

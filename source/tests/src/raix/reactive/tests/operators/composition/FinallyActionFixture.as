@@ -50,7 +50,7 @@ package raix.reactive.tests.operators.composition
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.throwError(new Error())
+            Observable.error(new Error())
             	.finallyAction(function():void
             	{
             		finallyCalled = true;
@@ -65,7 +65,7 @@ package raix.reactive.tests.operators.composition
         {
             var stats : StatsObserver = new StatsObserver();
             
-            Observable.throwError(new Error())
+            Observable.error(new Error())
             	.finallyAction(function():void
             	{
             		Assert.assertTrue(stats.errorCalled);

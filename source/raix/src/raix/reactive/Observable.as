@@ -88,24 +88,24 @@ package raix.reactive
 				}
 				catch(err : Error)
 				{
-					return Observable.throwError(err);
+					return Observable.error(err);
 				}
 				
-				var value : Object = dictionary[key];
+				var val : Object = dictionary[key];
 				
-				if (value == undefined)
+				if (val == undefined)
 				{
 					return Observable.empty();
 				}
 				
-				var sequence : IObservable = value as IObservable;
+				var sequence : IObservable = val as IObservable;
 				
 				if (sequence == null)
 				{
 					var error : Error = new IllegalOperationError("lookup dictionary value for " + (key||"null") + 
 						" was not an IObservable");
 						
-					return Observable.throwError(error);
+					return Observable.error(error);
 				}
 				
 				return sequence;
@@ -334,7 +334,7 @@ package raix.reactive
 				}
 				catch(err : Error)
 				{
-					return Observable.throwError(err);
+					return Observable.error(err);
 				}
 				
 				// Compiler bug workaround
@@ -458,11 +458,11 @@ package raix.reactive
 								}
 							}
 							
-							var value : Object = null;
+							var val : Object = null;
 							
 							try
 							{
-								value = plan.selector.apply(NaN, args);
+								val = plan.selector.apply(NaN, args);
 							}
 							catch(err : Error)
 							{
@@ -470,7 +470,7 @@ package raix.reactive
 								return;
 							}
 							
-							observer.onNext(value);
+							observer.onNext(val);
 							
 							checkComplete();
 							
@@ -623,22 +623,14 @@ package raix.reactive
 				throw new ArgumentError("eventDispatcher cannot be null");
 			}
 			
-			return new ClosureObservable(function(observer : IObserver, scheduler : IScheduler = null) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
-				scheduler = scheduler || Scheduler.synchronous;
-				
 				var listener : Function = function(event : Event) : void
 				{
-					scheduler.schedule(function():void
-					{
-						observer.onNext(event);
-					});
+					observer.onNext(event);
 				};
 				
-				scheduler.schedule(function():void
-				{
-					eventDispatcher.addEventListener(eventType, listener, useCapture, priority);
-				});
+				eventDispatcher.addEventListener(eventType, listener, useCapture, priority);
 				
 				return new ClosureCancelable(function():void
 				{
@@ -722,7 +714,7 @@ package raix.reactive
 						error = err;
 					}
 					
-					return throwError(error);
+					return Observable.error(error);
 				});
 		}
 		
@@ -901,16 +893,16 @@ package raix.reactive
 		 * @param valueClass The Class of the returned sequence
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function throwError(error : Error) : IObservable
+		public static function error(err : Error) : IObservable
 		{
-			if (error == null)
+			if (err == null)
 			{
 				throw new ArgumentError("error cannot be null");
 			}
 			
 			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
-				obs.onError(error);
+				obs.onError(err);
 				
 				return new ClosureCancelable(function():void{});
 			});
@@ -942,9 +934,9 @@ package raix.reactive
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of valueClass
 		 */
-		public static function repeatValue(value : Object, repeatCount : uint = 0, scheduler : IScheduler = null) : IObservable
+		public static function repeatValue(val : Object, repeatCount : uint = 0, scheduler : IScheduler = null) : IObservable
 		{
-			return returnValue(value, scheduler)
+			return Observable.value(val, scheduler)
 				.repeat(repeatCount);
 		}
 		
@@ -954,9 +946,9 @@ package raix.reactive
 		 * @param scheduler The scheduler to use to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function returnValue(value : Object, scheduler : IScheduler = null) : IObservable
+		public static function value(val : Object, scheduler : IScheduler = null) : IObservable
 		{
-			return fromArray([value], scheduler); 
+			return fromArray([val], scheduler); 
 		}
 		
 		/**

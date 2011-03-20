@@ -16,7 +16,7 @@ package raix.reactive.tests.operators.errors
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.onErrorResumeNext(Observable.throwError(new Error()));
+			return source.onErrorResumeNext(Observable.error(new Error()));
 		}
 		
 		[Test]
@@ -24,7 +24,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.onErrorResumeNext(Observable.empty())
 				.subscribeWith(stats);
 			
@@ -36,8 +36,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
-				.onErrorResumeNext(Observable.throwError(new IllegalOperationError()))
+			Observable.error(new Error())
+				.onErrorResumeNext(Observable.error(new IllegalOperationError()))
 				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.errors
 			var stats : StatsObserver = new StatsObserver();
 			
 			manObs
-				.onErrorResumeNext(Observable.throwError(new IllegalOperationError()), scheduler)
+				.onErrorResumeNext(Observable.error(new IllegalOperationError()), scheduler)
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
@@ -73,7 +73,7 @@ package raix.reactive.tests.operators.errors
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error())
+			Observable.error(new Error())
 				.onErrorResumeNext(manObs, scheduler)
 				.subscribeWith(stats);
 			

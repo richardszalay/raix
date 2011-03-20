@@ -13,7 +13,7 @@ package raix.reactive.tests.operators.filter
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.skipUntil(Observable.returnValue(1));
+			return source.skipUntil(Observable.value(1));
 		}
 		
 		[Test]
@@ -82,7 +82,7 @@ package raix.reactive.tests.operators.filter
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
 			var manObs : Subject = new Subject();
-			var obs : IObservable = manObs.skipUntil(Observable.returnValue(1));
+			var obs : IObservable = manObs.skipUntil(Observable.value(1));
 			
 			
 			obs.subscribe(

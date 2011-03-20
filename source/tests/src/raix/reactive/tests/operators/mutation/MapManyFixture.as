@@ -15,9 +15,9 @@ package raix.reactive.tests.operators.mutation
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.mapMany(source.valueClass, function(pl:Object):IObservable
+			return source.mapMany(function(pl:Object):IObservable
 			{
-				return Observable.returnValue(source.valueClass, pl);
+				return Observable.returnValue(pl);
 			});
 		}
 		
@@ -27,7 +27,7 @@ package raix.reactive.tests.operators.mutation
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-                .mapMany(int, function(x:int):IObservable { return Observable.range(x * 2, 2); })
+                .mapMany(function(x:int):IObservable { return Observable.range(x * 2, 2); })
                 .subscribeWith(stats);
                 
             Assert.assertEquals(6, stats.nextCount);
@@ -44,16 +44,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -76,16 +76,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -107,16 +107,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -139,16 +139,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -171,16 +171,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -202,16 +202,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -231,16 +231,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -260,16 +260,16 @@ package raix.reactive.tests.operators.mutation
 		{
 			var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var first : Subject = new Subject(int);
-            var second : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var first : Subject = new Subject();
+            var second : Subject = new Subject();
 
             var remaining : Array = new Array();
             remaining.push(first);
             remaining.push(second);
 
             var subscription : ICancelable = source
-                .mapMany(int, function(o:Object):IObservable { return remaining.shift(); })
+                .mapMany(function(o:Object):IObservable { return remaining.shift(); })
                 .subscribeWith(stats);
 
             source.onNext(0);
@@ -290,9 +290,9 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="flash.errors.IllegalOperationError")]
 		public function exception_thrown_when_selector_returns_null() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.range(0, 1).mapMany(int, function(i:int):IObservable
+			var obs : IObservable = Observable.range(0, 1).mapMany(function(i:int):IObservable
 			{
 				return null;
 			});
@@ -304,9 +304,9 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function onerror_called_when_selector_throws_exception() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.range(0, 1).mapMany(int, function(i:int):IObservable
+			var obs : IObservable = Observable.range(0, 1).mapMany(function(i:int):IObservable
 			{
 				throw new IllegalOperationError();
 			});
@@ -322,7 +322,7 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

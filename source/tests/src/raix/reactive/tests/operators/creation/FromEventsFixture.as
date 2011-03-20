@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.creation
 		public function setup() : void
 		{
 			ev = new EventDispatcher();
-			obs = Observable.fromEvents(ev, [TEST_EVENT_A, TEST_EVENT_B], Event);
+			obs = Observable.fromEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 		}
 		
 		[Test]

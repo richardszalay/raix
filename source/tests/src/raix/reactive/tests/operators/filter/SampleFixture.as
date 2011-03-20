@@ -11,7 +11,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
         public function uses_scheduler_to_schedule_samples() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -34,7 +34,7 @@ package raix.reactive.tests.operators.filter
         [Test]
         public function last_value_is_taken_for_each_sample() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -60,7 +60,7 @@ package raix.reactive.tests.operators.filter
         [Test]
         public function no_value_is_emitted_if_sampled_value_hasnt_changed() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -81,7 +81,7 @@ package raix.reactive.tests.operators.filter
         [Test]
         public function no_value_is_emitted_if_empty() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -105,7 +105,7 @@ package raix.reactive.tests.operators.filter
             var scheduler : ManualScheduler = new ManualScheduler();
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.empty(int)
+            Observable.empty()
                 .sample(1000, scheduler)
                 .subscribeWith(stats);
 
@@ -118,7 +118,7 @@ package raix.reactive.tests.operators.filter
         [Test]
         public function latest_value_is_sampled_on_completion() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -139,7 +139,7 @@ package raix.reactive.tests.operators.filter
         [Test]
         public function interval_is_cancelled_on_completion() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 

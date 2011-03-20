@@ -18,7 +18,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function repeated_values_are_ignored() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function value_is_skipped_if_comparer_returns_true() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -68,7 +68,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function value_is_used_if_comparer_returns_false() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -91,7 +91,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function value_is_not_used_if_comparer_returns_zero() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -114,7 +114,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function value_is_used_if_comparer_returns_non_zero() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -136,7 +136,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function value_is_duplicate_if_comparer_returns_true() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -170,7 +170,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function first_value_is_exempt_from_comparison() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -191,7 +191,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function errors_thrown_by_comprarer_are_sent_to_onerror() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.distinctUntilChanged(function(pl:uint) : Boolean
 			{
@@ -210,9 +210,9 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.map(Boolean, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map(function(pl:uint) : Boolean
 			{
 				return true;
 			});

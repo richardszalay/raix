@@ -10,13 +10,11 @@ package raix.reactive
 	 */
 	public class Plan
 	{
-		private var _type : Class;
 		private var _selector : Function;
 		private var _sources : Array;
 		
-		public function Plan(type : Class, sources : Array, selector : Function)
+		public function Plan(sources : Array, selector : Function)
 		{
-			_type = type;
 			_sources = sources;
 			_selector = selector;
 		}

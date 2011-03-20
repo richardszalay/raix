@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.creation
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.fromArray(String, array)
+			Observable.fromArray(array)
 				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);
@@ -32,7 +32,7 @@ package raix.reactive.tests.operators.creation
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var observable : IObservable = Observable.fromArray(String, array);
+			var observable : IObservable = Observable.fromArray(array);
 			array.pop();
 			
 			observable.subscribeWith(stats);

@@ -17,19 +17,8 @@ package raix.reactive
 		
 		private var _observers : Array = new Array();
 		
-		private var _type : Class;
-		
-		public function Subject(type : Class)
+		public function Subject()
 		{
-			_type= type;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public override function get valueClass() : Class
-		{
-			return _type;
 		}
 		
 		/**

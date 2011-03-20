@@ -72,7 +72,7 @@ package raix.reactive.tests.operators.creation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = Observable.range(0, 1);
 			
@@ -88,9 +88,9 @@ package raix.reactive.tests.operators.creation
 		[Test(expects="Error")]
 		public function errors_thrown_by_observable_factory_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.defer(int, function():IObservable
+			var obs : IObservable = Observable.defer(function():IObservable
 			{
 				throw new Error();
 			});

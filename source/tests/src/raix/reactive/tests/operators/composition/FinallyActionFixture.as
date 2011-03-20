@@ -20,7 +20,7 @@ package raix.reactive.tests.operators.composition
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.empty(int)
+            Observable.empty()
                 .finallyAction(function():void
                 {
                     finallyCalled = true;
@@ -35,7 +35,7 @@ package raix.reactive.tests.operators.composition
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.empty(int)
+            Observable.empty()
                 .finallyAction(function():void
                 {
                     Assert.assertTrue(stats.completedCalled);
@@ -80,7 +80,7 @@ package raix.reactive.tests.operators.composition
 
             var sourceSubscriptionDisposed : Boolean = true;
             
-            Observable.createWithCancelable(int, function(obs : IObserver):ICancelable
+            Observable.createWithCancelable(function(obs : IObserver):ICancelable
             	{
             		return Cancelable.create(function():void
             		{
@@ -104,7 +104,7 @@ package raix.reactive.tests.operators.composition
 
             try
             {
-            	Observable.createWithCancelable(int, function(obs : IObserver):ICancelable
+            	Observable.createWithCancelable(function(obs : IObserver):ICancelable
             	{
             		return Cancelable.create(function():void
             		{
@@ -127,13 +127,13 @@ package raix.reactive.tests.operators.composition
 		[Test(expects="ArgumentError")]
 		public function error_is_thrown_if_action_is_null() : void
 		{
-			Observable.empty(int).finallyAction(null);
+			Observable.empty().finallyAction(null);
 		}
 		
 		[Test(expects="Error")]
 		public function errors_thrown_by_finallyAction_are_bubbled() : void
 		{	
-			var obs : IObservable = Observable.empty(int).finallyAction(function():void
+			var obs : IObservable = Observable.empty().finallyAction(function():void
 			{
 				throw new Error();
 			});

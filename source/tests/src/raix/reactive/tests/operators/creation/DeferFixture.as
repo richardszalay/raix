@@ -13,12 +13,12 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function defer_function_is_called_for_every_observable() : void
 		{
-			var manObsA : Subject = new Subject(int);
-			var manObsB : Subject = new Subject(int);
+			var manObsA : Subject = new Subject();
+			var manObsB : Subject = new Subject();
 			
 			var observables : Array = [manObsA, manObsB];
 			
-			var defObs : IObservable = Observable.defer(int, function():IObservable
+			var defObs : IObservable = Observable.defer(function():IObservable
 			{
 				return IObservable(observables.shift());
 			});
@@ -42,9 +42,9 @@ package raix.reactive.tests.operators.creation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.defer(int, function():IObservable { return manObs; });
+			var obs : IObservable = Observable.defer(function():IObservable { return manObs; });
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
@@ -58,9 +58,9 @@ package raix.reactive.tests.operators.creation
 		[Test(expects="Error")]
 		public function errors_thrown_by_observable_factory_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.defer(int, function():IObservable
+			var obs : IObservable = Observable.defer(function():IObservable
 			{
 				throw new Error();
 			});

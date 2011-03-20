@@ -19,7 +19,7 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function timestamp_is_applied_to_values() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -51,7 +51,7 @@ package raix.reactive.tests.operators.metadata
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.throttle(5);
 			

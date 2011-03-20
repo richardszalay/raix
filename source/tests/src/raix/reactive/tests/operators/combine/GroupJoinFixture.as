@@ -28,10 +28,10 @@ package raix.reactive.tests.operators.combine
 		{
 			stats = new StatsObserver();
 
-            left = new Subject(int);
-            right = new Subject(int);
+            left = new Subject();
+            right = new Subject();
             
-            groupedValues = new Subject(Object);
+            groupedValues = new Subject();
 
             leftWindows = new Array(); // .<Subject>
             rightWindows = new Array(); // .<Subject>
@@ -49,18 +49,18 @@ package raix.reactive.tests.operators.combine
                 function(leftVal:int) : IObservable
                     {
                         leftValueAction();
-                        var leftWindow : Subject = new Subject(Unit);
+                        var leftWindow : Subject = new Subject();
                         leftWindows.push(leftWindow);
                         return leftWindow;
                     },
                 function(rightVal:int) : IObservable 
                     {
                         rightValueAction();
-                        var rightWindow : Subject = new Subject(Unit);
+                        var rightWindow : Subject = new Subject();
                         rightWindows.push(rightWindow);
                         return rightWindow;
                     },
-                Object, function(l:int, r:IObservable) : Object
+                function(l:int, r:IObservable) : Object
 				{
                     combineAction(l,r);
 
@@ -69,14 +69,14 @@ package raix.reactive.tests.operators.combine
                 .subscribeWith(groupedValues));
                 
            subscription.add(groupedValues
-                .mapMany(Object, function (group : Object) : IObservable
+                .mapMany(function (group : Object) : IObservable
                 {
-                	return IObservable(group.values).map(Object, function(r:int):Object
+                	return IObservable(group.values).map(function(r:int):Object
                 	{
                 		return {l:group.key, r:r};
                 	});
                 })
-                .map(String, function(tuple : Object) : String { return tuple.l+","+tuple.r; })
+                .map(function(tuple : Object) : String { return tuple.l+","+tuple.r; })
                 .subscribeWith(stats));
 		}
 		

@@ -20,7 +20,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function subscriptions_go_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -38,7 +38,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function cancelling_before_subscription_cancels_schedule() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -56,7 +56,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function cancelling_after_subscription_unsubscribes_from_source() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
@@ -75,7 +75,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

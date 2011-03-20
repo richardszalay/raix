@@ -33,7 +33,7 @@ package raix.reactive.tests.operators.creation
 		{
 			var sched : IScheduler = new NullScheduler();
 			
-			var obs : IObservable = Observable.empty(Object, sched);
+			var obs : IObservable = Observable.empty(sched);
 			
 			var completed : Boolean = false;
 			
@@ -69,7 +69,7 @@ package raix.reactive.tests.operators.creation
             	});
             });
 
-            var obs : IObservable = Observable.empty(Object, scheduler);
+            var obs : IObservable = Observable.empty(scheduler);
 
            var subscription : ICancelable = obs.subscribe(null);
 

@@ -22,14 +22,14 @@ package raix.reactive.tests.operators.creation
         [Before]
         public function SetUp() : void
         {
-            source = new Subject(int);
+            source = new Subject();
             windows = new Array();
             windowsStats = new Array();
             overallStats = new StatsObserver();
 
             subscription = source.window(function() : IObservable 
                 {
-                    var window : Subject = new Subject(Unit);
+                    var window : Subject = new Subject();
 
                     windows.push(window);
 

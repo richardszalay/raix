@@ -10,12 +10,12 @@ package raix.reactive.tests.operators.combine
 		[Test]
         public function subscribes_to_both_sources() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             Assert.assertEquals(1, subjectA.subscriptionCount);
@@ -26,12 +26,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function emits_combinations_of_the_latest_values() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onNext(1);
@@ -45,12 +45,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function reuses_values() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onNext(1);
@@ -68,12 +68,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function only_uses_latest_value() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onNext(1);
@@ -94,12 +94,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function last_value_is_still_used_after_complete() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onNext(1);
@@ -117,12 +117,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function complete_is_fired_when_both_sequences_complete() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onNext(1);
@@ -139,12 +139,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function error_is_fired_on_error_from_either_source() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onError(new Error());
@@ -155,12 +155,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function unsubscribes_from_both_sequences_when_complete() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onCompleted();
@@ -173,12 +173,12 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function unsubscribes_from_both_sequences_on_error() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             subjectA.onError(new Error());
@@ -195,7 +195,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            subjectA.combineLatest(String, subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
+            subjectA.combineLatest(subjectB, function (a:int, b:int) : String { return a.toString() + "," + b.toString(); })
                 .subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);

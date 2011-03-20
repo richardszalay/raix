@@ -13,7 +13,7 @@ package raix.reactive.tests.operators.share
 		[Test]
         public function sends_live_values() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
 
             var stats : StatsObserver = new StatsObserver();
@@ -36,7 +36,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function sends_live_values_after_replay() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             
             var source : IConnectableObservable = subject.replay();
 
@@ -62,7 +62,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function replays_values_when_incomplete() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
 
             var stats : StatsObserver = new StatsObserver();
@@ -85,7 +85,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function replays_values_when_complete() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
             source.connect();
 
@@ -108,7 +108,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function replays_values_when_errored() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
             source.connect();
 
@@ -131,7 +131,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function replays_empty_sequence() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
             source.connect();
 
@@ -148,7 +148,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function replays_error_sequence() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay();
             source.connect();
 
@@ -164,7 +164,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function ignores_buffer_size_for_live_subscriptions() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(2);
             source.connect();
 
@@ -187,7 +187,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function honours_buffer_size_for_replays_with_priority_to_most_recent() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(2);
             source.connect();
 
@@ -208,7 +208,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function buffer_size_includes_oncompleted() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(2);
             source.connect();
 
@@ -229,7 +229,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function buffer_size_includes_onerror() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(2);
             source.connect();
 
@@ -250,7 +250,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function ignores_window_for_live_subscriptions() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10);
             source.connect();
 
@@ -275,7 +275,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10, scheduler);
             source.connect();
 
@@ -308,7 +308,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10, scheduler);
             source.connect();
 
@@ -340,7 +340,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10, scheduler);
             source.connect();
 
@@ -372,7 +372,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10, scheduler);
             source.connect();
 
@@ -397,7 +397,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 10, scheduler);
             source.connect();
 
@@ -421,7 +421,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(2, 10, scheduler);
             source.connect();
 
@@ -453,7 +453,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(3, 10, scheduler);
             source.connect();
 
@@ -485,7 +485,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 0, scheduler);
 
             source.connect();
@@ -519,7 +519,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 0, scheduler);
             source.connect();
 
@@ -553,7 +553,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 0, scheduler);
             source.connect();
 
@@ -574,7 +574,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var source : IConnectableObservable = subject.replay(0, 0, scheduler);
             source.connect();
 

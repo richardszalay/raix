@@ -11,15 +11,15 @@ package raix.reactive.tests.operators.metadata
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.timestamp().removeTimestamp(source.valueClass);
+			return source.timestamp().removeTimestamp();
 		}
 		
 		[Test]
 		public function original_values_are_used() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
+			var obs : IObservable = manObs.timestamp().removeTimestamp();
 			
 			var expectedValues : Array = [1, 2, 3, 4];
 			
@@ -39,9 +39,9 @@ package raix.reactive.tests.operators.metadata
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.timestamp().removeTimestamp(int);
+			var obs : IObservable = manObs.timestamp().removeTimestamp();
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

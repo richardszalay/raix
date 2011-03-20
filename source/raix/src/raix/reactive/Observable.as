@@ -19,7 +19,7 @@ package raix.reactive
 	 */
 	public class Observable
 	{
-		private static var _unhandledErrorsSubject : Subject = new Subject(Error);
+		private static var _unhandledErrorsSubject : Subject = new Subject();
 		
 		public function Observable()
 		{
@@ -35,7 +35,7 @@ package raix.reactive
 		{
 			sources = sources.slice();
 			
-			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([])
 			
@@ -69,18 +69,16 @@ package raix.reactive
 		
 		/**
 		 * Defers selection of the sequence to use by using a function that returns a key into a dictionary of sequences 
-		 * @param valueClass The valueClass of the return sequence
 		 * @param keySelector The function that, at the moment of subscription, will return the key into dictionary
 		 * @param dictionary The dictionary of sequences
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function lookup(valueClass : Class, keySelector : Function, dictionary : Dictionary) : IObservable
+		public static function lookup(keySelector : Function, dictionary : Dictionary) : IObservable
 		{
-			if (valueClass == null) throw new ArgumentError("valueClass cannot be null");
 			if (dictionary == null) throw new ArgumentError("dictionary cannot be null");
 			if (keySelector == null) throw new ArgumentError("keySelector cannot be null");
 			
-			return defer(valueClass, function():IObservable
+			return defer(function():IObservable
 			{
 				var key : Object = null;
 				
@@ -90,14 +88,14 @@ package raix.reactive
 				}
 				catch(err : Error)
 				{
-					return Observable.throwError(err, valueClass);
+					return Observable.throwError(err);
 				}
 				
 				var value : Object = dictionary[key];
 				
 				if (value == undefined)
 				{
-					return Observable.empty(valueClass);
+					return Observable.empty();
 				}
 				
 				var sequence : IObservable = value as IObservable;
@@ -107,7 +105,7 @@ package raix.reactive
 					var error : Error = new IllegalOperationError("lookup dictionary value for " + (key||"null") + 
 						" was not an IObservable");
 						
-					return Observable.throwError(error, valueClass);
+					return Observable.throwError(error);
 				}
 				
 				return sequence;
@@ -115,14 +113,13 @@ package raix.reactive
 		}
 		
 		/**
-		 * Creates a custom observable sequence 
-		 * @param valueClass The valueClass of the created sequence 
+		 * Creates a custom observable sequence  
 		 * @param subscribeFunc The function that will be executed when a subscriber subscribes, the return value of which is a function to be run when the sequence is terminated
 		 * @return An observable sequence of valueClass
 		 */
-		public static function create(valueClass : Class, subscribeFunc : Function) : IObservable
+		public static function create(subscribeFunc : Function) : IObservable
 		{
-			return createWithCancelable(valueClass, function(observer : IObserver):ICancelable
+			return createWithCancelable(function(observer : IObserver):ICancelable
 			{
 				var cancelFunc : Function = subscribeFunc(observer) as Function;
 				
@@ -136,14 +133,13 @@ package raix.reactive
 		}
 		
 		/**
-		 * Creates a custom observable sequence that uses cancelable resources 
-		 * @param valueClass The valueClass of the created sequence 
+		 * Creates a custom observable sequence that uses cancelable resources  
 		 * @param subscribeFunc The function that will be executed when a subscriber subscribes, the return value of which is an ICancelable to be canceled when the sequence is terminated
 		 * @return An observable sequence of valueClass
 		 */
-		public static function createWithCancelable(valueClass : Class, subscribeFunc : Function) : IObservable
+		public static function createWithCancelable(subscribeFunc : Function) : IObservable
 		{
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var cancelable : FutureCancelable = new FutureCancelable(); 
 				
@@ -163,30 +159,25 @@ package raix.reactive
 		
 		/**
 		 * Concatonates multiple sequences by running each sequence as the previous one finishes 
-		 * @param valueClass The class common to all sequences in sources
 		 * @param sources The sequences to concatonate
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function concat(valueClass : Class, sources : Array) : IObservable
+		public static function concat(sources : Array) : IObservable
 		{
-			return concatMany(valueClass, fromArray(IObservable, sources));
+			return concatMany(fromArray(sources));
 		}
 		
 		/**
 		 * Concatonates multiple sequences by running each sequence as the previous one finishes 
-		 * @param valueClass The class common to all sequences in sources
 		 * @param sources The sequences to concatonate
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function concatMany(valueClass : Class, sources : IObservable) : IObservable
+		public static function concatMany(sources : IObservable) : IObservable
 		{
 			if (sources == null)
 				throw new ArgumentError("sources cannot be null");
 			
-			if (sources.valueClass != IObservable) 
-				throw new ArgumentError("sources must have a valueClass of IObservable");
-			
-			return new ClosureObservable(valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var complete : Boolean = false;
 				var bufferedSources : Array = new Array();
@@ -243,25 +234,19 @@ package raix.reactive
 		
 		/**
 		 * Defers selection of a sequence until the sequence is subscribed to  
-		 * @param valueClass The valueClass of the returned sequence
 		 * @param observableFactory The function that will be executed when a new subscription occurs, the returned sequence will be used for the subscriber.
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function defer(valueClass : Class, observableFactory:Function):IObservable
+		public static function defer(observableFactory:Function):IObservable
 		{
 			if (observableFactory == null)
 			{
 				throw new ArgumentError("observableFactory cannot be null");
 			}
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var observable : IObservable = observableFactory();
-				
-				if (observable.valueClass != valueClass)
-				{
-					throw new ArgumentError("Deferred observable valueClass must match valueClass given to defer"); 
-				}
 				
 				return observable.subscribeWith(observer);
 			});
@@ -269,7 +254,6 @@ package raix.reactive
 		
 		/**
 		 * Creates a custom observable sequence that is controlled by methods supplied as arguments 
-		 * @param valueClass The valueClass of values emitted by the sequence
 		 * @param initialState The initial state value to use (of class valueClass)
 		 * @param predicate The predicate to determine whether the sequence has completed
 		 * @param iterate The function executed between iterations
@@ -277,12 +261,12 @@ package raix.reactive
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function generate(valueClass : Class, initialState : Object, predicate : Function, iterate : Function, 
+		public static function generate(initialState : Object, predicate : Function, iterate : Function, 
 			resultMap : Function, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var currentState : Object = initialState;
 				var firstIteration : Boolean = true;
@@ -333,15 +317,14 @@ package raix.reactive
 		
 		/**
 		 * Defers selection of one of two sequences until the sequence is subscribed to
-		 * @param valueClass The valueClass of the returned sequence
 		 * @param predicate The function to execute when a subscription occurs to determine which sequence to subscribe to
 		 * @param ifTrue The sequence to subscribe to if predicate returns true
 		 * @param ifFalse The sequence to subscribe to if predicate returns false
 		 * @return An observable sequence of valueClass
 		 */
-		public static function ifElse(valueClass : Class, predicate : Function, ifTrue : IObservable, ifFalse : IObservable) : IObservable
+		public static function ifElse(predicate : Function, ifTrue : IObservable, ifFalse : IObservable) : IObservable
 		{
-			return defer(valueClass, function():IObservable
+			return defer(function():IObservable
 			{
 				try
 				{
@@ -351,7 +334,7 @@ package raix.reactive
 				}
 				catch(err : Error)
 				{
-					return Observable.throwError(err, valueClass);
+					return Observable.throwError(err);
 				}
 				
 				// Compiler bug workaround
@@ -381,7 +364,7 @@ package raix.reactive
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(int, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var intervalIndex : uint = 0;
 				
@@ -406,13 +389,12 @@ package raix.reactive
 		
 		/**
 		 * Matches join multiple plans (source sequence combinations) in the order they are specified 
-		 * @param valueClass The common value class shared between the output of all plans in plans 
 		 * @param plans The array of rx.Plan objects creates using 'and' and 'then'
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function join(valueClass : Class, plans : Array) : IObservable
+		public static function join(plans : Array) : IObservable
 		{
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var activePlans : Array = new Array().concat(plans);
 				var sources : Array = new Array();
@@ -577,7 +559,7 @@ package raix.reactive
 			
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(Array, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var hasValue : Array = new Array(sources.length);
 				var isComplete : Array = new Array(sources.length);
@@ -629,22 +611,19 @@ package raix.reactive
 		/**
 		 * Creates a sequence of events from an IEventDispatcher 
 		 * @param eventDispatcher The IEventDispatcher that dispatches the event
-		 * @param valueClass The event valueClass name
 		 * @param eventType The valueClass of event dispatched by eventDispatcher. Event will be used if this argument is null.
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
 		 * @return An observable sequence of eventType, or Event if eventType is null
 		 */		
-		public static function fromEvent(eventDispatcher:IEventDispatcher, eventType:String, valueClass : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
+		public static function fromEvent(eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0):IObservable
 		{
-			valueClass = valueClass || Event;
-			
 			if (eventDispatcher == null)
 			{
 				throw new ArgumentError("eventDispatcher cannot be null");
 			}
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver, scheduler : IScheduler = null) : ICancelable
+			return new ClosureObservable(function(observer : IObserver, scheduler : IScheduler = null) : ICancelable
 			{
 				scheduler = scheduler || Scheduler.synchronous;
 				
@@ -672,55 +651,51 @@ package raix.reactive
 		 * Creates Combines events from multiple event valueClasss 
 		 * @param eventDispatcher The IEventDispatcher that dispatches the event
 		 * @param eventTypes An array event type names
-		 * @param commonValueClass The valueClass of event common to all events. Event will be used if this argument is null.
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
 		 * @return An observable sequence of commonValueClass, or Event if commonValueClass is null 
 		 */
-		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, commonValueClass : Class = null, useCapture:Boolean=false, priority:int=0):IObservable
+		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0):IObservable
 		{
-			return Observable.fromArray(String, eventTypes)
-					.mapMany(commonValueClass, function(valueClass : String) : IObservable
+			return Observable.fromArray(eventTypes)
+					.mapMany(function(eventType : String) : IObservable
 					{
-						return fromEvent(eventDispatcher, valueClass, commonValueClass, useCapture, priority);
+						return fromEvent(eventDispatcher, eventType, useCapture, priority);
 					});
 		}
 		
 		/**
 		 * Creates a sequence that emits an error when an event is received from an IEventDispatcher  
-		 * @param valueClass The valueClass for the output sequence
 		 * @param eventDispatcher The IEventDispatcher that dispatches the event
-		 * @param valueClass The event valueClass name
+		 * @param eventType The event type
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
 		 * @param errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
 		 * @return An observable sequence of valueClass, or Object if valueClass is null 
 		 */
-		public static function fromErrorEvent(valueClass : Class, eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
+		public static function fromErrorEvent(eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
 		{
 			return mapErrorEvents(
-				fromEvent(eventDispatcher, eventType, valueClass, useCapture, priority),
+				fromEvent(eventDispatcher, eventType, useCapture, priority),
 				errorMap
 			);
 		}
 		
 		/**
 		 * Creates a sequence that emits an error when one of several event valueClasss is received from an IEventDispatcher
-		 * @param valueClass The valueClass for the output sequence
 		 * @param eventDispatcher The IEventDispatcher that dispatches the event
-		 * @param valueClasss The event valueClasss that signify an error
+		 * @param eventTypes The event types that signify an error
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
 		 * @param errorMap The function that maps an event to an Error. null can be used if the event will be ErrorEvent
 		 * @return An observable sequence of 
 		 */		
-		public static function fromErrorEvents(valueClass : Class, eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
+		public static function fromErrorEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0, errorMap : Function = null):IObservable
 		{
 			return mapErrorEvents(
-				fromEvents(eventDispatcher, eventTypes, Event, useCapture, priority),
+				fromEvents(eventDispatcher, eventTypes, useCapture, priority),
 				errorMap
-			)
-			.ofClass(valueClass);
+			);
 		}
 		
 		private static function mapErrorEvents(source : IObservable, errorMap : Function = null) : IObservable
@@ -729,7 +704,7 @@ package raix.reactive
 			
 			return source
 				.take(1)
-				.mapMany(Error, function(event : Event) : IObservable
+				.mapMany(function(event : Event) : IObservable
 				{
 					var error : Error = null;
 					
@@ -753,16 +728,14 @@ package raix.reactive
 		
 		/**
 		 * Creates a sequence that immediately completes  
-		 * @param valueClass The value class for the sequence
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function empty(valueClass : Class = null, scheduler : IScheduler = null) : IObservable
+		public static function empty(scheduler : IScheduler = null) : IObservable
 		{
-			valueClass = valueClass || Object;
 			scheduler = scheduler || ImmediateScheduler.instance;
 			
-			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				return scheduler.schedule(obs.onCompleted);
 			});
@@ -786,7 +759,7 @@ package raix.reactive
 			// Make internally immutable
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(sources[0].valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
@@ -854,11 +827,9 @@ package raix.reactive
 		/**
 		 * Returns an IObservable that never completes
 		 */
-		public static function never(valueClass : Class = null) : IObservable
+		public static function never() : IObservable
 		{
-			valueClass = valueClass || Object;
-			
-			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				return new ClosureCancelable(function():void{});
 			});
@@ -871,7 +842,7 @@ package raix.reactive
 		*/
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
-			return Observable.mergeMany(Error, Observable.fromArray(IObservable, 
+			return Observable.mergeMany(Observable.fromArray(
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
@@ -916,7 +887,7 @@ package raix.reactive
 			
 			var end : int = start + count;
 			
-			return generate(int, start,
+			return generate(start,
 				function(i:int):Boolean { return i<end; },
 				function(i:int):int { return i+1; },
 				function(i:int):int { return i; },
@@ -930,16 +901,14 @@ package raix.reactive
 		 * @param valueClass The Class of the returned sequence
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function throwError(error : Error, valueClass : Class = null) : IObservable
+		public static function throwError(error : Error) : IObservable
 		{
 			if (error == null)
 			{
 				throw new ArgumentError("error cannot be null");
 			}
 			
-			valueClass = valueClass || Object;
-			
-			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				obs.onError(error);
 				
@@ -949,19 +918,17 @@ package raix.reactive
 		
 		/**
 		 * Creates a sequence consisting of the values in an Array 
-		 * @param elementClass The class common to all values in values
 		 * @param values The array of values to iterate through
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of elementClass
 		 */
-		public static function fromArray(elementClass : Class, values : Array, scheduler : IScheduler = null) : IObservable
+		public static function fromArray(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
 			values = values.slice();
 			
-			return Observable.generate(elementClass,
-				0,
+			return Observable.generate(0,
 				function(i : int):Boolean { return i < values.length; },
 				function(i : int):int { return i+1; },
 				function(i : int):Object { return values[i]; },
@@ -970,28 +937,26 @@ package raix.reactive
 		
 		/**
 		 * Repeats a value a specification number of times 
-		 * @param valueClass The valueClass of the sequence and of value
 		 * @param value The value to repeat
 		 * @param repeatCount The number of times to emit the value
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of valueClass
 		 */
-		public static function repeatValue(valueClass : Class, value : Object, repeatCount : uint = 0, scheduler : IScheduler = null) : IObservable
+		public static function repeatValue(value : Object, repeatCount : uint = 0, scheduler : IScheduler = null) : IObservable
 		{
-			return returnValue(valueClass, value, scheduler)
+			return returnValue(value, scheduler)
 				.repeat(repeatCount);
 		}
 		
 		/**
 		 * Create a sequence consisting of exactly one value 
-		 * @param valueClass The valueClass of the sequence and of value
 		 * @param value The value to emit
 		 * @param scheduler The scheduler to use to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function returnValue(valueClass : Class, value : Object, scheduler : IScheduler = null) : IObservable
+		public static function returnValue(value : Object, scheduler : IScheduler = null) : IObservable
 		{
-			return fromArray(valueClass, [value], scheduler); 
+			return fromArray([value], scheduler); 
 		}
 		
 		/**
@@ -1012,7 +977,7 @@ package raix.reactive
 			// Make internally immutable
 			sources = new Array().concat(sources);
 			
-			return new ClosureObservable(sources[0].valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
@@ -1049,31 +1014,24 @@ package raix.reactive
 		
 		/**
 		 * Emits the values from multiple sources in the order that they arrive 
-		 * @param valueClass The valueClass common to all sequences emitted by source
 		 * @param source An array of IObservable sequences
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function merge(valueClass : Class, sources : Array, scheduler : IScheduler = null) : IObservable
+		public static function merge(sources : Array, scheduler : IScheduler = null) : IObservable
 		{
-			return mergeMany(valueClass, fromArray(IObservable, sources), scheduler);
+			return mergeMany(fromArray(sources), scheduler);
 		}
 		
 		/**
 		 * Emits the values from multiple sources in the order that they arrive 
-		 * @param valueClass The valueClass common to all sequences emitted by source
 		 * @param source An IObservable with valueClass IObservable, the values of which will be merged
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function mergeMany(valueClass : Class, source : IObservable, scheduler : IScheduler = null) : IObservable
+		public static function mergeMany(source : IObservable, scheduler : IScheduler = null) : IObservable
 		{
-			if (source.valueClass != IObservable)
-			{
-				throw new ArgumentError("merge can only merge an IObservable of IObservables");
-			}
-			
-			return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([]);
 				
@@ -1129,33 +1087,29 @@ package raix.reactive
 		/**
 		 * Creates a sequence based on a call to a function  
 		 * @param action The function to call
-		 * @param valueClass The valueClass of the sequence
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function start(action : Function, valueClass : Class = null, scheduler : IScheduler = null) : IObservable
+		public static function start(action : Function, scheduler : IScheduler = null) : IObservable
 		{
-			return toAsync(action, valueClass, scheduler)();
+			return toAsync(action, scheduler)();
 		}
 		
 		/**
 		 * Converts a function into an observable sequence  
 		 * @param action The function to call
-		 * @param valueClass The valueClass of the sequence
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function toAsync(action : Function, valueClass : Class = null, scheduler : IScheduler = null) : Function
+		public static function toAsync(action : Function, scheduler : IScheduler = null) : Function
 		{
 			scheduler = scheduler || Scheduler.asynchronous;
 			
-			var hasReturnValue : Boolean = (valueClass != null);
-			
-			valueClass = valueClass || Unit;
+			var hasReturnValue : Boolean = true;
 			
 			return function (... args) : IObservable
 			{
-				return new ClosureObservable(valueClass, function(obs:IObserver) : ICancelable
+				return new ClosureObservable(function(obs:IObserver) : ICancelable
 				{
 					var scheduledAction : ICancelable = scheduler.schedule(function():void
 					{
@@ -1192,10 +1146,10 @@ package raix.reactive
 		{
 			if (_urlLoaderQueue == null)
 			{
-				_urlLoaderQueue = queue(Object);
+				_urlLoaderQueue = queue();
 			}
 			
-			return new ClosureObservable(Object, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var loader : URLLoader = new URLLoader();
 				var loading : Boolean = false;
@@ -1208,7 +1162,7 @@ package raix.reactive
 						observer.onNext(loader.data);
 						observer.onCompleted();
 					}),
-					Observable.fromErrorEvents(Event, loader, 
+					Observable.fromErrorEvents(loader, 
 						[IOErrorEvent.IO_ERROR, SecurityErrorEvent.SECURITY_ERROR])
 					.subscribe(null, null, function(e : Error) : void
 					{
@@ -1247,11 +1201,11 @@ package raix.reactive
 		 * one at a time 
 		 * @return An IObserver that can be passed to Observable.enqueue
 		 */
-		public static function queue(valueClass : Class) : IObserver
+		public static function queue() : IObserver
 		{
-			var queue : Subject = new Subject(IObservable);
+			var queue : Subject = new Subject();
 			
-			Observable.concatMany(valueClass, queue)
+			Observable.concatMany(queue)
 				.subscribe(null, null, null);
 				
 			return queue;
@@ -1269,7 +1223,7 @@ package raix.reactive
 		public static function xml(request : URLRequest, loaderContext : LoaderContext = null) : IObservable
 		{
 			return urlLoader(request, URLLoaderDataFormat.TEXT, loaderContext)
-				.map(XML, function(xml : String) : XML 
+				.map(function(xml : String) : XML 
 				{
 					return XML(xml);
 				});

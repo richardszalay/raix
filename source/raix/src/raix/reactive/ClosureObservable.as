@@ -8,12 +8,10 @@ package raix.reactive
 	internal class ClosureObservable extends AbsObservable
 	{
 		private var _observeFunc : Function;
-		private var _type : Class;
 		
-		public function ClosureObservable(type : Class, observeFunc : Function)
+		public function ClosureObservable(observeFunc : Function)
 		{
 			_observeFunc = observeFunc;
-			_type = type;
 		}
 		
 		public override function subscribeWith(observer : IObserver) : ICancelable 
@@ -31,11 +29,6 @@ package raix.reactive
 			
 			
 			return subscription; 
-		}
-		
-		public override function get valueClass() : Class
-		{
-			return _type;
 		}
 	}
 }

@@ -14,7 +14,7 @@ package raix.reactive.tests.operators.repetition
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.concat([Observable.empty(source.valueClass).retry(1)]);
+			return source.concat([Observable.empty().retry(1)]);
 		}
 		
 		[Test]
@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
+			Observable.returnValue(5).concat([Observable.throwError(new Error())])
 				.retry(3)
 				.subscribeWith(stats);
 
@@ -39,7 +39,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 5).concat([Observable.throwError(new Error())])
+			Observable.returnValue(5).concat([Observable.throwError(new Error())])
 				.retry(500)
 				.subscribeWith(stats);
 		}
@@ -49,7 +49,7 @@ package raix.reactive.tests.operators.repetition
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(function(obs:IObserver):ICancelable
                 {
                     subscribeCount++;
 
@@ -69,7 +69,7 @@ package raix.reactive.tests.operators.repetition
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(function(obs:IObserver):ICancelable
             {
                 subscribeCount++;
 
@@ -91,7 +91,7 @@ package raix.reactive.tests.operators.repetition
         {
             var subscribeCount : int = 0;
 
-            var source : IObservable = Observable.createWithCancelable(int, function(obs:IObserver):ICancelable
+            var source : IObservable = Observable.createWithCancelable(function(obs:IObserver):ICancelable
             {
                 if (subscribeCount < 200)
                 {

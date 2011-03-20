@@ -13,7 +13,7 @@ package raix.reactive.tests.operators.combine
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.mergeMany(int, Observable.fromArray(IObservable, [
+			Observable.mergeMany(Observable.fromArray([
 				Observable.range(0, 3),
 				Observable.range(3, 3),
 				Observable.range(6, 3),

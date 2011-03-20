@@ -12,15 +12,15 @@ package raix.reactive.tests.operators.metadata
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.materialize().dematerialize(source.valueClass);
+			return source.materialize().dematerialize();
 		}
 		
 		[Test]
 		public function original_values_are_preserved() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.materialize().dematerialize(int);
+			var obs : IObservable = manObs.materialize().dematerialize();
 			
 			var observer : StatsObserver = new StatsObserver();
 			obs.subscribeWith(observer);
@@ -37,9 +37,9 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function completed_does_not_raise_next() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.materialize().dematerialize(int);
+			var obs : IObservable = manObs.materialize().dematerialize();
 			
 			var observer : StatsObserver = new StatsObserver();
 			obs.subscribeWith(observer);
@@ -53,9 +53,9 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function error_raises_error() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.materialize().dematerialize(int);
+			var obs : IObservable = manObs.materialize().dematerialize();
 			
 			var observer : StatsObserver = new StatsObserver();
 			obs.subscribeWith(observer);
@@ -70,9 +70,9 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function error_does_not_raise_next() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.materialize().dematerialize(int);
+			var obs : IObservable = manObs.materialize().dematerialize();
 			
 			var observer : StatsObserver = new StatsObserver();
 			obs.subscribeWith(observer);
@@ -85,9 +85,9 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function error_does_not_raise_completed() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.materialize().dematerialize(int);
+			var obs : IObservable = manObs.materialize().dematerialize();
 			
 			var observer : StatsObserver = new StatsObserver();
 			obs.subscribeWith(observer);
@@ -97,20 +97,12 @@ package raix.reactive.tests.operators.metadata
 			Assert.assertFalse(observer.completedCalled);
 		}
 		
-		[Test(expects="ArgumentError")]
-		public function error_is_thrown_if_source_is_not_notification() : void
-		{
-			var manObs : Subject = new Subject(int);
-			
-			var obs : IObservable = manObs.dematerialize(int);
-		}
-		
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.map(Boolean, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map( function(pl:uint) : Boolean
 			{
 				return true;
 			});

@@ -20,8 +20,8 @@ package raix.reactive.tests.operators.creation
         {	
             var createCalled : Boolean = false;
 
-            Observable.createWithCancelable(int, function(x:IObserver) : ICancelable{ createCalled = true; return Cancelable.empty; })
-                .subscribeWith(new Subject(int));
+            Observable.createWithCancelable(function(x:IObserver) : ICancelable{ createCalled = true; return Cancelable.empty; })
+                .subscribeWith(new Subject());
 
             Assert.assertTrue(createCalled);
         }
@@ -33,7 +33,7 @@ package raix.reactive.tests.operators.creation
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.createWithCancelable(int, function(x:IObserver):ICancelable
+            Observable.createWithCancelable(function(x:IObserver):ICancelable
             	{
             		return Cancelable.create(function():void
             		{
@@ -53,7 +53,7 @@ package raix.reactive.tests.operators.creation
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.createWithCancelable(int, function(x:IObserver) : ICancelable
+            Observable.createWithCancelable(function(x:IObserver) : ICancelable
             { 
                 x.onCompleted();
 
@@ -72,7 +72,7 @@ package raix.reactive.tests.operators.creation
             var stats : StatsObserver = new StatsObserver();
             
 
-            Observable.createWithCancelable(int, function(x:IObserver) : ICancelable
+            Observable.createWithCancelable(function(x:IObserver) : ICancelable
             { 
                 x.onError(new Error());
 
@@ -88,7 +88,7 @@ package raix.reactive.tests.operators.creation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.createWithCancelable(int, function(x:IObserver) : ICancelable { return null; })
+            Observable.createWithCancelable(function(x:IObserver) : ICancelable { return null; })
                 .subscribeWith(stats)
                 .cancel();
         }

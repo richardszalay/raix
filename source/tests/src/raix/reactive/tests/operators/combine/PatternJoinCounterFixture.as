@@ -29,21 +29,21 @@ package raix.reactive.tests.operators.combine
 
 class Counter
 {
-	private var _inc : Subject = new Subject(ISubject);
-    private var _get : Subject = new Subject(ISubject);
-    private var _counter : Subject = new Subject(int);
+	private var _inc : Subject = new Subject();
+    private var _get : Subject = new Subject();
+    private var _counter : Subject = new Subject();
     private var _dispose : ICancelable;
     
     public function incValue() : void
     {
-    	var result : AsyncSubject = new AsyncSubject(int);
+    	var result : AsyncSubject = new AsyncSubject();
     	
     	_inc.onNext(result);
     }
     
     public function getValue() : int
     {
-    	var result : AsyncSubject = new AsyncSubject(int);
+    	var result : AsyncSubject = new AsyncSubject();
     	
     	_get.onNext(result);
     	
@@ -52,14 +52,14 @@ class Counter
     
     public function Counter(init:int)
     {
-    	_dispose = Observable.join(int, [
-    		_counter.and(_get).then(int, function(n:int, result:ISubject):void 
+    	_dispose = Observable.join([
+    		_counter.and(_get).then(function(n:int, result:ISubject):void 
     		{
     			_counter.onNext(n);
     			
     			result.onNext(n);
     		}),
-    		_counter.and(_inc).then(int, function(n:int, result:ISubject):void 
+    		_counter.and(_inc).then(function(n:int, result:ISubject):void 
     		{
     			_counter.onNext(n + 1);
     			

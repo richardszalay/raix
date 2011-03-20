@@ -23,8 +23,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
-				.catchError(Observable.empty(int))
+			Observable.throwError(new Error())
+				.catchError(Observable.empty())
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
@@ -35,8 +35,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
-				.catchError(Observable.throwError(new IllegalOperationError(), int))
+			Observable.throwError(new Error())
+				.catchError(Observable.throwError(new IllegalOperationError()))
 				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
@@ -46,7 +46,7 @@ package raix.reactive.tests.operators.errors
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.contains(0, function(a:int,b:int) : Boolean
 			{

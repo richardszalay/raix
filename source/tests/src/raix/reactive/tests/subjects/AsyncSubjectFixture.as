@@ -15,7 +15,7 @@ package raix.reactive.tests.subjects
 		[Test]
         public function sends_no_values_before_completion() : void
         {
-            var subject : AsyncSubject = new AsyncSubject(int);
+            var subject : AsyncSubject = new AsyncSubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -32,7 +32,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function sends_last_value_after_completion_if_subscribed_before_values() : void
         {
-            var subject : AsyncSubject = new AsyncSubject(int);
+            var subject : AsyncSubject = new AsyncSubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -51,7 +51,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function sends_last_value_after_completion_if_subscribed_after_values() : void
         {
-            var subject : AsyncSubject = new AsyncSubject(int);
+            var subject : AsyncSubject = new AsyncSubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -70,7 +70,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function sends_no_values_after_error() : void
         {
-            var subject : AsyncSubject = new AsyncSubject(int);
+            var subject : AsyncSubject = new AsyncSubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -90,7 +90,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : AsyncSubject = new AsyncSubject(int, scheduler);
+            var subject : AsyncSubject = new AsyncSubject(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();
 
@@ -113,7 +113,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : AsyncSubject = new AsyncSubject(int, scheduler);
+            var subject : AsyncSubject = new AsyncSubject(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();
 
@@ -139,7 +139,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : AsyncSubject = new AsyncSubject(int, scheduler);
+            var subject : AsyncSubject = new AsyncSubject(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();
             var statsB : StatsObserver = new StatsObserver();

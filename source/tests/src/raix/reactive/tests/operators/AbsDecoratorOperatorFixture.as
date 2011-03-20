@@ -17,7 +17,7 @@ package raix.reactive.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_completed() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -35,7 +35,7 @@ package raix.reactive.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_error() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -53,7 +53,7 @@ package raix.reactive.tests.operators
 		[Test]
 		public function unsubscribes_from_source_on_unsubscribe() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -71,7 +71,7 @@ package raix.reactive.tests.operators
 		[Test]
 		public function is_normalized_for_oncompleted() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
@@ -92,7 +92,7 @@ package raix.reactive.tests.operators
 		[Test]
 		public function is_normalized_for_onerror() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			

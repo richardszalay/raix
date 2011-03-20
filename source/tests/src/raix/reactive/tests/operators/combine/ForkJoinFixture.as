@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.combine
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.forkJoin([Observable.empty(), Observable.returnValue(int, 1)])
+            Observable.forkJoin([Observable.empty(), Observable.returnValue(1)])
                     .subscribeWith(stats);
 
             Assert.assertEquals(0, stats.nextCount);
@@ -27,7 +27,7 @@ package raix.reactive.tests.operators.combine
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.forkJoin([Observable.returnValue(int, 1), Observable.returnValue(int, 2)])
+            Observable.forkJoin([Observable.returnValue(1), Observable.returnValue(2)])
                     .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
@@ -51,8 +51,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function values_are_emitted_after_all_sequences_have_completed() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -75,8 +75,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function sequence_completes_when_all_sequences_complete() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -95,8 +95,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function observable_order_is_preserved() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 

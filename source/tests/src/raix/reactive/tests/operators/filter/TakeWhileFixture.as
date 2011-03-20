@@ -18,7 +18,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function values_are_returned_until_predicate_returns_false() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{
@@ -43,7 +43,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function errors_thrown_by_predicate_are_sent_to_onerror() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{
@@ -68,7 +68,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.takeWhile(function(pl:uint) : Boolean
 			{

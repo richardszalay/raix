@@ -19,7 +19,7 @@ package raix.reactive.tests.operators.composition
 		[Test]
 		public function next_action_is_called_before_observer() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -37,7 +37,7 @@ package raix.reactive.tests.operators.composition
 		[Test]
 		public function complete_action_is_called_before_observer() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -55,7 +55,7 @@ package raix.reactive.tests.operators.composition
 		[Test]
 		public function error_action_is_called_before_observer() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var actionCalled : Boolean = false;
 			var observerCalled : Boolean = false; 
@@ -129,9 +129,9 @@ package raix.reactive.tests.operators.composition
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.map(Boolean, function(pl:uint) : Boolean
+			var obs : IObservable = manObs.map(function(pl:uint) : Boolean
 			{
 				return true;
 			});

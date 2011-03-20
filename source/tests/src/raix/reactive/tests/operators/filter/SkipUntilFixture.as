@@ -13,14 +13,14 @@ package raix.reactive.tests.operators.filter
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.skipUntil(Observable.returnValue(int, 1));
+			return source.skipUntil(Observable.returnValue(1));
 		}
 		
 		[Test]
 		public function returns_values_after_other_emits_value() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.skipUntil(otherObs);
 			
@@ -42,8 +42,8 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function complete_does_not_equate_to_value() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.skipUntil(otherObs);
 			
@@ -64,8 +64,8 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function unsubscribes_from_other_after_value() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.skipUntil(otherObs);
 			
@@ -81,8 +81,8 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
-			var obs : IObservable = manObs.skipUntil(Observable.returnValue(int, 1));
+			var manObs : Subject = new Subject();
+			var obs : IObservable = manObs.skipUntil(Observable.returnValue(1));
 			
 			
 			obs.subscribe(

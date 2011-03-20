@@ -17,7 +17,7 @@ package raix.reactive.tests.operators.errors
 		{
 			return source.catchErrorDefer(Error, function(e:Error):IObservable
 			{
-				return Observable.throwError(e, source.valueClass);
+				return Observable.throwError(e);
 			});
 		}
 		
@@ -26,8 +26,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
-				.catchErrorDefer(Error, function(e:Error):IObservable { return Observable.empty(int); })
+			Observable.throwError(new Error())
+				.catchErrorDefer(Error, function(e:Error):IObservable { return Observable.empty(); })
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
@@ -38,10 +38,10 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
+			Observable.throwError(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
-					return Observable.throwError(new IllegalOperationError(), int);
+					return Observable.throwError(new IllegalOperationError());
 				})
 				.subscribeWith(stats);
 			
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
+			Observable.throwError(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					throw new IllegalOperationError();
@@ -70,7 +70,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
+			Observable.throwError(new Error())
 				.catchErrorDefer(Error, function(e:Error):IObservable
 				{
 					return null;
@@ -86,7 +86,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new IllegalOperationError(), int)
+			Observable.throwError(new IllegalOperationError())
 				.catchErrorDefer(ArgumentError, function(e:Error):IObservable
 				{
 					return null;
@@ -100,7 +100,7 @@ package raix.reactive.tests.operators.errors
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.contains(0, function(a:int,b:int) : Boolean
 			{

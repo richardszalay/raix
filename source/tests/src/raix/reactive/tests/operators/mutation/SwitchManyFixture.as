@@ -14,34 +14,34 @@ package raix.reactive.tests.operators.mutation
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.switchMany(source.valueClass, function(pl:Object):IObservable
+			return source.switchMany(function(pl:Object):IObservable
 			{
-				return Observable.returnValue(source.valueClass, pl);
+				return Observable.returnValue(pl);
 			});
 		}
 		
 		private var stats : StatsObserver = new StatsObserver();
 			
-		private var source : Subject = new Subject(IObservable);
+		private var source : Subject = new Subject();
 			
-		private var childA : Subject = new Subject(int);
-		private var childB : Subject = new Subject(int);
-		private var childC : Subject = new Subject(int);
+		private var childA : Subject = new Subject();
+		private var childB : Subject = new Subject();
+		private var childC : Subject = new Subject();
 		
 		[Before]
 		public function setup() : void
 		{
-			source = new Subject(IObservable);
-			childA = new Subject(int);
-			childB = new Subject(int);
-			childC = new Subject(int);
+			source = new Subject();
+			childA = new Subject();
+			childB = new Subject();
+			childC = new Subject();
 		}
 		
 		[Test]
 		public function selector_can_map_value() : void
 		{
 			Observable.range(0, 3)
-				.switchMany(int, function(x:int):IObservable { return Observable.returnValue(int, x + 1); })
+				.switchMany(function(x:int):IObservable { return Observable.returnValue(x + 1); })
                 .subscribeWith(stats);
 
             Assert.assertEquals(3, stats.nextCount);
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function values_are_emitted_from_the_current_child() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -75,7 +75,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function values_are_ignored_from_previous_children() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -89,7 +89,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function children_are_subscribed_to_as_they_are_emitted() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -105,7 +105,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function previous_sequence_is_unsubscribed_from_when_its_following_subling_is_emitted() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -121,7 +121,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function completed_parent_sequence_completes_after_last_child() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -136,7 +136,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function parent_sequence_completes_with_source_if_last_child_is_complete() : void
 		{
-			source.switchMany(int, function(x:IObservable):IObservable { return x; })
+			source.switchMany(function(x:IObservable):IObservable { return x; })
                 .subscribeWith(stats);
                 
             source.onNext(childA);
@@ -151,9 +151,9 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function onerror_called_when_selector_throws_exception() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = Observable.range(0, 1).switchMany(int, function(i:int):IObservable
+			var obs : IObservable = Observable.range(0, 1).switchMany(function(i:int):IObservable
 			{
 				throw new IllegalOperationError();
 			});
@@ -169,7 +169,7 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

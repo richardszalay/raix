@@ -13,7 +13,7 @@ package raix.reactive.tests.operators.mutation
 	[TestCase]
 	public class GroupByFixture
 	{
-		private var source : IObservable = Observable.fromArray(GroupableObject, [
+		private var source : IObservable = Observable.fromArray([
                 new GroupableObject(0, 1),
                 new GroupableObject(1, 2),
                 new GroupableObject(2, 3),
@@ -28,7 +28,7 @@ package raix.reactive.tests.operators.mutation
         	var keys : Array = new Array();
             var dictionary : Dictionary = new Dictionary();
 
-            source.groupBy(int, mapKey, mapValue)
+            source.groupBy(mapKey, mapValue)
                 .subscribe(function(group : IGroupedObservable) : void
                     {
                     	keys.push(group.key);
@@ -52,7 +52,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupBy(int, throwError, mapValue)
+            source.groupBy(throwError, mapValue)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -63,7 +63,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupBy(int, mapKey, throwError)
+            source.groupBy(mapKey, throwError)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -74,7 +74,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupBy(int, mapKey, mapValue, throwError)
+            source.groupBy(mapKey, mapValue, throwError)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -86,8 +86,8 @@ package raix.reactive.tests.operators.mutation
             var outsideError : Boolean = false;
             var groupStats : StatsObserver = new StatsObserver();
 
-            Observable.returnValue(int, 1).concat([Observable.throwError(new Error())])
-                .groupBy(int, mapSelf)
+            Observable.returnValue(1).concat([Observable.throwError(new Error())])
+                .groupBy(mapSelf)
                 .subscribe(
                 	function(group : IGroupedObservable) : void
                     {

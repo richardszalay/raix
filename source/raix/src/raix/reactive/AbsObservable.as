@@ -27,14 +27,6 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function get valueClass() : Class
-		{
-			return Object;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
 		public function subscribeWith(observer : IObserver) : ICancelable
 		{
 			// Abstract methods not supported by AS3
@@ -63,9 +55,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function aggregate(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable
+		public function aggregate(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
 		{
-			return scan(accumulator, valueClass, initialValue).last();
+			return scan(accumulator, initialValue, useInitialValue).last();
 		}
 		
 		/**
@@ -75,7 +67,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(obs:IObserver):ICancelable
+			return new ClosureObservable(function(obs:IObserver):ICancelable
 			{
 				var total : Number = 0;
 				var count : Number = 0;
@@ -100,7 +92,7 @@ package raix.reactive
 			return aggregate(function(x:Number, y:Number):Number
 			{
 				return x+y;
-			}, valueClass, 0);
+			}, 0);
 		}
 		
 		/**
@@ -112,7 +104,7 @@ package raix.reactive
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Object) : void
@@ -155,7 +147,7 @@ package raix.reactive
 			
 			predicate = predicate || function(o:Object):Boolean { return true; }
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Object) : void
@@ -195,7 +187,7 @@ package raix.reactive
 		public function bufferWithCount(count:uint, skip:uint=0):IObservable
 		{
 			return windowWithCount(count, skip)
-				.mapMany(Array, function(v:IObservable):IObservable
+				.mapMany(function(v:IObservable):IObservable
 				{
 					return v.toArray();
 				})
@@ -220,14 +212,14 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var activeWindows : Array = new Array();
 				var valueCount : int = 0;
 				
 				var createWindow : Function = function():void
 				{
-					var window : Subject = new Subject(source.valueClass);
+					var window : Subject = new Subject();
 					activeWindows.push(window);
 					observer.onNext(window);
 				};
@@ -288,7 +280,7 @@ package raix.reactive
 		public function bufferWithTime(timeMs:uint, timeShiftMs:uint=0, scheduler:IScheduler=null):IObservable
 		{
 			return windowWithTime(timeMs, timeShiftMs, scheduler)
-				.mapMany(Array, function(v:IObservable):IObservable
+				.mapMany(function(v:IObservable):IObservable
 				{
 					return v.toArray();
 				})
@@ -315,7 +307,7 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var activeWindows : Array = new Array();
 				var elapsedTime : int = 0;
@@ -325,7 +317,7 @@ package raix.reactive
 				
 				var createWindow : Function = function():void
 				{
-					var window : Subject = new Subject(source.valueClass);
+					var window : Subject = new Subject();
 					activeWindows.push(window);
 					observer.onNext(window);
 					
@@ -390,7 +382,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				return source.subscribe(
 					function(x : Object) : void
@@ -450,7 +442,7 @@ package raix.reactive
 			
 			errorClass = errorClass || Error;
 			
-			return new ClosureObservable(source.valueClass, function(obs:IObserver) : ICancelable
+			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				var subscription : ICancelable = null;
 				
@@ -501,11 +493,11 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function combineLatest(valueClass : Class, right:IObservable, selector:Function):IObservable
+		public function combineLatest(right:IObservable, selector:Function):IObservable
 		{
 			var left : IObservable = this;
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable 
+			return new ClosureObservable(function(observer : IObserver) : ICancelable 
 			{
 				var leftSubscription : FutureCancelable = new FutureCancelable();
 				var leftValue : Object = null;
@@ -578,7 +570,7 @@ package raix.reactive
 		{
 			sources = [this].concat(sources);
 			
-			return Observable.concat(this.valueClass, sources);
+			return Observable.concat(sources);
 		}
 		
 		/**
@@ -594,7 +586,7 @@ package raix.reactive
 				? defaultComparer
 				: normalizeComparer(comparer);
 			
-			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				return source.subscribe(
 					function(pl:Object) : void
@@ -635,7 +627,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(uint, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var count : uint = 0;
 				
@@ -660,7 +652,7 @@ package raix.reactive
 			
 			scheduler = scheduler || scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var scheduledActions : CompositeCancelable = new CompositeCancelable([]);
 				var nextScheduledAction : ICancelable = null;
@@ -700,7 +692,7 @@ package raix.reactive
 			
 			var dtValue : Number = dt.time;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				scheduler = scheduler || scheduler || Scheduler.synchronous;
 				
@@ -749,17 +741,11 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function dematerialize(valueClass : Class):IObservable
+		public function dematerialize():IObservable
 		{
 			var source : IObservable = this;
 			
-			if (source.valueClass != Notification)
-			{
-				throw new ArgumentError("dematerialize can only be called on IObservable of " +
-					"Notification, which is returned by materialize");
-			}
-			
-			return new ClosureObservable(valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Notification) : void { pl.acceptWith(observer); }
@@ -774,7 +760,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -824,7 +810,7 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var subscription : ICancelable = source.subscribeWith(observer);
 				
@@ -849,7 +835,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -871,7 +857,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var dec : IObserver = new ClosureObserver(
 					function(pl : Object) : void
@@ -893,9 +879,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function forkJoin(resultClass : Class, right : IObservable, selector : Function):IObservable
+		public function forkJoin(right : IObservable, selector : Function):IObservable
 		{
-			return this.combineLatest(resultClass, right, selector).takeLast(1);
+			return this.combineLatest(right, selector).takeLast(1);
 		}
 		
 		/**
@@ -903,13 +889,13 @@ package raix.reactive
 		 */
 		public function join(right : IObservable, 
 			leftWindowSelector : Function, rightWindowSelector : Function, 
-			resultClass : Class, joinSelector : Function) : IObservable
+			joinSelector : Function) : IObservable
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(resultClass, function(observer:IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer:IObserver) : ICancelable
 			{
-				return source.groupJoin(right, leftWindowSelector, rightWindowSelector, Object, function(leftValue:Object, joinedRightValues:IObservable) : Object
+				return source.groupJoin(right, leftWindowSelector, rightWindowSelector, function(leftValue:Object, joinedRightValues:IObservable) : Object
 				{
 					// TODO: Should we bother track subscriptions here? groupJoin should avoid any memleaks
 					return joinedRightValues.subscribe(function(rightValue:Object) : void
@@ -939,11 +925,11 @@ package raix.reactive
 		 */
 		public function groupJoin(right : IObservable, 
 			leftWindowSelector : Function, rightWindowSelector : Function, 
-			resultClass : Class, joinSelector : Function) : IObservable
+			joinSelector : Function) : IObservable
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(resultClass, function(observer:IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer:IObserver) : ICancelable
 			{
 				var leftSubscription : FutureCancelable = new FutureCancelable();
 				var rightSubscription : FutureCancelable = new FutureCancelable();
@@ -977,7 +963,7 @@ package raix.reactive
 					.subscribe(function(leftValue : Object) : void
 					{
 						var leftWindow : IObservable;
-						var rightValuesSubject : Subject = new Subject(right.valueClass);
+						var rightValuesSubject : Subject = new Subject();
 						var returnValue : Object;
 						
 						try
@@ -1106,12 +1092,12 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function groupBy(elementClass : Class, keySelector : Function, elementSelector : Function = null, 
+		public function groupBy(keySelector : Function, elementSelector : Function = null, 
 			keyComparer : Function = null) : IObservable
 		{
-			var never : IObservable = Observable.never(Object);
+			var never : IObservable = Observable.never();
 			
-			return groupByUntil(elementClass, keySelector, 
+			return groupByUntil(keySelector, 
 				function(groupedObservable : IGroupedObservable) : IObservable
 				{
 					return never;
@@ -1119,7 +1105,7 @@ package raix.reactive
 				elementSelector, keyComparer);
 		}
 		
-		public function groupByUntil(elementClass : Class, keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable
+		public function groupByUntil(keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable
 		{
 			var source : IObservable = this;
 			
@@ -1133,7 +1119,7 @@ package raix.reactive
 				? function(x:Object) : Object { return x; }
 				: elementSelector;
 			
-			return Observable.createWithCancelable(IGroupedObservable, function(observer : IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
 			{
 				var activeGroupKeys : Array = new Array();
 				var activeGroupSubjects : Array = new Array();
@@ -1194,7 +1180,7 @@ package raix.reactive
 						}
 						else
 						{
-							groupSubject = new Subject(elementClass);
+							groupSubject = new Subject();
 							
 							activeGroupKeys.push(key);
 							activeGroupSubjects.push(groupSubject);
@@ -1254,7 +1240,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.defer(source.valueClass, function():IObservable
+			return Observable.defer(function():IObservable
 			{
 				return source;
 			});
@@ -1267,7 +1253,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(this.valueClass, function(observer : IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
 			{
 				return source.subscribe(null, observer.onCompleted, observer.onError); 
 			});
@@ -1286,7 +1272,7 @@ package raix.reactive
 				? defaultComparer
 				: normalizeComparer(comparer);
 			
-			return new ClosureObservable(Boolean, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -1328,7 +1314,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -1364,7 +1350,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var lastValue : Object = null;
 				var hasValue : Boolean = false;
@@ -1409,7 +1395,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(Notification, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				return source.subscribe(
 					function(pl : Object) : void { observer.onNext(new OnNext(pl)); },
@@ -1424,7 +1410,7 @@ package raix.reactive
 		 */
 		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
 		{
-			return Observable.mergeMany(this.valueClass, sources.startWith([this], scheduler), scheduler);
+			return Observable.mergeMany(sources.startWith([this], scheduler), scheduler);
 		}
 		
 		/**
@@ -1445,7 +1431,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var scheduledAction : FutureCancelable = new FutureCancelable();
 				
@@ -1469,7 +1455,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var first : FutureCancelable = new FutureCancelable();
 				var second : FutureCancelable = new FutureCancelable();
@@ -1496,7 +1482,7 @@ package raix.reactive
 		 */
 		public function prune(scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return multicast(new AsyncSubject(this.valueClass, scheduler));
+			return multicast(new AsyncSubject(scheduler));
 		}
 		
 		/**
@@ -1504,10 +1490,8 @@ package raix.reactive
 		 */
 		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
-			var valueClass : Class = this.valueClass;
-			
 			return multicastAndConnect(
-				function():ISubject { return new AsyncSubject(valueClass, scheduler); },
+				function():ISubject { return new AsyncSubject(scheduler); },
 				selector
 			);
 		}
@@ -1517,7 +1501,7 @@ package raix.reactive
 		 */
 		public function publish() : IConnectableObservable
 		{
-			return multicast(new Subject(this.valueClass));
+			return multicast(new Subject());
 		}
 		
 		/**
@@ -1525,10 +1509,8 @@ package raix.reactive
 		 */
 		public function publishAndConnect(selector : Function) : IObservable
 		{
-			var valueClass : Class = this.valueClass;
-			
 			return multicastAndConnect(
-				function():ISubject { return new Subject(valueClass); },
+				function():ISubject { return new Subject(); },
 				selector
 			);
 		}
@@ -1546,7 +1528,7 @@ package raix.reactive
 		 */
 		public function multicastAndConnect(subjectSelector : Function, selector : Function) : IObservable
 		{
-			return new ClosureObservable(this.valueClass, function(obs:IObserver):ICancelable
+			return new ClosureObservable(function(obs:IObserver):ICancelable
 			{
 				var subject : ISubject = subjectSelector();
 				var connectable : IConnectableObservable = multicast(subject);
@@ -1565,12 +1547,12 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer:IObserver):ICancelable
+			return new ClosureObservable(function(observer:IObserver):ICancelable
 			{
 				var queueCancelable : BooleanCancelable = new BooleanCancelable();
 				var sourceCancelable : FutureCancelable = new FutureCancelable();
 				
-				queue.onNext(new ClosureObservable(source.valueClass, function(queueObserver:IObserver):ICancelable
+				queue.onNext(new ClosureObservable(function(queueObserver:IObserver):ICancelable
 				{
 					if (queueCancelable.isCanceled)
 					{
@@ -1595,15 +1577,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function removeTimeInterval(valueClass : Class) : IObservable
+		public function removeTimeInterval() : IObservable
 		{
-			if (this.valueClass != TimeInterval)
-			{
-				throw new IllegalOperationError("Cannot remove timeInterval from observable that is of type " +
-					getQualifiedClassName(this.valueClass));
-			}
-			
-			return this.map(valueClass, function(ts:TimeInterval):Object
+			return this.map(function(ts:TimeInterval):Object
 			{
 				return ts.value;
 			});
@@ -1612,15 +1588,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function removeTimestamp(valueClass : Class) : IObservable
+		public function removeTimestamp() : IObservable
 		{
-			if (this.valueClass != TimeStamped)
-			{
-				throw new IllegalOperationError("Cannot remove timestamp from observable that is of type " +
-					getQualifiedClassName(this.valueClass));
-			}
-			
-			return this.map(valueClass, function(ts:TimeStamped):Object
+			return this.map(function(ts:TimeStamped):Object
 			{
 				return ts.value;
 			});
@@ -1632,7 +1602,7 @@ package raix.reactive
 		public function replay(bufferSize : uint = 0, window : uint = 0, 
 			scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return multicast(new ReplaySubject(this.valueClass, bufferSize, window, scheduler));
+			return multicast(new ReplaySubject(bufferSize, window, scheduler));
 		}
 		
 		/**
@@ -1641,10 +1611,8 @@ package raix.reactive
 		public function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, 
 			scheduler : IScheduler = null) : IObservable
 		{
-			var valueClass : Class = this.valueClass;
-			
 			return multicastAndConnect(
-				function():ISubject { return new ReplaySubject(this.valueClass, bufferSize, window, scheduler); },
+				function():ISubject { return new ReplaySubject(bufferSize, window, scheduler); },
 				selector
 			);
 		}
@@ -1656,7 +1624,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (repeatCount == 0);
 				var iterationsRemaining : int = repeatCount - 1;
@@ -1698,7 +1666,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var isInfinite : Boolean = (retryCount == 0);
 				var iterationsRemaining : int = retryCount - 1;
@@ -1742,7 +1710,7 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(this.valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([]);
 				
@@ -1784,18 +1752,11 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function scan(accumulator : Function, valueClass : Class = null, initialValue : Object = null) : IObservable
+		public function scan(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
 		{
-			var useInitialValue : Boolean = (valueClass != null);
-			
-			if (!useInitialValue)
-			{
-				valueClass = this.valueClass; 
-			}
-			
 			var source : IObservable = this;
 			
-			return Observable.defer(valueClass, function():IObservable
+			return Observable.defer(function():IObservable
 			{
 				var skipFirst : Boolean = true;
 				var accumulatedValue : Object = null;
@@ -1806,7 +1767,7 @@ package raix.reactive
 					accumulatedValue = initialValue;
 				}
 				
-				return source.map(valueClass, function(value:Object):Object
+				return source.map(function(value:Object):Object
 				{
 					if (skipFirst) 
 					{
@@ -1823,7 +1784,7 @@ package raix.reactive
 				});
 			});
 			
-			return new ClosureObservable(valueClass, function(obs:IObserver):ICancelable
+			return new ClosureObservable(function(obs:IObserver):ICancelable
 			{
 				var aggregate : Object = null;
 				
@@ -1834,25 +1795,25 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function map(valueClass : Class, selector:Function):IObservable
+		public function map(selector:Function):IObservable
 		{
-			return mapInternal(valueClass, selector);
+			return mapInternal(selector);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
 		[Deprecated(replacement="map")]
-		public function select(valueClass : Class, selector:Function):IObservable
+		public function select(selector:Function):IObservable
 		{
-			return map(valueClass, selector);
+			return map(selector);
 		}
 		
-		private function mapInternal(valueClass : Class, selector:Function):IObservable
+		private function mapInternal(selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var subscription : FutureCancelable = new FutureCancelable();
 				
@@ -1883,19 +1844,19 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function selectMany(valueClass : Class, selector:Function):IObservable
+		public function selectMany(selector:Function):IObservable
 		{
-			return mapMany(valueClass, selector);
+			return mapMany(selector);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function mapMany(valueClass : Class, selector:Function):IObservable
+		public function mapMany(selector:Function):IObservable
 		{
 			var source : IObservable = this;
 			
-			return Observable.mergeMany(valueClass, this.map(IObservable, selector)); 
+			return Observable.mergeMany(this.map(selector)); 
 		}
 		
 		/**
@@ -1905,7 +1866,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1948,7 +1909,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function(observer : IObserver):ICancelable
+			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
 				var hasValue : Boolean = false;
 				var value : Object = null;
@@ -1982,7 +1943,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var skippedSoFar : uint = 0;
 				
@@ -2014,7 +1975,7 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -2047,7 +2008,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var subscription : ICancelable;
 				
@@ -2109,7 +2070,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var skipping : Boolean = true;
 				
@@ -2147,18 +2108,18 @@ package raix.reactive
 		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
 		{
 			return Observable
-				.fromArray(this.valueClass, values, scheduler)
+				.fromArray(values, scheduler)
 				.concat([this]);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function switchMany(valueClass : Class, selector : Function) : IObservable
+		public function switchMany(selector : Function) : IObservable
 		{
-			var source : IObservable = this.map(IObservable, selector);
+			var source : IObservable = this.map(selector);
 			
-			return new ClosureObservable(valueClass, function(observer : IObserver) : ICancelable
+			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var parentCancelable : FutureCancelable = new FutureCancelable();
 				var parentCompleted : Boolean = false;
@@ -2206,7 +2167,7 @@ package raix.reactive
 			return aggregate(function(x:Number, y:Number):Number
 			{
 				return x+y;
-			}, valueClass, 0).catchError(Observable.returnValue(valueClass, 0));
+			}, 0).catchError(Observable.returnValue(0));
 		}
 		
 		/**
@@ -2218,10 +2179,10 @@ package raix.reactive
 			
 			if (count == 0)
 			{
-				return Observable.empty(this.valueClass); 
+				return Observable.empty(); 
 			}
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var countSoFar : uint = 0;
 				
@@ -2259,7 +2220,7 @@ package raix.reactive
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -2296,7 +2257,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var subscription : ICancelable;
 				
@@ -2327,7 +2288,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				return source.subscribe(
 					function (value : Object) : void
@@ -2362,9 +2323,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function then(type : Class, thenFunction : Function) : Plan
+		public function then(thenFunction : Function) : Plan
 		{
-			return new Plan(type, [this], thenFunction);
+			return new Plan([this], thenFunction);
 		}
 		
 		/**
@@ -2376,7 +2337,7 @@ package raix.reactive
 			
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var lastValueTimestamp : Number = 0;
 				
@@ -2409,7 +2370,7 @@ package raix.reactive
 			
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(TimeInterval, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var lastTimeMs : Number = -1;
 				
@@ -2441,11 +2402,11 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			other = other || Observable.throwError(new TimeoutError("Sequence timed out"), this.valueClass);
+			other = other || Observable.throwError(new TimeoutError("Sequence timed out"));
 			
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var timeout : FutureCancelable = new FutureCancelable();
 				var subscription : FutureCancelable = new FutureCancelable();
@@ -2484,7 +2445,7 @@ package raix.reactive
 		{
 			scheduler = scheduler || Scheduler.synchronous;
 			
-			return mapInternal(TimeStamped, function(value : Object) : TimeStamped
+			return mapInternal(function(value : Object) : TimeStamped
 			{
 				return new TimeStamped(value, scheduler.now.time);
 			});
@@ -2497,7 +2458,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(Array, function(observer : IObserver):ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver):ICancelable
 			{
 				var buffer : Array = new Array();
 				
@@ -2535,7 +2496,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return new ClosureObservable(source.valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -2568,9 +2529,9 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(IObservable, function(observer : IObserver):ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver):ICancelable
 			{
-				var windowOpenings : Subject = new Subject(Unit);
+				var windowOpenings : Subject = new Subject();
 				
 				var multiWindowSubscription : FutureCancelable = new FutureCancelable();
 				var activeWindowSubscription : FutureCancelable = new FutureCancelable();
@@ -2578,7 +2539,7 @@ package raix.reactive
 				multiWindowSubscription.innerCancelable = multiWindow(windowOpenings.startWith([null]), 
 					function(u:Unit):IObservable
 					{
-						var windowValues : AsyncSubject = new AsyncSubject(this.valueClass);
+						var windowValues : AsyncSubject = new AsyncSubject();
 						
 						var closing : IObservable = IObservable(windowClosingSelector());
 						
@@ -2605,8 +2566,7 @@ package raix.reactive
 			
 			return windowOpenings.groupJoin(this, 
 				windowClosingSelector,
-				function(x:Object) : IObservable { return Observable.empty(Unit); },
-				IObservable,
+				function(x:Object) : IObservable { return Observable.empty(); },
 				function(w:Object, values : IObservable) : IObservable
 				{
 					return values;
@@ -2616,13 +2576,13 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function zip(valueClass : Class, rightSource:IObservable, selector:Function):IObservable
+		public function zip(rightSource:IObservable, selector:Function):IObservable
 		{
 			// TODO: Could this be replaced with a single-plan join?
 			
 			var source : IObservable = this;
 			
-			return new ClosureObservable(valueClass, function (observer : IObserver) : ICancelable
+			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var canceled : Boolean = false;
 				

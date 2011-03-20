@@ -11,13 +11,13 @@ package raix.reactive.tests.operators.share
 		[Test]
         public function subscription_is_added_to_source_after_first_subscription() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var refCount : IObservable = subject.publish().refCount();
 
             Assert.assertEquals(0, subject.subscriptionCount);
 
-            refCount.subscribeWith(new Subject(int));
+            refCount.subscribeWith(new Subject());
             Assert.assertEquals(1, subject.subscriptionCount);
         }
 
@@ -25,26 +25,26 @@ package raix.reactive.tests.operators.share
         [Test]
         public function multiple_subscriptions_do_not_cause_subscriptions_to_the_source() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var refCount : IObservable = subject.publish().refCount();
 
-            refCount.subscribeWith(new Subject(int));
+            refCount.subscribeWith(new Subject());
             Assert.assertEquals(1, subject.subscriptionCount);
 
-            refCount.subscribeWith(new Subject(int));
+            refCount.subscribeWith(new Subject());
             Assert.assertEquals(1, subject.subscriptionCount);
         }
 
         [Test]
         public function subscriptions_is_disposed_after_last_child_susbcription_is_disposed() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var refCount : IObservable = subject.publish().refCount();
 
-            var subscriptionA : ICancelable = refCount.subscribeWith(new Subject(int));
-            var subscriptionB : ICancelable = refCount.subscribeWith(new Subject(int));
+            var subscriptionA : ICancelable = refCount.subscribeWith(new Subject());
+            var subscriptionB : ICancelable = refCount.subscribeWith(new Subject());
 
             Assert.assertEquals(1, subject.subscriptionCount);
 
@@ -58,7 +58,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function values_are_received_by_all_subscriptions() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var statsA : StatsObserver = new StatsObserver();
             var statsB : StatsObserver = new StatsObserver();
@@ -77,7 +77,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function values_are_not_received_by_unsubscribed_observers() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var statsA : StatsObserver = new StatsObserver();
             var statsB : StatsObserver = new StatsObserver();
@@ -96,7 +96,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function errors_cause_unsubscription_of_everything() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var statsA : StatsObserver = new StatsObserver();
             var statsB : StatsObserver = new StatsObserver();

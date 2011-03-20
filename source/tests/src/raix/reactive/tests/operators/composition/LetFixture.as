@@ -14,14 +14,14 @@ package raix.reactive.tests.operators.composition
 		{
 			return source.let(function(x:IObservable) : IObservable
 			{
-				return x.map(int, function(y:int):int { return y; });
+				return x.map(function(y:int):int { return y; });
 			});
 		}
 		
 		[Test]
 		public function sends_current_observable_as_function_argument() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			manObs.let(function(x:IObservable) : IObservable
 			{
@@ -34,8 +34,8 @@ package raix.reactive.tests.operators.composition
 		[Test]
 		public function returns_function_result_as_observable() : void
 		{
-			var manObsA : Subject = new Subject(int);
-			var manObsB: Subject = new Subject(int);
+			var manObsA : Subject = new Subject();
+			var manObsB: Subject = new Subject();
 			
 			var obs : IObservable = manObsA.let(function(x:IObservable) : IObservable
 			{
@@ -57,7 +57,7 @@ package raix.reactive.tests.operators.composition
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

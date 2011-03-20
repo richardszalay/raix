@@ -19,7 +19,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.returnValue(int, 1)
+			Observable.returnValue(1)
 				.delay(200, scheduler)
 				.subscribeWith(stats);
 					
@@ -36,7 +36,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ICancelable = Observable.returnValue(int, 1)
+			var subscription : ICancelable = Observable.returnValue(1)
 				.delay(100, scheduler)
 				.subscribeWith(stats);
 				
@@ -67,7 +67,7 @@ package raix.reactive.tests.operators.mutation
 		{
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
-			var obs : IObservable = Observable.returnValue(int, 1).delay(50, scheduler);
+			var obs : IObservable = Observable.returnValue(1).delay(50, scheduler);
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

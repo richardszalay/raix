@@ -11,9 +11,9 @@
 <classEntry path="raix.reactive.subjects.IConnectableObservable"/>
 <classEntry path="raix.reactive.Observer"/>
 <classEntry path="raix.reactive.IObservable"/>
+<classEntry path="raix.reactive.testing.TestScheduler"/>
 <classEntry path="raix.reactive.IGroupedObservable"/>
 <classEntry path="raix.reactive.CompositeCancelable"/>
-<classEntry path="raix.interactive.Filter"/>
 <classEntry path="raix.interactive.Grouping"/>
 <classEntry path="raix.interactive.IEnumerator"/>
 <classEntry path="raix.reactive.scheduling.TimerPool"/>
@@ -37,7 +37,8 @@
 <classEntry path="raix.reactive.Cancelable"/>
 <classEntry path="raix.reactive.scheduling.ImmediateScheduler"/>
 <classEntry path="raix.reactive.subjects.ReplaySubject"/>
-<classEntry path="raix.interactive.Projection"/>
+<classEntry path="raix.utils.Projection"/>
+<classEntry path="raix.utils.Filter"/>
 <classEntry path="raix.reactive.OnNext"/>
 <classEntry path="raix.reactive.GroupedObservable"/>
 <classEntry path="raix.reactive.TimeStamped"/>
@@ -59,6 +60,7 @@
 <classEntry path="raix.interactive.Comparer"/>
 <classEntry path="raix.reactive.NotificationKind"/>
 <classEntry path="raix.reactive.impl.ErrorUtil"/>
+<classEntry path="raix.reactive.testing.TestScheduler"/>
 </includeClasses>
 <includeResources/>
 <namespaceManifests/>

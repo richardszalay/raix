@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.never(int)
+			Observable.never()
 				.timeout(100)
 				.subscribeWith(stats);
 				
@@ -30,7 +30,7 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.never(int)
+			Observable.never()
 				.timeout(100, Observable.range(0, 2))
 				.subscribeWith(stats);
 				
@@ -45,11 +45,11 @@ package raix.reactive.tests.operators.errors
 		[Test]
 		public function other_observable_is_not_subscribed_to_until_timeout() : void
 		{
-			var otherObs : Subject = new Subject(int);
+			var otherObs : Subject = new Subject();
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ICancelable = Observable.never(int)
+			var subscription : ICancelable = Observable.never()
 				.timeout(100, Observable.range(0, 2))
 				.subscribeWith(stats);
 			

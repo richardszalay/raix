@@ -20,25 +20,15 @@ package raix.reactive.subjects
 	 */	
 	public class AsyncSubject extends AbsObservable implements ISubject
 	{
-		private var _valueClass : Class;
 		private var _scheduler : IScheduler;
 		
 		private var _complete : Boolean = false;		
 		private var _lastValue : Notification;
 		private var _observers : Array = new Array();
 		
-		public function AsyncSubject(valueClass : Class, scheduler : IScheduler = null)
+		public function AsyncSubject(scheduler : IScheduler = null)
 		{
 			_scheduler = scheduler || Scheduler.synchronous;
-			_valueClass = valueClass;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public override function get valueClass():Class
-		{
-			return _valueClass;
 		}
 		
 		/**

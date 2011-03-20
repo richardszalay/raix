@@ -11,7 +11,7 @@ package raix.reactive.tests.subjects
 		[Test]
         public function sends_live_values() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -32,7 +32,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function sends_live_values_after_replay() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -54,7 +54,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function replays_values_when_incomplete() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -74,7 +74,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function replays_values_when_complete() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -95,7 +95,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function replays_values_when_errored() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -116,7 +116,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function replays_empty_sequence() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -131,7 +131,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function replays_error_sequence() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int);
+            var subject : ReplaySubject = new ReplaySubject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -145,7 +145,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function ignores_buffer_size_for_live_subscriptions() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int, 2);
+            var subject : ReplaySubject = new ReplaySubject(2);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -166,7 +166,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function honours_buffer_size_for_replays_with_priority_to_most_recent() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int, 2);
+            var subject : ReplaySubject = new ReplaySubject(2);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -185,7 +185,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function buffer_size_includes_oncompleted() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int, 2);
+            var subject : ReplaySubject = new ReplaySubject(2);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -204,7 +204,7 @@ package raix.reactive.tests.subjects
         [Test]
         public function buffer_size_includes_onerror() : void
         {
-            var subject : ReplaySubject = new ReplaySubject(int, 2);
+            var subject : ReplaySubject = new ReplaySubject(2);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -224,7 +224,7 @@ package raix.reactive.tests.subjects
         public function ignores_window_for_live_subscriptions() : void
         {
             var subject : ReplaySubject = 
-                new ReplaySubject(int, 0, 10);
+                new ReplaySubject(0, 10);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -248,7 +248,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 0, 10, scheduler);
+                new ReplaySubject(0, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -280,7 +280,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 0, 10, scheduler);
+                new ReplaySubject(0, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -311,7 +311,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 0, 10, scheduler);
+                new ReplaySubject(0, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -342,7 +342,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 0, 10, scheduler);
+                new ReplaySubject(0, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -366,7 +366,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 0, 10, scheduler);
+                new ReplaySubject(0, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -389,7 +389,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 2, 10, scheduler);
+                new ReplaySubject(2, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -420,7 +420,7 @@ package raix.reactive.tests.subjects
             var scheduler : ManualScheduler = new ManualScheduler();
 
             var subject : ReplaySubject =
-                new ReplaySubject(int, 3, 10, scheduler);
+                new ReplaySubject(3, 10, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -450,7 +450,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : ReplaySubject = new ReplaySubject(int, 0, 0, scheduler);
+            var subject : ReplaySubject = new ReplaySubject(0, 0, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -482,7 +482,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : ReplaySubject = new ReplaySubject(int, 0, 0, scheduler);
+            var subject : ReplaySubject = new ReplaySubject(0, 0, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -514,7 +514,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : ReplaySubject = new ReplaySubject(int, 0, 0, scheduler);
+            var subject : ReplaySubject = new ReplaySubject(0, 0, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -533,7 +533,7 @@ package raix.reactive.tests.subjects
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : ReplaySubject = new ReplaySubject(int, 0, 0, scheduler);
+            var subject : ReplaySubject = new ReplaySubject(0, 0, scheduler);
 
             var stats : StatsObserver = new StatsObserver();
 

@@ -24,14 +24,6 @@ package raix.reactive.flex
 		}
 		
 		/**
-		 * @inheritDoc
-		 */
-		public override function get valueClass():Class
-		{
-			return _valueClass;
-		}
-		
-		/**
 		 * Implementation of mx.rpc.IResponder.result()
 		 */
 		public function result(data:Object):void

@@ -14,7 +14,7 @@ package raix.reactive.tests.operators.mutation
 	[TestCase]
 	public class GroupByUntilFixture
 	{
-		private var source : IObservable = Observable.fromArray(GroupableObject, [
+		private var source : IObservable = Observable.fromArray([
                 new GroupableObject(0, 1),
                 new GroupableObject(1, 2),
                 new GroupableObject(2, 3),
@@ -28,7 +28,7 @@ package raix.reactive.tests.operators.mutation
         {
             var groupKeys : Array = new Array();
 
-            source.groupByUntil(int, mapKey, function(g:IGroupedObservable):IObservable
+            source.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
 	            {
 	            	return Observable.empty();
 	            }, mapValue)
@@ -45,12 +45,12 @@ package raix.reactive.tests.operators.mutation
         {
 			var groupKeys : Array = new Array();
 			
-			var subjectSource : Subject = new Subject(GroupableObject);
+			var subjectSource : Subject = new Subject();
 			
-			subjectSource.groupByUntil(int, mapKey, function(g:IGroupedObservable):IObservable
+			subjectSource.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
 				{
-					return Observable.returnValue(int, 1)
-						.concat([Observable.never(int)]);
+					return Observable.returnValue(1)
+						.concat([Observable.never()]);
 				}, mapValue)
 				.subscribe(function (group : IGroupedObservable) : void
 				{
@@ -75,9 +75,9 @@ package raix.reactive.tests.operators.mutation
 
             var durationSubjects : Array = new Array();
 
-            source.groupByUntil(int, mapKey, function(g:IGroupedObservable):IObservable
+            source.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
                 {
-                    var duration : Subject = new Subject(int); 
+                    var duration : Subject = new Subject(); 
                     durationSubjects.push(duration); 
                     return duration;
                 }, mapValue)
@@ -97,9 +97,9 @@ package raix.reactive.tests.operators.mutation
             var durationSubjects : Array = new Array();
 
             source.concat([Observable.throwError(new Error())])
-            	.groupByUntil(int, mapKey, function(g:IGroupedObservable):IObservable
+            	.groupByUntil(mapKey, function(g:IGroupedObservable):IObservable
 	            {
-	                var duration : Subject = new Subject(int);
+	                var duration : Subject = new Subject();
 	                durationSubjects.push(duration);
 	                return duration;
 	            }, mapValue)
@@ -117,7 +117,7 @@ package raix.reactive.tests.operators.mutation
         	var keys : Array = new Array();
             var dictionary : Dictionary = new Dictionary();
 
-            source.groupByUntil(int, mapKey, neverDuration, mapValue)
+            source.groupByUntil(mapKey, neverDuration, mapValue)
                 .subscribe(function(group : IGroupedObservable) : void
                     {
                     	keys.push(group.key);
@@ -141,7 +141,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupByUntil(int, throwError, neverDuration, mapValue)
+            source.groupByUntil(throwError, neverDuration, mapValue)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -152,7 +152,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupByUntil(int, mapKey, neverDuration, throwError)
+            source.groupByUntil(mapKey, neverDuration, throwError)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -163,7 +163,7 @@ package raix.reactive.tests.operators.mutation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            source.groupByUntil(int, mapKey, neverDuration, mapValue, throwError)
+            source.groupByUntil(mapKey, neverDuration, mapValue, throwError)
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);
@@ -175,8 +175,8 @@ package raix.reactive.tests.operators.mutation
             var outsideError : Boolean = false;
             var groupStats : StatsObserver = new StatsObserver();
 
-            Observable.returnValue(int, 1).concat([Observable.throwError(new Error())])
-                .groupByUntil(int, mapSelf, neverDuration)
+            Observable.returnValue(1).concat([Observable.throwError(new Error())])
+                .groupByUntil(mapSelf, neverDuration)
                 .subscribe(
                 	function(group : IGroupedObservable) : void
                     {
@@ -214,7 +214,7 @@ package raix.reactive.tests.operators.mutation
         
         private function neverDuration(g : IGroupedObservable) : IObservable
         {
-        	return Observable.never(int);
+        	return Observable.never();
         }
 
         

@@ -1228,7 +1228,7 @@ package raix.interactive
 			
 			var source : IEnumerable = this;
 			
-			return Observable.createWithCancelable(Object, function(observer : IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
 			{
 				var enumerator : IEnumerator = source.getEnumerator(); 
 				

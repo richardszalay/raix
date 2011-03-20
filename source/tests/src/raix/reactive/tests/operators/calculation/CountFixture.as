@@ -34,7 +34,7 @@ package raix.reactive.tests.operators.calculation
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.never(int).count().subscribeWith(stats);
+			Observable.never().count().subscribeWith(stats);
 			
 			Assert.assertEquals(0, stats.nextCount);
 			Assert.assertFalse(stats.completedCalled);
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.calculation
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.empty(int).count().subscribeWith(stats);
+			Observable.empty().count().subscribeWith(stats);
 			
 			Assert.assertEquals(1, stats.nextCount);
 			Assert.assertEquals(0, stats.nextValues[0]);
@@ -57,7 +57,7 @@ package raix.reactive.tests.operators.calculation
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int).count().subscribeWith(stats);
+			Observable.throwError(new Error()).count().subscribeWith(stats);
 			
 			Assert.assertFalse(stats.nextCalled);
 			Assert.assertTrue(stats.errorCalled);
@@ -66,7 +66,7 @@ package raix.reactive.tests.operators.calculation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.count();
 			
@@ -83,7 +83,7 @@ package raix.reactive.tests.operators.calculation
 		[Test]
 		public override function is_normalized_for_oncompleted() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			

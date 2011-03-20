@@ -17,7 +17,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var untilDate : Date = new Date(new Date().time + 200);
 			
-			Observable.returnValue(int, 1)
+			Observable.returnValue(1)
 				.delayUntil(untilDate)
 				.subscribe(stats);
 	
@@ -36,7 +36,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var untilDate : Date = new Date(new Date().time - 200);
 			
-			Observable.returnValue(int, 1)
+			Observable.returnValue(1)
 				.delayUntil(untilDate)
 				.subscribe(stats);
 					
@@ -50,7 +50,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var untilDate : Date = new Date(new Date().time + 200);
 			
-			Observable.returnValue(int, 1)
+			Observable.returnValue(1)
 				.delayUntil(untilDate)
 				.subscribe(stats)
 				.cancel();				
@@ -86,7 +86,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var untilDate : Date = new Date(new Date().time + 200);
 			
-			var obs : IObservable = Observable.returnValue(int, 1).delayUntil(untilDate, scheduler);
+			var obs : IObservable = Observable.returnValue(1).delayUntil(untilDate, scheduler);
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

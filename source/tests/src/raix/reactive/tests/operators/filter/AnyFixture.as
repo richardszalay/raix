@@ -20,7 +20,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var source : Subject = new Subject(int);
+			var source : Subject = new Subject();
 			
 			source.any(function(i:int):Boolean { return i > 2; })
 				.subscribeWith(stats);
@@ -41,7 +41,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var source : Subject = new Subject(int);
+			var source : Subject = new Subject();
 			
 			source.any(function(i:int):Boolean { return i > 2; })
 				.subscribeWith(stats);
@@ -56,7 +56,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var source : Subject = new Subject(int);
+			var source : Subject = new Subject();
 			
 			source.any(function(i:int):Boolean { return i > 2; })
 				.subscribeWith(stats);
@@ -70,7 +70,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var source : Subject = new Subject(int);
+			var source : Subject = new Subject();
 			
 			source.any(function(i:int):Boolean { throw new Error(); })
 				.subscribeWith(stats);
@@ -84,7 +84,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var source : Subject = new Subject(int);
+			var source : Subject = new Subject();
 			
 			source.any(function(i:int):Boolean { return i > 2; })
 				.subscribeWith(stats);
@@ -96,7 +96,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			
@@ -115,7 +115,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.empty(int).any(function(i:int):Boolean { return i > 2; })
+			Observable.empty().any(function(i:int):Boolean { return i > 2; })
 				.subscribeWith(stats);
 				
 			Assert.assertTrue(stats.completedCalled);
@@ -126,7 +126,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public override function is_normalized_for_oncompleted() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			

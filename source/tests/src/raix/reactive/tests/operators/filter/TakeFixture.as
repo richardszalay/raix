@@ -20,7 +20,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function complete_is_called_after_specified_values_taken() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.take(3);
 			
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.take(3);
 			

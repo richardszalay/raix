@@ -26,7 +26,7 @@ package raix.reactive.flex
 		 */
 		public static function fromList(elementClass : Class, list : IList, scheduler : IScheduler	= null) : IObservable
 		{
-			return Observable.generate(elementClass,
+			return Observable.generate(
 				0,
 				function(i : int):Boolean { return i < list.length; },
 				function(i : int):int { return i+1; },
@@ -43,9 +43,9 @@ package raix.reactive.flex
 		 */
 		public static function fromCollection(elementClass : Class, collection : ICollectionView, scheduler : IScheduler	= null) : IObservable
 		{
-			return Observable.defer(elementClass, function():IObservable
+			return Observable.defer(function():IObservable
 			{
-				return fromViewCursor(elementClass, collection.createCursor());
+				return fromViewCursor(collection.createCursor());
 			});
 		}
 		
@@ -56,9 +56,9 @@ package raix.reactive.flex
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of elementClass
 		 */
-		public static function fromViewCursor(elementClass : Class, cursor : IViewCursor, scheduler : IScheduler	= null) : IObservable
+		public static function fromViewCursor(cursor : IViewCursor, scheduler : IScheduler	= null) : IObservable
 		{
-			return Observable.generate(elementClass,
+			return Observable.generate(
 				true,
 				function(state : Boolean):Boolean { return state; },
 				function(state : Boolean):Boolean { return cursor.moveNext(); },
@@ -76,7 +76,7 @@ package raix.reactive.flex
 		public static function fromAsyncPattern(valueClass : Class, asyncMethod : Function, 
 			args : Array) : IObservable 
 		{
-			return Observable.defer(valueClass, function():IObservable
+			return Observable.defer(function():IObservable
 			{
 				// TODO: Catch/rethrow valueClass coercion error here?
 				var token : AsyncToken = asyncMethod.apply(NaN, args);

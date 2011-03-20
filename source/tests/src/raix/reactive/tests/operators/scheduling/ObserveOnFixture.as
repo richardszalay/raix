@@ -20,7 +20,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function subscriptions_are_not_affected_by_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -33,7 +33,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function values_are_sent_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -54,7 +54,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function completed_is_sent_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -75,7 +75,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function error_is_sent_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -96,7 +96,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function cancelling_after_subscription_unsubscribes_from_source() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -117,7 +117,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test]
 		public function cancelling_stops_values_in_flight() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
@@ -139,7 +139,7 @@ package raix.reactive.tests.operators.scheduling
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

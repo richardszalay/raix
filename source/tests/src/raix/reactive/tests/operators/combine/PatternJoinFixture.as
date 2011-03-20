@@ -29,8 +29,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function matches_values_in_order_when_sent_out_of_order() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -56,8 +56,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function unpartners_values_are_ignored() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -105,7 +105,7 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function raises_error_when_subscription_is_repeated_within_pattern() : void
         {
-            var subjectA : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -121,8 +121,8 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function subscribes_once_when_subscription_is_repeated_within_join() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -139,9 +139,9 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function merges_multiple_joins_that_share_sources() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
-            var subjectC : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
+            var subjectC : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -165,10 +165,10 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function errors_cause_all_subscriptions_to_be_removed() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
-            var subjectC : Subject = new Subject(int);
-            var subjectD : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
+            var subjectC : Subject = new Subject();
+            var subjectD : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -194,10 +194,10 @@ package raix.reactive.tests.operators.combine
         [Test]
         public function complete_does_not_unsubscribe_from_other_subjects() : void
         {
-            var subjectA : Subject = new Subject(int);
-            var subjectB : Subject = new Subject(int);
-            var subjectC : Subject = new Subject(int);
-            var subjectD : Subject = new Subject(int);
+            var subjectA : Subject = new Subject();
+            var subjectB : Subject = new Subject();
+            var subjectC : Subject = new Subject();
+            var subjectD : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 

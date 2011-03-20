@@ -24,8 +24,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
-				.onErrorResumeNext(Observable.empty(int))
+			Observable.throwError(new Error())
+				.onErrorResumeNext(Observable.empty())
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(stats.errorCalled);
@@ -36,8 +36,8 @@ package raix.reactive.tests.operators.errors
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
-				.onErrorResumeNext(Observable.throwError(new IllegalOperationError(), int))
+			Observable.throwError(new Error())
+				.onErrorResumeNext(Observable.throwError(new IllegalOperationError()))
 				.subscribeWith(stats);
 			
 			Assert.assertTrue(stats.errorCalled);
@@ -47,14 +47,14 @@ package raix.reactive.tests.operators.errors
 		[Test]
 		public function subscribes_to_first_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
 			
 			manObs
-				.onErrorResumeNext(Observable.throwError(new IllegalOperationError(), int), scheduler)
+				.onErrorResumeNext(Observable.throwError(new IllegalOperationError()), scheduler)
 				.subscribeWith(stats);
 			
 			Assert.assertFalse(manObs.hasSubscriptions);
@@ -67,13 +67,13 @@ package raix.reactive.tests.operators.errors
 		[Test]
 		public function subscribes_to_next_through_scheduler() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.throwError(new Error(), int)
+			Observable.throwError(new Error())
 				.onErrorResumeNext(manObs, scheduler)
 				.subscribeWith(stats);
 			
@@ -89,9 +89,9 @@ package raix.reactive.tests.operators.errors
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.onErrorResumeNext(Observable.empty(int));
+			var obs : IObservable = manObs.onErrorResumeNext(Observable.empty());
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },
@@ -105,11 +105,11 @@ package raix.reactive.tests.operators.errors
 		[Test]
 		public override function is_normalized_for_oncompleted() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var index : int = 0;
 			
-			var obs : IObservable = manObs.onErrorResumeNext(Observable.empty(int));
+			var obs : IObservable = manObs.onErrorResumeNext(Observable.empty());
 			
 			var nextCalled : Boolean = false;
 			var errorCalled : Boolean = false;

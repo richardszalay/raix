@@ -23,7 +23,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function allows_compatible_types() : void
 		{
-			var manObs : Subject = new Subject(EventDispatcher);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.ofClass(DisplayObject);
 			
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function calls_onerror_for_incompatible_types() : void
 		{
-			var manObs : Subject = new Subject(Event);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.cast(MouseEvent);
 			
@@ -63,7 +63,7 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(obs);
 			

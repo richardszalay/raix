@@ -15,10 +15,10 @@ package raix.reactive.tests.operators.creation
 		[Test]
         public function outputs_values_from_all() : void
         {
-            var queue : IObserver = Observable.queue(int);
+            var queue : IObserver = Observable.queue();
 			
-			var queuedSourceA : IObservable = Observable.returnValue(int, 1).queued(queue);
-			var queuedSourceB : IObservable = Observable.returnValue(int, 2).queued(queue);
+			var queuedSourceA : IObservable = Observable.returnValue(1).queued(queue);
+			var queuedSourceB : IObservable = Observable.returnValue(2).queued(queue);
 			
 			var stats : StatsObserver = new StatsObserver();
 			
@@ -33,10 +33,10 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function continues_to_next_source_on_completed() : void
 		{
-			var queue : IObserver = Observable.queue(int);
+			var queue : IObserver = Observable.queue();
 			
-			var sourceA : Subject = new Subject(int);
-			var sourceB : Subject = new Subject(int);
+			var sourceA : Subject = new Subject();
+			var sourceB : Subject = new Subject();
 			
 			var queuedSourceA : IObservable = sourceA.queued(queue);
 			var queuedSourceB : IObservable = sourceB.queued(queue);
@@ -58,10 +58,10 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function continues_to_next_source_on_error() : void
 		{
-			var queue : IObserver = Observable.queue(int);
+			var queue : IObserver = Observable.queue();
 			
-			var sourceA : Subject = new Subject(int);
-			var sourceB : Subject = new Subject(int);
+			var sourceA : Subject = new Subject();
+			var sourceB : Subject = new Subject();
 			
 			var queuedSourceA : IObservable = sourceA.queued(queue);
 			var queuedSourceB : IObservable = sourceB.queued(queue);
@@ -82,10 +82,10 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function continues_to_next_source_on_cancel() : void
 		{
-			var queue : IObserver = Observable.queue(int);
+			var queue : IObserver = Observable.queue();
 			
-			var sourceA : Subject = new Subject(int);
-			var sourceB : Subject = new Subject(int);
+			var sourceA : Subject = new Subject();
+			var sourceB : Subject = new Subject();
 			
 			var queuedSourceA : IObservable = sourceA.queued(queue);
 			var queuedSourceB : IObservable = sourceB.queued(queue);
@@ -106,10 +106,10 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function continues_to_next_source_after_pause() : void
 		{
-			var queue : IObserver = Observable.queue(int);
+			var queue : IObserver = Observable.queue();
 			
-			var sourceA : Subject = new Subject(int);
-			var sourceB : Subject = new Subject(int);
+			var sourceA : Subject = new Subject();
+			var sourceB : Subject = new Subject();
 			
 			var stats : StatsObserver = new StatsObserver();
 			

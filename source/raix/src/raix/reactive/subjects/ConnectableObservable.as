@@ -17,7 +17,7 @@ package raix.reactive.subjects
 			// TODO: Assert source.valueClass = subject.valueClass
 			
 			_source = source.asObservable();
-			_subject = subject || new Subject(source.valueClass);
+			_subject = subject || new Subject();
 		}
 		
 		/**
@@ -48,7 +48,7 @@ package raix.reactive.subjects
 			var connection : ICancelable = null;
 			var subscriptionCount : uint = 0;
 			
-			return Observable.createWithCancelable(this.valueClass, function(observer : IObserver) : ICancelable
+			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
 			{
 				subscriptionCount++;
 				

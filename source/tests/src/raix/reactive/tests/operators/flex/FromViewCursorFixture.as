@@ -19,7 +19,7 @@ package raix.reactive.tests.operators.flex
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			FlexObservable.fromViewCursor(String, collection.createCursor())
+			FlexObservable.fromViewCursor(collection.createCursor())
 				.subscribeWith(stats);
 				
 			Assert.assertEquals(3, stats.nextCount);

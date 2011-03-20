@@ -12,9 +12,9 @@ package raix.reactive.tests.operators.creation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.ifElse(int, function():Boolean { return true; },
-                Observable.returnValue(int, 1),
-                Observable.returnValue(int, 2)
+            Observable.ifElse(function():Boolean { return true; },
+                Observable.returnValue(1),
+                Observable.returnValue(2)
                 )
                 .subscribeWith(stats);
 
@@ -28,9 +28,9 @@ package raix.reactive.tests.operators.creation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.ifElse(int, function():Boolean { return false; },
-                Observable.returnValue(int, 1),
-                Observable.returnValue(int, 2)
+            Observable.ifElse(function():Boolean { return false; },
+                Observable.returnValue(1),
+                Observable.returnValue(2)
                 )
                 .subscribeWith(stats);
 
@@ -46,9 +46,9 @@ package raix.reactive.tests.operators.creation
 
             var exception : Error = new ArgumentError();
 
-            Observable.ifElse(int, function():Boolean { throw exception; },
-                Observable.returnValue(int, 1),
-                Observable.returnValue(int, 2)
+            Observable.ifElse(function():Boolean { throw exception; },
+                Observable.returnValue(1),
+                Observable.returnValue(2)
                 )
                 .subscribeWith(stats);
 

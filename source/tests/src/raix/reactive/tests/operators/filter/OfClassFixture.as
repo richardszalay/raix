@@ -21,7 +21,7 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function excludes_incompatible_types() : void
 		{
-			var manObs : Subject = new Subject(EventDispatcher);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.ofClass(DisplayObject);
 			
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(obs);
 			

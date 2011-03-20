@@ -17,7 +17,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function values_are_buffered_in_specified_groups() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(3);
 			
@@ -40,7 +40,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function skip_value_is_honoured_when_less_than_count() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(2, 1);
 			
@@ -63,7 +63,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function skip_value_is_honoured_when_equal_to_count() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(2, 2);
 			
@@ -84,7 +84,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function skip_value_is_honoured_when_greater_than_count() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(2, 3);
 			
@@ -105,7 +105,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function remaining_items_are_released_on_completed() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(2);
 			
@@ -125,7 +125,7 @@ package raix.reactive.tests.operators.mutation
 		[Test]
 		public function remaining_items_are_not_released_on_error() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(2);
 			
@@ -175,7 +175,7 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="ArgumentError")]
 		public function argument_error_is_thrown_if_bufferSize_is_zero() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(0);
 		}
@@ -183,7 +183,7 @@ package raix.reactive.tests.operators.mutation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.bufferWithCount(1);
 			

@@ -26,7 +26,7 @@ package raix.reactive.tests.operators.filter
 
             scheduler.now = new Date();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -47,7 +47,7 @@ package raix.reactive.tests.operators.filter
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
@@ -68,7 +68,7 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.throttle(5);
 			

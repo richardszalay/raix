@@ -21,7 +21,7 @@ package raix.reactive.tests.operators.creation
 		public function setup() : void
 		{
 			ev = new EventDispatcher();
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 		}
 		
 		[Test]
@@ -66,7 +66,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function events_are_pushed_to_onError() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -78,7 +78,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function ioerrorevent_is_mapped_to_ioerror() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -91,7 +91,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function securityerrorevent_is_mapped_to_securityerror() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -104,7 +104,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function errorevent_is_mapped_to_error() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -116,7 +116,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function other_event_types_are_mapped_to_error() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT);
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -128,7 +128,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function custom_formatter_is_used_to_map_event() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT, false, 0, function(e:Event):Error
+			obs = Observable.fromErrorEvent(ev, TEST_EVENT, false, 0, function(e:Event):Error
 			{
 				return new Error("test");
 			});

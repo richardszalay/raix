@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.creation
 		public function setup() : void
 		{
 			ev = new EventDispatcher();
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B]);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 		}
 		
 		[Test]
@@ -73,7 +73,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function events_are_pushed_to_onError() : void
 		{
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B]);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -85,7 +85,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function ioerrorevent_is_mapped_to_ioerror() : void
 		{
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B]);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -98,7 +98,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function securityerrorevent_is_mapped_to_securityerror() : void
 		{
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B]);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -111,7 +111,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function errorevent_is_mapped_to_error() : void
 		{
-			obs = Observable.fromErrorEvent(int, ev, TEST_EVENT_A);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A]);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -123,7 +123,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function other_event_types_are_mapped_to_error() : void
 		{
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B]);
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B]);
 			
 			var stats : StatsObserver = new StatsObserver();
 			obs.subscribeWith(stats);
@@ -135,7 +135,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function custom_formatter_is_used_to_map_event() : void
 		{
-			obs = Observable.fromErrorEvents(int, ev, [TEST_EVENT_A, TEST_EVENT_B], false, 0, function(e:Event):Error
+			obs = Observable.fromErrorEvents(ev, [TEST_EVENT_A, TEST_EVENT_B], false, 0, function(e:Event):Error
 			{
 				return new Error("test");
 			});

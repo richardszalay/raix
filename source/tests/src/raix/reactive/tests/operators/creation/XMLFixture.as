@@ -17,15 +17,6 @@ package raix.reactive.tests.operators.creation
 		{
 		}
 		
-		[Test]
-		public function return_sequence_has_valueClass_XML() : void
-		{
-			var observable : IObservable = 
-				Observable.xml(new URLRequest("rx/tests/operators/creation/test.xml"));
-				
-			Assert.assertEquals(XML, observable.valueClass);
-		}
-		
 		[Test(async)]
 		public function loads_xml_data() : void
 		{

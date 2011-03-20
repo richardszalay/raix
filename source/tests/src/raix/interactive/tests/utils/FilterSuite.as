@@ -2,7 +2,7 @@ package raix.interactive.tests.utils
 {
 	import org.flexunit.Assert;
 	
-	import raix.interactive.*;
+	import raix.utils.*;
 	
 	[TestCase]
 	public class FilterSuite

@@ -27,8 +27,8 @@ package raix.reactive.tests.operators.combine
 		{
 			stats = new StatsObserver();
 
-            left = new Subject(int);
-            right = new Subject(int);
+            left = new Subject();
+            right = new Subject();
 
             leftWindows = new Array(); // .<Subject>
             rightWindows = new Array(); // .<Subject>
@@ -44,18 +44,18 @@ package raix.reactive.tests.operators.combine
                 function(leftVal:int) : IObservable
                     {
                         leftValueAction();
-                        var leftWindow : Subject = new Subject(Unit);
+                        var leftWindow : Subject = new Subject();
                         leftWindows.push(leftWindow);
                         return leftWindow;
                     },
                 function(rightVal:int) : IObservable 
                     {
                         rightValueAction();
-                        var rightWindow : Subject = new Subject(Unit);
+                        var rightWindow : Subject = new Subject();
                         rightWindows.push(rightWindow);
                         return rightWindow;
                     },
-                String, function(l:int, r:int) : String
+                function(l:int, r:int) : String
 				{
 					return combineAction(l,r)
 				})

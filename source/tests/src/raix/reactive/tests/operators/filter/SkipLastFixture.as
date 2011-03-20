@@ -44,7 +44,7 @@ package raix.reactive.tests.operators.filter
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.empty(int).skipLast(3).subscribeWith(stats);
+			Observable.empty().skipLast(3).subscribeWith(stats);
 			
 			Assert.assertEquals(0, stats.nextCount);
 			Assert.assertTrue(stats.completedCalled);

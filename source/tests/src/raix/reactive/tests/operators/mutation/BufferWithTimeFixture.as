@@ -88,7 +88,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var startTime : Date = new Date();
 			
-			Observable.never(int)
+			Observable.never()
 				.bufferWithTime(30, 20, bufferScheduler)
 				.take(1)
 				.subscribeWith(stats);
@@ -110,7 +110,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var startTime : Date = new Date();
 			
-			Observable.empty(int)
+			Observable.empty()
 				.bufferWithTime(30, 20, bufferScheduler)
 				.take(1)
 				.subscribeWith(stats);
@@ -182,7 +182,7 @@ package raix.reactive.tests.operators.mutation
 			
 			var startTime : Date = new Date();
 			
-			Observable.empty(int).concat([Observable.throwError(new Error())])
+			Observable.empty().concat([Observable.throwError(new Error())])
 				.bufferWithTime(30, 20, bufferScheduler)
 				.subscribeWith(stats);
 			

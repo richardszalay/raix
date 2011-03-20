@@ -28,7 +28,7 @@ package raix.reactive.tests.operators.calculation
             var start : Date = new Date();
 
             Observable.range(0, 5)
-                .aggregate(function(x:Date,y:int):Date { return new Date(x.time + y); }, Date, start)
+                .aggregate(function(x:Date,y:int):Date { return new Date(x.time + y); }, start, true)
                 .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.calculation
             var start : Date = new Date();
 
             Observable.range(0, 5)
-                .aggregate(function(x:Date,y:int):Date { accumulatorValues.push(y); return x; }, Date, start)
+                .aggregate(function(x:Date,y:int):Date { accumulatorValues.push(y); return x; }, start, true)
                 .subscribeWith(stats);
 
             Assert.assertEquals(0, accumulatorValues[0]);
@@ -70,7 +70,7 @@ package raix.reactive.tests.operators.calculation
         {
             var stats : StatsObserver = new StatsObserver();
             
-            Observable.empty(int)
+            Observable.empty()
                 .aggregate(function(x:int,y:int):int { return x + y; })
                 .subscribeWith(stats);
 

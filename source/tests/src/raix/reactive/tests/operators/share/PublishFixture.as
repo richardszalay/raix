@@ -13,8 +13,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -34,8 +34,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -53,8 +53,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -72,8 +72,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -90,8 +90,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -110,8 +110,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -132,8 +132,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 
@@ -156,8 +156,8 @@ package raix.reactive.tests.operators.share
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : IConnectableObservable = source.publish();
 

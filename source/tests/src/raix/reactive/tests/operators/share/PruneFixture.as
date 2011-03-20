@@ -11,7 +11,7 @@ package raix.reactive.tests.operators.share
 		[Test]
         public function sends_no_values_before_completion() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune();
 
             var stats : StatsObserver = new StatsObserver();
@@ -30,7 +30,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function sends_last_value_after_completion_if_subscribed_before_values() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune();
 
             var stats : StatsObserver = new StatsObserver();
@@ -51,7 +51,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function sends_last_value_after_completion_if_subscribed_after_values() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune();
 
             var stats : StatsObserver = new StatsObserver();
@@ -73,7 +73,7 @@ package raix.reactive.tests.operators.share
         [Test]
         public function sends_no_values_after_error() : void
         {
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune();
 
             var stats : StatsObserver = new StatsObserver();
@@ -97,7 +97,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();
@@ -123,7 +123,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();
@@ -152,7 +152,7 @@ package raix.reactive.tests.operators.share
         {
             var scheduler : ManualScheduler = new ManualScheduler();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
             var connectable : IConnectableObservable = subject.prune(scheduler);
 
             var statsA : StatsObserver = new StatsObserver();

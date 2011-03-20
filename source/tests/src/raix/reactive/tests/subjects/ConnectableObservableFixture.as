@@ -14,7 +14,7 @@ package raix.reactive.tests.subjects
             var source : IObservable = Observable.empty();
             var stats : StatsObserver = new StatsObserver();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -35,7 +35,7 @@ package raix.reactive.tests.subjects
             var source : IObservable = Observable.empty();
             var stats : StatsObserver = new StatsObserver();
 
-            var subject : Subject = new Subject(int);
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -55,8 +55,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -76,8 +76,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -95,8 +95,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -114,8 +114,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -132,8 +132,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -152,8 +152,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -174,8 +174,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 
@@ -198,8 +198,8 @@ package raix.reactive.tests.subjects
         {
             var stats : StatsObserver = new StatsObserver();
 
-            var source : Subject = new Subject(int);
-            var subject : Subject = new Subject(int);
+            var source : Subject = new Subject();
+            var subject : Subject = new Subject();
 
             var connectable : ConnectableObservable = new ConnectableObservable(source, subject);
 

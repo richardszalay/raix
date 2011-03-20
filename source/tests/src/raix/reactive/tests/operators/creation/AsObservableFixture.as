@@ -19,7 +19,7 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function does_not_return_original_instance() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.asObservable();
 			
@@ -29,7 +29,7 @@ package raix.reactive.tests.operators.creation
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = manObs.asObservable();
 			

@@ -16,8 +16,8 @@ package raix.reactive.tests.operators.creation
         {
             var createCalled : Boolean = false;
 
-            Observable.create(int, function(x:IObserver):Function { createCalled = true; return function():void { }; })
-                .subscribeWith(new Subject(int));
+            Observable.create(function(x:IObserver):Function { createCalled = true; return function():void { }; })
+                .subscribeWith(new Subject());
 
             Assert.assertTrue(createCalled);
         }
@@ -29,7 +29,7 @@ package raix.reactive.tests.operators.creation
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.create(int, function(x:IObserver):Function { return function():void { disposeCalled = true; } })
+            Observable.create(function(x:IObserver):Function { return function():void { disposeCalled = true; } })
                 .subscribeWith(stats)
                 .cancel();
 
@@ -43,7 +43,7 @@ package raix.reactive.tests.operators.creation
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.create(int, function(x:IObserver):Function { x.onCompleted(); return function():void { disposeCalled = true; }; })
+            Observable.create(function(x:IObserver):Function { x.onCompleted(); return function():void { disposeCalled = true; }; })
                 .subscribeWith(stats);
 
             Assert.assertTrue(disposeCalled);
@@ -56,7 +56,7 @@ package raix.reactive.tests.operators.creation
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.create(int, function(x:IObserver):Function { x.onError(new Error()); return function():void { disposeCalled = true; }; })
+            Observable.create(function(x:IObserver):Function { x.onError(new Error()); return function():void { disposeCalled = true; }; })
                 .subscribeWith(stats);
 
             Assert.assertTrue(disposeCalled);
@@ -67,7 +67,7 @@ package raix.reactive.tests.operators.creation
         {
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.create(int, function(x:IObserver):Function { return null; })
+            Observable.create(function(x:IObserver):Function { return null; })
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);

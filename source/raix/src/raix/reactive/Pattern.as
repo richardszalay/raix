@@ -10,18 +10,10 @@ package raix.reactive
 	public class Pattern
 	{
 		private var _sources : Array;
-		private var _types : Array;
-		
+	
 		public function Pattern(sources : Array)
 		{
 			_sources = sources;
-			
-			_types = new Array(_sources.length);
-			
-			for (var i:int=0; i<_sources.length; i++)
-			{
-				_types[i] = _sources[i].valueClass;
-			}
 		}
 		
 		/**
@@ -45,17 +37,9 @@ package raix.reactive
 		 * sequence in the pattern and output a valueClass
 		 * @return A Plan that can be used with Observable.join
 		 */		
-		public function then(type : Class, thenFunction : Function) : Plan
+		public function then(thenFunction : Function) : Plan
 		{
-			return new Plan(type, _sources, thenFunction); 
-		}
-		
-		/**
-		 * Gets the types associated with this Pattern in an immutable array
-		 */		
-		public function types() : Array
-		{
-			return _types.slice();
+			return new Plan(_sources, thenFunction); 
 		}
 	}
 }

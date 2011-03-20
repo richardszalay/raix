@@ -20,9 +20,9 @@ package raix.reactive.tests.operators.combine
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subjectA : Subject = new Subject(int);
-			var subjectB : Subject = new Subject(int);
-			var subjectC : Subject = new Subject(int);
+			var subjectA : Subject = new Subject();
+			var subjectB : Subject = new Subject();
+			var subjectC : Subject = new Subject();
 			
 			Observable.amb([subjectA, subjectB, subjectC])
                 .subscribeWith(stats);
@@ -39,9 +39,9 @@ package raix.reactive.tests.operators.combine
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subjectA : Subject = new Subject(int);
-			var subjectB : Subject = new Subject(int);
-			var subjectC : IObservable = Observable.empty(int);
+			var subjectA : Subject = new Subject();
+			var subjectB : Subject = new Subject();
+			var subjectC : IObservable = Observable.empty();
 			
 			Observable.amb([subjectA, subjectB, subjectC])
                 .subscribeWith(stats);
@@ -56,9 +56,9 @@ package raix.reactive.tests.operators.combine
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subjectA : Subject = new Subject(int);
-			var subjectB : Subject = new Subject(int);
-			var subjectC : IObservable = Observable.throwError(new Error(), int);
+			var subjectA : Subject = new Subject();
+			var subjectB : Subject = new Subject();
+			var subjectC : IObservable = Observable.throwError(new Error());
 			
 			Observable.amb([subjectA, subjectB, subjectC])
                 .subscribeWith(stats);
@@ -71,7 +71,7 @@ package raix.reactive.tests.operators.combine
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
 			var obs : IObservable = createEmptyObservable(manObs);
 			

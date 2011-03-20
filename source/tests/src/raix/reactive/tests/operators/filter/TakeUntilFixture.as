@@ -13,14 +13,14 @@ package raix.reactive.tests.operators.filter
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.takeUntil(Observable.never(source.valueClass));
+			return source.takeUntil(Observable.never());
 		}
 		
 		[Test]
 		public function values_are_returned_until_other_observer_raises_value() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -44,8 +44,8 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function values_are_returned_until_other_observer_completes() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -69,8 +69,8 @@ package raix.reactive.tests.operators.filter
 		[Test]
 		public function values_are_returned_until_other_observer_raises_error() : void
 		{
-			var primaryObs : Subject = new Subject(int);
-			var otherObs : Subject = new Subject(int);
+			var primaryObs : Subject = new Subject();
+			var otherObs : Subject = new Subject();
 			
 			var obs : IObservable = primaryObs.takeUntil(otherObs);
 			
@@ -95,9 +95,9 @@ package raix.reactive.tests.operators.filter
 		[Test(expects="Error")]
 		public function errors_thrown_by_subscriber_are_bubbled() : void
 		{
-			var manObs : Subject = new Subject(int);
+			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.takeUntil(Observable.never(int));
+			var obs : IObservable = manObs.takeUntil(Observable.never());
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

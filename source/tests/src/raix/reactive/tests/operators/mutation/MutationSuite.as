@@ -8,6 +8,7 @@ package raix.reactive.tests.operators.mutation
 	{
 		public var bufferWithCount : BufferWithCountFixture;
 		public var bufferWithTime : BufferWithTimeFixture;
+		public var bufferWithTimeOrCount : BufferWithTimeOrCount;
 		public var cast : CastFixture;
 		public var delay : DelayFixture;
 		public var groupBy : GroupByFixture;

@@ -83,9 +83,35 @@ package raix.reactive
 		 * @param timeMs The amount of time to buffer before the values are released
 		 * @param timeShiftMs The amount of time to offset after the buffer is emitted
 		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of the same type as the current sequence
+		 * @return An observable sequence of Arrays of the same type as the current sequence
 		 */		
 		function bufferWithTime(timeMs : uint, timeShiftMs : uint = 0, scheduler : IScheduler = null) : IObservable;
+		
+		/**
+		 * Emits the values from a source sequence in groups of a specific size  
+		 * @param timeMs The amount of time to buffer before the values are released
+		 * @param timeShiftMs The amount of time to offset after the buffer is emitted
+		 * @param scheduler The scheduler to use
+		 * @return An observable sequence of observable sequences with the same type as the current sequence
+		 */		
+		function windowWithTime(timeMs : uint, timeShiftMs : uint = 0, scheduler : IScheduler = null) : IObservable;
+
+		/**
+		 * Emits the values from a source sequence in groups of a specific size  
+		 * @param count The number of values to buffer
+		 * @param skip The number of values to offset after the buffer is emitted.
+		 * @return An observable sequence of observable sequences with the same type as the current sequence
+		 */
+		function windowWithTimeOrCount(timeMs : uint, count : uint, scheduler : IScheduler = null) : IObservable;
+		
+		/**
+		 * Emits the values from a source sequence in groups of a specific size  
+		 * @param timeMs The amount of time to buffer before the values are released
+		 * @param timeShiftMs The amount of time to offset after the buffer is emitted
+		 * @param scheduler The scheduler to use
+		 * @return An observable sequence of Arrays of the same type as the current sequence
+		 */
+		function bufferWithTimeOrCount(timeMs : uint, count : uint, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Forces values from a source sequence to be of a specific class

@@ -22,9 +22,7 @@ package raix.reactive.tests.operators.creation
 		{
 		}
 		
-		
-		
-		[Test]
+		[Test(message="Failing indeterminately")]
 		public function does_not_fire_onnext_until_scheduler_returns() : void
 		{
 			var intervalValue : int = 50;

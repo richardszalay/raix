@@ -36,7 +36,7 @@ package raix.reactive.tests.testing
 		}
 		
 		[Test]
-		public function immediate_actions_will_be_executed_at_different_times() : void
+		public function immediate_actions_will_be_executed_at_the_same() : void
 		{
 			var aWasCalled : Boolean = false;
 			var bWasCalled : Boolean = false;
@@ -47,17 +47,14 @@ package raix.reactive.tests.testing
 			
 			scheduler.schedule(actionA);
 			scheduler.schedule(actionB);
-			scheduler.runTo(0); 
+			scheduler.runTo(1); 
 			
 			Assert.assertTrue(aWasCalled);
-			Assert.assertFalse(bWasCalled);
-			
-			scheduler.runTo(1);
 			Assert.assertTrue(bWasCalled);
 		}
 		
 		[Test]
-		public function future_actions_are_stacked() : void
+		public function actions_with_the_same_due_time_are_called_at_the_same_time() : void
 		{
 			var aWasCalled : Boolean = false;
 			var bWasCalled : Boolean = false;
@@ -71,9 +68,24 @@ package raix.reactive.tests.testing
 			
 			scheduler.runTo(10);			
 			Assert.assertTrue(aWasCalled);
-			Assert.assertFalse(bWasCalled);
+			Assert.assertTrue(bWasCalled);
+		}
+		
+		[Test]
+		public function actions_with_the_same_due_time_are_called_in_scheduled_order() : void
+		{
+			var aWasCalled : Boolean = false;
+			var bWasCalled : Boolean = false;
+			var actionA : Function = function():void { aWasCalled = true; }
+			var actionB : Function = function():void { Assert.assertTrue(aWasCalled); bWasCalled = true; }
 			
-			scheduler.runTo(11);
+			var scheduler : TestScheduler = new TestScheduler();
+			
+			scheduler.schedule(actionA, 10);
+			scheduler.schedule(actionB, 10);
+			
+			scheduler.runTo(10);			
+			Assert.assertTrue(aWasCalled);
 			Assert.assertTrue(bWasCalled);
 		}
 		

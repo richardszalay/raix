@@ -127,7 +127,7 @@ package raix.reactive.tests.operators.creation
             Assert.assertTrue(overallStats.errorCalled);
         }
 
-        [Test]
+        [Test(message="Failing indeterminately")]
         public function source_observer_errors_when_open_window_errors() : void
         {
             windows[0].onError(new Error());

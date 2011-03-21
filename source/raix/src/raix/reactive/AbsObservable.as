@@ -3,8 +3,6 @@ package raix.reactive
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
 	
-	import mx.controls.Spacer;
-	
 	import raix.reactive.impl.*;
 	import raix.reactive.scheduling.*;
 	import raix.reactive.subjects.AsyncSubject;
@@ -343,7 +341,7 @@ package raix.reactive
 					}
 					
 					var scheduleMs : Number = isSpan ? nextSpanTime : nextShiftTime;
-					var dueTime : Number = totalTime - scheduleMs;
+					var dueTime : Number = scheduleMs - totalTime;
 					totalTime = scheduleMs;
 					
 					if (isSpan)
@@ -370,7 +368,7 @@ package raix.reactive
 						
 						checkWindow();
 						
-					}, scheduleMs);
+					}, dueTime);
 				};
 				
 				subscriptions.add(scheduler.schedule(function():void
@@ -415,6 +413,89 @@ package raix.reactive
 					
 				return subscriptions;
 			});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function bufferWithTimeOrCount(timeMs:uint, count:uint, scheduler:IScheduler=null):IObservable
+		{
+			return windowWithTimeOrCount(timeMs, count, scheduler)
+				.mapMany(function(v:IObservable):IObservable
+				{
+					return v.toArray();
+				});
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function windowWithTimeOrCount(timeMs:uint, count:uint, scheduler:IScheduler=null):IObservable
+		{
+			if (timeMs == 0)
+			{
+				throw new ArgumentError("timeMs must be > 0");
+			}
+			
+			if (count == 0)
+			{
+				throw new ArgumentError("count must be > 0");
+			}
+
+			var source : IObservable = this;
+			
+			return new ClosureObservable(function(observer : IObserver):ICancelable
+			{
+				var currentTimeout : FutureCancelable = new FutureCancelable();
+				var sourceSubscription : FutureCancelable = new FutureCancelable();
+				
+				var subscriptions : CompositeCancelable = 
+					new CompositeCancelable([currentTimeout, sourceSubscription]);
+				
+				var window : Subject = null;
+				var createNewWindow : Function = null;
+				var windowItemCount : uint = 0;
+				
+				createNewWindow = function():void
+				{
+					if (window != null)
+					{
+						window.onCompleted();
+					}
+					
+					windowItemCount = 0;
+					window = new Subject();
+					observer.onNext(window);
+					
+					currentTimeout.innerCancelable = scheduler.schedule(createNewWindow, timeMs);
+				};
+				
+				createNewWindow();
+				
+				sourceSubscription.innerCancelable = source.subscribe(
+						function(v:Object) : void
+						{
+							window.onNext(v);
+							windowItemCount++;
+							
+							if (windowItemCount == count)
+							{
+								createNewWindow();
+							}
+						},
+						function():void
+						{
+							window.onCompleted();
+							observer.onCompleted();
+							
+						}, function(e:Error):void
+						{
+							window.onError(e);
+							observer.onError(e);
+						});
+						
+					return subscriptions;
+				});
 		}
 		
 		/**

@@ -2458,29 +2458,32 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			scheduler = scheduler || Scheduler.synchronous;
+			scheduler = scheduler || Scheduler.asynchronous;
 			
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
-				var lastValueTimestamp : Number = 0;
+				var lastValue : Object = null;
+				var sourceSubscription : FutureCancelable = new FutureCancelable();
+				var currentTimeout : FutureCancelable = new FutureCancelable();
 				
-				var subscription : ICancelable;
+				var throttleTimeout : Function = function():void
+				{
+					observer.onNext(lastValue);
+				};
 				
-				return source.timestamp(scheduler).subscribe(
-					function (value : TimeStamped) : void
+				sourceSubscription.innerCancelable = source.subscribe(
+					function (value : Object) : void
 					{
-						var diffMs : Number = value.timestamp - lastValueTimestamp;
+						lastValue = value;
 						
-						if (diffMs > dueTimeMs)
-						{
-							lastValueTimestamp = value.timestamp;
-							
-							observer.onNext(value.value);
-						}
+						currentTimeout.innerCancelable = 
+							scheduler.schedule(throttleTimeout, dueTimeMs);
 					},
 					observer.onCompleted,
-					observer.onError
-					);
+					observer.onError);
+					
+				return new CompositeCancelable(
+					[sourceSubscription, currentTimeout]);
 			});
 		}
 		

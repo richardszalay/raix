@@ -4,6 +4,7 @@ package raix.reactive.tests.operators.metadata
 	
 	import raix.reactive.IObservable;
 	import raix.reactive.Subject;
+	import raix.reactive.testing.TestScheduler;
 	import raix.reactive.tests.mocks.ManualScheduler;
 	import raix.reactive.tests.mocks.StatsObserver;
 	import raix.reactive.tests.operators.AbsDecoratorOperatorFixture;
@@ -19,6 +20,10 @@ package raix.reactive.tests.operators.metadata
 		[Test]
 		public function timestamp_is_applied_to_values() : void
 		{
+			//var scheduler : TestScheduler = new TestScheduler();
+			
+			//var stats : StatsObserver = new StatsObserver();
+			
 			var manObs : Subject = new Subject();
 			
 			var scheduler : ManualScheduler = new ManualScheduler();
@@ -53,7 +58,7 @@ package raix.reactive.tests.operators.metadata
 		{
 			var manObs : Subject = new Subject();
 			
-			var obs : IObservable = manObs.throttle(5);
+			var obs : IObservable = manObs.timestamp();
 			
 			obs.subscribe(
 				function(pl:int):void { throw new Error(); },

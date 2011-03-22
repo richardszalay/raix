@@ -3,82 +3,78 @@ package raix.reactive.tests.operators.filter
 	import org.flexunit.Assert;
 	
 	import raix.reactive.IObservable;
-	import raix.reactive.Subject;
-	import raix.reactive.tests.mocks.ManualScheduler;
+	import raix.reactive.OnNext;
+	import raix.reactive.testing.ColdObservable;
+	import raix.reactive.testing.Recorded;
+	import raix.reactive.testing.TestScheduler;
 	import raix.reactive.tests.mocks.StatsObserver;
-	import raix.reactive.tests.operators.AbsDecoratorOperatorFixture;
 	
 	[TestCase]
-	public class ThrottleFixture extends AbsDecoratorOperatorFixture
+	public class ThrottleFixture
 	{
-		protected override function createEmptyObservable(source:IObservable):IObservable
+		private var scheduler : TestScheduler;
+		private var observer : StatsObserver;
+		private var source : ColdObservable;
+		
+		[Before]
+		public function setUp() : void
 		{
-			return source.throttle(0);
+			scheduler = new TestScheduler();
+			
+			observer = new StatsObserver();
+			 
+			source = scheduler.createColdObservable([
+				new Recorded(10, new OnNext(1)),
+				new Recorded(15, new OnNext(2)),
+				new Recorded(20, new OnNext(3)),
+				new Recorded(35, new OnNext(4)),
+				new Recorded(40, new OnNext(5))
+			]);
+			;
+			
+			source
+				.throttle(5, scheduler)
+				.subscribeWith(observer);
 		}
 		
 		[Test]
-		public function scheduler_is_used_to_determine_time() : void 
-        {
-        	// TODO: This is not how the Rx throttle works,
-        	// the rxas imlpementation should be brought in line to match Rx
-        	
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            scheduler.now = new Date();
-
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            subject.throttle(1000, scheduler).subscribeWith(stats);
-
-            subject.onNext(0);
-            
-            scheduler.now = new Date(scheduler.now.time + 1001);
-            subject.onNext(1);
-
-            subject.onNext(2);
-
-            Assert.assertEquals(2, stats.nextCount);
-        }
-
-		[Test]
-        public function exact_time_is_not_allowed() : void
-        {
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            scheduler.now = new Date();
-
-            subject
-                .throttle(1000, scheduler)
-                .subscribeWith(stats);
-            
-            subject.onNext(0);
-
-            scheduler.now = new Date(scheduler.now.time + 1000);
-            subject.onNext(1);
-
-            Assert.assertEquals(1, stats.nextCount);
-        }
-
-		[Test(expects="Error")]
-		public function errors_thrown_by_subscriber_are_bubbled() : void
+		public function immediately_subscribes_to_source() : void
 		{
-			var manObs : Subject = new Subject();
+			Assert.assertTrue(source.subscriptions.length);
+		}
+		
+		[Test]
+		public function values_are_not_released_when_emitted() : void
+		{
+			scheduler.runTo(10);
 			
-			var obs : IObservable = manObs.throttle(5);
+			Assert.assertEquals(0, observer.nextValues.length);
+		}
+		
+		[Test]
+		public function value_is_released_after_no_values_received_in_duration() : void
+		{
+			scheduler.runTo(25);
 			
-			obs.subscribe(
-				function(pl:int):void { throw new Error(); },
-				function():void { },
-				function(e:Error):void { Assert.fail("Unexpected call to onError"); }
-			);
-
-			manObs.onNext(0);
+			Assert.assertEquals(1, observer.nextValues.length);
+			Assert.assertEquals(3, observer.nextValues[0]);
+		}
+		
+		[Test]
+		public function last_value_before_duration_is_emitted() : void
+		{
+			scheduler.runTo(25);
+			
+			Assert.assertEquals(3, observer.nextValues[0]);
+		}
+		
+		[Test]
+		public function timeout_is_reset_after_next_value_is_received() : void
+		{
+			scheduler.runTo(45);
+			
+			Assert.assertEquals(2, observer.nextValues.length);
+			Assert.assertEquals(5, observer.nextValues[1]);
 		}
 	}
 }

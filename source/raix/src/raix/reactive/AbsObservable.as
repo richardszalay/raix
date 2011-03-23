@@ -1376,10 +1376,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
-			{
-				return source.subscribe(null, observer.onCompleted, observer.onError); 
-			});
+			return filter(function(v:Object):Boolean { return false; });
 		}
 		
 		/**
@@ -1980,6 +1977,65 @@ package raix.reactive
 			var source : IObservable = this;
 			
 			return Observable.mergeMany(this.map(selector)); 
+		}
+		
+		public function sequenceEqual(other : IObservable, valueComparer : Function = null) : IObservable
+		{
+			var defaultComparer : Function = function(a:Object, b:Object) : Boolean { return a == b; }
+			
+			valueComparer = (valueComparer == null)
+				? defaultComparer
+				: normalizeComparer(valueComparer);
+				
+			var source : IObservable = this;
+			
+			return new ClosureObservable(function(observer : IObserver):ICancelable
+			{
+				var connectableSource : IConnectableObservable = source.publish();
+				var connectableOther : IConnectableObservable = other.publish();
+				
+				var zipComplete : Boolean = false;
+				
+				connectableSource
+					.zip(connectableOther, function(l:Object,r:Object) : Boolean
+					{
+						return valueComparer(l,r);
+					})
+					.all(function(v:Boolean):Boolean { return v; })
+					.subscribe(function(valid : Boolean) : void
+					{
+						if (!valid)
+						{
+							observer.onNext(false);
+							observer.onCompleted();
+						}
+					},
+					function():void
+					{
+						zipComplete = true;
+					});
+					
+				Observable.merge([
+						connectableSource, connectableOther
+					])
+					.subscribe(function(v:Object):void
+					{
+						if (zipComplete)
+						{
+							observer.onNext(false);
+							observer.onCompleted();
+						}
+					}, function():void
+					{
+						observer.onNext(true);
+						observer.onCompleted();
+					}, observer.onError);
+					
+				return new CompositeCancelable([
+					connectableSource.connect(),
+					connectableOther.connect()
+				]);
+			});
 		}
 		
 		/**
@@ -2738,7 +2794,7 @@ package raix.reactive
 					function():void
 					{
 						leftComplete = true; 
-						if (rightComplete) { observer.onCompleted(); }
+						if (rightComplete || leftValues.length == 0) { observer.onCompleted(); }
 					},
 					observer.onError
 					);
@@ -2760,7 +2816,7 @@ package raix.reactive
 					function():void
 					{
 						rightComplete = true; 
-						if (leftComplete) { observer.onCompleted(); }
+						if (leftComplete || rightValues.length == 0) { observer.onCompleted(); }
 					},
 					observer.onError
 					);

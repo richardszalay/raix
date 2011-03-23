@@ -193,9 +193,7 @@ package raix.reactive.testing
     			return valueComparer(expected.value, actual.value);
     		}
     		
-    		var canHaveAnyError : Boolean = (actual.error == null);
-    		
-    		return (expected.error == actual.error);
+     		return (expected.error == actual.error);
     	}
 	}
 }

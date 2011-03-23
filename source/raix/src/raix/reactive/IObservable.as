@@ -445,6 +445,8 @@ package raix.reactive
 		 */
 		function selectMany(selector : Function) : IObservable;
 		
+		function sequenceEqual(other : IObservable, valueComparer : Function = null) : IObservable;
+		
 		/**
 		 * Emits the only item from a source sequence, or an error if any other number of values are emitted. 
 		 * @return An observable sequence of the same valueClass as the current sequence

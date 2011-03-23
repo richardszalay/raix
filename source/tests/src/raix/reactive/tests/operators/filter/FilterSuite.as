@@ -8,6 +8,7 @@ package raix.reactive.tests.operators.filter
 	{
 		public var all : AllFixture;
 		public var any : AnyFixture;
+		public var sequenceEqual : SequenceEqualFixture;
 		public var contains : ContainsFixture;
 		public var distinctUntilChanges : DistinctUntilChangedFixture;
 		public var first : FirstFixture;
@@ -28,5 +29,6 @@ package raix.reactive.tests.operators.filter
 		public var takeWhile : TakeWhileFixture;
 		public var throttle : ThrottleFixture;
 		public var where : WhereFixture;
+		public var ignoreValues : IgnoreValuesFixture;
 	}
 }

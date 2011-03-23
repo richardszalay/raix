@@ -1,7 +1,6 @@
 package raix.reactive.testing
 {
 	import raix.reactive.BooleanCancelable;
-	import raix.reactive.Cancelable;
 	import raix.reactive.ICancelable;
 	import raix.reactive.scheduling.IScheduler;
 	
@@ -17,6 +16,11 @@ package raix.reactive.testing
 		public function get now() : Date
 		{
 			return new Date(_now);
+		}
+		
+		public function get actionCount() : uint
+		{
+			return _scheduledActions.length;
 		}
 		
 		public function schedule(action : Function, dueTime : int = 0) : ICancelable

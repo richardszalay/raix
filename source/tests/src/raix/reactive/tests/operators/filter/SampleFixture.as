@@ -3,185 +3,88 @@ package raix.reactive.tests.operators.filter
 	import org.flexunit.Assert;
 	
 	import raix.reactive.*;
-	import raix.reactive.tests.mocks.ManualScheduler;
+	import raix.reactive.testing.ColdObservable;
+	import raix.reactive.testing.MockObserver;
+	import raix.reactive.testing.Recorded;
+	import raix.reactive.testing.TestScheduler;
 	import raix.reactive.tests.mocks.StatsObserver;
 	
 	public class SampleFixture
 	{
 		[Test]
-        public function uses_scheduler_to_schedule_samples() : void
+        public function last_value_is_taken_from_sample_timespan() : void
         {
             var subject : Subject = new Subject();
 
             var stats : StatsObserver = new StatsObserver();
 
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            Assert.assertEquals(1, scheduler.queueSize);
-
-            subject.onNext(0);
-            scheduler.runNext();
-
-            Assert.assertEquals(1, scheduler.queueSize);
-            Assert.assertEquals(1, stats.nextCount);
-            Assert.assertEquals(0, stats.nextValues[0]);
+            var scheduler : TestScheduler = new TestScheduler();
+            
+            var observer : MockObserver = new MockObserver(scheduler);
+            
+            scheduler.createColdObservable([
+            		new Recorded(5, new OnNext(0)),
+            		new Recorded(10, new OnNext(1)),
+            		new Recorded(15, new OnNext(2)),
+            		new Recorded(20, new OnNext(3)),
+            		new Recorded(25, new OnNext(4)),
+            		new Recorded(30, new OnNext(5))
+            	])
+            	.sample(15, scheduler)
+            	.subscribeWith(observer);
+            	
+            scheduler.runTo(30);
+            	
+            observer.assertTimings([
+            		new Recorded(15, new OnNext(2)),
+            		new Recorded(30, new OnNext(5))
+            	], Assert.fail);
         }
 
         [Test]
-        public function last_value_is_taken_for_each_sample() : void
+        public function subscribes_immedietly() : void
         {
-            var subject : Subject = new Subject();
+            var scheduler : TestScheduler = new TestScheduler();
+            
+            var observer : MockObserver = new MockObserver(scheduler);
+            
+            var source : ColdObservable = scheduler.createColdObservable([
+            		new Recorded(5, new OnNext(0)),
+            		new Recorded(10, new OnNext(1)),
+            		new Recorded(15, new OnNext(2))
+            	]);
 
-            var stats : StatsObserver = new StatsObserver();
+            source
+            	.sample(15, scheduler)
+            	.take(1)
+            	.subscribeWith(observer);
 
-            var scheduler : ManualScheduler = new ManualScheduler();
+            scheduler.run();
 
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            subject.onNext(0);
-            subject.onNext(1);
-            scheduler.runNext();
-
-            subject.onNext(2);
-            subject.onNext(3);
-            scheduler.runNext();
-
-            Assert.assertEquals(2, stats.nextCount);
-            Assert.assertEquals(1, stats.nextValues[0]);
-            Assert.assertEquals(3, stats.nextValues[1]);
+            Assert.assertEquals(0, source.subscriptions[0].subscribe);
+            Assert.assertEquals(15, source.subscriptions[0].unsubscribe);
         }
-
+        
         [Test]
-        public function no_value_is_emitted_if_sampled_value_hasnt_changed() : void
+        public function latest_value_is_sampled_at_next_sample_time_after_completion() : void
         {
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            stats.onNext(0);
-
-            scheduler.runNext();
-            scheduler.runNext();
-
-            Assert.assertEquals(1, stats.nextCount);
-        }
-
-        [Test]
-        public function no_value_is_emitted_if_empty() : void
-        {
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            Assert.assertEquals(1, scheduler.queueSize);
-
-            scheduler.runNext();
-
-            Assert.assertEquals(1, scheduler.queueSize);
-            Assert.assertEquals(0, stats.nextCount);
-        }
-
-        [Test]
-        public function completion_occurs_after_interval() : void
-        {
-            var scheduler : ManualScheduler = new ManualScheduler();
-            var stats : StatsObserver = new StatsObserver();
-
-            Observable.empty()
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            Assert.assertFalse(stats.completedCalled);
-
-            scheduler.runNext();
-            Assert.assertTrue(stats.completedCalled);
-        }
-
-        [Test]
-        public function latest_value_is_sampled_on_completion() : void
-        {
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            subject.onNext(0);
-            subject.onCompleted();
-            scheduler.runNext();
-
-            Assert.assertEquals(1, stats.nextCount);
-            Assert.assertTrue(stats.completedCalled);
-        }
-
-        [Test]
-        public function interval_is_cancelled_on_completion() : void
-        {
-            var subject : Subject = new Subject();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            subject
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            subject.onNext(0);
-            subject.onCompleted();
-            scheduler.runNext();
-
-            Assert.assertEquals(0, scheduler.queueSize);
-        }
-
-        [Test]
-        public function errors_do_not_wait_for_interval() : void
-        {
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            Observable.error(new Error())
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            Assert.assertTrue(stats.errorCalled);
-        }
-
-        [Test]
-        public function errors_cancel_interval() : void
-        {
-            var scheduler : ManualScheduler = new ManualScheduler();
-
-            var stats : StatsObserver = new StatsObserver();
-
-            Observable.error(new Error())
-                .sample(1000, scheduler)
-                .subscribeWith(stats);
-
-            Assert.assertEquals(0, scheduler.queueSize);
+            var scheduler : TestScheduler = new TestScheduler();
+            
+            var observer : MockObserver = new MockObserver(scheduler);
+            
+            scheduler.createColdObservable([
+            		new Recorded(5, new OnNext(0)),
+            		new Recorded(6, new OnCompleted())
+            	])
+            	.sample(15, scheduler)
+            	.subscribeWith(observer);
+            	
+            scheduler.run();
+            
+            observer.assertTimings([
+            		new Recorded(15, new OnNext(0)),
+            		new Recorded(15, new OnCompleted())
+            	], Assert.fail);
         }
 	}
 }

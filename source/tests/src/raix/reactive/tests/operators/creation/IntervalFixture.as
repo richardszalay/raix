@@ -1,17 +1,15 @@
 package raix.reactive.tests.operators.creation
 {
-	import asmock.framework.Expect;
-	import asmock.framework.MockRepository;
-	import asmock.framework.constraints.Is;
-	
 	import org.flexunit.Assert;
 	
 	import raix.reactive.ICancelable;
 	import raix.reactive.Observable;
-	import raix.reactive.Cancelable;
+	import raix.reactive.OnCompleted;
+	import raix.reactive.OnNext;
 	import raix.reactive.scheduling.IScheduler;
-	import raix.reactive.tests.mocks.ManualScheduler;
-	import raix.reactive.tests.mocks.StatsObserver; 
+	import raix.reactive.testing.MockObserver;
+	import raix.reactive.testing.Recorded;
+	import raix.reactive.testing.TestScheduler; 
 	
 	[RunWith("asmock.integration.flexunit.ASMockClassRunner")]
 	public class IntervalFixture
@@ -22,111 +20,47 @@ package raix.reactive.tests.operators.creation
 		{
 		}
 		
-		[Test(message="Failing indeterminately")]
-		public function does_not_fire_onnext_until_scheduler_returns() : void
+		[Test]
+		public function emits_values_at_interval() : void
 		{
-			var intervalValue : int = 50;
+			var scheduler : TestScheduler =new TestScheduler();
 			
-			var returnScheduledAction : ICancelable = Cancelable.empty;
+			var observer : MockObserver = new MockObserver(scheduler);
 			
-			var scheduler : ManualScheduler = new ManualScheduler();
-		
-			var stats : StatsObserver = new StatsObserver();
-			
-			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
-			
-			Assert.assertFalse(stats.nextCalled);
-			Assert.assertFalse(stats.completedCalled);
-			
-			scheduler.runNext();
-			Assert.assertEquals(1, stats.nextCount);
-			
-			scheduler.runNext();
-			Assert.assertEquals(2, stats.nextCount);
-			
-			scheduler.runNext();
-			Assert.assertEquals(3, stats.nextCount);
+			Observable.interval(10, scheduler)
+				.take(5)
+				.subscribeWith(observer);
+				
+			scheduler.run();
+				
+			observer.assertTimings([
+				new Recorded(10, new OnNext(0)),
+				new Recorded(20, new OnNext(1)),
+				new Recorded(30, new OnNext(2)),
+				new Recorded(40, new OnNext(3)),
+				new Recorded(50, new OnNext(4)),
+				new Recorded(50, new OnCompleted())
+			], Assert.fail);
 		}
 		
 		[Test]
-		public function unsubscribing_cancels_scheduled_action() : void
+		public function unsubscribing_cancels() : void
 		{
-			var intervalValue : int = 50;
+			var scheduler : TestScheduler =new TestScheduler();
 			
-			var returnScheduledAction : ICancelable = Cancelable.empty;
+			var observer : MockObserver = new MockObserver(scheduler);
 			
-			var scheduler : ManualScheduler = new ManualScheduler();
-		
-			var stats : StatsObserver = new StatsObserver();
-			
-			var subscription : ICancelable = 
-				Observable.interval(intervalValue, scheduler).subscribeWith(stats);
-			
-			Assert.assertFalse(stats.nextCalled);
-			Assert.assertEquals(1, scheduler.queueSize);
+			var subscription : ICancelable = Observable.interval(10, scheduler)
+				.subscribeWith(observer);
+				
+			scheduler.runTo(40);
 			
 			subscription.cancel();
 			
-			Assert.assertFalse(stats.nextCalled);
-			Assert.assertEquals(0, scheduler.queueSize);
-		}
-
-		[Test]
-		public function uses_scheduler_with_dueTime() : void
-		{
-			var intervalValue : int = 50;
+			scheduler.runTo(100);
 			
-			var repository : MockRepository = new MockRepository();
-			
-			var returnScheduledAction : ICancelable = Cancelable.empty;
-			
-			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
-			Expect.call(scheduler.schedule(null, 0))
-				.constraints([Is.anything(), Is.equal(intervalValue)])
-				.returnValue(returnScheduledAction);
-				
-			repository.replay(scheduler);
-			
-			var stats : StatsObserver = new StatsObserver();
-			
-			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
-			
-			repository.verify(scheduler);
-		}
-		
-		[Test]
-		public function subsequent_calls_to_scheduler_pass_dueTime() : void
-		{
-			var intervalValue : int = 50;
-			
-			var repository : MockRepository = new MockRepository();
-			
-			var returnScheduledAction : ICancelable = Cancelable.empty;
-			
-			var calledScheduledAction : Boolean = false;
-			
-			var scheduler : IScheduler = IScheduler(repository.createStrict(IScheduler));
-			Expect.call(scheduler.schedule(null, 0))
-				.constraints([Is.anything(), Is.equal(intervalValue)])
-				.doAction(function(action:Function, ...args) : ICancelable
-				{
-					if (!calledScheduledAction)
-					{
-						calledScheduledAction = true;
-						action();
-					}
-					
-					return Cancelable.empty;
-				})
-				.repeat.twice();
-				
-			repository.replay(scheduler);
-			
-			var stats : StatsObserver = new StatsObserver();
-			
-			Observable.interval(intervalValue, scheduler).subscribeWith(stats);
-			
-			repository.verify(scheduler);
+			Assert.assertEquals(3, observer.recordedNotifications.length);
+			Assert.assertEquals(0, scheduler.actionCount);
 		}
 	}
 }

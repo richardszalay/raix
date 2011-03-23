@@ -5,6 +5,8 @@ using System.Text;
 using NUnit.Framework;
 using RxAs.Rx4.ProofTests.Mock;
 using System.Concurrency;
+using System.Reactive.Testing;
+using System.Reactive.Testing.Mocks;
 
 namespace RxAs.Rx4.ProofTests.Operators
 {
@@ -142,24 +144,27 @@ namespace RxAs.Rx4.ProofTests.Operators
         }
 
         [Test]
-        public void latest_value_is_sampled_on_completion()
+        public void latest_value_is_sampled_at_next_sample_time_after_completion()
         {
             var subject = new Subject<int>();
 
-            var stats = new StatsObserver<int>();
+            var scheduler = new TestScheduler();
 
-            var scheduler = new ManualScheduler();
+            var observer = new MockObserver<int>(scheduler);
 
-            subject
-                .Sample(TimeSpan.FromSeconds(1), scheduler)
-                .Subscribe(stats);
+            scheduler.CreateColdObservable(
+                new Recorded<Notification<int>>(5, new Notification<int>.OnNext(0)),
+                new Recorded<Notification<int>>(6, new Notification<int>.OnCompleted())
+                )
+                .Sample(new TimeSpan(15), scheduler)
+                .Subscribe(observer);
 
-            subject.OnNext(0);
-            subject.OnCompleted();
-            scheduler.RunNext();
+            scheduler.Run();
 
-            Assert.AreEqual(1, stats.NextCount);
-            Assert.IsTrue(stats.CompletedCalled);
+            observer.AssertEqual(
+                new Recorded<Notification<int>>(15, new Notification<int>.OnNext(0)),
+                new Recorded<Notification<int>>(15, new Notification<int>.OnCompleted())
+                );
         }
 
         [Test]

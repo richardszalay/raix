@@ -2,18 +2,17 @@ package raix.reactive.tests.operators.filter
 {
 	import org.flexunit.Assert;
 	
-	import raix.reactive.IObservable;
 	import raix.reactive.OnNext;
 	import raix.reactive.testing.ColdObservable;
+	import raix.reactive.testing.MockObserver;
 	import raix.reactive.testing.Recorded;
 	import raix.reactive.testing.TestScheduler;
-	import raix.reactive.tests.mocks.StatsObserver;
 	
 	[TestCase]
 	public class ThrottleFixture
 	{
 		private var scheduler : TestScheduler;
-		private var observer : StatsObserver;
+		private var observer : MockObserver;
 		private var source : ColdObservable;
 		
 		[Before]
@@ -21,7 +20,7 @@ package raix.reactive.tests.operators.filter
 		{
 			scheduler = new TestScheduler();
 			
-			observer = new StatsObserver();
+			observer = new MockObserver(scheduler);
 			 
 			source = scheduler.createColdObservable([
 				new Recorded(10, new OnNext(1)),
@@ -48,7 +47,7 @@ package raix.reactive.tests.operators.filter
 		{
 			scheduler.runTo(10);
 			
-			Assert.assertEquals(0, observer.nextValues.length);
+			Assert.assertEquals(0, observer.recordedNotifications.length);
 		}
 		
 		[Test]
@@ -56,16 +55,9 @@ package raix.reactive.tests.operators.filter
 		{
 			scheduler.runTo(25);
 			
-			Assert.assertEquals(1, observer.nextValues.length);
-			Assert.assertEquals(3, observer.nextValues[0]);
-		}
-		
-		[Test]
-		public function last_value_before_duration_is_emitted() : void
-		{
-			scheduler.runTo(25);
-			
-			Assert.assertEquals(3, observer.nextValues[0]);
+			observer.assertTimings([
+				new Recorded(25, new OnNext(3))
+			], Assert.fail);
 		}
 		
 		[Test]
@@ -73,8 +65,10 @@ package raix.reactive.tests.operators.filter
 		{
 			scheduler.runTo(45);
 			
-			Assert.assertEquals(2, observer.nextValues.length);
-			Assert.assertEquals(5, observer.nextValues[1]);
+			observer.assertTimings([
+				new Recorded(25, new OnNext(3)),
+				new Recorded(45, new OnNext(5))
+			], Assert.fail);
 		}
 	}
 }

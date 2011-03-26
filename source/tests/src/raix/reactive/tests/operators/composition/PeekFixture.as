@@ -9,11 +9,11 @@ package raix.reactive.tests.operators.composition
 	import raix.reactive.tests.operators.AbsDecoratorOperatorFixture;
 	
 	[TestCase]
-	public class DoActionFixture extends AbsDecoratorOperatorFixture
+	public class PeekFixture extends AbsDecoratorOperatorFixture
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.doAction(null);
+			return source.peek(null);
 		}
 		
 		[Test]
@@ -25,7 +25,7 @@ package raix.reactive.tests.operators.composition
 			var observerCalled : Boolean = false; 
 			
 			manObs
-				.doAction(function(pl:Object):void { Assert.assertFalse(observerCalled); actionCalled = true; })
+				.peek(function(pl:Object):void { Assert.assertFalse(observerCalled); actionCalled = true; })
 				.subscribe(function(pl:Object):void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onNext(0);
@@ -43,7 +43,7 @@ package raix.reactive.tests.operators.composition
 			var observerCalled : Boolean = false; 
 			
 			manObs
-				.doAction(null, function():void { Assert.assertFalse(observerCalled); actionCalled = true; })
+				.peek(null, function():void { Assert.assertFalse(observerCalled); actionCalled = true; })
 				.subscribe(null, function():void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onCompleted();
@@ -61,7 +61,7 @@ package raix.reactive.tests.operators.composition
 			var observerCalled : Boolean = false; 
 			
 			manObs
-				.doAction(null, null, function(pl:Error):void { Assert.assertFalse(observerCalled); actionCalled = true; })
+				.peek(null, null, function(pl:Error):void { Assert.assertFalse(observerCalled); actionCalled = true; })
 				.subscribe(null, null, function(pl:Error):void { Assert.assertTrue(actionCalled); observerCalled = true; })
 			
 			manObs.onError(new Error());
@@ -76,7 +76,7 @@ package raix.reactive.tests.operators.composition
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-				.doAction(function(pl:Object):void { throw new Error(); })
+				.peek(function(pl:Object):void { throw new Error(); })
 				.subscribeWith(stats)
 			
 			Assert.assertTrue(stats.errorCalled);
@@ -88,7 +88,7 @@ package raix.reactive.tests.operators.composition
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-				.doAction(
+				.peek(
 					function(pl:Object):void { throw new Error(); }, 
 					function():void{})
 				.subscribeWith(stats)
@@ -102,7 +102,7 @@ package raix.reactive.tests.operators.composition
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-				.doAction(
+				.peek(
 					function(pl:Object):void { throw new Error(); }, 
 					null, 
 					function(e:Error):void{})
@@ -117,7 +117,7 @@ package raix.reactive.tests.operators.composition
 			var stats : StatsObserver = new StatsObserver();
 			
 			Observable.range(0, 3)
-				.doAction(
+				.peek(
 					function(pl:Object):void { throw new Error(); }, 
 					function():void{}, 
 					function(e:Error):void{})

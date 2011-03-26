@@ -5,7 +5,7 @@ package raix.reactive.tests.operators.calculation
 	import raix.reactive.*;
 	import raix.reactive.tests.mocks.StatsObserver;
 	
-	public class AggregateFixture
+	public class ReduceFixture
 	{
 		[Test]
         public function outputs_one_value_after_completion() : void
@@ -13,7 +13,7 @@ package raix.reactive.tests.operators.calculation
             var stats : StatsObserver = new StatsObserver();
 
             Observable.range(0, 5)
-                .aggregate(function(x:int,y:int):int { return x + y; })
+                .reduce(function(x:int,y:int):int { return x + y; })
                 .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
@@ -28,7 +28,7 @@ package raix.reactive.tests.operators.calculation
             var start : Date = new Date();
 
             Observable.range(0, 5)
-                .aggregate(function(x:Date,y:int):Date { return new Date(x.time + y); }, start, true)
+                .reduce(function(x:Date,y:int):Date { return new Date(x.time + y); }, start, true)
                 .subscribeWith(stats);
 
             Assert.assertEquals(1, stats.nextCount);
@@ -45,7 +45,7 @@ package raix.reactive.tests.operators.calculation
             var start : Date = new Date();
 
             Observable.range(0, 5)
-                .aggregate(function(x:Date,y:int):Date { accumulatorValues.push(y); return x; }, start, true)
+                .reduce(function(x:Date,y:int):Date { accumulatorValues.push(y); return x; }, start, true)
                 .subscribeWith(stats);
 
             Assert.assertEquals(0, accumulatorValues[0]);
@@ -59,7 +59,7 @@ package raix.reactive.tests.operators.calculation
             var accumulatorValues : Array = new Array();
 
             Observable.range(0, 5)
-                .aggregate(function(x:int,y:int):int { accumulatorValues.push(y); return x+y; })
+                .reduce(function(x:int,y:int):int { accumulatorValues.push(y); return x+y; })
                 .subscribeWith(stats);
 
             Assert.assertEquals(1, accumulatorValues[0]);
@@ -71,7 +71,7 @@ package raix.reactive.tests.operators.calculation
             var stats : StatsObserver = new StatsObserver();
             
             Observable.empty()
-                .aggregate(function(x:int,y:int):int { return x + y; })
+                .reduce(function(x:int,y:int):int { return x + y; })
                 .subscribeWith(stats);
 
             Assert.assertTrue(stats.errorCalled);

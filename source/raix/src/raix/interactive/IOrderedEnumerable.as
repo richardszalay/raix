@@ -1,5 +1,8 @@
 package raix.interactive
 {
+	/**
+	 * An enumerable sequence that has ordering applied to it
+	 */	
 	public interface IOrderedEnumerable extends IEnumerable
 	{
 		/**

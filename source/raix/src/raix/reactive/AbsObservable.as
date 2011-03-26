@@ -55,17 +55,24 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function aggregate(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
+		public function reduce(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
 		{
 			return scan(accumulator, initialValue, useInitialValue).last();
+		}
+		
+		public function aggregate(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
+		{
+			return reduce(accumulator, initialValue, useInitialValue);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function average():IObservable
+		public function average(valueSelector : Function = null):IObservable
 		{
-			var source : IObservable = this;
+			var source : IObservable = (valueSelector == null)
+				? this
+				: this.map(valueSelector);
 			
 			return new ClosureObservable(function(obs:IObserver):ICancelable
 			{
@@ -89,7 +96,7 @@ package raix.reactive
 					obs.onError);
 			});
 			
-			return aggregate(function(x:Number, y:Number):Number
+			return reduce(function(x:Number, y:Number):Number
 			{
 				return x+y;
 			}, 0);
@@ -877,7 +884,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function doAction(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
+		public function peek(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -922,10 +929,8 @@ package raix.reactive
 			});
 		}
 		
-		public function expand(selector : Function, scheduler : IScheduler = null) : IObservable
+		public function expand(selector : Function) : IObservable
 		{
-			scheduler = scheduler || Scheduler.synchronous;
-			
 			var source : IObservable = this;
 			
 			return new ClosureObservable(function(observer : IObserver):ICancelable
@@ -936,7 +941,7 @@ package raix.reactive
 				
 				var activeCount : uint = 1;
 				
-				var sourceWithPeek : IObservable = source.doAction(null, function():void
+				var sourceWithPeek : IObservable = source.peek(null, function():void
 				{
 					activeCount--;
 					
@@ -946,38 +951,35 @@ package raix.reactive
 					}
 				});
 				
-				scheduler.schedule(function():void
-				{
-					subscription.cancelable = Observable.merge(sources.startWith(Observable.value(sourceWithPeek)))
-						.subscribe(function(v:Object):void
-						{
-							observer.onNext(v);
-							
-							var inner : IObservable;
-							
-							try
-							{
-								inner = selector(v);
-							}
-							catch(err : Error)
-							{
-								sources.onError(err);
-								return;
-							}
-							
-							activeCount++;
-							
-							sources.onNext(inner.doAction(null, function():void
-							{
-								activeCount--;
+				subscription.cancelable = Observable.merge(sources.startWith(Observable.value(sourceWithPeek)))
+					.subscribe(function(v:Object):void
+					{
+						observer.onNext(v);
 						
-								if (activeCount == 0)
-								{
-									sources.onCompleted();
-								}
-							}));
-						}, observer.onCompleted, observer.onError);
-				});
+						var inner : IObservable;
+						
+						try
+						{
+							inner = selector(v);
+						}
+						catch(err : Error)
+						{
+							sources.onError(err);
+							return;
+						}
+						
+						activeCount++;
+						
+						sources.onNext(inner.peek(null, function():void
+						{
+							activeCount--;
+					
+							if (activeCount == 0)
+							{
+								sources.onCompleted();
+							}
+						}));
+					}, observer.onCompleted, observer.onError);
 					
 				return subscription;
 			});
@@ -1667,7 +1669,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
+		public function pruneDefer(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
 			return multicastAndConnect(
 				function():ISubject { return new AsyncSubject(scheduler); },
@@ -1686,7 +1688,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function publishAndConnect(selector : Function) : IObservable
+		public function publishDefer(selector : Function) : IObservable
 		{
 			return multicastAndConnect(
 				function():ISubject { return new Subject(); },
@@ -1778,20 +1780,20 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function replay(bufferSize : uint = 0, window : uint = 0, 
+		public function replay(bufferSize : uint = 0, windowMs : uint = 0, 
 			scheduler : IScheduler = null) : IConnectableObservable
 		{
-			return multicast(new ReplaySubject(bufferSize, window, scheduler));
+			return multicast(new ReplaySubject(bufferSize, windowMs, scheduler));
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, 
+		public function replayDefer(selector : Function, bufferSize : uint = 0, windowMs : uint = 0, 
 			scheduler : IScheduler = null) : IObservable
 		{
 			return multicastAndConnect(
-				function():ISubject { return new ReplaySubject(bufferSize, window, scheduler); },
+				function():ISubject { return new ReplaySubject(bufferSize, windowMs, scheduler); },
 				selector
 			);
 		}
@@ -2401,7 +2403,7 @@ package raix.reactive
 		 */
 		public function sum():IObservable
 		{
-			return aggregate(function(x:Number, y:Number):Number
+			return reduce(function(x:Number, y:Number):Number
 			{
 				return x+y;
 			}, 0).catchError(Observable.value(0));
@@ -2718,15 +2720,6 @@ package raix.reactive
 					},
 					observer.onError);
 			});
-		}
-		
-		[Deprecated(replacement="filter")]
-		/**
-		 * @inheritDoc
-		 */
-		public function where(predicate:Function):IObservable
-		{
-			return filter(predicate);
 		}
 		
 		/**

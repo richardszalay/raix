@@ -86,7 +86,7 @@ package raix.reactive.tests.operators.mutation
             var outsideError : Boolean = false;
             var groupStats : StatsObserver = new StatsObserver();
 
-            Observable.value(1).concat([Observable.error(new Error())])
+            Observable.value(1).concat(Observable.error(new Error()))
                 .groupBy(mapSelf)
                 .subscribe(
                 	function(group : IGroupedObservable) : void

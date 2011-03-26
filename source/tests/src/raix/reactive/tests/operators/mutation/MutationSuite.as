@@ -11,6 +11,7 @@ package raix.reactive.tests.operators.mutation
 		public var bufferWithTimeOrCount : BufferWithTimeOrCount;
 		public var cast : CastFixture;
 		public var delay : DelayFixture;
+		public var expand : ExpandFixture;
 		public var groupBy : GroupByFixture;
 		public var groupByUntil : GroupByUntilFixture;
 		public var select : MapFixture;

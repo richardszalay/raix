@@ -20,16 +20,18 @@ package raix.reactive.testing
 			
 			for each(var recordedNotification : Recorded in _messages)
 			{
-				_scheduler.schedule(function() : void
-				{
-					var observers : Array = _observers.slice();
-					
-					for each(var observer : IObserver in observers)
-					{					
-						recordedNotification.value.accept(observer.onNext, 
-							observer.onCompleted, observer.onError);
-					}
-				}, recordedNotification.time);
+				(function(recordedNotification : Recorded) : void {
+					_scheduler.schedule(function() : void
+					{
+						var observers : Array = _observers.slice();
+						
+						for each(var observer : IObserver in observers)
+						{					
+							recordedNotification.value.accept(observer.onNext, 
+								observer.onCompleted, observer.onError);
+						}
+					}, recordedNotification.time);
+				})(recordedNotification);
 			}
 		}
 		

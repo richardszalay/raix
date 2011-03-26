@@ -13,6 +13,7 @@ package raix.reactive
 	import raix.reactive.flex.*;
 	import raix.reactive.impl.*;
 	import raix.reactive.scheduling.*;
+	import raix.reactive.subjects.ReplaySubject;
 
 	/**
 	 * Provides static methods that create observable sequences
@@ -43,10 +44,10 @@ package raix.reactive
 				{
 					(function(obs:IObservable):void
 					{
-						var futureSubscription : FutureCancelable = new FutureCancelable();
+						var futureSubscription : MutableCancelable = new MutableCancelable();
 						subscription.add(futureSubscription);
 					
-						futureSubscription.innerCancelable = obs.subscribe(
+						futureSubscription.cancelable = obs.subscribe(
 							function(pl:Object) : void
 							{
 								var newSubscriptions : CompositeCancelable = 
@@ -141,11 +142,11 @@ package raix.reactive
 		{
 			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
-				var cancelable : FutureCancelable = new FutureCancelable(); 
+				var cancelable : MutableCancelable = new MutableCancelable(); 
 				
 				try
 				{
-					cancelable.innerCancelable = subscribeFunc(observer) as ICancelable;
+					cancelable.cancelable = subscribeFunc(observer) as ICancelable;
 				}
 				catch(error : Error)
 				{
@@ -159,77 +160,12 @@ package raix.reactive
 		
 		/**
 		 * Concatonates multiple sequences by running each sequence as the previous one finishes 
-		 * @param sources The sequences to concatonate
+		 * @param sources Anything that can be converted to an IObservable of IObservables using toObservable
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function concat(sources : Array) : IObservable
+		public static function concat(sources : *) : IObservable
 		{
-			return concatMany(fromArray(sources));
-		}
-		
-		/**
-		 * Concatonates multiple sequences by running each sequence as the previous one finishes 
-		 * @param sources The sequences to concatonate
-		 * @return An observable sequence of valueClass
-		 */		
-		public static function concatMany(sources : IObservable) : IObservable
-		{
-			if (sources == null)
-				throw new ArgumentError("sources cannot be null");
-			
-			return new ClosureObservable(function(observer : IObserver):ICancelable
-			{
-				var complete : Boolean = false;
-				var bufferedSources : Array = new Array();
-				var currentSource : IObservable = null;
-				
-				var subscription : FutureCancelable = new FutureCancelable();
-				
-				var innerObserver : IObserver = null;
-				
-				innerObserver = new ClosureObserver(
-					observer.onNext,
-					function () : void
-					{
-						if (bufferedSources.length > 0)
-						{
-							currentSource = IObservable(bufferedSources.shift());
-							subscription.innerCancelable = currentSource.subscribeWith(innerObserver);
-						}
-						else if (complete)
-						{
-							observer.onCompleted();
-						}
-						else
-						{
-							currentSource = null;
-						}
-					},
-					observer.onError
-				);
-				
-				sources.subscribe(
-					function(source : IObservable) : void
-					{
-						if (currentSource == null)
-						{
-							currentSource = source;
-							subscription.innerCancelable = source.subscribeWith(innerObserver);
-						}
-						else
-						{
-							bufferedSources.push(source);
-						}
-					},
-					function () : void
-					{
-						complete = true;
-					},
-					observer.onError);
-					
-				
-				return subscription;
-			});
+			return merge(sources, 1);
 		}
 		
 		/**
@@ -368,13 +304,13 @@ package raix.reactive
 			{
 				var intervalIndex : uint = 0;
 				
-				var scheduledAction : FutureCancelable = new FutureCancelable();
+				var scheduledAction : MutableCancelable = new MutableCancelable();
 				
-				scheduledAction.innerCancelable = scheduler.schedule(function():void
+				scheduledAction.cancelable = scheduler.schedule(function():void
 					{
 						observer.onNext(intervalIndex++);
 						
-						scheduledAction.innerCancelable = Scheduler.scheduleRecursive(scheduler,
+						scheduledAction.cancelable = Scheduler.scheduleRecursive(scheduler,
 							function(recurse : Function):void
 							{
 								observer.onNext(intervalIndex++);
@@ -756,7 +692,7 @@ package raix.reactive
 				var remainingSources : Array = new Array().concat(sources);
 				
 				var subscription : ICancelable = null;
-				var futureSubscription : FutureCancelable = new FutureCancelable();
+				var futureSubscription : MutableCancelable = new MutableCancelable();
 				
 				var scheduledAction : ICancelable = null;
 				
@@ -796,7 +732,7 @@ package raix.reactive
 							}
 						});
 					
-					futureSubscription.innerCancelable = subscription;
+					futureSubscription.cancelable = subscription;
 				};
 				
 				scheduledAction = scheduler.schedule(moveNextFunc);
@@ -834,7 +770,7 @@ package raix.reactive
 		*/
 		public static function uncaughtErrors(loaderInfo : LoaderInfo = null) : IObservable
 		{
-			return Observable.mergeMany(Observable.fromArray(
+			return Observable.merge(Observable.fromArray(
 				[_unhandledErrorsSubject, getNativeUncaughtErrors(loaderInfo)]));
 		}
 		
@@ -973,8 +909,8 @@ package raix.reactive
 			{
 				var remainingSources : Array = new Array().concat(sources);
 				
-				var subscription : FutureCancelable = new FutureCancelable();
-				var scheduledAction : FutureCancelable = new FutureCancelable();
+				var subscription : MutableCancelable = new MutableCancelable();
+				var scheduledAction : MutableCancelable = new MutableCancelable();
 				
 				var moveNextFunc : Function = null;
 				
@@ -982,14 +918,14 @@ package raix.reactive
 				{
 					var currentSource : IObservable = remainingSources.shift();
 						
-					subscription.innerCancelable = currentSource.subscribe(
+					subscription.cancelable = currentSource.subscribe(
 						function(pl:Object) : void { obs.onNext(pl); },
 						function() : void { obs.onCompleted(); },
 						function(e:Error) : void
 						{
 							if (remainingSources.length > 0)
 							{
-								scheduledAction.innerCancelable = scheduler.schedule(moveNextFunc);
+								scheduledAction.cancelable = scheduler.schedule(moveNextFunc);
 							}
 							else
 							{
@@ -998,7 +934,7 @@ package raix.reactive
 						});
 				};
 				
-				scheduledAction.innerCancelable = scheduler.schedule(moveNextFunc);
+				scheduledAction.cancelable = scheduler.schedule(moveNextFunc);
 				
 				return new CompositeCancelable([scheduledAction, subscription]);
 			});
@@ -1006,33 +942,34 @@ package raix.reactive
 		
 		/**
 		 * Emits the values from multiple sources in the order that they arrive 
-		 * @param source An array of IObservable sequences
+		 * @param source Anything that can be converted to an IObservable of IObservables using toObservable
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
+		 * @see raix.reactive.toObservable
 		 */		
-		public static function merge(sources : Array, scheduler : IScheduler = null) : IObservable
+		public static function merge(sources : *, concurrent : uint = 0) : IObservable
 		{
-			return mergeMany(fromArray(sources), scheduler);
-		}
-		
-		/**
-		 * Emits the values from multiple sources in the order that they arrive 
-		 * @param source An IObservable with valueClass IObservable, the values of which will be merged
-		 * @param scheduler The scheduler used to control flow
-		 * @return An observable sequence of valueClass
-		 */		
-		public static function mergeMany(source : IObservable, scheduler : IScheduler = null) : IObservable
-		{
+			var source : IObservable = toObservable(sources);
+			
 			return new ClosureObservable(function(obs:IObserver) : ICancelable
 			{
 				var subscription : CompositeCancelable = new CompositeCancelable([]);
 				
 				var sourceComplete : Boolean = false;
 				
-				var outerSubscription : FutureCancelable = new FutureCancelable();
+				var outerSubscription : MutableCancelable = new MutableCancelable();
 				subscription.add(outerSubscription);
 				
-				outerSubscription.innerCancelable = source.subscribe(
+				var innerSubscriptions : CompositeCancelable = new CompositeCancelable();
+				subscription.add(innerSubscriptions);
+				
+				var queue : ReplaySubject = new ReplaySubject();
+				
+				var queuedSource : IObservable = (concurrent == 0)
+					? source
+					: source.zip(queue, function(l:IObservable,r:Object):IObservable { return l; });
+				
+				outerSubscription.cancelable = queuedSource.subscribe(
 					function(innerSource:IObservable) : void
 					{
 						if (innerSource == null)
@@ -1040,19 +977,23 @@ package raix.reactive
 							throw new IllegalOperationError("Cannot merge null IObservable");
 						}
 						
-						var innerSubscription : FutureCancelable = new FutureCancelable();
-						subscription.add(innerSubscription);
+						var innerSubscription : MutableCancelable = new MutableCancelable();
+						innerSubscriptions.add(innerSubscription);
 						
-						innerSubscription.innerCancelable = innerSource.subscribe(
+						innerSubscription.cancelable = innerSource.subscribe(
 							obs.onNext,
 							function() : void
 							{
 								innerSubscription.cancel();
-								subscription.remove(innerSubscription);
+								innerSubscriptions.remove(innerSubscription);
 								
-								if (sourceComplete && subscription.count == 0)
+								if (sourceComplete && innerSubscriptions.count == 0)
 								{
 									obs.onCompleted();
+								}
+								else
+								{
+									queue.onNext(null);
 								}
 							},
 							obs.onError
@@ -1064,13 +1005,21 @@ package raix.reactive
 						
 						subscription.remove(outerSubscription);
 						
-						if (subscription.count == 0)
+						if (innerSubscriptions.count == 0)
 						{
 							obs.onCompleted();
 						}
 					},
 					obs.onError
 					);
+					
+				if (concurrent != 0)
+				{
+					for (var i:int=0;i<concurrent;i++)
+					{
+						queue.onNext(null);
+					}
+				}
 				
 				return subscription;
 			});
@@ -1091,7 +1040,8 @@ package raix.reactive
 		 * Converts a function into an observable sequence  
 		 * @param action The function to call
 		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of valueClass
+		 * @return A function accepting the arguments of the original action, but that will 
+		 * return an IObservable when called.
 		 */		
 		public static function toAsync(action : Function, scheduler : IScheduler = null) : Function
 		{
@@ -1197,7 +1147,7 @@ package raix.reactive
 		{
 			var queue : Subject = new Subject();
 			
-			Observable.concatMany(queue)
+			Observable.concat(queue)
 				.subscribe(null, null, null);
 				
 			return queue;

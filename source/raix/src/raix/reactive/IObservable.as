@@ -148,7 +148,7 @@ package raix.reactive
 		 * @param sources The sequences to concatonate after the current sequence 
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
-		function concat(sources : Array/*.<IObservable>*/) : IObservable;
+		function concat(source:IObservable):IObservable;
 		
 		/**
 		 * Determines if the source sequence contains a specific value 
@@ -186,6 +186,16 @@ package raix.reactive
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
 		function doAction(next:Function, complete:Function = null, error:Function = null):IObservable;
+		
+		/**
+		 * Recursively expands a sequence via a selector that provides additional sequences 
+		 * @param selector A selector that accepts the values emitted by the source (or another selector) and returns an IObservable
+		 * function(v:TValue):IObservable
+		 * @param scheduler
+		 * @return 
+		 * 
+		 */		
+		function expand(selector : Function, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Executes a function when the sequence completes or errors
@@ -283,7 +293,7 @@ package raix.reactive
 		 * @param scheduler The scheduler to use 
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
-		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
+		function merge(source : IObservable):IObservable;
 		
 		/**
 		 * Filters out values from a source sequence that are not of a specific type 
@@ -490,11 +500,12 @@ package raix.reactive
 		
 		/**
 		 * Emits the specified values at the start of a sequence 
-		 * @param value The value to emit at the start of the sequence
-		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of the same valueClass as the current sequence 
+		 * @param value That value, converted to an IObservable using toObservable, that will 
+		 * be emitted at the start of the current sequence
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 * @see raix.reactive.toObservable 
 		 */
-		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
+		function startWith(value : *) : IObservable;
 		
 		/**
 		 * Like selectMany, starts a new sequence for every value in the source 

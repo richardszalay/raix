@@ -316,7 +316,7 @@ package raix.reactive
 				
 				var subscriptions : CompositeCancelable = new CompositeCancelable([]);
 				
-				var checkWindowSchedule : FutureCancelable = new FutureCancelable();
+				var checkWindowSchedule : MutableCancelable = new MutableCancelable();
 				subscriptions.add(checkWindowSchedule);
 				
 				var checkWindow : Function;
@@ -353,7 +353,7 @@ package raix.reactive
 						nextShiftTime += timeShiftMs;
 					}
 					
-					checkWindowSchedule.innerCancelable = scheduler.schedule(function():void
+					checkWindowSchedule.cancelable = scheduler.schedule(function():void
 					{
 						if (isShift)
 						{
@@ -379,11 +379,11 @@ package raix.reactive
 					
 					checkWindow();
 					
-					var sourceSubscription : FutureCancelable = new FutureCancelable();
+					var sourceSubscription : MutableCancelable = new MutableCancelable();
 					
 					subscriptions.add(sourceSubscription);
 					
-					sourceSubscription.innerCancelable = source.subscribe(
+					sourceSubscription.cancelable = source.subscribe(
 						function(v:Object) : void
 						{
 							for each(var subject : Subject in activeWindows)
@@ -446,8 +446,8 @@ package raix.reactive
 			
 			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
-				var currentTimeout : FutureCancelable = new FutureCancelable();
-				var sourceSubscription : FutureCancelable = new FutureCancelable();
+				var currentTimeout : MutableCancelable = new MutableCancelable();
+				var sourceSubscription : MutableCancelable = new MutableCancelable();
 				
 				var subscriptions : CompositeCancelable = 
 					new CompositeCancelable([currentTimeout, sourceSubscription]);
@@ -467,12 +467,12 @@ package raix.reactive
 					window = new Subject();
 					observer.onNext(window);
 					
-					currentTimeout.innerCancelable = scheduler.schedule(createNewWindow, timeMs);
+					currentTimeout.cancelable = scheduler.schedule(createNewWindow, timeMs);
 				};
 				
 				createNewWindow();
 				
-				sourceSubscription.innerCancelable = source.subscribe(
+				sourceSubscription.cancelable = source.subscribe(
 						function(v:Object) : void
 						{
 							window.onNext(v);
@@ -622,12 +622,12 @@ package raix.reactive
 			
 			return new ClosureObservable(function(observer : IObserver) : ICancelable 
 			{
-				var leftSubscription : FutureCancelable = new FutureCancelable();
+				var leftSubscription : MutableCancelable = new MutableCancelable();
 				var leftValue : Object = null;
 				var leftComplete : Object = null;
 				var leftHasValue : Object = null;
 				
-				var rightSubscription : FutureCancelable = new FutureCancelable();
+				var rightSubscription : MutableCancelable = new MutableCancelable();
 				var rightValue : Object = null;
 				var rightComplete : Object = null;
 				var rightHasValue : Object = null;				
@@ -661,7 +661,7 @@ package raix.reactive
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					leftSubscription.innerCancelable = left.subscribe(
+					leftSubscription.cancelable = left.subscribe(
 						function(v:Object) : void
 						{
 							leftValue = v;
@@ -671,7 +671,7 @@ package raix.reactive
 						function():void { leftComplete = true; checkComplete(); },
 						observer.onError);
 					
-					rightSubscription.innerCancelable = right.subscribe(
+					rightSubscription.cancelable = right.subscribe(
 						function(v:Object) : void
 						{
 							rightValue = v;
@@ -689,11 +689,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function concat(sources:Array):IObservable
+		public function concat(source:IObservable):IObservable
 		{
-			sources = [this].concat(sources);
-			
-			return Observable.concat(sources);
+			return Observable.concat([this, source]);
 		}
 		
 		/**
@@ -781,11 +779,11 @@ package raix.reactive
 				var nextScheduledAction : ICancelable = null;
 				var completeScheduledAction : ICancelable = null;
 				
-				var future : FutureCancelable = new FutureCancelable();
+				var future : MutableCancelable = new MutableCancelable();
 				
 				var composite : ICancelable = new CompositeCancelable([scheduledActions, future]);
 				
-				future.innerCancelable = source.subscribe(
+				future.cancelable = source.subscribe(
 					function(pl : Object) : void
 					{
 						scheduledActions.add(scheduler.schedule(function():void { observer.onNext(pl); }, delayMs));
@@ -822,10 +820,10 @@ package raix.reactive
 				var isPastDate : Boolean = (scheduler.now.time >= dtValue);
 				var scheduledActions : CompositeCancelable = new CompositeCancelable([]);
 				
-				var future : FutureCancelable = new FutureCancelable();
+				var future : MutableCancelable = new MutableCancelable();
 				scheduledActions.add(future);				
 				
-				future.innerCancelable = source.materialize().subscribe(
+				future.cancelable = source.materialize().subscribe(
 					function(pl : Notification) : void
 					{
 						var now : Number = 0;
@@ -921,6 +919,67 @@ package raix.reactive
 					});
 					
 				return source.subscribeWith(dec);
+			});
+		}
+		
+		public function expand(selector : Function, scheduler : IScheduler = null) : IObservable
+		{
+			scheduler = scheduler || Scheduler.synchronous;
+			
+			var source : IObservable = this;
+			
+			return new ClosureObservable(function(observer : IObserver):ICancelable
+			{
+				var sources : Subject = new Subject();
+
+				var subscription : MutableCancelable = new MutableCancelable();
+				
+				var activeCount : uint = 1;
+				
+				var sourceWithPeek : IObservable = source.doAction(null, function():void
+				{
+					activeCount--;
+					
+					if (activeCount == 0)
+					{
+						sources.onCompleted();
+					}
+				});
+				
+				scheduler.schedule(function():void
+				{
+					subscription.cancelable = Observable.merge(sources.startWith(Observable.value(sourceWithPeek)))
+						.subscribe(function(v:Object):void
+						{
+							observer.onNext(v);
+							
+							var inner : IObservable;
+							
+							try
+							{
+								inner = selector(v);
+							}
+							catch(err : Error)
+							{
+								sources.onError(err);
+								return;
+							}
+							
+							activeCount++;
+							
+							sources.onNext(inner.doAction(null, function():void
+							{
+								activeCount--;
+						
+								if (activeCount == 0)
+								{
+									sources.onCompleted();
+								}
+							}));
+						}, observer.onCompleted, observer.onError);
+				});
+					
+				return subscription;
 			});
 		}
 		
@@ -1054,8 +1113,8 @@ package raix.reactive
 			
 			return Observable.createWithCancelable(function(observer:IObserver) : ICancelable
 			{
-				var leftSubscription : FutureCancelable = new FutureCancelable();
-				var rightSubscription : FutureCancelable = new FutureCancelable();
+				var leftSubscription : MutableCancelable = new MutableCancelable();
+				var rightSubscription : MutableCancelable = new MutableCancelable();
 				
 				var windowSubscriptions : CompositeCancelable = new CompositeCancelable();
 				
@@ -1082,7 +1141,7 @@ package raix.reactive
 					observer.onError(error);
 				};
 				
-				leftSubscription.innerCancelable = source
+				leftSubscription.cancelable = source
 					.subscribe(function(leftValue : Object) : void
 					{
 						var leftWindow : IObservable;
@@ -1108,12 +1167,12 @@ package raix.reactive
 							rightValuesSubject.onNext(activeRightValue);
 						}
 						
-						var leftWindowSubscription : FutureCancelable = new FutureCancelable();
+						var leftWindowSubscription : MutableCancelable = new MutableCancelable();
 						windowSubscriptions.add(leftWindowSubscription);
 						
 						activeLeftSubjects.push(rightValuesSubject);
 							
-						leftWindowSubscription.innerCancelable = leftWindow
+						leftWindowSubscription.cancelable = leftWindow
 							.take(1)
 							.finallyAction(function():void
 							{
@@ -1142,7 +1201,7 @@ package raix.reactive
 					},
 					onError);
 					
-				rightSubscription.innerCancelable = right.subscribe(
+				rightSubscription.cancelable = right.subscribe(
 					function(rightValue : Object) : void
 					{
 						var rightWindow : IObservable;
@@ -1166,10 +1225,10 @@ package raix.reactive
 						activeRightKeys.push(activeRightValueID);;
 						activeRightValues.push(rightValue);
 						
-						var rightWindowSubscription : FutureCancelable = new FutureCancelable();
+						var rightWindowSubscription : MutableCancelable = new MutableCancelable();
 						windowSubscriptions.add(rightWindowSubscription);
 						
-						rightWindowSubscription.innerCancelable = rightWindow
+						rightWindowSubscription.cancelable = rightWindow
 							.take(1)
 							.finallyAction(function():void
 							{
@@ -1270,10 +1329,10 @@ package raix.reactive
 					return -1;
 				};
 				
-				var sourceSubscription : FutureCancelable = new FutureCancelable();
+				var sourceSubscription : MutableCancelable = new MutableCancelable();
 				var durationSubscriptions : CompositeCancelable = new CompositeCancelable();
 				
-				sourceSubscription.innerCancelable = source.subscribe(
+				sourceSubscription.cancelable = source.subscribe(
 					function(sourceValue : Object) : void
 					{
 						var key : Object;
@@ -1322,14 +1381,14 @@ package raix.reactive
 								return;
 							}
 							
-							var durationSubscription : FutureCancelable = new FutureCancelable();
+							var durationSubscription : MutableCancelable = new MutableCancelable();
 
 						    durationSubscriptions.add(durationSubscription);
 						    
 						    observer.onNext(group);
 						    groupSubject.onNext(element);
 							
-							durationSubscription.innerCancelable = groupDuration
+							durationSubscription.cancelable = groupDuration
 								.take(1).subscribe(null, function():void
 								{
 									var keyIndex : int = -1;
@@ -1528,9 +1587,9 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function merge(sources : IObservable, scheduler:IScheduler=null):IObservable
+		public function merge(source : IObservable):IObservable
 		{
-			return Observable.mergeMany(sources.startWith([this], scheduler), scheduler);
+			return Observable.merge([this, source]);
 		}
 		
 		/**
@@ -1553,12 +1612,12 @@ package raix.reactive
 			
 			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
-				var scheduledAction : FutureCancelable = new FutureCancelable();
+				var scheduledAction : MutableCancelable = new MutableCancelable();
 				
 				var subscription : ICancelable = source.materialize()
 					.subscribe(function(n:Notification):void
 					{
-						scheduledAction.innerCancelable = scheduler.schedule(function():void
+						scheduledAction.cancelable = scheduler.schedule(function():void
 						{
 							n.acceptWith(observer);
 						});
@@ -1577,12 +1636,12 @@ package raix.reactive
 			
 			return new ClosureObservable(function(observer : IObserver):ICancelable
 			{
-				var first : FutureCancelable = new FutureCancelable();
-				var second : FutureCancelable = new FutureCancelable();
+				var first : MutableCancelable = new MutableCancelable();
+				var second : MutableCancelable = new MutableCancelable();
 				
-				first.innerCancelable = scheduler.schedule(function():void
+				first.cancelable = scheduler.schedule(function():void
 				{
-					second.innerCancelable = source.subscribeWith(observer);
+					second.cancelable = source.subscribeWith(observer);
 				});
 				
 				return new CompositeCancelable([first, second]);
@@ -1670,7 +1729,7 @@ package raix.reactive
 			return new ClosureObservable(function(observer:IObserver):ICancelable
 			{
 				var queueCancelable : BooleanCancelable = new BooleanCancelable();
-				var sourceCancelable : FutureCancelable = new FutureCancelable();
+				var sourceCancelable : MutableCancelable = new MutableCancelable();
 				
 				queue.onNext(new ClosureObservable(function(queueObserver:IObserver):ICancelable
 				{
@@ -1680,7 +1739,7 @@ package raix.reactive
 						return Cancelable.empty;
 					}
 					
-					sourceCancelable.innerCancelable = source
+					sourceCancelable.cancelable = source
 					.finallyAction(function():void
 					{
 						queueObserver.onCompleted();
@@ -1749,7 +1808,7 @@ package raix.reactive
 				var isInfinite : Boolean = (repeatCount == 0);
 				var iterationsRemaining : int = repeatCount - 1;
 				
-				var subscription : FutureCancelable = new FutureCancelable();				
+				var subscription : MutableCancelable = new MutableCancelable();				
 				var recursiveObserver : IObserver = null;
 				
 				recursiveObserver = new ClosureObserver(
@@ -1760,7 +1819,7 @@ package raix.reactive
 						{
 							Scheduler.immediate.schedule(function():void
 							{
-								subscription.innerCancelable = source.subscribeWith(recursiveObserver);
+								subscription.cancelable = source.subscribeWith(recursiveObserver);
 							});
 						}
 						else
@@ -1772,7 +1831,7 @@ package raix.reactive
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					subscription.innerCancelable = source.subscribeWith(recursiveObserver);
+					subscription.cancelable = source.subscribeWith(recursiveObserver);
 				});
 				
 				return subscription;
@@ -1791,7 +1850,7 @@ package raix.reactive
 				var isInfinite : Boolean = (retryCount == 0);
 				var iterationsRemaining : int = retryCount - 1;
 				
-				var subscription : FutureCancelable = new FutureCancelable();				
+				var subscription : MutableCancelable = new MutableCancelable();				
 				var recursiveObserver : IObserver = null;
 				
 				recursiveObserver = new ClosureObserver(
@@ -1803,7 +1862,7 @@ package raix.reactive
 						{
 							Scheduler.immediate.schedule(function():void
 							{
-								subscription.innerCancelable = source.subscribeWith(recursiveObserver);
+								subscription.cancelable = source.subscribeWith(recursiveObserver);
 							});
 						}
 						else
@@ -1814,7 +1873,7 @@ package raix.reactive
 				
 				Scheduler.immediate.schedule(function():void
 				{
-					subscription.innerCancelable = source.subscribeWith(recursiveObserver);
+					subscription.cancelable = source.subscribeWith(recursiveObserver);
 				});
 				
 				return subscription;
@@ -1935,9 +1994,9 @@ package raix.reactive
 			
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
-				var subscription : FutureCancelable = new FutureCancelable();
+				var subscription : MutableCancelable = new MutableCancelable();
 				
-				subscription.innerCancelable = source.subscribe(
+				subscription.cancelable = source.subscribe(
 					function (value : Object) : void
 					{
 						try
@@ -1976,7 +2035,7 @@ package raix.reactive
 		{
 			var source : IObservable = this;
 			
-			return Observable.mergeMany(this.map(selector)); 
+			return Observable.merge(this.map(selector)); 
 		}
 		
 		public function sequenceEqual(other : IObservable, valueComparer : Function = null) : IObservable
@@ -2158,9 +2217,9 @@ package raix.reactive
 			{
 				var buffer : Array = new Array();
 				
-				var futureSubscription : FutureCancelable = new FutureCancelable();
+				var futureSubscription : MutableCancelable = new MutableCancelable();
 				
-				futureSubscription.innerCancelable = source.subscribe(
+				futureSubscription.cancelable = source.subscribe(
 					function(v:Object):void
 					{
 						buffer.push(v);
@@ -2284,11 +2343,10 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function startWith(values : Array, scheduler : IScheduler = null) : IObservable
+		public function startWith(value : *) : IObservable
 		{
-			return Observable
-				.fromArray(values, scheduler)
-				.concat([this]);
+			return toObservable(value)
+				.concat(this);
 		}
 		
 		/**
@@ -2300,16 +2358,16 @@ package raix.reactive
 			
 			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
-				var parentCancelable : FutureCancelable = new FutureCancelable();
+				var parentCancelable : MutableCancelable = new MutableCancelable();
 				var parentCompleted : Boolean = false;
 				
-				var childCancelable : FutureCancelable = new FutureCancelable();
+				var childCancelable : MutableCancelable = new MutableCancelable();
 				var childCompleted : Boolean = false;
 				
-				parentCancelable.innerCancelable = source.subscribe(
+				parentCancelable.cancelable = source.subscribe(
 					function(child : IObservable) : void
 					{
-						childCancelable.innerCancelable = child.subscribe(
+						childCancelable.cancelable = child.subscribe(
 							observer.onNext,
 							function() : void 
 							{
@@ -2365,7 +2423,7 @@ package raix.reactive
 			{
 				var countSoFar : uint = 0;
 				
-				var subscription : FutureCancelable = new FutureCancelable();
+				var subscription : MutableCancelable = new MutableCancelable();
 				
 				var decoratorObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -2381,7 +2439,7 @@ package raix.reactive
 					observer.onError
 					);
 				
-				subscription.innerCancelable = source.subscribeWith(decoratorObserver);
+				subscription.cancelable = source.subscribeWith(decoratorObserver);
 				
 				return subscription;
 			});
@@ -2403,9 +2461,9 @@ package raix.reactive
 			{
 				var buffer : Array = new Array();
 				
-				var futureSubscription : FutureCancelable = new FutureCancelable();
+				var futureSubscription : MutableCancelable = new MutableCancelable();
 				
-				futureSubscription.innerCancelable = source.subscribe(
+				futureSubscription.cancelable = source.subscribe(
 					function(v:Object):void
 					{
 						buffer.push(v);
@@ -2440,20 +2498,20 @@ package raix.reactive
 			{
 				var subscription : ICancelable;
 				
-				var primarySubscription : FutureCancelable = new FutureCancelable();
-				var otherSubscription : FutureCancelable = new FutureCancelable();
+				var primarySubscription : MutableCancelable = new MutableCancelable();
+				var otherSubscription : MutableCancelable = new MutableCancelable();
 				
 				var composite : ICancelable = new CompositeCancelable([
 					primarySubscription, otherSubscription
 				]);
 				
-				otherSubscription.innerCancelable = other.subscribe(
+				otherSubscription.cancelable = other.subscribe(
 					function (value : Object) : void { observer.onCompleted(); },
 					observer.onCompleted,
 					observer.onError
 					);
 					
-				primarySubscription.innerCancelable = source.subscribeWith(observer);
+				primarySubscription.cancelable = source.subscribeWith(observer);
 					
 				
 				return composite;
@@ -2519,20 +2577,20 @@ package raix.reactive
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
 				var lastValue : Object = null;
-				var sourceSubscription : FutureCancelable = new FutureCancelable();
-				var currentTimeout : FutureCancelable = new FutureCancelable();
+				var sourceSubscription : MutableCancelable = new MutableCancelable();
+				var currentTimeout : MutableCancelable = new MutableCancelable();
 				
 				var throttleTimeout : Function = function():void
 				{
 					observer.onNext(lastValue);
 				};
 				
-				sourceSubscription.innerCancelable = source.subscribe(
+				sourceSubscription.cancelable = source.subscribe(
 					function (value : Object) : void
 					{
 						lastValue = value;
 						
-						currentTimeout.innerCancelable = 
+						currentTimeout.cancelable = 
 							scheduler.schedule(throttleTimeout, dueTimeMs);
 					},
 					observer.onCompleted,
@@ -2590,18 +2648,18 @@ package raix.reactive
 			
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
-				var timeout : FutureCancelable = new FutureCancelable();
-				var subscription : FutureCancelable = new FutureCancelable();
+				var timeout : MutableCancelable = new MutableCancelable();
+				var subscription : MutableCancelable = new MutableCancelable();
 				
 				var composite : ICancelable = new CompositeCancelable([timeout, subscription]);
 				
-				timeout.innerCancelable = scheduler.schedule(function():void
+				timeout.cancelable = scheduler.schedule(function():void
 				{
 					subscription.cancel();
 					subscription = other.subscribeWith(observer);
 				}, timeoutMs);
 				
-				subscription.innerCancelable = source.subscribe(
+				subscription.cancelable = source.subscribe(
 					function (value : Object) : void
 					{
 						timeout.cancel();
@@ -2715,17 +2773,17 @@ package raix.reactive
 			{
 				var windowOpenings : Subject = new Subject();
 				
-				var multiWindowSubscription : FutureCancelable = new FutureCancelable();
-				var activeWindowSubscription : FutureCancelable = new FutureCancelable();
+				var multiWindowSubscription : MutableCancelable = new MutableCancelable();
+				var activeWindowSubscription : MutableCancelable = new MutableCancelable();
 				
-				multiWindowSubscription.innerCancelable = multiWindow(windowOpenings.startWith([null]), 
+				multiWindowSubscription.cancelable = multiWindow(windowOpenings.startWith([null]), 
 					function(u:Unit):IObservable
 					{
 						var windowValues : AsyncSubject = new AsyncSubject();
 						
 						var closing : IObservable = IObservable(windowClosingSelector());
 						
-						activeWindowSubscription.innerCancelable = closing
+						activeWindowSubscription.cancelable = closing
 							.take(1)
 							.subscribe(null, function():void
 							{
@@ -2774,8 +2832,8 @@ package raix.reactive
 				var rightComplete : Boolean = false;
 				var rightValues : Array = new Array();
 				
-				var leftSubscription : FutureCancelable = new FutureCancelable(), 
-					rightSubscription : FutureCancelable = new FutureCancelable();
+				var leftSubscription : MutableCancelable = new MutableCancelable(), 
+					rightSubscription : MutableCancelable = new MutableCancelable();
 				
 				var leftObserver : IObserver = new ClosureObserver(
 					function (value : Object) : void
@@ -2788,7 +2846,14 @@ package raix.reactive
 						}
 						else
 						{
-							leftValues.push(value);
+							if (rightComplete)
+							{
+								observer.onCompleted();
+							}
+							else
+							{
+								leftValues.push(value);
+							}
 						}
 					},
 					function():void
@@ -2810,7 +2875,14 @@ package raix.reactive
 						}
 						else
 						{
-							rightValues.push(value);
+							if (leftComplete)
+							{
+								observer.onCompleted();
+							}
+							else
+							{
+								rightValues.push(value);
+							}
 						}
 					},
 					function():void
@@ -2821,8 +2893,8 @@ package raix.reactive
 					observer.onError
 					);
 					
-				leftSubscription.innerCancelable = source.subscribeWith(leftObserver);
-				rightSubscription.innerCancelable = rightSource.subscribeWith(rightObserver);
+				leftSubscription.cancelable = source.subscribeWith(leftObserver);
+				rightSubscription.cancelable = rightSource.subscribeWith(rightObserver);
 				
 				return new ClosureCancelable(function():void
 				{

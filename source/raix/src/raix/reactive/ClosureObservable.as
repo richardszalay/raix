@@ -19,12 +19,12 @@ package raix.reactive
 			// TODO: What is observer is already a SafetyObserver (eg. select().first())?
 			var safetyObserver : SafetyObserver = new SafetyObserver(observer);
 			
-			var subscription : FutureCancelable = new FutureCancelable();
+			var subscription : MutableCancelable = new MutableCancelable();
 			safetyObserver.setSubscription(subscription);
 			
 			Scheduler.immediate.schedule(function():void
 			{
-				subscription.innerCancelable = ICancelable(_observeFunc(safetyObserver));
+				subscription.cancelable = ICancelable(_observeFunc(safetyObserver));
 			});
 			
 			

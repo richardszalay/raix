@@ -55,7 +55,7 @@ package raix.reactive.tests.operators.combine
         public function can_resubscribe() : void
         {
         	var obs : IObservable = Observable.value(1)
-        		.concat([Observable.value(2)]);
+        		.concat(Observable.value(2));
         		
         	var statsA : StatsObserver = new StatsObserver();
         	var statsB : StatsObserver = new StatsObserver();

@@ -879,7 +879,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function doAction(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
+		public function peek(nextAction:Function, completeAction:Function = null, errorAction:Function = null):IObservable
 		{
 			var source : IObservable = this;
 			
@@ -2518,12 +2518,14 @@ package raix.reactive
 			
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
+				var hasValue : Boolean = false;
 				var lastValue : Object = null;
 				var sourceSubscription : FutureCancelable = new FutureCancelable();
 				var currentTimeout : FutureCancelable = new FutureCancelable();
 				
 				var throttleTimeout : Function = function():void
 				{
+					hasValue = false;
 					observer.onNext(lastValue);
 				};
 				
@@ -2531,11 +2533,19 @@ package raix.reactive
 					function (value : Object) : void
 					{
 						lastValue = value;
+						hasValue = true;
 						
 						currentTimeout.innerCancelable = 
 							scheduler.schedule(throttleTimeout, dueTimeMs);
 					},
-					observer.onCompleted,
+					function() : void
+					{
+						if (hasValue)
+						{
+							observer.onNext(lastValue);
+							observer.onCompleted();
+						}
+					},
 					observer.onError);
 					
 				return new CompositeCancelable(

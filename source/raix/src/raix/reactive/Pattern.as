@@ -35,7 +35,7 @@ package raix.reactive
 		 * @param valueClass The valueClass that will be returned by thenFunction
 		 * @param thenFunction The function that will accept one argument for each 
 		 * sequence in the pattern and output a valueClass
-		 * @return A Plan that can be used with Observable.join
+		 * @return A Plan that can be used with Observable.when
 		 */		
 		public function then(thenFunction : Function) : Plan
 		{

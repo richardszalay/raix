@@ -185,7 +185,7 @@ package raix.reactive
 		 * @param error The function to execute in the event of an error (onError)
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
-		function doAction(next:Function, complete:Function = null, error:Function = null):IObservable;
+		function peek(next:Function, complete:Function = null, error:Function = null):IObservable;
 		
 		/**
 		 * Executes a function when the sequence completes or errors
@@ -227,14 +227,44 @@ package raix.reactive
 		 * @param joinSelector A function that will accept "live" left/right value combinations and return a new value. 
 		 *     The output of this function will be received by any subscribers:
 		 *     function(outer : TOuter, inner : TInner) : TResult
-		 * @return An observable sequence of valueClass resultClass
+		 * @return An observable sequence of TResult (returned by joinSelector)
 		 */		 
 		function join(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;
 		
+		/**
+		 * Combines values from two streams based on the "lifetime" of each value, represented by an IObservable 
+		 * selected for each value. Differs from `join` in that the joinSelector accepts the left value and an IObservable of the right values  
+		 * @param right The right hand side of the join
+		 * @param leftWindowSelector A function that will be called for each value from the left ("this") and will 
+		 *     return the IObservable that represents the lifetime window of that value
+		 * @param rightWindowSelector A function that will be called for each value from right and will 
+		 *     return the IObservable that represents the lifetime window of that value
+		 * @param joinSelector A function that will accept "live" left value and a sequence of the right values that occur during matching lifetimes 
+		 *     The output of this function will be received by any subscribers:
+		 *     function(outer : TOuter, inner : IObservable.<TInner>) : TResult
+		 * @return An observable sequence of TResult (returned by joinSelector)
+		 */
 		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;
 		
+		/**
+		 * Groups together values as IGroupedObservable streams as the values arrive
+		 * @param keySelector Retrieves the grouping key for a source value
+		 * @param elementSelector If supplied, maps the grouped element from the source value
+		 * @param keyComparer If supplied, compares group keys for equality
+		 * @return An IObservable of IGroupedObservable values, which adds a key
+		 */
 		function groupBy(keySelector : Function, elementSelector : Function = null, keyComparer : Function = null) : IObservable;
 		
+		/**
+		 * Groups together values as IGroupedObservable streams as the values arrive until the grouping finishes, the lifetime for which 
+		 * is determined by a selector function
+		 * @param keySelector Retrieves the grouping key for a source value
+		 * @param durationSelector Retrieves an IObservable that signals the end of a group's lifetime by emitting a value or completing:
+		 *     function(group : IGroupedObservable) : IObservable
+		 * @param elementSelector If supplied, maps the grouped element from the source value
+		 * @param keyComparer If supplied, compares group keys for equality
+		 * @return An IObservable of IGroupedObservable values, which adds a key
+		 */
 		function groupByUntil(keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable;
 		
 		/**
@@ -243,6 +273,10 @@ package raix.reactive
 		 */		
 		function asObservable() : IObservable;
 		
+		/**
+		 * Removes values from a source sequence, emitting only completion and error events.
+		 * @return IObservable.<T> 
+		 */
 		function ignoreValues() : IObservable;
 		
 		/**

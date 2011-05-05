@@ -52,7 +52,7 @@ class Counter
     
     public function Counter(init:int)
     {
-    	_dispose = Observable.join([
+    	_dispose = Observable.when([
     		_counter.and(_get).then(function(n:int, result:ISubject):void 
     		{
     			_counter.onNext(n);

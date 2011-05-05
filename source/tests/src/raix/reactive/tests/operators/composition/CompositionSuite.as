@@ -4,7 +4,7 @@ package raix.reactive.tests.operators.composition
 	[RunWith("org.flexunit.runners.Suite")]
 	public class CompositionSuite
 	{
-		public var doAction : DoActionFixture;
+		public var doAction : PeekFixture;
 		public var finallyAction : FinallyActionFixture;
 		public var let : LetFixture;
 	}

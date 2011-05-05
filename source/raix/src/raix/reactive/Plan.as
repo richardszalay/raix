@@ -3,7 +3,7 @@ package raix.reactive
 	/**
 	 * A combination of IObservable sequences and a selector that will 
 	 * map the values of those sequences to an output value. A plan is intended 
-	 * to be used with Observable.join
+	 * to be used with Observable.when
 	 * 
 	 * <p>Generally, a Plan will be created using Pattern.then(), rather 
 	 * than creating a Plan directly</p>

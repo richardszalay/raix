@@ -15,7 +15,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
                 .subscribeWith(stats);
@@ -34,7 +34,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
                 .subscribeWith(stats);
@@ -61,7 +61,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
                 .subscribeWith(stats);
@@ -88,7 +88,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                 subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })                
                 ])
@@ -109,7 +109,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectA).then(String, function(x:int,y:int):String { return null; })
                 ])
                 .subscribeWith(stats);
@@ -126,7 +126,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                 subjectA.and(subjectB).then(String, function(x:int,y:int):String { return null; }),
                 subjectB.and(subjectA).then(String, function(x:int,y:int):String { return null; })
                 ])
@@ -145,7 +145,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectA.and(subjectC).then(String, function(x:int,y:int):String { return x.toString() + "." + y.toString(); })
                 ])
@@ -172,7 +172,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])
@@ -201,7 +201,7 @@ package raix.reactive.tests.operators.combine
 
             var stats : StatsObserver = new StatsObserver();
 
-            Observable.join(String, [
+            Observable.when(String, [
                     subjectA.and(subjectB).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); }),
                     subjectC.and(subjectD).then(String, function(x:int,y:int):String { return x.toString() + "," + y.toString(); })
                 ])

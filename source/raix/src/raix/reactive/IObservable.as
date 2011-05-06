@@ -356,12 +356,12 @@ package raix.reactive
 		function prune(scheduler : IScheduler = null) : IConnectableObservable;
 		
 		/**
-		 * Creates, and immediately connects to, a shared sequence that emits the last value of the source sequence 
+		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from prune 
 		 * @param selector The function to map the connected sequence through
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of the same type as the current sequence
 		 */
-		function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable;
+		function pruneAndLet(selector : Function, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Creates a connectable sequence that can be shared by multiple observers  
@@ -370,11 +370,11 @@ package raix.reactive
 		function publish() : IConnectableObservable;
 		
 		/**
-		 * Creates, and immediately connects to, a connectable sequence that can be shared by multiple observers
+		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from publish
 		 * @param selector The function to map the connected sequence through
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
-		function publishAndConnect(selector : Function) : IObservable;
+		function publishAndLet(selector : Function) : IObservable;
 		
 		/**
 		 * Enqueues a sequence onto a queue created by Observable.queue so that it will not be executed 
@@ -409,14 +409,14 @@ package raix.reactive
 		function replay(bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
 		
 		/**
-		 * Records the output of the source sequence and replays it to future subscribers
+		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from replay
 		 * @param selector The function to map the connected sequence through 
 		 * @param bufferSize The number of values at the end of the sequence to replay, or 0 for all.
 		 * @param window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of the same type as the current sequence 
 		 */
-		function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
+		function replayAndLet(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Repeats the source sequence a specific number of times 

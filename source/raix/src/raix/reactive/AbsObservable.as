@@ -1608,7 +1608,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function pruneAndConnect(selector : Function, scheduler : IScheduler = null) : IObservable
+		public function pruneAndLet(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
 			return multicastAndConnect(
 				function():ISubject { return new AsyncSubject(scheduler); },
@@ -1627,7 +1627,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function publishAndConnect(selector : Function) : IObservable
+		public function publishAndLet(selector : Function) : IObservable
 		{
 			return multicastAndConnect(
 				function():ISubject { return new Subject(); },
@@ -1728,7 +1728,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function replayAndConnect(selector : Function, bufferSize : uint = 0, window : uint = 0, 
+		public function replayAndLet(selector : Function, bufferSize : uint = 0, window : uint = 0, 
 			scheduler : IScheduler = null) : IObservable
 		{
 			return multicastAndConnect(

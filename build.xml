@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Build script converted from the Robotlegs build script. Many thanks to the RL team -->
-<project name="rxas" basedir="." default="test">
+<project name="raix" basedir="." default="test">
 <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
 <!-- load user properties to override defaults -->
@@ -13,15 +13,15 @@
   <taskdef resource="flexUnitTasks.tasks" classpath="${build.lib.loc}/flexUnitTasks.jar"/>
   <target name="usage">
     <echo message=""/>
-    <echo message="RxAs Build Usage"/>
+    <echo message="raix Build Usage"/>
     <echo message="-----------------------------------"/>
     <echo message=""/>
     <echo message="Available targets are:"/>
     <echo message=""/>
-    <echo message="test          --&gt; Build RxAs SWC and run unit tests"/>
-    <echo message="asdoc         --&gt; Build RxAs SWC, test, and generate asdocs"/>
-    <echo message="package       --&gt; Build RxAs SWC, test, and create release zip"/>
-    <echo message="compile       --&gt; Build RxAs SWC"/>
+    <echo message="test          --&gt; Build raix SWC and run unit tests"/>
+    <echo message="asdoc         --&gt; Build raix SWC, test, and generate asdocs"/>
+    <echo message="package       --&gt; Build raix SWC, test, and create release zip"/>
+    <echo message="compile       --&gt; Build raix SWC"/>
     <echo message="clean         --&gt; Remove all folders created by build script"/>
     <echo message="init          --&gt; Clean and create build folders"/>
     <echo message=""/>
@@ -60,11 +60,12 @@
       <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/rpc.swc" />
       <arg value="-external-library-path+=${FLEX_HOME}/frameworks/libs/utilities.swc" />
       <arg value="-source-path=${main.src.loc}"/>
-      <arg value="-include-sources=${main.src.loc}/rx"/>
-      <arg value="-include-sources+=${main.src.loc}/rx/scheduling"/>
-      <arg value="-include-sources+=${main.src.loc}/rx/flex"/>
-      <arg value="-include-sources+=${main.src.loc}/rx/impl"/>
-      <arg value="-include-sources+=${main.src.loc}/rx/subjects"/>
+      <arg value="-include-sources=${main.src.loc}/raix"/>
+      <arg value="-include-sources+=${main.src.loc}/raix/reactive/scheduling"/>
+      <arg value="-include-sources+=${main.src.loc}/raix/reactive/flex"/>
+      <arg value="-include-sources+=${main.src.loc}/raix/reactive/impl"/>
+      <arg value="-include-sources+=${main.src.loc}/raix/reactive/subjects"/>
+      <arg value="-include-sources+=${main.src.loc}/raix/interactive"/>
 <!-- Boolean mosh pit! -->
       <arg value="-incremental=true"/>
       <arg value="-static-link-runtime-shared-libraries=true"/>
@@ -88,7 +89,7 @@
     <echo>[test] Running Unit Tests</echo>
 <!-- Compile TestRunner.mxml as a SWF -->
     <java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true" maxmemory="${compile.maxmemory}">
-      <arg value="${test.src.loc}/RxAsTests.mxml"/>
+      <arg value="${test.src.loc}/tests.mxml"/>
       <arg value="-source-path=${test.src.loc}"/>
       <arg value="-includes+=asmock.integration.flexunit.ASMockClassRunner"/>    	
 <!-- Flash those sweet legs. Blink and you'll miss 'em. -->
@@ -102,6 +103,7 @@
       <arg value="-incremental=true"/>
       <arg value="-verbose-stacktraces=true"/>
       <arg value="-headless-server=true"/>
+      <arg value="-use-network=true"/>
 <!-- Conditional compilation -->
       <arg value="-define+=CONFIG::AUTOMATED,true"/>
     </java>
@@ -132,13 +134,13 @@
       <arg value="-keep-xml=true"/>
       <arg value="-templates-path=${doc.config.loc}" />
       <arg value="-lenient=true" />
-      <arg line="-window-title 'RxAs ${rxas.ver.num}'"/>
-      <arg line="-main-title 'RxAs ${rxas.ver.num}'"/>
-      <arg line="-footer 'RxAs - http://github.com/richardszalay/rxas - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package rx 'Primary classes used when working with RxAs'"/>
-      <arg line="-package rx.flex 'Flex integration classes'"/>
-      <arg line="-package rx.subjects 'Subject implementations'"/>
-      <arg line="-package rx.scheduling 'Classes that schedule execution for RxAs classes'"/>
+      <arg line="-window-title 'raix ${raix.ver.num}'"/>
+      <arg line="-main-title 'raix ${raix.ver.num}'"/>
+      <arg line="-footer 'raix - http://github.com/richardszalay/raix - Documentation generated at: ${docgen.time}'"/>
+      <arg line="-package raix 'Primary classes used when working with raix'"/>
+      <arg line="-package raix.flex 'Flex integration classes'"/>
+      <arg line="-package raix.subjects 'Subject implementations'"/>
+      <arg line="-package raix.scheduling 'Classes that schedule execution for raix classes'"/>
 <!-- Conditional compilation -->
       <arg value="-define+=CONFIG::FLEX,true"/>
     </java>
@@ -155,8 +157,8 @@
     <mkdir dir="${dist.loc}/bin"/>
     <mkdir dir="${dist.loc}/src"/>
     <copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin"/>
-    <copy todir="${dist.loc}/src/rx">
-      <fileset dir="${main.src.loc}/rx"/>
+    <copy todir="${dist.loc}/src/raix">
+      <fileset dir="${main.src.loc}/raix"/>
     </copy>
     <copy todir="${dist.loc}/docs">
       <fileset dir="${doc.loc}"/>
@@ -166,7 +168,7 @@
     <zip destfile="${dist.loc}/bin/${project.name.versioned}.swc" update="true">
       <zipfileset dir="${doc.loc}/tempdita" prefix="docs">
         <include name="*packages.dita*"/>
-        <include name="*rx.*"/>
+        <include name="*raix.*"/>
       </zipfileset>
     </zip>
 <!-- Copy README -->
@@ -174,13 +176,13 @@
       <filterchain>
         <replacetokens>
           <token key="date" value="${touch.time}"/>
-          <token key="rxasversion" value="${rxas.ver.num}"/>
+          <token key="raixversion" value="${raix.ver.num}"/>
           <token key="releasename" value="${project.name.versioned}"/>
-          <token key="rxasprojectlink" value="${rxas.project.link}"/>
-          <token key="wikilink" value="${rxas.wiki.link}"/>
-          <token key="wikidocslink" value="${rxas.wikidocs.link}"/>
-          <token key="livedocslink" value="${rxas.livedocs.link}"/>
-          <token key="builddocslink" value="${rxas.builddocs.link}"/>
+          <token key="raixprojectlink" value="${raix.project.link}"/>
+          <token key="wikilink" value="${raix.wiki.link}"/>
+          <token key="wikidocslink" value="${raix.wikidocs.link}"/>
+          <token key="livedocslink" value="${raix.livedocs.link}"/>
+          <token key="builddocslink" value="${raix.builddocs.link}"/>
         </replacetokens>
       </filterchain>
     </copy>

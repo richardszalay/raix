@@ -138,9 +138,10 @@
       <arg line="-main-title 'raix ${raix.ver.num}'"/>
       <arg line="-footer 'raix - http://github.com/richardszalay/raix - Documentation generated at: ${docgen.time}'"/>
       <arg line="-package raix 'Primary classes used when working with raix'"/>
-      <arg line="-package raix.flex 'Flex integration classes'"/>
-      <arg line="-package raix.subjects 'Subject implementations'"/>
-      <arg line="-package raix.scheduling 'Classes that schedule execution for raix classes'"/>
+      <arg line="-package raix.interactive 'Classes for working with interactive / pull collections'" />
+      <arg line="-package raix.reactive.flex 'Flex integration classes'"/>
+      <arg line="-package raix.reactive.subjects 'Subject implementations'"/>
+      <arg line="-package raix.reactive.scheduling 'Classes that schedule execution for raix classes'"/>
 <!-- Conditional compilation -->
       <arg value="-define+=CONFIG::FLEX,true"/>
     </java>

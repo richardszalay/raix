@@ -241,7 +241,7 @@ package raix.reactive
 		 *     return the IObservable that represents the lifetime window of that value
 		 * @param joinSelector A function that will accept "live" left value and a sequence of the right values that occur during matching lifetimes 
 		 *     The output of this function will be received by any subscribers:
-		 *     function(outer : TOuter, inner : IObservable.<TInner>) : TResult
+		 *     function(outer : TOuter, inner : IObservable.&lt;TInner>) : TResult
 		 * @return An observable sequence of TResult (returned by joinSelector)
 		 */
 		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;
@@ -275,7 +275,7 @@ package raix.reactive
 		
 		/**
 		 * Removes values from a source sequence, emitting only completion and error events.
-		 * @return IObservable.<T> 
+		 * @return IObservable.&lt;T> 
 		 */
 		function ignoreValues() : IObservable;
 		

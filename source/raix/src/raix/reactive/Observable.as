@@ -13,6 +13,7 @@ package raix.reactive
 	import raix.reactive.flex.*;
 	import raix.reactive.impl.*;
 	import raix.reactive.scheduling.*;
+	import raix.reactive.subjects.AsyncSubject;
 	import raix.reactive.subjects.ReplaySubject;
 
 	/**
@@ -328,7 +329,7 @@ package raix.reactive
 		 * @param plans The array of rx.Plan objects creates using 'and' and 'then'
 		 * @return An observable sequence of valueClass
 		 */		
-		public static function join(plans : Array) : IObservable
+		public static function when(plans : Array) : IObservable
 		{
 			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
@@ -942,7 +943,7 @@ package raix.reactive
 		
 		/**
 		 * Emits the values from multiple sources in the order that they arrive 
-		 * @param source Anything that can be converted to an IObservable of IObservables using toObservable
+		 * @param source Either an array of IObservable or an IObservable of IObservables
 		 * @param scheduler The scheduler used to control flow
 		 * @return An observable sequence of valueClass
 		 * @see raix.reactive.toObservable
@@ -1077,6 +1078,9 @@ package raix.reactive
 			};
 		}
 		
+		private static var _loaderQueueSubscription : ICancelable;
+		private static var _loaderQueue : ISubject;
+		
 		/**
 		 * Creates an observable sequence that loads an object from a URLRequest 
 		 * @param request The URLRequest to load
@@ -1085,12 +1089,65 @@ package raix.reactive
 		 * @return An observable sequence of Object
 		 */
 		public static function urlLoader(request : URLRequest, dataFormat : String = "text", loaderContext : LoaderContext = null) : IObservable
-		{
-			if (_urlLoaderQueue == null)
+		{		
+			var firstRequest : Boolean = (_loaderQueue == null);
+			
+			// Wait for the consumer to subscribe
+			return Observable.createWithCancelable(function(observer : IObserver) : ICancelable
 			{
-				_urlLoaderQueue = queue();
+				var cancelSignal : AsyncSubject = new AsyncSubject();
+				
+				if (firstRequest)
+				{
+					_loaderQueue = new ReplaySubject();
+					_loaderQueueSubscription = merge(_loaderQueue, _maxConcurrentLoaders).subscribe(null);
+				}
+				
+				var loader : IObservable = urlLoaderInternal(request, dataFormat, loaderContext);
+				
+				_loaderQueue.onNext(Observable.defer(function():IObservable
+				{
+					return loader
+						.log(request.url)
+						.peekWith(observer)
+						.catchError(Observable.empty())
+						.takeUntil(cancelSignal);
+				}));
+				
+				return Cancelable.create(function():void
+				{
+					cancelSignal.onCompleted();
+				});
+			});
+		}
+		
+		private static var _maxConcurrentLoaders : int = 2;
+		
+		/**
+		 * Gets the maximum number of urlLoaders that can execute concurrently. The value 
+		 * defaults to 2 to prevent issues in some browers. 
+		 */
+		public static function get maxConcurrentLoaders() : uint
+		{
+			return _maxConcurrentLoaders;
+		}
+		
+		/**
+		 * Sets the maximum number of urlLoaders that can execute concurrently. Use 0 for 
+		 * no limit.
+		 */
+		public static function set maxConcurrentLoaders(value : uint) : void
+		{
+			if (_loaderQueue != null)
+			{
+				throw new IllegalOperationError("Observable.maxConcurrentLoaders cannot be changed after Observable.urlLoader is called");
 			}
 			
+			_maxConcurrentLoaders = value;
+		}
+		
+		private static function urlLoaderInternal(request : URLRequest, dataFormat : String = "text", loaderContext : LoaderContext = null) : IObservable
+		{
 			return new ClosureObservable(function(observer : IObserver) : ICancelable
 			{
 				var loader : URLLoader = new URLLoader();
@@ -1135,26 +1192,9 @@ package raix.reactive
 				}
 				
 				return cancelable;
-			}).queued(_urlLoaderQueue);
+			});
 		}
 
-		/**
-		 * Creates a queue of unrelated observable sequences that can only be executed 
-		 * one at a time 
-		 * @return An IObserver that can be passed to Observable.enqueue
-		 */
-		public static function queue() : IObserver
-		{
-			var queue : Subject = new Subject();
-			
-			Observable.concat(queue)
-				.subscribe(null, null, null);
-				
-			return queue;
-		}
-		
-		private static var _urlLoaderQueue : IObserver;
-		
 		/**
 		 * Loads an XML document
 		 * @param request The URLRequest to load

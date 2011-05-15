@@ -60,6 +60,9 @@ package raix.reactive
 			return scan(accumulator, initialValue, useInitialValue).last();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function aggregate(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable
 		{
 			return reduce(accumulator, initialValue, useInitialValue);
@@ -623,6 +626,21 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
+		public function chain(functions : Array) : IObservable
+		{
+			var source : IObservable = this;
+			
+			for each(var selector : Function in functions)
+			{
+				source = source.mapMany(selector);
+			}
+			
+			return source;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function combineLatest(right:IObservable, selector:Function):IObservable
 		{
 			var left : IObservable = this;
@@ -700,6 +718,20 @@ package raix.reactive
 		{
 			return Observable.concat([this, source]);
 		}
+		
+		/**
+		 * @inheritDoc
+		 */		
+		public function concatMany(selector : Function) : IObservable
+		{
+			return Observable.concat(this.map(function(v:Object):IObservable
+			{
+				return Observable.defer(function():IObservable
+				{
+					return selector(v) as IObservable;
+				});
+			}));
+		}		
 		
 		/**
 		 * @inheritDoc
@@ -929,6 +961,17 @@ package raix.reactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */		
+		public function peekWith(observer : IObserver):IObservable
+		{
+			return peek(observer.onNext, observer.onCompleted, observer.onError);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function expand(selector : Function) : IObservable
 		{
 			var source : IObservable = this;
@@ -1289,6 +1332,9 @@ package raix.reactive
 				elementSelector, keyComparer);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function groupByUntil(keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable
 		{
 			var source : IObservable = this;
@@ -1569,6 +1615,15 @@ package raix.reactive
 			return IObservable(func(this));
 		}
 		
+		public function log(message : String) : IObservable
+		{
+			return peek(
+				function(v:Object):void { trace(message + " onNext(" + v + ")"); },
+				function():void { trace(message + " onCompleted"); },
+				function(e:Error):void { trace(message + " onError(" + e.toString() + ")"); }
+			);
+		}
+		
 		/**
 		 * @inheritDoc
 		 */
@@ -1592,6 +1647,20 @@ package raix.reactive
 		public function merge(source : IObservable):IObservable
 		{
 			return Observable.merge([this, source]);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function mergeMany(selector : Function, concurrent : int = 0) : IObservable
+		{
+			return Observable.merge(this.map(function(v:Object):IObservable
+			{
+				return Observable.defer(function():IObservable
+				{
+					return selector(v) as IObservable;
+				});
+			}), concurrent);
 		}
 		
 		/**
@@ -1671,7 +1740,7 @@ package raix.reactive
 		 */
 		public function pruneDefer(selector : Function, scheduler : IScheduler = null) : IObservable
 		{
-			return multicastAndConnect(
+			return multicastDefer(
 				function():ISubject { return new AsyncSubject(scheduler); },
 				selector
 			);
@@ -1690,7 +1759,7 @@ package raix.reactive
 		 */
 		public function publishDefer(selector : Function) : IObservable
 		{
-			return multicastAndConnect(
+			return multicastDefer(
 				function():ISubject { return new Subject(); },
 				selector
 			);
@@ -1707,7 +1776,7 @@ package raix.reactive
 		/**
 		 * @inheritDoc
 		 */
-		public function multicastAndConnect(subjectSelector : Function, selector : Function) : IObservable
+		public function multicastDefer(subjectSelector : Function, selector : Function) : IObservable
 		{
 			return new ClosureObservable(function(obs:IObserver):ICancelable
 			{
@@ -1720,41 +1789,7 @@ package raix.reactive
 				]);
 			});
 		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function queued(queue : IObserver) : IObservable
-		{
-			var source : IObservable = this;
 			
-			return new ClosureObservable(function(observer:IObserver):ICancelable
-			{
-				var queueCancelable : BooleanCancelable = new BooleanCancelable();
-				var sourceCancelable : MutableCancelable = new MutableCancelable();
-				
-				queue.onNext(new ClosureObservable(function(queueObserver:IObserver):ICancelable
-				{
-					if (queueCancelable.isCanceled)
-					{
-						queueObserver.onCompleted();
-						return Cancelable.empty;
-					}
-					
-					sourceCancelable.cancelable = source
-					.finallyAction(function():void
-					{
-						queueObserver.onCompleted();
-					})
-					.subscribeWith(observer);
-					
-					return sourceCancelable;
-				}));
-				
-				return new CompositeCancelable([queueCancelable, sourceCancelable]);
-			});
-		}
-		
 		/**
 		 * @inheritDoc
 		 */
@@ -1792,7 +1827,7 @@ package raix.reactive
 		public function replayDefer(selector : Function, bufferSize : uint = 0, windowMs : uint = 0, 
 			scheduler : IScheduler = null) : IObservable
 		{
-			return multicastAndConnect(
+			return multicastDefer(
 				function():ISubject { return new ReplaySubject(bufferSize, windowMs, scheduler); },
 				selector
 			);
@@ -2040,6 +2075,9 @@ package raix.reactive
 			return Observable.merge(this.map(selector)); 
 		}
 		
+		/**
+		 * @inheritDoc
+		 */		
 		public function sequenceEqual(other : IObservable, valueComparer : Function = null) : IObservable
 		{
 			var defaultComparer : Function = function(a:Object, b:Object) : Boolean { return a == b; }
@@ -2758,6 +2796,9 @@ package raix.reactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function window(windowClosingSelector : Function) : IObservable
 		{
 			var source : IObservable = this;
@@ -2793,6 +2834,9 @@ package raix.reactive
 			});
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function multiWindow(windowOpenings : IObservable, windowClosingSelector : Function) : IObservable
 		{
 			var source : IObservable = this;
@@ -2889,10 +2933,7 @@ package raix.reactive
 				leftSubscription.cancelable = source.subscribeWith(leftObserver);
 				rightSubscription.cancelable = rightSource.subscribeWith(rightObserver);
 				
-				return new ClosureCancelable(function():void
-				{
-					new CompositeCancelable([leftSubscription, rightSubscription]).cancel();
-				});
+				return new CompositeCancelable([leftSubscription, rightSubscription]);
 			});
 		}
 		

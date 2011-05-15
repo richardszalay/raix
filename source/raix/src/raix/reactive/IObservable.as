@@ -146,6 +146,17 @@ package raix.reactive
 		function catchErrorDefer(errorClass : Class, deferFunc : Function) : IObservable;
 		
 		/**
+		 * Chains together sequences, starting with the current sequence, using selector functions that 
+		 * return a sequence for values of the previous.
+		 * @param functions An array of functions that accept a value from the previous sequence and 
+		 *        return a new sequence:
+		 *        function (value : T) : IObservable
+		 * @return An observable sequence of the values returned by the sequence returned by the last 
+		 * selector in the chain
+		 */
+		function chain(functions : Array) : IObservable;
+		
+		/**
 		 * Merges two sequences through a mapping function, using the latest value from either source 
 		 * @param right The sequence to combine with
 		 * @param selector The function that combines values from the two sources. Signature is <code>function(left : this.valueClass, right : right.valueClass) : returnType</code>
@@ -159,6 +170,15 @@ package raix.reactive
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
 		function concat(source:IObservable):IObservable;
+		
+		/**
+		 * Evaluates a new sequence for each value using a selector function and waits for the returned 
+		 * sequence to complete before resolving the next sequence 
+		 * @param selector Accept a value of the source and returns the IObservable sequence to concatonate:
+		 *     function(value:T) : IObservable
+		 * @return An IObservable sequence containing the values returned
+		 */
+		function concatMany(selector : Function) : IObservable
 		
 		/**
 		 * Determines if the source sequence contains a specific value 
@@ -198,11 +218,17 @@ package raix.reactive
 		function peek(next:Function, complete:Function = null, error:Function = null):IObservable;
 		
 		/**
-		 * Recursively expands a sequence via a selector that provides additional sequences 
-		 * @param selector A selector that accepts the values emitted by the source (or another selector) and returns an IObservable
-		 * function(v:TValue):IObservable
-		 * @return 
-		 */		
+		 * Allows custom code to be run when messages arrive without affecting the observer
+		 * @param observer The observer that will receive messages
+		 */
+		function peekWith(observer : IObserver) : IObservable;
+		
+		/**
+		 * Recursively expands the values in the sequence using a selector function 
+		 * @param selector Accepts values and returns an expanded sequence for them:
+		 *     function (value : T) : IObservable
+		 * @return An observable sequence of all values emitted by any of the sequences
+		 */
 		function expand(selector : Function) : IObservable;
 		
 		/**
@@ -336,6 +362,12 @@ package raix.reactive
 		function let(func : Function) : IObservable;
 		
 		/**
+		 * Writes sequence activity out to the trace log with a message describing the sequence 
+		 * @param message 
+		 */		
+		function log(message : String) : IObservable;
+		
+		/**
 		 * Converts all messages (next, complete, error) into values 
 		 * @return An observable sequence of rx.Notification
 		 */		
@@ -348,6 +380,16 @@ package raix.reactive
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
 		function merge(source : IObservable):IObservable;
+		
+		/**
+		 * Evaluates a new sequence for each value using a selector function and merges the results 
+		 * of the sequence returned by the returned sequence, optionally constraining the number of 
+		 * concurrent sequencing.
+		 * @param selector Accept a value of the source and returns the IObservable sequence to merge:
+		 *     function(value:T) : IObservable
+		 * @return An IObservable sequence containing the values returned
+		 */
+		function mergeMany(selector : Function, concurrent : int = 0) : IObservable
 		
 		/**
 		 * Filters out values from a source sequence that are not of a specific type 
@@ -409,15 +451,24 @@ package raix.reactive
 		function publishDefer(selector : Function) : IObservable;
 		
 		/**
-		 * Enqueues a sequence onto a queue created by Observable.queue so that it will not be executed 
-		 * in parallel with any other item in the queue
-		 * @param queue A value returned by Observable.queue that will queue the sequence 
-		 * @param source The sequence to enqueue
-		 * @return A queued sequence that can be subscribed to immediately. Subscribing to this sequence 
-		 * multiple times will enqueue the source sequence multiple times. Canceling a subscription to this 
-		 * sequence will dequeue the sequence.
+		 * Creates a connectable sequence that can be shared by multiple observers, using a specific 
+		 * subject implementation. 
+		 * @param subject The subject that will messages and subscriptions
+		 * @return A connectable observable
 		 */		
-		function queued(queue : IObserver) : IObservable;
+		function multicast(subject : ISubject) : IConnectableObservable;
+		
+		/**
+		 * Creates a connectable sequence that can be shared by multiple observers, using a specific 
+		 * subject implementation (determined at subscribe-time. The shared sequence will be passed 
+		 * to a selector function when the sequence is subscribed to.
+		 * @param subjectSelector Determines the subject to be used when the sequence is subscribed to
+		 * @param selector Accepts the yet-to-be-connected connectable sequence and returns the sequence 
+		 * that will supply values to the subject
+		 * @return An observable sequence that contains messages from the selector-returned sequence, piped 
+		 * through the subject supplied by subjectSelector
+		 */		
+		function multicastDefer(subjectSelector : Function, selector : Function) : IObservable
 		
 		/**
 		 * Removes time interval information added with timeInterval  

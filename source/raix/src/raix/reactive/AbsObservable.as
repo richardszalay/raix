@@ -2616,12 +2616,14 @@ package raix.reactive
 			
 			return new ClosureObservable(function (observer : IObserver) : ICancelable
 			{
+				var hasValue : Boolean = false;
 				var lastValue : Object = null;
 				var sourceSubscription : MutableCancelable = new MutableCancelable();
 				var currentTimeout : MutableCancelable = new MutableCancelable();
 				
 				var throttleTimeout : Function = function():void
 				{
+					hasValue = false;
 					observer.onNext(lastValue);
 				};
 				
@@ -2629,11 +2631,19 @@ package raix.reactive
 					function (value : Object) : void
 					{
 						lastValue = value;
+						hasValue = true;
 						
 						currentTimeout.cancelable = 
 							scheduler.schedule(throttleTimeout, dueTimeMs);
 					},
-					observer.onCompleted,
+					function() : void
+					{
+						if (hasValue)
+						{
+							observer.onNext(lastValue);
+							observer.onCompleted();
+						}
+					},
 					observer.onError);
 					
 				return new CompositeCancelable(

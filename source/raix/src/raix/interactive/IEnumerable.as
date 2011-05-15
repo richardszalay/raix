@@ -342,7 +342,7 @@ package raix.interactive
 		 *     function(element : TInnerElement) : TKey
 		 * @param resultSelector Creates a result element from the source sequence and a sequnce of 
 		 *     matching values from the inner sequence:
-		 *     function(outer : TOuterElement, inner : IEnumerable.<TInnerElement>) : TResult
+		 *     function(outer : TOuterElement, inner : IEnumerable.&lt;TInnerElement&rt;) : TResult
 		 * @param keyHashSelector (optional) Returns a natively comparable value for a key:
 		 *     function(key : TKey) : THash
 		 * @return A sequence that has elements of type TResult that are obtained by joining outer and inner
@@ -441,7 +441,7 @@ package raix.interactive
 		 * a single sequence. Uses deferred execution.
 		 * 
 		 * @param collectionSelector A function to retrieve the sequence for a value in the source sequence: 
-		 *     function(element : TElement) : IEnumerable.<TCollection>
+		 *     function(element : TElement) : IEnumerable.&lt;TCollection>
 		 * @param resultSelector (optional) A function that creates a result element from each source element 
 		 *     and each of its enumerated collection values: 
 		 *     function(element : TElement, value : TCollection) : TResult

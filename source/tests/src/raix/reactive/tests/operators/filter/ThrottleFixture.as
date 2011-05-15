@@ -2,6 +2,7 @@ package raix.reactive.tests.operators.filter
 {
 	import org.flexunit.Assert;
 	
+	import raix.reactive.OnCompleted;
 	import raix.reactive.OnNext;
 	import raix.reactive.testing.ColdObservable;
 	import raix.reactive.testing.MockObserver;
@@ -27,7 +28,9 @@ package raix.reactive.tests.operators.filter
 				new Recorded(15, new OnNext(2)),
 				new Recorded(20, new OnNext(3)),
 				new Recorded(35, new OnNext(4)),
-				new Recorded(40, new OnNext(5))
+				new Recorded(40, new OnNext(5)),
+				new Recorded(46, new OnNext(6)),
+				new Recorded(47, new OnCompleted())
 			]);
 			;
 			
@@ -68,6 +71,19 @@ package raix.reactive.tests.operators.filter
 			observer.assertTimings([
 				new Recorded(25, new OnNext(3)),
 				new Recorded(45, new OnNext(5))
+			], Assert.fail);
+		}
+		
+		[Test]
+		public function last_value_is_emitted_when_source_completes() : void
+		{
+			scheduler.run();
+			
+			observer.assertTimings([
+				new Recorded(25, new OnNext(3)),
+				new Recorded(45, new OnNext(5)),
+				new Recorded(47, new OnNext(6)),
+				new Recorded(47, new OnCompleted()),
 			], Assert.fail);
 		}
 	}

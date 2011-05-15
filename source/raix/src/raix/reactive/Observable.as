@@ -325,7 +325,7 @@ package raix.reactive
 		}
 		
 		/**
-		 * Matches join multiple plans (source sequence combinations) in the order they are specified 
+		 * Matches multiple plans (source sequence combinations) in the order they are specified 
 		 * @param plans The array of rx.Plan objects creates using 'and' and 'then'
 		 * @return An observable sequence of valueClass
 		 */		

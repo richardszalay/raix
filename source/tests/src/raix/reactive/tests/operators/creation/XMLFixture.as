@@ -29,7 +29,7 @@ package raix.reactive.tests.operators.creation
 			
 			var completeHandler : Function = Async.asyncHandler(this, null, 5000); 
 
-			Observable.xml(new URLRequest("rx/tests/operators/creation/test.xml"))
+			Observable.xml(new URLRequest("raix/reactive/tests/operators/creation/test.xml"))
 				.delay(50)
 				.subscribe(
 					function(doc:XML) : void
@@ -53,7 +53,7 @@ package raix.reactive.tests.operators.creation
 				Assert.assertTrue(error is IOError);
 			}, 5000); 
 
-			Observable.xml(new URLRequest("rx/tests/operators/creation/does_not_exist.xml"))
+			Observable.xml(new URLRequest("raix/reactive/tests/operators/creation/does_not_exist.xml"))
 				.delay(50)
 				.subscribe(null, null, function(e:Error) : void
 				{

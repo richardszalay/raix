@@ -24,11 +24,11 @@ package raix.interactive.tests.operators.combine
 				"essence", "offer", "eating", "psalm"
 			];
 			
-			var query : IEnumerable = toEnumerable(outer).join(
+			var query : IEnumerable = toEnumerable(outer).groupJoin(
 				toEnumerable(inner),
-				function(outer:String):int { return outer.charAt(0); },
-				function(inner:String):int { return inner.charAt(1); },
-				function(outer:int, inner:IEnumerable) : String { return outer.toString() + ":" + inner.toArray().join(';'); })
+				function(outer:String):String { return outer.charAt(0); },
+				function(inner:String):String { return inner.charAt(1); },
+				function(outer:String, inner:IEnumerable) : String { return outer.toString() + ":" + inner.toArray().join(';'); })
 				
 			AssertEx.assertArrayEquals(
 				["first:offer", "second:essence;psalm", "third:"],

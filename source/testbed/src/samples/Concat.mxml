@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
+			
+			private var subscription : ICancelable;
+			
+			public override function setup() : void
+			{
+				// Observe the first 10 intervals at 100ms, then 5 at 500ms, then 5 at 1000ms
+				subscription = Observable.interval(100).take(10)
+					.concat([Observable.interval(500).take(5)])
+					.concat([Observable.interval(1000).take(5)])
+					.subscribe(function(i:uint) : void
+					{
+						output.text = i.toString();
+					},
+					function() : void
+					{
+						output.text = "Complete";
+					});
+			}
+			
+			public override function teardown() : void
+			{
+				if (subscription != null)
+				{
+					subscription.cancel();
+					subscription = null;
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" borderColor="#000000" id="trackContainer" horizontalScrollPolicy="off" fontFamily="Courier New">
+			<mx:Label id="output" />
+		</mx:VBox>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+// Observe the first 10 intervals at 100ms, then 5 at 500ms, then 5 at 1000ms
+subscription = Observable.interval(100).take(10)
+	.concat([Observable.interval(500).take(5)])
+	.concat([Observable.interval(1000).take(5)])
+	.subscribeFunc(function(i:uint) : void
+	{
+		output.text = i.toString();
+	},
+	function() : void
+	{
+		output.text = "Complete";
+	});
+	]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

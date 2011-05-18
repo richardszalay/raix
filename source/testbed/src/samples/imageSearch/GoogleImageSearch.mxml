@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.Box;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.messaging.SubscriptionInfo;
+			import com.adobe.serialization.json.JSON;
+			import mx.events.FlexEvent;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
+			
+			private var imageSearchService : GoogleImageSearchService = new GoogleImageSearchService();
+			private var imageLoaderService : ImageResultLoaderService = new ImageResultLoaderService();
+			
+			private var gisSubscription : ICancelable;
+
+			public override function setup() : void
+			{
+				imageContainer.removeAllChildren();
+				
+				var searchTerm : String = searchTermInput.text;
+				var useThumbnail : Boolean = useThumbnailsCheckbox.selected;
+				var preloadImages : Boolean = preloadImagesCheckbox.selected;
+				
+				var imageRequest : IObservable = imageLoaderService.getObservable(
+					imageSearchService.getObservable(searchTerm),
+					useThumbnail, preloadImages); 
+
+				gisSubscription = imageRequest.subscribe(
+					function(image : Image):void
+					{
+						imageContainer.addChild(image);
+					},
+					function():void
+					{
+						running = false;
+					});
+			}
+			
+			public override function teardown() : void
+			{
+				if (gisSubscription != null)
+				{
+					gisSubscription.cancel();
+					gisSubscription = null;
+				}
+			}
+			
+			private var images : ArrayCollection = new ArrayCollection();
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:TextInput id="searchTermInput" text="flowers" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:CheckBox id="preloadImagesCheckbox" label="Preload images"
+				toolTip="If checked images will appear in the order that they were loaded, not in their original order" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Search term: " />
+			<mx:CheckBox id="useThumbnailsCheckbox" label="Use thumbnails" />
+		</mx:HBox>
+	
+		<mx:HBox width="100%" height="100%" borderColor="#000000" id="imageContainer">
+			
+		</mx:HBox>
+		
+		<!--
+		<mx:VBox id="imageContainer" width="100%" height="100%"/>
+-->		
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+imageContainer.removeAllChildren();
+				
+var searchTerm : String = searchTermInput.text;
+var useThumbnail : Boolean = useThumbnailsCheckbox.maped;
+var preloadImages : Boolean = preloadImagesCheckbox.maped;
+
+var imageRequest : IObservable = imageLoaderService.getObservable(
+	imageSearchService.getObservable(searchTerm),
+	useThumbnail, preloadImages); 
+
+gisSubscription = imageRequest.subscribeFunc(
+	function(image : Image):void
+	{
+		imageContainer.addChild(image);
+	},
+	function():void
+	{
+		running = false;
+	});
+	]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

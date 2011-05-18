@@ -90,10 +90,13 @@
     <Compile Include="Operators\CatchFixture.cs" />
     <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\CaseFixture.cs" />
+    <Compile Include="Operators\BufferWithTimeOrCountFixture.cs" />
+    <Compile Include="Operators\ExpandFixture.cs" />
     <Compile Include="Operators\GroupByUntilFixture.cs" />
     <Compile Include="Operators\GroupJoinFixture.cs" />
     <Compile Include="Operators\MergeFixture.cs" />
     <Compile Include="Operators\GroupByFixture.cs" />
+    <Compile Include="Operators\MergeManyFixture.cs" />
     <Compile Include="Operators\RepeatValueFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\CreateFixture.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="Subjects\BehaviorSubjectFixture.cs" />
     <Compile Include="Subjects\ConnectableObservableFixture.cs" />
     <Compile Include="Subjects\ReplaySubjectFixture.cs" />
+    <Compile Include="Testing\TestSchedulerFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

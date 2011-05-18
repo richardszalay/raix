@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
+			
+			private var intervalSub : ICancelable;
+			private var bufferedSub : ICancelable;
+			
+			public override function setup() : void
+			{
+				var interval : IObservable = Observable.interval(500);
+				var bufferedInterval : IObservable = interval.bufferWithCount(5);
+				
+				intervalSub = interval.subscribe(function(i:uint):void
+				{
+					intervalLabel.text = i.toString();
+				});
+				
+				bufferedSub = bufferedInterval.subscribe(function(indexes : Array):void
+				{
+					bufferedIntervalLabel.text = indexes.join(", ");
+				});
+			}
+			
+			public override function teardown() : void
+			{
+				if (intervalSub != null)
+				{
+					intervalSub.cancel();
+					intervalSub = null;
+				}
+				
+				if (bufferedSub != null)
+				{
+					bufferedSub.cancel();
+					bufferedSub = null;
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" borderColor="#000000" id="trackContainer">
+			<mx:HBox>
+				<mx:Label text="Interval:" />
+				<mx:Label id="intervalLabel" />
+			</mx:HBox> 
+			<mx:HBox>
+				<mx:Label text="Buffered Interval:" />
+				<mx:Label id="bufferedIntervalLabel" />
+			</mx:HBox> 
+		</mx:VBox>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+var interval : IObservable = Observable.interval(500);
+var bufferedInterval : IObservable = interval.bufferWithCount(5);
+
+intervalSub = interval.subscribeFunc(function(i:uint):void
+{
+	intervalLabel.text = i.toString();
+});
+
+bufferedSub = bufferedInterval.subscribeFunc(function(indexes : Array):void
+{
+	bufferedIntervalLabel.text = indexes.join(", ");
+});
+	]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

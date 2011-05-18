@@ -16,24 +16,33 @@ namespace RxAs.Rx4.ProofTests.Operators
     {
         private TestScheduler scheduler;
         private MockObserver<int> observer;
+        private ColdObservable<int> observable;
 
         [SetUp]
         public void SetUp()
         {
             scheduler = new TestScheduler();
 
-            var observable = scheduler.CreateColdObservable(
+            observable = scheduler.CreateColdObservable(
                 Next(10, 1),
                 Next(15, 2),
                 Next(20, 3),
                 Next(35, 4),
-                Next(40, 5));
+                Next(40, 5),
+                Next(46, 6),
+                Completed(47));
 
             observer = new MockObserver<int>(scheduler);
+         
             observable
                 .Throttle(TimeSpan.FromTicks(5), scheduler)
-                .Do(x => Debugger.Break())
                 .Subscribe(observer);
+        }
+
+        [Test]
+        public void immediately_subscribes_to_source()
+        {
+            Assert.AreEqual(1, observable.Subscriptions.Count);
         }
 
         [Test]
@@ -57,7 +66,7 @@ namespace RxAs.Rx4.ProofTests.Operators
         {
             scheduler.RunTo(25);
 
-            Assert.AreEqual(1, observer.Count);
+            Assert.AreEqual(3, observer[0].Value.Value);
         }
 
         [Test]
@@ -69,10 +78,25 @@ namespace RxAs.Rx4.ProofTests.Operators
             Assert.AreEqual(5, observer.GetValue(1));
         }
 
+        [Test]
+        public void last_value_is_released_on_completion()
+        {
+            scheduler.Run();
+
+            Assert.AreEqual(4, observer.Count);
+            Assert.AreEqual(6, observer.GetValue(2));
+        }
+
         private Recorded<Notification<int>> Next(long ticks, int value)
         {
             return new Recorded<Notification<int>>(ticks,
                 new Notification<int>.OnNext(value));
+        }
+
+        private Recorded<Notification<int>> Completed(long ticks)
+        {
+            return new Recorded<Notification<int>>(ticks,
+                new Notification<int>.OnCompleted());
         }
     }
 }

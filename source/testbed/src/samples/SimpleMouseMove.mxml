@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
+			
+			private var subscription : ICancelable;
+			
+			public override function setup() : void
+			{
+				// Filter mouse movement events so that they are ignored within the top 50x50 box
+				var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE)
+					.filter(function(me : MouseEvent) : Boolean { return me.localX > 50 || me.localY > 50; });
+				
+				subscription = mm.subscribe(function(me : MouseEvent) : void
+				{
+					coords.text = me.localX.toString() + " - " + me.localY.toString();
+				});
+			}
+			
+			public override function teardown() : void
+			{
+				if (subscription != null)
+				{
+					subscription.cancel();
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:VBox height="100%" width="100%">
+		<mx:HBox>
+			<mx:Label text="Output coords: " />
+			<mx:Label id="coords" />
+		</mx:HBox>
+		<mx:Box width="100%" height="100%" borderColor="#000000" id="trackContainer">
+			<mx:Box width="50" height="50" backgroundColor="#0000FF" />
+		</mx:Box>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+// Filter mouse movement events so that they are ignored within the top 50x50 box
+var mm : IObservable = Observable.fromEvent(trackContainer, MouseEvent.MOUSE_MOVE)
+	.where(function(me : MouseEvent) : Boolean { return me.localX > 50 || me.localY > 50; });
+
+subscription = mm.subscribeFunc(function(me : MouseEvent) : void
+{
+	coords.text = me.localX.toString() + " - " + me.localY.toString();
+});
+	]]>
+				</mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+
+</samples:AbsSample>

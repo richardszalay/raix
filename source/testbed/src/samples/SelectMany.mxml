@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<samples:AbsSample xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:samples="samples.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.FlexSprite;
+			import mx.containers.Panel;
+			import raix.reactive.CompositeCancelable;
+			import raix.reactive.IObserver;
+			import mx.events.FlexEvent;
+			import raix.reactive.ICancelable;
+			import raix.reactive.IObservable;
+			import raix.reactive.Observable;
+			
+			private var innerRect : Canvas = new Canvas();
+			private var subscription : ICancelable;
+			
+			public override function setup() : void
+			{
+				trackContainer.graphics.lineStyle(3, 0xFF0000, 1);
+				
+				innerRect.graphics.lineStyle(1, 0x00FF00, 1);
+	            innerRect.graphics.beginFill(0xFFFFFF);
+	            innerRect.graphics.drawRect(10, 10, 200, 200);
+	            innerRect.graphics.endFill();
+	            
+	            trackContainer.addChild(innerRect);
+	            
+				subscription = new CompositeCancelable([
+					drawOn(trackContainer),
+					drawOn(innerRect)
+				]);
+			}
+			
+			private function drawOn(sprite : Sprite) : ICancelable
+			{
+				var mouseDown : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_DOWN);
+				var mouseMove : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_MOVE);					
+				var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
+				
+				return mouseDown
+					.mapMany(MouseEvent, function(e:MouseEvent):IObservable
+					{
+						sprite.graphics.moveTo(e.localX, e.localY);
+						
+						return mouseMove.takeUntil(mouseUp);
+					})
+					.subscribe(function(e:MouseEvent):void
+					{
+						sprite.graphics.lineTo(e.localX, e.localY);
+					});
+			}
+			
+			public override function teardown() : void
+			{
+				trackContainer.graphics.clear();
+				innerRect.graphics.clear();
+				
+				trackContainer.removeChild(innerRect);
+				
+				if (subscription != null)
+				{
+					subscription.cancel();
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:Canvas width="100%" height="100%" borderColor="#000000" id="trackContainer">
+		</mx:Canvas>
+		<mx:Box height="80%" width="100%" visible="{showCode}" includeInLayout="{showCode}">
+			<mx:TextArea height="100%" width="100%" fontFamily="Courier New">
+				<mx:htmlText>
+	<![CDATA[
+public override function setup() : void
+{
+    trackContainer.graphics.lineStyle(3, 0xFF0000, 1);
+	
+    innerRect.graphics.lineStyle(1, 0x00FF00, 1);
+    innerRect.graphics.beginFill(0xFFFFFF);
+    innerRect.graphics.drawRect(10, 10, 200, 200);
+    innerRect.graphics.endFill();
+    
+    trackContainer.addChild(innerRect);
+    
+    subscription = new CompositeCancelable([
+        drawOn(trackContainer),
+        drawOn(innerRect)
+    ]);
+}
+
+private function drawOn(sprite : Sprite) : ICancelable
+{
+    var mouseDown : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_DOWN);
+    var mouseMove : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_MOVE);					
+    var mouseUp : IObservable = Observable.fromEvent(sprite, MouseEvent.MOUSE_UP);
+	
+    return mouseDown
+        .mapMany(MouseEvent, function(e:MouseEvent):IObservable
+        {
+            sprite.graphics.moveTo(e.localX, e.localY);
+            
+            return mouseMove.takeUntil(mouseUp);
+        })
+        .subscribe(function(e:MouseEvent):void
+        {
+            sprite.graphics.lineTo(e.localX, e.localY);
+        });
+}
+]]></mx:htmlText>
+			</mx:TextArea>
+		</mx:Box>
+	</mx:VBox>
+	
+	
+</samples:AbsSample>

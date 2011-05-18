@@ -11,7 +11,7 @@ package raix.reactive.tests.operators.repetition
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.concat([Observable.empty().repeat(1)]);
+			return source.concat(Observable.empty().repeat(1));
 		}
 		
 		[Test]

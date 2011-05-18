@@ -1,7 +1,8 @@
 package raix.interactive
 {
 	/**
-	 * Contains the state of an active enumeration.
+	 * Contains the state of an active enumeration. This interface is rarely accessed 
+	 * by client code as IEnumerable sequences can be used with `for each`
 	 */	
 	public interface IEnumerator
 	{

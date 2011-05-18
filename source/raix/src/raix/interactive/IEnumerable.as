@@ -13,7 +13,8 @@ package raix.interactive
 	public interface IEnumerable extends ICancelable
 	{
 		/**
-		 * Returns an object that can be used to enumerate through this sequence 
+		 * Returns an object that can be used to enumerate through this sequence. Access to this method 
+		 * is not generally required as IEnumerable sequence 
 		 * @return An IEnumerator 
 		 */		
 		function getEnumerator() : IEnumerator;
@@ -156,7 +157,7 @@ package raix.interactive
 		 * @return The return value of resultSelector (if supplied) or the final accumulate value if 
 		 *         resultSelector is not supplied
 		 */
-		function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object;
+		function reduce(seed : Object, accumulator : Function, resultSelector : Function = null) : Object;
 		
 		/**
 		 * Returns a sequence that aggregates values using functions passed as arguments, using 

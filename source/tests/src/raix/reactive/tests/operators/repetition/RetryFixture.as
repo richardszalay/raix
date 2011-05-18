@@ -14,7 +14,7 @@ package raix.reactive.tests.operators.repetition
 	{
 		protected override function createEmptyObservable(source:IObservable):IObservable
 		{
-			return source.concat([Observable.empty().retry(1)]);
+			return source.concat(Observable.empty().retry(1));
 		}
 		
 		[Test]
@@ -22,7 +22,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.value(5).concat([Observable.error(new Error())])
+			Observable.value(5).concat(Observable.error(new Error()))
 				.retry(3)
 				.subscribeWith(stats);
 
@@ -39,7 +39,7 @@ package raix.reactive.tests.operators.repetition
 		{
 			var stats : StatsObserver = new StatsObserver();
 			
-			Observable.value(5).concat([Observable.error(new Error())])
+			Observable.value(5).concat(Observable.error(new Error()))
 				.retry(500)
 				.subscribeWith(stats);
 		}

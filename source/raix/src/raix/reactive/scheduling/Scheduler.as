@@ -57,7 +57,7 @@ package raix.reactive.scheduling
 		public static function scheduleRecursive(scheduler : IScheduler, action : Function, dueTime : int = 0) : ICancelable
 		{
 			var reschedule : Function = null;
-			var scheduledAction : FutureCancelable = new FutureCancelable();
+			var scheduledAction : MutableCancelable = new MutableCancelable();
 			
 			var cancelled : BooleanCancelable = new BooleanCancelable();
 			
@@ -65,7 +65,7 @@ package raix.reactive.scheduling
 			{
 				if (!cancelled.isCanceled)
 				{
-					scheduledAction.innerCancelable = scheduler.schedule(function():void { action(reschedule); }, dueTime);
+					scheduledAction.cancelable = scheduler.schedule(function():void { action(reschedule); }, dueTime);
 				}
 			};
 			

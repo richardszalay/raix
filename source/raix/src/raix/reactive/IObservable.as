@@ -4,23 +4,27 @@ package raix.reactive
 	import raix.reactive.subjects.IConnectableObservable;
 	
 	/**
-	 * An observable sequence of values
+	 * An observable (or "push"), sequence of values that often represent data or events that have not yet occured. 
+	 * Sequences can be manipulated, often combining them with other sequences, and then subscribed to 
+	 * to receive the output.
+	 * 
+	 * Chains of sequences are automatically torn down when the sequence completes, errors or is unsubscribed from.
 	 */	
 	public interface IObservable
 	{
 		/**
 		 * Subscribes to this observable using the supplied functions 
-		 * @param onNext Function to be called for every payload. Signature is <code>function(payload : T) : void</code>
+		 * @param onNext Function to be called for every value. Signature is <code>function(payload : T) : void</code>
 		 * @param onComplete Optional. Function to be called when the sequence completes. Signature is <code>function():void</code>
 		 * @param onError Optional. Function to be called when an error occurs in the sequence. Signature is <code>function(err:Error):void</code>
-		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling <code>unsubscribe()</code> 
+		 * @return An instance of ICancelable that can be used to unsubscribe at anytime by calling <code>cancel()</code> 
 		 */
 		function subscribe(onNext : Function, onComplete : Function = null, 
 			onError : Function = null) : ICancelable;
 		
 		/**
 		 * Subscribes to this observable using the supplied observer
-		 * @return An instance of ISubscription that can be used to unsubscribe at anytime by calling unsubscribe() 
+		 * @return An instance of ICancelable that can be used to unsubscribe at anytime by calling <code>cancel()</code> 
 		 */
 		function subscribeWith(observer : IObserver) : ICancelable;
 		
@@ -38,29 +42,34 @@ package raix.reactive
 		 *     function(accumulate : TAccumulate, element : TElement) : TAccumulate
 		 * @param initialValue The value to start with
 		 * @return An observable sequence of type TAccumulate
-		 */		 
+		 */
+		function reduce(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable;
+		
+		[Deprecated(replacement="reduce")]
 		function aggregate(accumulator : Function, initialValue : Object = null, useInitialValue : Boolean = false) : IObservable;
 		
 		/**
 		 * Determines if the source sequence contains a value that satisfies a condition
 		 *  
-		 * @param predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 * @param predicate (optional) The predicate that determines if a value in the sequence is valid. 
+		 * If null, the returned sequence will emit true if the source sequence contains any values or false if it is empty.
 		 * @return An observable sequence of Boolean
 		 */		
 		function any(predicate : Function = null) : IObservable;
 		
 		/**
 		 * Determines if all values in the source sequence satisfy a condition
-		 * @param predicate The predicate that determines if a value in the sequence is valid. If null, the value will be evaulated to boolean. 
+		 * @param predicate The predicate that determines if a value in the sequence is valid. 
 		 * @return An observable sequence of Boolean
 		 */		 
 		function all(predicate : Function) : IObservable;
 		
 		/**
-		 * Returns the average value of all the elements in the source sequence  
+		 * Returns the average value of all the elements in the source sequence
+		 * @param valueSelector (optional) The selector function that returns a numeric value from the source value  
 		 * @return An observable sequence of TSource values
 		 */		
-		function average():IObservable;
+		function average(valueSelector : Function = null):IObservable;
 		
 		/**
 		 * Emits the values from a source sequence in groups of a specific size  
@@ -97,19 +106,19 @@ package raix.reactive
 		function windowWithTime(timeMs : uint, timeShiftMs : uint = 0, scheduler : IScheduler = null) : IObservable;
 
 		/**
-		 * Emits the values from a source sequence in groups of a specific size  
-		 * @param count The number of values to buffer
-		 * @param skip The number of values to offset after the buffer is emitted.
+		 * Emits IObservable sequences containing values received in sized batches or within a timespan, whichever occurs first
+		 * @param timeMs The maximum amount of time for a child-sequence to capture values
+		 * @param count The maximum amount of values for a child-sequence to capture
 		 * @return An observable sequence of observable sequences with the same type as the current sequence
 		 */
 		function windowWithTimeOrCount(timeMs : uint, count : uint, scheduler : IScheduler = null) : IObservable;
 		
 		/**
-		 * Emits the values from a source sequence in groups of a specific size  
-		 * @param timeMs The amount of time to buffer before the values are released
-		 * @param timeShiftMs The amount of time to offset after the buffer is emitted
-		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of Arrays of the same type as the current sequence
+		 * Buffers values into an array, with one array for either a maximum period of time or a maximum number 
+		 * of values, whichever occurs first
+		 * @param timeMs The maximum amount of time to buffer values for
+		 * @param count The maximum amount of values to include in a single buffer
+		 * @return An observable sequence of observable sequences with the same type as the current sequence
 		 */
 		function bufferWithTimeOrCount(timeMs : uint, count : uint, scheduler : IScheduler = null) : IObservable;
 		
@@ -130,10 +139,22 @@ package raix.reactive
 		/**
 		 * Runs a specific sequence, determined at runtime, when an error occurs
 		 * @param errorClass The class (and superclass) of error to act on
-		 * @param deferFunc The function to execute in the event of an error. Signature is <code>function(e : Error) : IObservable</code>
+		 * @param deferFunc The function to execute in the event of an error. 
+		 * Signature is <code>function(e : Error) : IObservable</code>
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
 		function catchErrorDefer(errorClass : Class, deferFunc : Function) : IObservable;
+		
+		/**
+		 * Chains together sequences, starting with the current sequence, using selector functions that 
+		 * return a sequence for values of the previous.
+		 * @param functions An array of functions that accept a value from the previous sequence and 
+		 *        return a new sequence:
+		 *        function (value : T) : IObservable
+		 * @return An observable sequence of the values returned by the sequence returned by the last 
+		 * selector in the chain
+		 */
+		function chain(functions : Array) : IObservable;
 		
 		/**
 		 * Merges two sequences through a mapping function, using the latest value from either source 
@@ -148,7 +169,16 @@ package raix.reactive
 		 * @param sources The sequences to concatonate after the current sequence 
 		 * @return An observable sequence of the same valueClass as the current sequence
 		 */		
-		function concat(sources : Array/*.<IObservable>*/) : IObservable;
+		function concat(source:IObservable):IObservable;
+		
+		/**
+		 * Evaluates a new sequence for each value using a selector function and waits for the returned 
+		 * sequence to complete before resolving the next sequence 
+		 * @param selector Accept a value of the source and returns the IObservable sequence to concatonate:
+		 *     function(value:T) : IObservable
+		 * @return An IObservable sequence containing the values returned
+		 */
+		function concatMany(selector : Function) : IObservable
 		
 		/**
 		 * Determines if the source sequence contains a specific value 
@@ -184,14 +214,28 @@ package raix.reactive
 		 * @param complete The function to execute in the event the sequence completes (onComplete)
 		 * @param error The function to execute in the event of an error (onError)
 		 * @return An observable sequence of the same type as the current sequence
-		 */		
+		 */
 		function peek(next:Function, complete:Function = null, error:Function = null):IObservable;
 		
 		/**
-		 * Executes a function when the sequence completes or errors
+		 * Allows custom code to be run when messages arrive without affecting the observer
+		 * @param observer The observer that will receive messages
+		 */
+		function peekWith(observer : IObserver) : IObservable;
+		
+		/**
+		 * Recursively expands the values in the sequence using a selector function 
+		 * @param selector Accepts values and returns an expanded sequence for them:
+		 *     function (value : T) : IObservable
+		 * @return An observable sequence of all values emitted by any of the sequences
+		 */
+		function expand(selector : Function) : IObservable;
+		
+		/**
+		 * Executes a function when the sequence completes, errors or is unsubscribed from
 		 * @param finallyAction The function to execute in the event the sequence completes or errors
 		 * @return An observable sequence of the same type as the current sequence
-		 */		
+		 */
 		function finallyAction(finallyAction : Function) : IObservable;
 		
 		/**
@@ -221,50 +265,61 @@ package raix.reactive
 		 * are sent to a selector to be combined. The output of this selector is emitted to the output stream  
 		 * @param right The right hand side of the join
 		 * @param leftWindowSelector A function that will be called for each value from the left ("this") and will 
-		 *     return the IObservable that represents the lifetime window of that value
+		 *     return the IObservable that represents the lifetime window of that value:
+		 *     function(left:TLeft):IObservable
 		 * @param rightWindowSelector A function that will be called for each value from right and will 
-		 *     return the IObservable that represents the lifetime window of that value
+		 *     return the IObservable that represents the lifetime window of that value:
+		 *     function(right:TRight):IObservable
 		 * @param joinSelector A function that will accept "live" left/right value combinations and return a new value. 
 		 *     The output of this function will be received by any subscribers:
-		 *     function(outer : TOuter, inner : TInner) : TResult
+		 *     function(left : TLeft, right : TRight) : TResult
 		 * @return An observable sequence of TResult (returned by joinSelector)
-		 */		 
+		 */
 		function join(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;
 		
 		/**
 		 * Combines values from two streams based on the "lifetime" of each value, represented by an IObservable 
-		 * selected for each value. Differs from `join` in that the joinSelector accepts the left value and an IObservable of the right values  
+		 * selected for each value. An IObervable set of "right" values are sent with its matching "left" value
+		 * to a selector to be combined. The output of this selector is emitted to the output stream  
 		 * @param right The right hand side of the join
 		 * @param leftWindowSelector A function that will be called for each value from the left ("this") and will 
-		 *     return the IObservable that represents the lifetime window of that value
+		 *     return the IObservable that represents the lifetime window of that value:
+		 *     function(left:TLeft):IObservable
 		 * @param rightWindowSelector A function that will be called for each value from right and will 
-		 *     return the IObservable that represents the lifetime window of that value
-		 * @param joinSelector A function that will accept "live" left value and a sequence of the right values that occur during matching lifetimes 
+		 *     return the IObservable that represents the lifetime window of that value:
+		 *     function(right:TRight):IObservable
+		 * @param joinSelector A function that will accept "live" left/right value combinations and return a new value. 
 		 *     The output of this function will be received by any subscribers:
-		 *     function(outer : TOuter, inner : IObservable.&lt;TInner>) : TResult
-		 * @return An observable sequence of TResult (returned by joinSelector)
+		 *     function(left : TLeft, rights : IObservable.<TRight>) : TResult
+		 * @return An observable sequence of TResult values
 		 */
 		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;
 		
 		/**
-		 * Groups together values as IGroupedObservable streams as the values arrive
-		 * @param keySelector Retrieves the grouping key for a source value
-		 * @param elementSelector If supplied, maps the grouped element from the source value
-		 * @param keyComparer If supplied, compares group keys for equality
-		 * @return An IObservable of IGroupedObservable values, which adds a key
-		 */
+		 * Groups values by a key
+		 * @param keySelector A selector that maps the key from a source value:
+		 *     function(value:TValue):TKey
+		 * @param elementSelector (optional) A selector that maps the source value to the element value that 
+		 *     will be added to the grouped items: function(value:TValue):TElement
+		 * @param keyComparer A equality comparer that compares two keys
+		 * @return An observable sequence of IGroupedObservable
+		 * @see raix.reactive.IGroupedObservable
+		 */		
 		function groupBy(keySelector : Function, elementSelector : Function = null, keyComparer : Function = null) : IObservable;
 		
 		/**
-		 * Groups together values as IGroupedObservable streams as the values arrive until the grouping finishes, the lifetime for which 
-		 * is determined by a selector function
-		 * @param keySelector Retrieves the grouping key for a source value
-		 * @param durationSelector Retrieves an IObservable that signals the end of a group's lifetime by emitting a value or completing:
-		 *     function(group : IGroupedObservable) : IObservable
-		 * @param elementSelector If supplied, maps the grouped element from the source value
-		 * @param keyComparer If supplied, compares group keys for equality
-		 * @return An IObservable of IGroupedObservable values, which adds a key
-		 */
+		 * Groups values by a key and also provides a lifetime for a grouping
+		 * @param keySelector A selector that maps the key from a source value:
+		 *     function(value:TValue):TKey
+		 * @param durationSelector A selector that returns an observable sequence that will signal 
+		 *     the end of the life of a group by emitting a value or completing:
+		 *     function(group:IGroupedObservable) : IObservable
+		 * @param elementSelector (optional) A selector that maps the source value to the element value that 
+		 *     will be added to the grouped items: function(value:TValue):TElement
+		 * @param keyComparer A equality comparer that compares two keys
+		 * @return An observable sequence of IGroupedObservable
+		 * @see raix.reactive.IGroupedObservable
+		 */	
 		function groupByUntil(keySelector : Function, durationSelector : Function, elementSelector : Function = null,  keyComparer : Function = null) : IObservable;
 		
 		/**
@@ -274,14 +329,15 @@ package raix.reactive
 		function asObservable() : IObservable;
 		
 		/**
-		 * Removes values from a source sequence, emitting only completion and error events.
-		 * @return IObservable.&lt;T> 
-		 */
+		 * Excludes values (calls to IObserver.onNext), emitting only onCompleted and onError 
+		 * @return An observable sequence
+		 */		
 		function ignoreValues() : IObservable;
 		
 		/**
 		 * Filters out consecutive duplicates from a source sequence  
-		 * @param comparer The function used to compare values. Default equality will be used if comparer is null.
+		 * @param comparer (optional) The function used to compare values. Default equality will be used if comparer is null.
+		 * function(x:TValue, y:TValue) : Boolean
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
 		function distinctUntilChanged(comparer : Function = null) : IObservable;
@@ -306,6 +362,12 @@ package raix.reactive
 		function let(func : Function) : IObservable;
 		
 		/**
+		 * Writes sequence activity out to the trace log with a message describing the sequence 
+		 * @param message 
+		 */		
+		function log(message : String) : IObservable;
+		
+		/**
 		 * Converts all messages (next, complete, error) into values 
 		 * @return An observable sequence of rx.Notification
 		 */		
@@ -317,7 +379,17 @@ package raix.reactive
 		 * @param scheduler The scheduler to use 
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
-		function merge(sources : IObservable, scheduler : IScheduler = null) : IObservable;
+		function merge(source : IObservable):IObservable;
+		
+		/**
+		 * Evaluates a new sequence for each value using a selector function and merges the results 
+		 * of the sequence returned by the returned sequence, optionally constraining the number of 
+		 * concurrent sequencing.
+		 * @param selector Accept a value of the source and returns the IObservable sequence to merge:
+		 *     function(value:T) : IObservable
+		 * @return An IObservable sequence containing the values returned
+		 */
+		function mergeMany(selector : Function, concurrent : int = 0) : IObservable
 		
 		/**
 		 * Filters out values from a source sequence that are not of a specific type 
@@ -356,12 +428,13 @@ package raix.reactive
 		function prune(scheduler : IScheduler = null) : IConnectableObservable;
 		
 		/**
-		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from prune 
+		 * Creates a shared sequence that emits the last value of the source sequence, the shared 
+		 * sequence will be passed to the selector function when the sequence is subscribed to. 
 		 * @param selector The function to map the connected sequence through
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of the same type as the current sequence
 		 */
-		function pruneAndLet(selector : Function, scheduler : IScheduler = null) : IObservable;
+		function pruneDefer(selector : Function, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Creates a connectable sequence that can be shared by multiple observers  
@@ -370,22 +443,32 @@ package raix.reactive
 		function publish() : IConnectableObservable;
 		
 		/**
-		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from publish
+		 * Creates a shared sequence that can be used by multiple subscribers, the shared 
+		 * sequence will be passed to the selector function when the sequence is subscribed to.
 		 * @param selector The function to map the connected sequence through
 		 * @return An observable sequence of the same type as the current sequence
 		 */		
-		function publishAndLet(selector : Function) : IObservable;
+		function publishDefer(selector : Function) : IObservable;
 		
 		/**
-		 * Enqueues a sequence onto a queue created by Observable.queue so that it will not be executed 
-		 * in parallel with any other item in the queue
-		 * @param queue A value returned by Observable.queue that will queue the sequence 
-		 * @param source The sequence to enqueue
-		 * @return A queued sequence that can be subscribed to immediately. Subscribing to this sequence 
-		 * multiple times will enqueue the source sequence multiple times. Canceling a subscription to this 
-		 * sequence will dequeue the sequence.
+		 * Creates a connectable sequence that can be shared by multiple observers, using a specific 
+		 * subject implementation. 
+		 * @param subject The subject that will messages and subscriptions
+		 * @return A connectable observable
 		 */		
-		function queued(queue : IObserver) : IObservable;
+		function multicast(subject : ISubject) : IConnectableObservable;
+		
+		/**
+		 * Creates a connectable sequence that can be shared by multiple observers, using a specific 
+		 * subject implementation (determined at subscribe-time. The shared sequence will be passed 
+		 * to a selector function when the sequence is subscribed to.
+		 * @param subjectSelector Determines the subject to be used when the sequence is subscribed to
+		 * @param selector Accepts the yet-to-be-connected connectable sequence and returns the sequence 
+		 * that will supply values to the subject
+		 * @return An observable sequence that contains messages from the selector-returned sequence, piped 
+		 * through the subject supplied by subjectSelector
+		 */		
+		function multicastDefer(subjectSelector : Function, selector : Function) : IObservable
 		
 		/**
 		 * Removes time interval information added with timeInterval  
@@ -402,32 +485,34 @@ package raix.reactive
 		/**
 		 * Records the output of the source sequence and replays it to future subscribers 
 		 * @param bufferSize The number of values at the end of the sequence to replay, or 0 for all.
-		 * @param window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 * @param windowMs The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
 		 * @param scheduler The scheduler to use
 		 * @return A connectable observable sequence of the same valueClass as the current sequence 
 		 */
-		function replay(bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
+		function replay(bufferSize : uint = 0, windowMs : uint = 0, scheduler : IScheduler = null) : IConnectableObservable;
 		
 		/**
-		 * Similar to let, but the IObservable passed to the selector is the IConnectableObservable returned from replay
+		 * Creates a shared sequence that replays values to future subscrubers, the shared 
+		 * sequence will be passed to the selector function when the sequence is subscribed to
 		 * @param selector The function to map the connected sequence through 
 		 * @param bufferSize The number of values at the end of the sequence to replay, or 0 for all.
-		 * @param window The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
+		 * @param windowMs The window of time, in milliseconds, in which to replay values from the end of the sequence, or 0 for all.
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of the same type as the current sequence 
 		 */
-		function replayAndLet(selector : Function, bufferSize : uint = 0, window : uint = 0, scheduler : IScheduler = null) : IObservable;
+		function replayDefer(selector : Function, bufferSize : uint = 0, windowMs : uint = 0, scheduler : IScheduler = null) : IObservable;
 		
 		/**
 		 * Repeats the source sequence a specific number of times 
-		 * @param repeatCount The number of times to repeat the sequence
+		 * @param repeatCount The number of times to repeat the sequence or 0 to repeat indefinitely
 		 * @return An observable sequence of the same type as the current sequence
 		 */
 		function repeat(repeatCount : uint = 0) : IObservable;
 		
 		/**
 		 * Repeats the source sequence when an error occurs 
-		 * @param retryCount The number of times to retry the sequence in the event of an error
+		 * @param retryCount The number of times to retry the sequence in the event of an error, 
+		 * or 0 to retry indefinitely
 		 * @return An observable sequence of the same type as the current sequence 
 		 */
 		function retry(retryCount : uint = 0) : IObservable;
@@ -455,19 +540,12 @@ package raix.reactive
 		 */
 		function map(selector:Function):IObservable;
 		
-		[Deprecated(replacement="map")]
-		/**
-		 * Maps the values from a source sequence through a function to change their value  
-		 * @param selector The function to be executed with each value
-		 * @return An observable sequence of valueClass result
-		 */
-		function select(selector:Function):IObservable;
-		
 		/**
 		 * Starts a new sequence, returned by selector, for every value in the source sequence and merges their values
 		 * @param valueClass The valueClass of the sequences returned by selector
-		 * @param selector The function to be executed with each value
-		 * @return An observable sequence of valueClass result
+		 * @param selector The function that maps values to new observable sequences that will 
+		 * be merged in the result set: function(value:TValue):IObservable
+		 * @return An observable sequence containing the values emitted from the child observable sequences
 		 */		
 		function mapMany(selector : Function) : IObservable;
 		
@@ -479,11 +557,18 @@ package raix.reactive
 		 */
 		function selectMany(selector : Function) : IObservable;
 		
+		/**
+		 * Determines whether two observable sequences are equal 
+		 * @param other The observable sequence to compare to
+		 * @param valueComparer The equality comparer to compare values between sequences:
+		 * function(value : TValue, otherValue : TOther) : Boolean
+		 * @return An observable sequence that will emit a single boolean value once equality has been determined
+		 */		
 		function sequenceEqual(other : IObservable, valueComparer : Function = null) : IObservable;
 		
 		/**
 		 * Emits the only item from a source sequence, or an error if any other number of values are emitted. 
-		 * @return An observable sequence of the same valueClass as the current sequence
+		 * @return An observable sequence
 		 */
 		function single() : IObservable;
 		
@@ -524,17 +609,18 @@ package raix.reactive
 		
 		/**
 		 * Emits the specified values at the start of a sequence 
-		 * @param value The value to emit at the start of the sequence
-		 * @param scheduler The scheduler to use
-		 * @return An observable sequence of the same valueClass as the current sequence 
+		 * @param value That value, converted to an IObservable using toObservable, that will 
+		 * be emitted at the start of the current sequence
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 * @see raix.reactive.toObservable 
 		 */
-		function startWith(value : Array, scheduler : IScheduler = null) : IObservable;
+		function startWith(value : *) : IObservable;
 		
 		/**
 		 * Like selectMany, starts a new sequence for every value in the source 
 		 * sequence but cancels the previous sequence each time.
 		 * @return An observable sequence of valueClass
-		 */		
+		 */
 		function switchMany(selector : Function) : IObservable;
 		
 		/**
@@ -547,7 +633,7 @@ package raix.reactive
 		 * Takes only the last set number of values from a source sequence 
 		 * @param count The number of values to use from the end of the sequence
 		 * @return An observable sequence of the same valueClass as the current sequence 
-		 */		
+		 */
 		function takeLast(count : uint) : IObservable;
 		
 		/**
@@ -592,16 +678,16 @@ package raix.reactive
 		 * Includes, with every value emitted, the amount of time passed since the previous value 
 		 * @param scheduler The scheduler to use to determine time
 		 * @return An observable sequence of TimeInterval
-		 */		
+		 */
 		function timeInterval(scheduler : IScheduler = null) : IObservable;
 		
 		/**
-		 * Raises an error (or a specified sequence) after a certain period of inactivity 
+		 * Raises an error (or subscribes a specified sequence) after a certain period of inactivity 
 		 * @param timeoutMs The amount of time, in milliseconds, after which to raise an error (or subscribe to other)
 		 * @param other The sequence to subscribe to in the event of a timeout. If null, a TimeoutError will be emitted.
 		 * @param scheduler The scheduler to use
 		 * @return An observable sequence of the same valueClass as the current sequence 
-		 */		
+		 */
 		function timeout(timeoutMs : uint, other : IObservable = null, scheduler : IScheduler = null) : IObservable;
 		
 		/**
@@ -624,14 +710,6 @@ package raix.reactive
 		 */
 		function toArray():IObservable;
 		
-		[Deprecated(replacement="filter")]
-		/**
-		 * Filters out values from a source sequence 
-		 * @param predicate The predicate function to execute for each value to determine if it will be include in the output
-		 * @return An observable sequence of the same valueClass as the current sequence
-		 */
-		function where(predicate : Function) : IObservable;
-		
 		/**
 		 * Splits values into child-observable windows which are closed by the caller
 		 * @param windowClosingSelector Returns an IObservable that will emit a value or complete to indicate that the active 
@@ -641,11 +719,20 @@ package raix.reactive
 		function window(windowClosingSelector : Function) : IObservable;
 		
 		/**
+		 * Emits values into child "window" observable sequences, which are opened and closed by the caller.
+		 * @param windowOpenings Signals the start of a new window by emitting a value
+		 * @param windowClosingSelector Returns an observable sequence that will signal the close of a window:
+		 * function (window : IObservable) : IObservable 
+		 * @return An observable sequence of the same valueClass as the current sequence
+		 */
+		function multiWindow(windowOpenings : IObservable, windowClosingSelector : Function) : IObservable
+		
+		/**
 		 * Merges two sequences through a mapping function while only ever using each value once 
 		 * @param rightSource The sequence to combine with the current
 		 * @param selector The function to be executed when values are received from both sequences. The return value will be included in the output
 		 * @return An observable sequence of valueClass
-		 */		
+		 */
 		function zip(rightSource : IObservable, selector : Function) : IObservable;
 	}
 }

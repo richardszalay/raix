@@ -266,13 +266,18 @@ package raix.interactive
 		/**
 		 * @inheritDoc
 		 */
-		public function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object
+		public function reduce(seed : Object, accumulator : Function, resultSelector : Function = null) : Object
 		{
 			var lastScanResult : Object = this.scan(seed, accumulator, null).lastOrDefault(seed);
 			
 			return resultSelector == null
 				? lastScanResult
 				: resultSelector(lastScanResult);
+		}
+		
+		public function aggregate(seed : Object, accumulator : Function, resultSelector : Function = null) : Object
+		{
+			return reduce(seed, accumulator, resultSelector);
 		}
 		
 		/**

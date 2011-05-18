@@ -6,7 +6,7 @@ package raix.reactive.tests.operators.calculation
 	[RunWith("org.flexunit.runners.Suite")]
 	public class CalculationSuite
 	{
-		public var aggregate : AggregateFixture;
+		public var aggregate : ReduceFixture;
 		public var average : AverageFixture;
 		public var count : CountFixture;
 		public var scan : ScanFixture;

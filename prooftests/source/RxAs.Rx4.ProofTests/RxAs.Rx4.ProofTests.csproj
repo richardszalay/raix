@@ -91,10 +91,12 @@
     <Compile Include="Operators\CombineLatestFixture.cs" />
     <Compile Include="Operators\CaseFixture.cs" />
     <Compile Include="Operators\BufferWithTimeOrCountFixture.cs" />
+    <Compile Include="Operators\ExpandFixture.cs" />
     <Compile Include="Operators\GroupByUntilFixture.cs" />
     <Compile Include="Operators\GroupJoinFixture.cs" />
     <Compile Include="Operators\MergeFixture.cs" />
     <Compile Include="Operators\GroupByFixture.cs" />
+    <Compile Include="Operators\MergeManyFixture.cs" />
     <Compile Include="Operators\RepeatValueFixture.cs" />
     <Compile Include="Operators\CountFixture.cs" />
     <Compile Include="Operators\CreateFixture.cs" />

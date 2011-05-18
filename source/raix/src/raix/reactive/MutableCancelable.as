@@ -5,12 +5,12 @@ package raix.reactive
 	/**
 	* A cancelable resource than is not immediately available
 	*/	
-	public class FutureCancelable implements ICancelable
+	public class MutableCancelable implements ICancelable
 	{
 		private var _canceled : Boolean = false;
-		private var _innerCancelable : ICancelable = null;
+		private var _cancelable : ICancelable = null;
 		
-		public function FutureCancelable()
+		public function MutableCancelable()
 		{
 		}
 		
@@ -21,10 +21,10 @@ package raix.reactive
 		{
 			_canceled = true;
 			
-			if (_innerCancelable != null)
+			if (_cancelable != null)
 			{
-				_innerCancelable.cancel();
-				_innerCancelable = null;
+				_cancelable.cancel();
+				_cancelable = null;
 			}
 		}
 		
@@ -36,12 +36,12 @@ package raix.reactive
 		 * If cancel() has already been called on this FutureCancelable, the value 
 		 * will be instantly canceled and innerCancelable will be null
 		 */		 
-		public function set innerCancelable(value : ICancelable) : void
+		public function set cancelable(value : ICancelable) : void
 		{
-			if (_innerCancelable != null)
+			if (_cancelable != null)
 			{
-				_innerCancelable.cancel();
-				_innerCancelable = null;
+				_cancelable.cancel();
+				_cancelable = null;
 			}
 			
 			if (_canceled)
@@ -50,7 +50,7 @@ package raix.reactive
 			}
 			else
 			{
-				_innerCancelable = value;
+				_cancelable = value;
 			}
 		}
 	}

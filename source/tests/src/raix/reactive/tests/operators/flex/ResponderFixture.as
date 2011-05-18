@@ -6,7 +6,7 @@ package raix.reactive.tests.operators.flex
 	
 	import org.flexunit.Assert;
 	
-	import raix.reactive.FutureCancelable;
+	import raix.reactive.MutableCancelable;
 	import raix.reactive.ICancelable;
 	import raix.reactive.IObserver;
 	import raix.reactive.Observer;
@@ -52,13 +52,13 @@ package raix.reactive.tests.operators.flex
 		{
 			var responder : IObservableResponder = FlexObservable.responder(int);
 			
-			var subscriptionA : FutureCancelable = new FutureCancelable();
+			var subscriptionA : MutableCancelable = new MutableCancelable();
 			var observerA : IObserver = Observer.create(null, function():void
 			{
 				subscriptionA.cancel();
 			});
 			
-			subscriptionA.innerCancelable = responder.subscribeWith(observerA);
+			subscriptionA.cancelable = responder.subscribeWith(observerA);
 			
 			var observerB : StatsObserver = new StatsObserver();
 			responder.subscribeWith(observerB);
@@ -140,13 +140,13 @@ package raix.reactive.tests.operators.flex
 		{
 			var responder : IObservableResponder = FlexObservable.responder(int);
 			
-			var subscriptionA : FutureCancelable = new FutureCancelable();
+			var subscriptionA : MutableCancelable = new MutableCancelable();
 			var observerA : IObserver = Observer.create(null, null, function(e:Error):void
 			{
 				subscriptionA.cancel();
 			});
 			
-			subscriptionA.innerCancelable = responder.subscribeWith(observerA);
+			subscriptionA.cancelable = responder.subscribeWith(observerA);
 			
 			var observerB : StatsObserver = new StatsObserver();
 			responder.subscribeWith(observerB);

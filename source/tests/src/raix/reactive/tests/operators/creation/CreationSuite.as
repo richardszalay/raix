@@ -20,7 +20,6 @@ package raix.reactive.tests.operators.creation
 		public var interval : IntervalFixture;
 		public var lookup : LookupFixture;
 		public var never : NeverFixture;
-		public var queue : QueueFixture;
 		public var range : RangeFixture;
 		public var throwError : ErrorFixture;
 		public var timer : TimerFixture;

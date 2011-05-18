@@ -36,7 +36,7 @@ package raix.reactive.tests.operators.filter
 			var error : Error = new Error();
 			
 			Observable.range(0, 20)
-				.concat([Observable.error(error)])
+				.concat(Observable.error(error))
 				.ignoreValues()
 				.subscribeWith(observer);
 				

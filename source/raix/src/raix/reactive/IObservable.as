@@ -290,7 +290,7 @@ package raix.reactive
 		 *     function(right:TRight):IObservable
 		 * @param joinSelector A function that will accept "live" left/right value combinations and return a new value. 
 		 *     The output of this function will be received by any subscribers:
-		 *     function(left : TLeft, rights : IObservable.<TRight>) : TResult
+		 *     function(left : TLeft, rights : IObservable.&lt;TRight&gt;) : TResult
 		 * @return An observable sequence of TResult values
 		 */
 		function groupJoin(right : IObservable, leftWindowSelector : Function, rightWindowSelector : Function, joinSelector : Function) : IObservable;

@@ -61,15 +61,7 @@ package raix.reactive.testing
 			
 			_scheduledActions.splice(index, 0, newFutureAction);
 			
-			return cancelable; /*Cancelable.create(function():void
-			{
-				var index : int = _scheduledActions.indexOf(newFutureAction);
-				
-				if (index != -1)
-				{
-					_scheduledActions.splice(index, 1);
-				}
-			});*/
+			return cancelable;
 		}
 		
 		public function run() : void

@@ -137,7 +137,6 @@
       <arg line="-window-title 'raix ${raix.ver.num}'"/>
       <arg line="-main-title 'raix ${raix.ver.num}'"/>
       <arg line="-footer 'raix - http://github.com/richardszalay/raix - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package raix 'Primary classes used when working with raix'"/>
       <arg line="-package raix.interactive 'Classes for working with interactive / pull collections'" />
       <arg line="-package raix.reactive.flex 'Flex integration classes'"/>
       <arg line="-package raix.reactive.subjects 'Subject implementations'"/>

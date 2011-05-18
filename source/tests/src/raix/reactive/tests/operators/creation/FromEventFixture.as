@@ -8,7 +8,6 @@ package raix.reactive.tests.operators.creation
 	import raix.reactive.IObservable;
 	import raix.reactive.ICancelable;
 	import raix.reactive.Observable;
-	import raix.reactive.tests.mocks.ManualScheduler;
 	
 	public class FromEventFixture
 	{

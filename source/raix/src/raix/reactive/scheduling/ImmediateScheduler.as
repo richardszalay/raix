@@ -3,10 +3,10 @@ package raix.reactive.scheduling
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import raix.reactive.ICancelable;
 	import raix.reactive.Cancelable;
-	import raix.reactive.scheduling.TimerPool;
 	import raix.reactive.ClosureCancelable;
+	import raix.reactive.ICancelable;
+	import raix.reactive.scheduling.TimerPool;
 	
 	/**
 	 * A scheduler that executes actions immediately, or immediately

@@ -2,6 +2,7 @@ package raix.reactive.tests.operators.creation
 {
 	import flash.errors.IOError;
 	import flash.net.URLRequest;
+	import flash.utils.setTimeout;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
@@ -35,11 +36,18 @@ package raix.reactive.tests.operators.creation
 					function(doc:XML) : void
 					{
 						result = doc;
-						nextHandler(null);
+						setTimeout(function(): void
+						{
+							nextHandler(null);
+						}, 0);						
 					},
 					function():void
 					{
-						completeHandler(null);
+						setTimeout(function(): void
+						{
+							completeHandler(null);
+						}, 0);
+						
 					});
 		}
 		
@@ -58,7 +66,11 @@ package raix.reactive.tests.operators.creation
 				.subscribe(null, null, function(e:Error) : void
 				{
 					error = e;
-					errorHandler(null);
+					
+					setTimeout(function(): void
+					{
+						errorHandler(null);
+					}, 0);					
 				});
 		}
 

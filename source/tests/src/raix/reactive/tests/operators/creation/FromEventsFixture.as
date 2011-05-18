@@ -2,13 +2,13 @@ package raix.reactive.tests.operators.creation
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.system.System;
 	
 	import org.flexunit.Assert;
 	
-	import raix.reactive.IObservable;
 	import raix.reactive.ICancelable;
+	import raix.reactive.IObservable;
 	import raix.reactive.Observable;
-	import raix.reactive.tests.mocks.ManualScheduler;
 	
 	public class FromEventsFixture
 	{

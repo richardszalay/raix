@@ -26,7 +26,7 @@ package raix.reactive.testing
 		
 		public function get recordedNotifications() : Array
 		{
-			return _recordedNotificatons.slice(0, _recordedNotificatons.length - 1);
+			return _recordedNotificatons.slice(0);
 		}
 		
 		public function completed() : Boolean

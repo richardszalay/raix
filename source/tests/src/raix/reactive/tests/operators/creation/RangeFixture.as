@@ -2,11 +2,11 @@ package raix.reactive.tests.operators.creation
 {
 	import org.flexunit.Assert;
 	
-	import raix.reactive.IObservable;
 	import raix.reactive.ICancelable;
+	import raix.reactive.IObservable;
 	import raix.reactive.Observable;
 	import raix.reactive.Subject;
-	import raix.reactive.tests.mocks.ManualScheduler;
+	import raix.reactive.testing.TestScheduler;
 	import raix.reactive.tests.mocks.StatsObserver;
 	
 	[TestCase]
@@ -46,27 +46,17 @@ package raix.reactive.tests.operators.creation
 		[Test]
 		public function unsubscribing_stops_range_items_in_motion() : void
 		{
-			var scheduler : ManualScheduler = new ManualScheduler();
+			var scheduler : TestScheduler = new TestScheduler();
 			
 			var obs : IObservable = Observable.range(2, 7, scheduler);
 			
 			var stats : StatsObserver = new StatsObserver();
 			
-			var subscription : ICancelable = obs.subscribeWith(stats); 
+			obs.take(1).subscribeWith(stats).cancel(); 
 			
-			Assert.assertFalse(stats.nextCalled);
+			scheduler.run();
 			
-			scheduler.runNext();
-			scheduler.runNext();
-			scheduler.runNext();
-			subscription.cancel();
-			
-			Assert.assertEquals(3, stats.nextCount);
-			Assert.assertEquals(2, stats.nextValues[0]);
-			Assert.assertEquals(3, stats.nextValues[1]);
-			Assert.assertEquals(4, stats.nextValues[2]);
-			
-			Assert.assertFalse(stats.completedCalled);
+			Assert.assertEquals(0, scheduler.actionCount);
 		}
 		
 		[Test(expects="Error")]

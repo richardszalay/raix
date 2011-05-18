@@ -3,7 +3,6 @@ package raix.reactive.tests.operators.combine
 	import org.flexunit.Assert;
 	
 	import raix.reactive.*;
-	import raix.reactive.tests.mocks.ManualScheduler;
 	import raix.reactive.tests.mocks.StatsObserver;
 	
 	public class ConcatFixture

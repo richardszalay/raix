@@ -67,7 +67,10 @@ package raix.reactive.tests.operators.creation
         	var assertTimer : Timer = new Timer(100, 1);
         	throwTimer.addEventListener(TimerEvent.TIMER, function(e:Event):void
         	{
-        		asyncHandler(e);
+				setTimeout(function(): void
+				{
+					asyncHandler(e);
+				}, 0);
         	});
         	throwTimer.start();
         }

@@ -59,7 +59,7 @@ package raix.reactive.tests.operators.creation
 			
 			scheduler.runTo(100);
 			
-			Assert.assertEquals(3, observer.recordedNotifications.length);
+			Assert.assertEquals(4, observer.recordedNotifications.length);
 			Assert.assertEquals(0, scheduler.actionCount);
 		}
 	}

@@ -21,26 +21,26 @@ Let's look at a quick example:
 
 The above code accomplishes quite a bit, including managing event subscriptions and that state requires to determine the time difference between events, in a very small amount of code.
 
-IObservable has many operators for filtering and merging asynchronous data streams, but also includes even more operators that relate to time. Check out the [Reactive Operators](https://github.com/richardszalay/raix/wiki/Reactive-Operators) reference or the [raix.reactive livedocs](http://richardszalay.github.com/raix/livedocs/raix/reactive/package-detail.html)
+IObservable has many operators for filtering and merging asynchronous data streams, but also includes even more operators that relate to time. Check out the [Reactive Operators](http://github.com/richardszalay/raix/wiki/Reactive-Operators) reference or the [raix.reactive livedocs](http://richardszalay.github.com/raix/livedocs/raix/reactive/package-detail.html)
 
 ### Getting Started
 
-* [Introduction to raix.reactive](https://github.com/richardszalay/raix/wiki/Introduction-to-raix.reactive)
+* [Introduction to raix.reactive](http://github.com/richardszalay/raix/wiki/Introduction-to-raix.reactive)
 * [Download raix](http://github.com/richardszalay/raix/downloads)
-* [Reactive Operators](https://github.com/richardszalay/raix/wiki/Reactive-Operators)
-* [livedocs](http://richardszalay.github.com/raix/livedocs/index.html) (though the [Reactive Operators](https://github.com/richardszalay/raix/wiki/Reactive-Operators) is more detailed)
+* [Reactive Operators](http://github.com/richardszalay/raix/wiki/Reactive-Operators)
+* [livedocs](http://richardszalay.github.com/raix/livedocs/index.html) (though the [Reactive Operators](http://github.com/richardszalay/raix/wiki/Reactive-Operators) is more detailed)
     * The livedocs are embedded in the swc for Flash Builder 4 users
-* [Background](https://github.com/richardszalay/raix/wiki/Background)
-* [API differences from Rx.NET](https://github.com/richardszalay/raix/wiki/Changes-from-Rx)
+* [Background](http://github.com/richardszalay/raix/wiki/Background)
+* [API differences from Rx.NET](http://github.com/richardszalay/raix/wiki/Changes-from-Rx)
 
 ### More
 
 * [Unit Tests](http://richardszalay.github.com/raix/tests/index.htm)
-* [Feedback](https://github.com/richardszalay/raix/wiki/Feedback)
+* [Feedback](http://github.com/richardszalay/raix/wiki/Feedback)
 
 ## raix.interactive
 
-_raix.interactive_ abstracts away data structures like arrays and focuses on a forward-only "stream" of values. The center of raix.interactive is IEnumerable, which can be created using one of the Enumerable static methods or by using the global [toEnumerable](https://github.com/richardszalay/raix/wiki/toEnumerable) function. It can then be enumerating by using the built in <code>for each</code> keyword in actionscript.
+_raix.interactive_ abstracts away data structures like arrays and focuses on a forward-only "stream" of values. The center of raix.interactive is IEnumerable, which can be created using one of the Enumerable static methods or by using the global [toEnumerable](http://github.com/richardszalay/raix/wiki/toEnumerable) function. It can then be enumerating by using the built in <code>for each</code> keyword in actionscript.
 
 Let's look at a quick example:
 

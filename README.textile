@@ -6,7 +6,7 @@ _raix.reactive_ brings a more familiar API pattern to asynchronous data, like ev
 
 Let's look at a quick example:
 
-```as3
+pre..
 var doubleClicks : IObservable = Observable.fromEvent(stage, MouseEvent.CLICK)
     .timeInterval()
     .filter(function(ti:TimeInterval):Boolean { return ti.interval < 300; })
@@ -19,9 +19,8 @@ var subscription : ICancelable = doubleClicks.subscribe(function(me:MouseEvent):
 
 // Unsubscribe (removing all event listeners)
 subscription.cancel();
-```
 
-The above code accomplishes quite a bit, including managing event subscriptions and that state requires to determine the time difference between events, in a very small amount of code.
+p. The above code accomplishes quite a bit, including managing event subscriptions and that state requires to determine the time difference between events, in a very small amount of code.
 
 Just like IEnumerable, IObservable has many operators for filtering and merging asynchronous data streams, but also includes even more operators that relate to time. Check out the [[Reactive Operators]] reference or the "raix.reactive livedocs":http://richardszalay.github.com/raix/livedocs/raix/reactive/package-detail.html
 

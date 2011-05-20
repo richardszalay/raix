@@ -29,9 +29,9 @@ IObservable has many operators for filtering and merging asynchronous data strea
 * [Download raix](http://github.com/richardszalay/raix/downloads)
 * [Reactive Operators](https://github.com/richardszalay/raix/wiki/Reactive-Operators)
 * [livedocs](http://richardszalay.github.com/raix/livedocs/index.html) (though the [Reactive Operators](https://github.com/richardszalay/raix/wiki/Reactive-Operators) is more detailed)
-** The livedocs are embedded in the swc for Flash Builder 4 users
+    * The livedocs are embedded in the swc for Flash Builder 4 users
 * [Background](https://github.com/richardszalay/raix/wiki/Background)
-* [API differences from Rx.NET|Changes from Rx](https://github.com/richardszalay/raix/wiki/Changes-from-Rx)
+* [API differences from Rx.NET](https://github.com/richardszalay/raix/wiki/Changes-from-Rx)
 
 ### More
 

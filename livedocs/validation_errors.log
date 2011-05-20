@@ -1,0 +1,12 @@
+Text for param in raix.reactive:IObservable/raix.reactive:IObservable:groupJoin is not valid.
+org.xml.sax.SAXParseException: The element type "TRight" must be terminated by the matching end-tag "</TRight>".
+
+Text for param in raix.reactive:AbsObservable/groupJoin is not valid.
+org.xml.sax.SAXParseException: The element type "TRight" must be terminated by the matching end-tag "</TRight>".
+
+Text for param in raix.interactive:IEnumerable/raix.interactive:IEnumerable:groupJoin is not valid.
+org.xml.sax.SAXParseException: The entity "rt" was referenced, but not declared.
+
+Text for param in raix.interactive:AbsEnumerable/groupJoin is not valid.
+org.xml.sax.SAXParseException: The entity "rt" was referenced, but not declared.
+

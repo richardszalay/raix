@@ -1,8 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <allClasses>
-   <apiPackage id="rx.flex">
-      <apiName>rx.flex</apiName>
-      <apiClassifier id="rx.flex:IObservableResponder">
+   <apiPackage id="raix.interactive">
+      <apiName>raix.interactive</apiName>
+      <apiClassifier id="raix.interactive:IGrouping">
+         <apiName>IGrouping</apiName>
+         <shortdesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IOrderedEnumerable">
+         <apiName>IOrderedEnumerable</apiName>
+         <shortdesc>
+	 An enumerable sequence that has ordering applied to it
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 An enumerable sequence that has ordering applied to it
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IEnumerable">
+         <apiName>IEnumerable</apiName>
+         <shortdesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:ILookup">
+         <apiName>ILookup</apiName>
+         <shortdesc>
+	 Contains values grouped by keys
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Contains values grouped by keys
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:Enumerable">
+         <apiName>Enumerable</apiName>
+         <shortdesc>
+	 Provides static methods that create IEnumerable sequences
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Provides static methods that create IEnumerable sequences
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IEnumerator">
+         <apiName>IEnumerator</apiName>
+         <shortdesc>
+	 Contains the state of an active enumeration.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Contains the state of an active enumeration. This interface is rarely accessed 
+	 by client code as IEnumerable sequences can be used with `for each`
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:AbsEnumerable">
+         <apiName>AbsEnumerable</apiName>
+         <shortdesc>
+	 An abstract implementation of IEnumerable.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier>flash.utils:Proxy</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 An abstract implementation of IEnumerable. This class may be made inaccessible in future revisions.
+	 </apiDesc>
+      </apiClassifier>
+   </apiPackage>
+   <apiPackage id="raix.reactive.flex">
+      <apiName>raix.reactive.flex</apiName>
+      <apiClassifier id="raix.reactive.flex:IObservableResponder">
          <apiName>IObservableResponder</apiName>
          <shortdesc>
 	 An observable sequence that is also an mx.rpc.IResponse
@@ -13,7 +139,7 @@
                <apiAccess value="public"/>
                <apiStatic/>
                <apiBaseInterface>mx.rpc:IResponder</apiBaseInterface>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
                <apiBaseClassifier/>
             </apiClassifierDef>
          </apiClassifierDetail>
@@ -21,7 +147,7 @@
 	 An observable sequence that is also an mx.rpc.IResponse
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.flex:ObservableResponder">
+      <apiClassifier id="raix.reactive.flex:ObservableResponder">
          <apiName>ObservableResponder</apiName>
          <shortdesc>
 	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
@@ -30,15 +156,15 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.flex:IObservableResponder</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive.flex:IObservableResponder</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
          <apiDesc>
 	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.flex:FlexObservable">
+      <apiClassifier id="raix.reactive.flex:FlexObservable">
          <apiName>FlexObservable</apiName>
          <shortdesc/>
          <apiClassifierDetail>
@@ -50,9 +176,9 @@
          </apiClassifierDetail>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx.scheduling">
-      <apiName>rx.scheduling</apiName>
-      <apiClassifier id="rx.scheduling:GreenThreadScheduler">
+   <apiPackage id="raix.reactive.scheduling">
+      <apiName>raix.reactive.scheduling</apiName>
+      <apiClassifier id="raix.reactive.scheduling:GreenThreadScheduler">
          <apiName>GreenThreadScheduler</apiName>
          <shortdesc>
 	 A scheduler that distributes work on a timer, limiting the total execution 
@@ -67,7 +193,7 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
@@ -82,7 +208,7 @@
 	 this smallest possible time (ie. be designed to be run many times</p>
 	        </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:Scheduler">
+      <apiClassifier id="raix.reactive.scheduling:Scheduler">
          <apiName>Scheduler</apiName>
          <shortdesc>
 	 Provides static helpers to schedulers
@@ -98,7 +224,7 @@
 	 Provides static helpers to schedulers
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:IScheduler">
+      <apiClassifier id="raix.reactive.scheduling:IScheduler">
          <apiName>IScheduler</apiName>
          <shortdesc>
 	 Used to distribute workload
@@ -115,7 +241,7 @@
 	 Used to distribute workload
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:ImmediateScheduler">
+      <apiClassifier id="raix.reactive.scheduling:ImmediateScheduler">
          <apiName>ImmediateScheduler</apiName>
          <shortdesc>
 	 A scheduler that executes actions immediately, or immediately
@@ -124,7 +250,7 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
@@ -134,9 +260,9 @@
 	 </apiDesc>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx.subjects">
-      <apiName>rx.subjects</apiName>
-      <apiClassifier id="rx.subjects:ConnectableObservable">
+   <apiPackage id="raix.reactive.subjects">
+      <apiName>raix.reactive.subjects</apiName>
+      <apiClassifier id="raix.reactive.subjects:ConnectableObservable">
          <apiName>ConnectableObservable</apiName>
          <shortdesc>
 	 Concrete implementation of IConnectableObservable
@@ -145,15 +271,15 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.subjects:IConnectableObservable</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive.subjects:IConnectableObservable</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
          <apiDesc>
 	 Concrete implementation of IConnectableObservable
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:AsyncSubject">
+      <apiClassifier id="raix.reactive.subjects:AsyncSubject">
          <apiName>AsyncSubject</apiName>
          <shortdesc>
 	 A subject that replays the last value (or error) received to observers that subscribe 
@@ -163,8 +289,8 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
          <apiDesc>
@@ -172,19 +298,19 @@
 	 after the sequence has completed
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:ReplaySubject">
+      <apiClassifier id="raix.reactive.subjects:ReplaySubject">
          <apiName>ReplaySubject</apiName>
          <shortdesc/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:IConnectableObservable">
+      <apiClassifier id="raix.reactive.subjects:IConnectableObservable">
          <apiName>IConnectableObservable</apiName>
          <shortdesc>
 	 Represents a 'pending' hot observable.</shortdesc>
@@ -193,7 +319,7 @@
                <apiInterface/>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
                <apiBaseClassifier/>
             </apiClassifierDef>
          </apiClassifierDetail>
@@ -204,76 +330,62 @@
 	 </apiDesc>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx">
-      <apiName>rx</apiName>
-      <apiClassifier id="rx:AbsObservable">
-         <apiName>AbsObservable</apiName>
-         <shortdesc>
-	 Subclass this class only if you want to implement a completely custom IObservable.</shortdesc>
+   <apiPackage id="raix.reactive.testing">
+      <apiName>raix.reactive.testing</apiName>
+      <apiClassifier id="raix.reactive.testing:Subscription">
+         <apiName>Subscription</apiName>
+         <shortdesc/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
-         <apiDesc>
-	 Subclass this class only if you want to implement a completely custom IObservable.
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:MockObserver">
+         <apiName>MockObserver</apiName>
+         <shortdesc/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObserver</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:HotObservable">
+         <apiName>HotObservable</apiName>
+         <shortdesc/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:TestScheduler">
+         <apiName>TestScheduler</apiName>
+         <shortdesc>
 	 
-	 <p>If you can avoid it, however, try to stick to subclassing Subject or using 
-	 one of the creation methods.</p>
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
 	 
-	           <p>This class may be made inaccessible in future revisions</p>
-	        </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:CompositeCancelable">
-         <apiName>CompositeCancelable</apiName>
-         <shortdesc>
-	 Represents a cancelable resource that controls multiple 
-	 other cancelable resources 
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 Represents a cancelable resource that controls multiple 
-	 other cancelable resources 
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:Subject">
-         <apiName>Subject</apiName>
-         <shortdesc>
-	 A Subject is both an IObservable and an IObserver, so it can be 
-	 returned as an IObservable and fed values through the IObserver 
-	 methods.</shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 A Subject is both an IObservable and an IObserver, so it can be 
-	 returned as an IObservable and fed values through the IObserver 
-	 methods.
-	 
-	 <p>When returning a Subject as an IObservable, it's recommended that you
-	 return subject.asObservable() to hide the original instance</p>
-	        </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:Cancelable">
-         <apiName>Cancelable</apiName>
-         <shortdesc>
-	 Provides static methods that create cancelable resources
-	 </shortdesc>
+      <apiClassifier id="raix.reactive.testing:Recorded">
+         <apiName>Recorded</apiName>
+         <shortdesc/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -281,45 +393,23 @@
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
-         <apiDesc>
-	 Provides static methods that create cancelable resources
-	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:IObservable">
-         <apiName>IObservable</apiName>
-         <shortdesc>
-	 An observable sequence of values
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiInterface/>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier/>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 An observable sequence of values
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:TimeStamped">
-         <apiName>TimeStamped</apiName>
-         <shortdesc>
-	 A wrapper that adds a timestamp to a value
-	 </shortdesc>
+      <apiClassifier id="raix.reactive.testing:ColdObservable">
+         <apiName>ColdObservable</apiName>
+         <shortdesc/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
-         <apiDesc>
-	 A wrapper that adds a timestamp to a value
-	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:FutureCancelable">
-         <apiName>FutureCancelable</apiName>
+   </apiPackage>
+   <apiPackage id="raix.reactive">
+      <apiName>raix.reactive</apiName>
+      <apiClassifier id="raix.reactive:MutableCancelable">
+         <apiName>MutableCancelable</apiName>
          <shortdesc>
 	A cancelable resource than is not immediately available
 	</shortdesc>
@@ -327,7 +417,7 @@
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
          </apiClassifierDetail>
@@ -335,7 +425,7 @@
 	A cancelable resource than is not immediately available
 	</apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:Observer">
+      <apiClassifier id="raix.reactive:Observer">
          <apiName>Observer</apiName>
          <shortdesc>
 	 Provides static methods that create observers
@@ -351,7 +441,23 @@
 	 Provides static methods that create observers
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:TimeInterval">
+      <apiClassifier id="raix.reactive:TimeStamped">
+         <apiName>TimeStamped</apiName>
+         <shortdesc>
+	 A wrapper that adds a timestamp to a value
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A wrapper that adds a timestamp to a value
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:TimeInterval">
          <apiName>TimeInterval</apiName>
          <shortdesc>
 	 A wrapper that adds the time interval, in milliseconds,
@@ -369,25 +475,7 @@
 	 since the last values 
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:Notification">
-         <apiName>Notification</apiName>
-         <shortdesc>
-	 Represents one of the three messages that can be sent to 
-	 an observer.</shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 Represents one of the three messages that can be sent to 
-	 an observer.
-	 
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:Unit">
+      <apiClassifier id="raix.reactive:Unit">
          <apiName>Unit</apiName>
          <shortdesc>
 	 Represents a valueClass that can be used when 
@@ -405,10 +493,188 @@
 	 an observable sequence logically has no valueClass
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:Observable">
-         <apiName>Observable</apiName>
+      <apiClassifier id="raix.reactive:BooleanCancelable">
+         <apiName>BooleanCancelable</apiName>
          <shortdesc>
-	 Provides static methods that create observable sequences
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:IGroupedObservable">
+         <apiName>IGroupedObservable</apiName>
+         <shortdesc/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnError">
+         <apiName>OnError</apiName>
+         <shortdesc>
+	 A Notification for an onError call
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A Notification for an onError call
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:ISubject">
+         <apiName>ISubject</apiName>
+         <shortdesc>
+	 A resource that is both observable and an observer
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObserver</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A resource that is both observable and an observer
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnNext">
+         <apiName>OnNext</apiName>
+         <shortdesc>
+	 A Notification for an onNext call
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A Notification for an onNext call
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:TimeoutError">
+         <apiName>TimeoutError</apiName>
+         <shortdesc>
+	 An error thrown by Observable.timeout by default
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Error</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 An error thrown by Observable.timeout by default
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnCompleted">
+         <apiName>OnCompleted</apiName>
+         <shortdesc>
+	 A Notification for an onCompleted call
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A Notification for an onCompleted call
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:AbsObservable">
+         <apiName>AbsObservable</apiName>
+         <shortdesc>
+	 Subclass this class only if you want to implement a completely custom IObservable.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Subclass this class only if you want to implement a completely custom IObservable.
+	 
+	 <p>If you can avoid it, however, try to stick to subclassing Subject or using 
+	 one of the creation methods.</p>
+	 
+	           <p>This class may be made inaccessible in future revisions</p>
+	        </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:CompositeCancelable">
+         <apiName>CompositeCancelable</apiName>
+         <shortdesc>
+	 Represents a cancelable resource that controls multiple 
+	 other cancelable resources 
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Represents a cancelable resource that controls multiple 
+	 other cancelable resources 
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Subject">
+         <apiName>Subject</apiName>
+         <shortdesc>
+	 A Subject is both an IObservable and an IObserver, so it can be 
+	 returned as an IObservable and fed values through the IObserver 
+	 methods.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 A Subject is both an IObservable and an IObserver, so it can be 
+	 returned as an IObservable and fed values through the IObserver 
+	 methods.
+	 
+	 <p>When returning a Subject as an IObservable, it's recommended that you
+	 return subject.asObservable() to hide the original instance</p>
+	        </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Cancelable">
+         <apiName>Cancelable</apiName>
+         <shortdesc>
+	 Provides static methods that create cancelable resources
 	 </shortdesc>
          <apiClassifierDetail>
             <apiClassifierDef>
@@ -418,10 +684,64 @@
             </apiClassifierDef>
          </apiClassifierDetail>
          <apiDesc>
-	 Provides static methods that create observable sequences
+	 Provides static methods that create cancelable resources
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:ICancelable">
+      <apiClassifier id="raix.reactive:IObservable">
+         <apiName>IObservable</apiName>
+         <shortdesc>
+	 An observable (or "push"), sequence of values that often represent data or events that have not yet occured.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 An observable (or "push"), sequence of values that often represent data or events that have not yet occured. 
+	 Sequences can be manipulated, often combining them with other sequences, and then subscribed to 
+	 to receive the output.
+	 
+	 Chains of sequences are automatically torn down when the sequence completes, errors or is unsubscribed from.
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Notification">
+         <apiName>Notification</apiName>
+         <shortdesc>
+	 Represents one of the three messages that can be sent to 
+	 an observer.</shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Represents one of the three messages that can be sent to 
+	 an observer.
+	 
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Observable">
+         <apiName>Observable</apiName>
+         <shortdesc>
+	 Provides static methods that create IObservable sequences
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Provides static methods that create IObservable sequences
+	 </apiDesc>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:ICancelable">
          <apiName>ICancelable</apiName>
          <shortdesc>
 	 Represents a handle that can be used to cancel an operation 
@@ -440,7 +760,7 @@
 	 
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:NotificationKind">
+      <apiClassifier id="raix.reactive:NotificationKind">
          <apiName>NotificationKind</apiName>
          <shortdesc>
 	 Enumeration for the different types of Notification
@@ -456,61 +776,7 @@
 	 Enumeration for the different types of Notification
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:BooleanCancelable">
-         <apiName>BooleanCancelable</apiName>
-         <shortdesc>
-	 Represents a cancelable operation, the canceled status of which can 
-	 be checked by isCanceled 
-	</shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 Represents a cancelable operation, the canceled status of which can 
-	 be checked by isCanceled 
-	</apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:OnError">
-         <apiName>OnError</apiName>
-         <shortdesc>
-	 A Notification for an onError call
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 A Notification for an onError call
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:ISubject">
-         <apiName>ISubject</apiName>
-         <shortdesc>
-	 A resource that is both observable and an observer
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiInterface/>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
-               <apiBaseInterface>rx:IObserver</apiBaseInterface>
-               <apiBaseClassifier/>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 A resource that is both observable and an observer
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:Pattern">
+      <apiClassifier id="raix.reactive:Pattern">
          <apiName>Pattern</apiName>
          <shortdesc>
 	 A combination of multiple IObservable sequences that can be combined 
@@ -534,7 +800,7 @@
 	 Pattern.and(), rather than creating a Pattern directly</p>
 	        </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:IObserver">
+      <apiClassifier id="raix.reactive:IObserver">
          <apiName>IObserver</apiName>
          <shortdesc>
 	 An object that receives messages from an IObservable sequence
@@ -553,55 +819,7 @@
 	 
 	 </apiDesc>
       </apiClassifier>
-      <apiClassifier id="rx:OnNext">
-         <apiName>OnNext</apiName>
-         <shortdesc>
-	 A Notification for an onNext call
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 A Notification for an onNext call
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:TimeoutError">
-         <apiName>TimeoutError</apiName>
-         <shortdesc>
-	 An error thrown by Observable.timeout by default
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Error</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 An error thrown by Observable.timeout by default
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:OnCompleted">
-         <apiName>OnCompleted</apiName>
-         <shortdesc>
-	 A Notification for an onCompleted call
-	 </shortdesc>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-         </apiClassifierDetail>
-         <apiDesc>
-	 A Notification for an onCompleted call
-	 </apiDesc>
-      </apiClassifier>
-      <apiClassifier id="rx:Plan">
+      <apiClassifier id="raix.reactive:Plan">
          <apiName>Plan</apiName>
          <shortdesc>
 	 A combination of IObservable sequences and a selector that will 
@@ -616,11 +834,43 @@
          <apiDesc>
 	 A combination of IObservable sequences and a selector that will 
 	 map the values of those sequences to an output value. A plan is intended 
-	 to be used with Observable.join
+	 to be used with Observable.when
 	 
 	 <p>Generally, a Plan will be created using Pattern.then(), rather 
 	 than creating a Plan directly</p>
 	        </apiDesc>
+      </apiClassifier>
+   </apiPackage>
+   <apiPackage id="raix.utils">
+      <apiName>raix.utils</apiName>
+      <apiClassifier id="raix.utils:Filter">
+         <apiName>Filter</apiName>
+         <shortdesc/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.utils:Projection">
+         <apiName>Projection</apiName>
+         <shortdesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </shortdesc>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+         </apiClassifierDetail>
+         <apiDesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </apiDesc>
       </apiClassifier>
    </apiPackage>
 </allClasses>

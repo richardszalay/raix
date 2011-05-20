@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?><apiMap><apiItemRef href="rx.xml"><apiItemRef href="rx.flex.xml"/><apiItemRef href="rx.subjects.xml"/><apiItemRef href="rx.scheduling.xml"/></apiItemRef></apiMap>
+<?xml version="1.0" encoding="UTF-8"?><apiMap><apiItemRef href="raix.utils.xml"/><apiItemRef href="raix.reactive.xml"><apiItemRef href="raix.reactive.flex.xml"/><apiItemRef href="raix.reactive.testing.xml"/><apiItemRef href="raix.reactive.subjects.xml"/><apiItemRef href="raix.reactive.scheduling.xml"/></apiItemRef><apiItemRef href="raix.interactive.xml"/></apiMap>

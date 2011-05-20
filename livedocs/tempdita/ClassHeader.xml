@@ -1,9 +1,273 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <allClasses>
-   <apiPackage id="rx.flex">
-      <apiName>rx.flex</apiName>
+   <apiPackage id="raix.interactive">
+      <apiName>raix.interactive</apiName>
       <apiDetail/>
-      <apiClassifier id="rx.flex:IObservableResponder">
+      <apiClassifier id="raix.interactive:IGrouping">
+         <apiName>IGrouping</apiName>
+         <shortdesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords" content="IGrouping,raix.interactive.IGrouping,current,key"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.interactive:IEnumerable"/>
+                  <Interface id="raix.reactive:ICancelable"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.interactive:IEnumerable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+         <related-links>
+            <link href="" invalidHref="IEnumerable.groupBy.xml">
+               <linktext>IEnumerable.groupBy</linktext>
+            </link>
+         </related-links>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IOrderedEnumerable">
+         <apiName>IOrderedEnumerable</apiName>
+         <shortdesc>
+	 An enumerable sequence that has ordering applied to it
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="IOrderedEnumerable,raix.interactive.IOrderedEnumerable,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 An enumerable sequence that has ordering applied to it
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.interactive:IEnumerable"/>
+                  <Interface id="raix.reactive:ICancelable"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.interactive:IEnumerable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IEnumerable">
+         <apiName>IEnumerable</apiName>
+         <shortdesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="IEnumerable,raix.interactive.IEnumerable,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.reactive:ICancelable"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:ICancelable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors>
+                  <Implementor id="raix.interactive:AbsEnumerable"/>
+               </Implementors>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:ILookup">
+         <apiName>ILookup</apiName>
+         <shortdesc>
+	 Contains values grouped by keys
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="ILookup,raix.interactive.ILookup,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 Contains values grouped by keys
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.interactive:IEnumerable"/>
+                  <Interface id="raix.reactive:ICancelable"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.interactive:IEnumerable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+         <related-links>
+            <link href="" invalidHref="IEnumerable.toLookup.xml">
+               <linktext>IEnumerable.toLookup</linktext>
+            </link>
+         </related-links>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:Enumerable">
+         <apiName>Enumerable</apiName>
+         <shortdesc>
+	 Provides static methods that create IEnumerable sequences
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Enumerable,raix.interactive.Enumerable,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 Provides static methods that create IEnumerable sequences
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:IEnumerator">
+         <apiName>IEnumerator</apiName>
+         <shortdesc>
+	 Contains the state of an active enumeration.</shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="IEnumerator,raix.interactive.IEnumerator,current,key,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 Contains the state of an active enumeration. This interface is rarely accessed 
+	 by client code as IEnumerable sequences can be used with `for each`
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.interactive:AbsEnumerable">
+         <apiName>AbsEnumerable</apiName>
+         <shortdesc>
+	 An abstract implementation of IEnumerable.</shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="AbsEnumerable,raix.interactive.AbsEnumerable,aggregate,all,all,any,any,average,average,cancel,concat,concat,contains,contains,containsKey,count,count,create,defaultIfEmpty,defaultIfEmpty,distinct,distinct,elementAt,elementAt,elementAtOrDefault,elementAtOrDefault,empty,except,except,filter,filter,first,first,firstOrDefault,firstOrDefault,fromArray,fromProxy,generate,getEnumerator,getEnumerator,getValues,groupBy,groupBy,groupJoin,groupJoin,intersect,intersect,join,join,last,last,lastOrDefault,lastOrDefault,map,map,mapMany,mapMany,max,max,min,min,moveNext,nextNameIndex,nextValue,ofType,ofType,orderBy,orderBy,orderByDescending,orderByDescending,range,reduce,reduce,repeat,repeat,repeat,reverse,reverse,scan,scan,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipWhile,skipWhile,sum,sum,take,take,takeLast,takeLast,takeWhile,takeWhile,thenBy,thenByDescending,toArray,toArray,toDictionary,toDictionary,toEnumerable,toLookup,toLookup,toObservable,toObservable,union,union,value,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface>
+               <apiBaseClassifier>flash.utils:Proxy</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 An abstract implementation of IEnumerable. This class may be made inaccessible in future revisions.
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="flash.utils:Proxy"/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.interactive:IEnumerable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+   </apiPackage>
+   <apiPackage id="raix.reactive.flex">
+      <apiName>raix.reactive.flex</apiName>
+      <apiDetail/>
+      <apiClassifier id="raix.reactive.flex:IObservableResponder">
          <apiName>IObservableResponder</apiName>
          <shortdesc>
 	 An observable sequence that is also an mx.rpc.IResponse
@@ -11,14 +275,15 @@
          <prolog>
             <asMetadata/>
          </prolog>
-            <meta name="keywords" content="IObservableResponder,rx.flex.IObservableResponder"/>
+            <meta name="keywords"
+               content="IObservableResponder,raix.reactive.flex.IObservableResponder"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
                <apiAccess value="public"/>
                <apiStatic/>
                <apiBaseInterface>mx.rpc:IResponder</apiBaseInterface>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
                <apiBaseClassifier/>
             </apiClassifierDef>
             <apiDesc>
@@ -27,24 +292,24 @@
             <Inheritancelist>
                <BaseInterface>
                   <Interface id="mx.rpc:IResponder"/>
-                  <Interface id="rx:IObservable"/>
+                  <Interface id="raix.reactive:IObservable"/>
                </BaseInterface>
                <Inheritance>
                   <Inherit id=""/>
                </Inheritance>
                <Implements>
                   <Implement id="mx.rpc:IResponder"/>
-                  <Implement id="rx:IObservable"/>
+                  <Implement id="raix.reactive:IObservable"/>
                </Implements>
                <Subclasses/>
                <Implementors>
-                  <Implementor id="rx.flex:ObservableResponder"/>
+                  <Implementor id="raix.reactive.flex:ObservableResponder"/>
                </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.flex:ObservableResponder">
+      <apiClassifier id="raix.reactive.flex:ObservableResponder">
          <apiName>ObservableResponder</apiName>
          <shortdesc>
 	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
@@ -53,13 +318,13 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="ObservableResponder,rx.flex.ObservableResponder,valueClass,fault,fromAsyncPattern,fromCollection,fromList,fromViewCursor,responder,result,subscribeWith"/>
+               content="ObservableResponder,raix.reactive.flex.ObservableResponder,fault,fromAsyncPattern,fromCollection,fromList,fromViewCursor,responder,result,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.flex:IObservableResponder</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive.flex:IObservableResponder</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
 	 Concrete implementation of an observable sequence that is also an mx.rpc.IResponder
@@ -67,11 +332,11 @@
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>
-                  <Inherit id="rx:AbsObservable"/>
+                  <Inherit id="raix.reactive:AbsObservable"/>
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx.flex:IObservableResponder"/>
+                  <Implement id="raix.reactive.flex:IObservableResponder"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -79,14 +344,14 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.flex:FlexObservable">
+      <apiClassifier id="raix.reactive.flex:FlexObservable">
          <apiName>FlexObservable</apiName>
          <shortdesc/>
          <prolog>
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="FlexObservable,rx.flex.FlexObservable,fault,fromAsyncPattern,fromCollection,fromList,fromViewCursor,responder,result,subscribeWith"/>
+               content="FlexObservable,raix.reactive.flex.FlexObservable,fault,fromAsyncPattern,fromCollection,fromList,fromViewCursor,responder,result,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -106,10 +371,10 @@
          </apiClassifierDetail>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx.scheduling">
-      <apiName>rx.scheduling</apiName>
+   <apiPackage id="raix.reactive.scheduling">
+      <apiName>raix.reactive.scheduling</apiName>
       <apiDetail/>
-      <apiClassifier id="rx.scheduling:GreenThreadScheduler">
+      <apiClassifier id="raix.reactive.scheduling:GreenThreadScheduler">
          <apiName>GreenThreadScheduler</apiName>
          <shortdesc>
 	 A scheduler that distributes work on a timer, limiting the total execution 
@@ -124,12 +389,12 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="GreenThreadScheduler,rx.scheduling.GreenThreadScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
+               content="GreenThreadScheduler,raix.reactive.scheduling.GreenThreadScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
@@ -148,7 +413,7 @@
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx.scheduling:IScheduler"/>
+                  <Implement id="raix.reactive.scheduling:IScheduler"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -156,7 +421,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:Scheduler">
+      <apiClassifier id="raix.reactive.scheduling:Scheduler">
          <apiName>Scheduler</apiName>
          <shortdesc>
 	 Provides static helpers to schedulers
@@ -165,7 +430,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Scheduler,rx.scheduling.Scheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
+               content="Scheduler,raix.reactive.scheduling.Scheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -187,7 +452,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:IScheduler">
+      <apiClassifier id="raix.reactive.scheduling:IScheduler">
          <apiName>IScheduler</apiName>
          <shortdesc>
 	 Used to distribute workload
@@ -196,7 +461,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="IScheduler,rx.scheduling.IScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
+               content="IScheduler,raix.reactive.scheduling.IScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
@@ -215,14 +480,15 @@
                <Implements/>
                <Subclasses/>
                <Implementors>
-                  <Implementor id="rx.scheduling:GreenThreadScheduler"/>
-                  <Implementor id="rx.scheduling:ImmediateScheduler"/>
+                  <Implementor id="raix.reactive.scheduling:GreenThreadScheduler"/>
+                  <Implementor id="raix.reactive.scheduling:ImmediateScheduler"/>
+                  <Implementor id="raix.reactive.testing:TestScheduler"/>
                </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.scheduling:ImmediateScheduler">
+      <apiClassifier id="raix.reactive.scheduling:ImmediateScheduler">
          <apiName>ImmediateScheduler</apiName>
          <shortdesc>
 	 A scheduler that executes actions immediately, or immediately
@@ -231,12 +497,12 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="ImmediateScheduler,rx.scheduling.ImmediateScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
+               content="ImmediateScheduler,raix.reactive.scheduling.ImmediateScheduler,asynchronous,contextSwitchTime,defaultScheduler,greenThread,immediate,instance,instance,now,now,now,synchronous,schedule,schedule,schedule,scheduleRecursive"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
@@ -249,7 +515,7 @@
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx.scheduling:IScheduler"/>
+                  <Implement id="raix.reactive.scheduling:IScheduler"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -258,10 +524,10 @@
          </apiClassifierDetail>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx.subjects">
-      <apiName>rx.subjects</apiName>
+   <apiPackage id="raix.reactive.subjects">
+      <apiName>raix.reactive.subjects</apiName>
       <apiDetail/>
-      <apiClassifier id="rx.subjects:ConnectableObservable">
+      <apiClassifier id="raix.reactive.subjects:ConnectableObservable">
          <apiName>ConnectableObservable</apiName>
          <shortdesc>
 	 Concrete implementation of IConnectableObservable
@@ -270,13 +536,13 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="ConnectableObservable,rx.subjects.ConnectableObservable,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
+               content="ConnectableObservable,raix.reactive.subjects.ConnectableObservable,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx.subjects:IConnectableObservable</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive.subjects:IConnectableObservable</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
 	 Concrete implementation of IConnectableObservable
@@ -284,11 +550,11 @@
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>
-                  <Inherit id="rx:AbsObservable"/>
+                  <Inherit id="raix.reactive:AbsObservable"/>
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx.subjects:IConnectableObservable"/>
+                  <Implement id="raix.reactive.subjects:IConnectableObservable"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -296,7 +562,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:AsyncSubject">
+      <apiClassifier id="raix.reactive.subjects:AsyncSubject">
          <apiName>AsyncSubject</apiName>
          <shortdesc>
 	 A subject that replays the last value (or error) received to observers that subscribe 
@@ -306,13 +572,13 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="AsyncSubject,rx.subjects.AsyncSubject,valueClass,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
+               content="AsyncSubject,raix.reactive.subjects.AsyncSubject,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
 	 A subject that replays the last value (or error) received to observers that subscribe 
@@ -321,11 +587,11 @@
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>
-                  <Inherit id="rx:AbsObservable"/>
+                  <Inherit id="raix.reactive:AbsObservable"/>
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:ISubject"/>
+                  <Implement id="raix.reactive:ISubject"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -333,29 +599,29 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:ReplaySubject">
+      <apiClassifier id="raix.reactive.subjects:ReplaySubject">
          <apiName>ReplaySubject</apiName>
          <shortdesc/>
          <prolog>
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="ReplaySubject,rx.subjects.ReplaySubject,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
+               content="ReplaySubject,raix.reactive.subjects.ReplaySubject,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>
-                  <Inherit id="rx:AbsObservable"/>
+                  <Inherit id="raix.reactive:AbsObservable"/>
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:ISubject"/>
+                  <Implement id="raix.reactive:ISubject"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -363,7 +629,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx.subjects:IConnectableObservable">
+      <apiClassifier id="raix.reactive.subjects:IConnectableObservable">
          <apiName>IConnectableObservable</apiName>
          <shortdesc>
 	 Represents a 'pending' hot observable.</shortdesc>
@@ -371,13 +637,13 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="IConnectableObservable,rx.subjects.IConnectableObservable,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
+               content="IConnectableObservable,raix.reactive.subjects.IConnectableObservable,connect,connect,lastValue,onCompleted,onCompleted,onError,onError,onNext,onNext,refCount,refCount,subscribeWith,subscribeWith,subscribeWith"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
                <apiBaseClassifier/>
             </apiClassifierDef>
             <apiDesc>
@@ -387,27 +653,598 @@
 	 </apiDesc>
             <Inheritancelist>
                <BaseInterface>
-                  <Interface id="rx:IObservable"/>
+                  <Interface id="raix.reactive:IObservable"/>
                </BaseInterface>
                <Inheritance>
                   <Inherit id=""/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:IObservable"/>
+                  <Implement id="raix.reactive:IObservable"/>
                </Implements>
                <Subclasses/>
                <Implementors>
-                  <Implementor id="rx.subjects:ConnectableObservable"/>
+                  <Implementor id="raix.reactive.subjects:ConnectableObservable"/>
                </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
    </apiPackage>
-   <apiPackage id="rx">
-      <apiName>rx</apiName>
+   <apiPackage id="raix.reactive.testing">
+      <apiName>raix.reactive.testing</apiName>
       <apiDetail/>
-      <apiClassifier id="rx:AbsObservable">
+      <apiClassifier id="raix.reactive.testing:Subscription">
+         <apiName>Subscription</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Subscription,raix.reactive.testing.Subscription,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:MockObserver">
+         <apiName>MockObserver</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="MockObserver,raix.reactive.testing.MockObserver,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value,assertNotifications,assertTimings,assertValues,completed,createColdObservable,createHotObservable,error,hasError,onCompleted,onError,onNext,run,runTo,schedule,subscribeWith,subscribeWith"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObserver</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:IObserver"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:HotObservable">
+         <apiName>HotObservable</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="HotObservable,raix.reactive.testing.HotObservable,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value,assertNotifications,assertTimings,assertValues,completed,createColdObservable,createHotObservable,error,hasError,onCompleted,onError,onNext,run,runTo,schedule,subscribeWith,subscribeWith"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="raix.reactive:AbsObservable"/>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:TestScheduler">
+         <apiName>TestScheduler</apiName>
+         <shortdesc>
+	 
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="TestScheduler,raix.reactive.testing.TestScheduler,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value,assertNotifications,assertTimings,assertValues,completed,createColdObservable,createHotObservable,error,hasError,onCompleted,onError,onNext,run,runTo,schedule,subscribeWith,subscribeWith"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive.scheduling:IScheduler"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:Recorded">
+         <apiName>Recorded</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Recorded,raix.reactive.testing.Recorded,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive.testing:ColdObservable">
+         <apiName>ColdObservable</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="ColdObservable,raix.reactive.testing.ColdObservable,actionCount,now,observers,recordedNotifications,subscribe,subscriptions,subscriptions,time,unsubscribe,value,assertNotifications,assertTimings,assertValues,completed,createColdObservable,createHotObservable,error,hasError,onCompleted,onError,onNext,run,runTo,schedule,subscribeWith,subscribeWith"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="raix.reactive:AbsObservable"/>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+   </apiPackage>
+   <apiPackage id="raix.reactive">
+      <apiName>raix.reactive</apiName>
+      <apiDetail/>
+      <apiClassifier id="raix.reactive:MutableCancelable">
+         <apiName>MutableCancelable</apiName>
+         <shortdesc>
+	A cancelable resource than is not immediately available
+	</shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="MutableCancelable,raix.reactive.MutableCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	A cancelable resource than is not immediately available
+	</apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:ICancelable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Observer">
+         <apiName>Observer</apiName>
+         <shortdesc>
+	 Provides static methods that create observers
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Observer,raix.reactive.Observer,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 Provides static methods that create observers
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:TimeStamped">
+         <apiName>TimeStamped</apiName>
+         <shortdesc>
+	 A wrapper that adds a timestamp to a value
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="TimeStamped,raix.reactive.TimeStamped,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 A wrapper that adds a timestamp to a value
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:TimeInterval">
+         <apiName>TimeInterval</apiName>
+         <shortdesc>
+	 A wrapper that adds the time interval, in milliseconds,
+	 since the last values 
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="TimeInterval,raix.reactive.TimeInterval,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 A wrapper that adds the time interval, in milliseconds,
+	 since the last values 
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:Unit">
+         <apiName>Unit</apiName>
+         <shortdesc>
+	 Represents a valueClass that can be used when 
+	 an observable sequence logically has no valueClass
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords" content="Unit,raix.reactive.Unit"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 Represents a valueClass that can be used when 
+	 an observable sequence logically has no valueClass
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:BooleanCancelable">
+         <apiName>BooleanCancelable</apiName>
+         <shortdesc>
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="BooleanCancelable,raix.reactive.BooleanCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 Represents a cancelable operation, the canceled status of which can 
+	 be checked by isCanceled 
+	</apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:ICancelable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:IGroupedObservable">
+         <apiName>IGroupedObservable</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="IGroupedObservable,raix.reactive.IGroupedObservable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.reactive:IObservable"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:IObservable"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnError">
+         <apiName>OnError</apiName>
+         <shortdesc>
+	 A Notification for an onError call
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="OnError,raix.reactive.OnError,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 A Notification for an onError call
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="raix.reactive:Notification"/>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:ISubject">
+         <apiName>ISubject</apiName>
+         <shortdesc>
+	 A resource that is both observable and an observer
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords" content="ISubject,raix.reactive.ISubject"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiInterface/>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObserver</apiBaseInterface>
+               <apiBaseClassifier/>
+            </apiClassifierDef>
+            <apiDesc>
+	 A resource that is both observable and an observer
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface>
+                  <Interface id="raix.reactive:IObservable"/>
+                  <Interface id="raix.reactive:IObserver"/>
+               </BaseInterface>
+               <Inheritance>
+                  <Inherit id=""/>
+               </Inheritance>
+               <Implements>
+                  <Implement id="raix.reactive:IObservable"/>
+                  <Implement id="raix.reactive:IObserver"/>
+               </Implements>
+               <Subclasses/>
+               <Implementors>
+                  <Implementor id="raix.reactive.subjects:AsyncSubject"/>
+                  <Implementor id="raix.reactive.subjects:ReplaySubject"/>
+                  <Implementor id="raix.reactive:Subject"/>
+               </Implementors>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnNext">
+         <apiName>OnNext</apiName>
+         <shortdesc>
+	 A Notification for an onNext call
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="OnNext,raix.reactive.OnNext,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 A Notification for an onNext call
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="raix.reactive:Notification"/>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:TimeoutError">
+         <apiName>TimeoutError</apiName>
+         <shortdesc>
+	 An error thrown by Observable.timeout by default
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords" content="TimeoutError,raix.reactive.TimeoutError"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Error</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 An error thrown by Observable.timeout by default
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Error"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:OnCompleted">
+         <apiName>OnCompleted</apiName>
+         <shortdesc>
+	 A Notification for an onCompleted call
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="OnCompleted,raix.reactive.OnCompleted,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>raix.reactive:Notification</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 A Notification for an onCompleted call
+	 </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="raix.reactive:Notification"/>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.reactive:AbsObservable">
          <apiName>AbsObservable</apiName>
          <shortdesc>
 	 Subclass this class only if you want to implement a completely custom IObservable.</shortdesc>
@@ -415,12 +1252,12 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="AbsObservable,rx.AbsObservable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="AbsObservable,raix.reactive.AbsObservable,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:IObservable</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
@@ -437,21 +1274,23 @@
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:IObservable"/>
+                  <Implement id="raix.reactive:IObservable"/>
                </Implements>
                <Subclasses>
-                  <class id="rx.flex:ObservableResponder"/>
-                  <class id="rx.subjects:ConnectableObservable"/>
-                  <class id="rx.subjects:AsyncSubject"/>
-                  <class id="rx.subjects:ReplaySubject"/>
-                  <class id="rx:Subject"/>
+                  <class id="raix.reactive.flex:ObservableResponder"/>
+                  <class id="raix.reactive.subjects:ConnectableObservable"/>
+                  <class id="raix.reactive.subjects:AsyncSubject"/>
+                  <class id="raix.reactive.subjects:ReplaySubject"/>
+                  <class id="raix.reactive.testing:HotObservable"/>
+                  <class id="raix.reactive.testing:ColdObservable"/>
+                  <class id="raix.reactive:Subject"/>
                </Subclasses>
                <Implementors/>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:CompositeCancelable">
+      <apiClassifier id="raix.reactive:CompositeCancelable">
          <apiName>CompositeCancelable</apiName>
          <shortdesc>
 	 Represents a cancelable resource that controls multiple 
@@ -461,12 +1300,12 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="CompositeCancelable,rx.CompositeCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="CompositeCancelable,raix.reactive.CompositeCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
+               <apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface>
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
@@ -479,7 +1318,7 @@
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:ICancelable"/>
+                  <Implement id="raix.reactive:ICancelable"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -487,7 +1326,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:Subject">
+      <apiClassifier id="raix.reactive:Subject">
          <apiName>Subject</apiName>
          <shortdesc>
 	 A Subject is both an IObservable and an IObserver, so it can be 
@@ -497,13 +1336,13 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Subject,rx.Subject,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="Subject,raix.reactive.Subject,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
                <apiStatic/>
-               <apiBaseInterface>rx:ISubject</apiBaseInterface>
-               <apiBaseClassifier>rx:AbsObservable</apiBaseClassifier>
+               <apiBaseInterface>raix.reactive:ISubject</apiBaseInterface>
+               <apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
 	 A Subject is both an IObservable and an IObserver, so it can be 
@@ -516,11 +1355,11 @@
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>
-                  <Inherit id="rx:AbsObservable"/>
+                  <Inherit id="raix.reactive:AbsObservable"/>
                   <Inherit id="Object"/>
                </Inheritance>
                <Implements>
-                  <Implement id="rx:ISubject"/>
+                  <Implement id="raix.reactive:ISubject"/>
                </Implements>
                <Subclasses/>
                <Implementors/>
@@ -528,7 +1367,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:Cancelable">
+      <apiClassifier id="raix.reactive:Cancelable">
          <apiName>Cancelable</apiName>
          <shortdesc>
 	 Provides static methods that create cancelable resources
@@ -537,7 +1376,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Cancelable,rx.Cancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="Cancelable,raix.reactive.Cancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -559,16 +1398,15 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:IObservable">
+      <apiClassifier id="raix.reactive:IObservable">
          <apiName>IObservable</apiName>
          <shortdesc>
-	 An observable sequence of values
-	 </shortdesc>
+	 An observable (or "push"), sequence of values that often represent data or events that have not yet occured.</shortdesc>
          <prolog>
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="IObservable,rx.IObservable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="IObservable,raix.reactive.IObservable,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
@@ -577,7 +1415,11 @@
                <apiBaseClassifier/>
             </apiClassifierDef>
             <apiDesc>
-	 An observable sequence of values
+	 An observable (or "push"), sequence of values that often represent data or events that have not yet occured. 
+	 Sequences can be manipulated, often combining them with other sequences, and then subscribed to 
+	 to receive the output.
+	 
+	 Chains of sequences are automatically torn down when the sequence completes, errors or is unsubscribed from.
 	 </apiDesc>
             <Inheritancelist>
                <BaseInterface/>
@@ -587,142 +1429,13 @@
                <Implements/>
                <Subclasses/>
                <Implementors>
-                  <Implementor id="rx:AbsObservable"/>
+                  <Implementor id="raix.reactive:AbsObservable"/>
                </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:TimeStamped">
-         <apiName>TimeStamped</apiName>
-         <shortdesc>
-	 A wrapper that adds a timestamp to a value
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="TimeStamped,rx.TimeStamped,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 A wrapper that adds a timestamp to a value
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:FutureCancelable">
-         <apiName>FutureCancelable</apiName>
-         <shortdesc>
-	A cancelable resource than is not immediately available
-	</shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="FutureCancelable,rx.FutureCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	A cancelable resource than is not immediately available
-	</apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements>
-                  <Implement id="rx:ICancelable"/>
-               </Implements>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:Observer">
-         <apiName>Observer</apiName>
-         <shortdesc>
-	 Provides static methods that create observers
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="Observer,rx.Observer,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 Provides static methods that create observers
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:TimeInterval">
-         <apiName>TimeInterval</apiName>
-         <shortdesc>
-	 A wrapper that adds the time interval, in milliseconds,
-	 since the last values 
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="TimeInterval,rx.TimeInterval,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 A wrapper that adds the time interval, in milliseconds,
-	 since the last values 
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:Notification">
+      <apiClassifier id="raix.reactive:Notification">
          <apiName>Notification</apiName>
          <shortdesc>
 	 Represents one of the three messages that can be sent to 
@@ -731,7 +1444,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Notification,rx.Notification,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="Notification,raix.reactive.Notification,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -750,68 +1463,36 @@
                </Inheritance>
                <Implements/>
                <Subclasses>
-                  <class id="rx:OnError"/>
-                  <class id="rx:OnNext"/>
-                  <class id="rx:OnCompleted"/>
+                  <class id="raix.reactive:OnError"/>
+                  <class id="raix.reactive:OnNext"/>
+                  <class id="raix.reactive:OnCompleted"/>
                </Subclasses>
                <Implementors/>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
          <related-links>
-            <link href="rx.xml#OnNext">
+            <link href="" invalidHref="rx.OnNext.xml">
                <linktext>rx.OnNext</linktext>
             </link>
-            <link href="rx.xml#OnCompleted">
+            <link href="" invalidHref="rx.OnCompleted.xml">
                <linktext>rx.OnCompleted</linktext>
             </link>
-            <link href="rx.xml#OnError">
+            <link href="" invalidHref="rx.OnError.xml">
                <linktext>rx.OnError</linktext>
             </link>
          </related-links>
       </apiClassifier>
-      <apiClassifier id="rx:Unit">
-         <apiName>Unit</apiName>
-         <shortdesc>
-	 Represents a valueClass that can be used when 
-	 an observable sequence logically has no valueClass
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords" content="Unit,rx.Unit"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 Represents a valueClass that can be used when 
-	 an observable sequence logically has no valueClass
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:Observable">
+      <apiClassifier id="raix.reactive:Observable">
          <apiName>Observable</apiName>
          <shortdesc>
-	 Provides static methods that create observable sequences
+	 Provides static methods that create IObservable sequences
 	 </shortdesc>
          <prolog>
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Observable,rx.Observable,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="Observable,raix.reactive.Observable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -819,7 +1500,7 @@
                <apiBaseClassifier>Object</apiBaseClassifier>
             </apiClassifierDef>
             <apiDesc>
-	 Provides static methods that create observable sequences
+	 Provides static methods that create IObservable sequences
 	 </apiDesc>
             <Inheritancelist>
                <BaseInterface/>
@@ -833,7 +1514,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:ICancelable">
+      <apiClassifier id="raix.reactive:ICancelable">
          <apiName>ICancelable</apiName>
          <shortdesc>
 	 Represents a handle that can be used to cancel an operation 
@@ -843,7 +1524,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="ICancelable,rx.ICancelable,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="ICancelable,raix.reactive.ICancelable,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
@@ -863,20 +1544,20 @@
                <Implements/>
                <Subclasses/>
                <Implementors>
-                  <Implementor id="rx:BooleanCancelable"/>
-                  <Implementor id="rx:CompositeCancelable"/>
-                  <Implementor id="rx:FutureCancelable"/>
+                  <Implementor id="raix.reactive:BooleanCancelable"/>
+                  <Implementor id="raix.reactive:CompositeCancelable"/>
+                  <Implementor id="raix.reactive:MutableCancelable"/>
                </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
          <related-links>
-            <link href="" invalidHref="rx.CompositeCancelable,.xml">
-               <linktext>rx.BooleanCancelable, rx.FutureCancelable, rx.Cancelable</linktext>
+            <link href="" invalidHref="raix.reactive.CompositeCancelable,.xml">
+               <linktext>raix.reactive.BooleanCancelable, raix.reactive.FutureCancelable, raix.reactive.Cancelable</linktext>
             </link>
          </related-links>
       </apiClassifier>
-      <apiClassifier id="rx:NotificationKind">
+      <apiClassifier id="raix.reactive:NotificationKind">
          <apiName>NotificationKind</apiName>
          <shortdesc>
 	 Enumeration for the different types of Notification
@@ -885,7 +1566,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="NotificationKind,rx.NotificationKind,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass"/>
+               content="NotificationKind,raix.reactive.NotificationKind,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -907,118 +1588,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:BooleanCancelable">
-         <apiName>BooleanCancelable</apiName>
-         <shortdesc>
-	 Represents a cancelable operation, the canceled status of which can 
-	 be checked by isCanceled 
-	</shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="BooleanCancelable,rx.BooleanCancelable,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:ICancelable</apiBaseInterface>
-               <apiBaseClassifier>Object</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 Represents a cancelable operation, the canceled status of which can 
-	 be checked by isCanceled 
-	</apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements>
-                  <Implement id="rx:ICancelable"/>
-               </Implements>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:OnError">
-         <apiName>OnError</apiName>
-         <shortdesc>
-	 A Notification for an onError call
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="OnError,rx.OnError,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 A Notification for an onError call
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="rx:Notification"/>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:ISubject">
-         <apiName>ISubject</apiName>
-         <shortdesc>
-	 A resource that is both observable and an observer
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords" content="ISubject,rx.ISubject"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiInterface/>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseInterface>rx:IObservable</apiBaseInterface>
-               <apiBaseInterface>rx:IObserver</apiBaseInterface>
-               <apiBaseClassifier/>
-            </apiClassifierDef>
-            <apiDesc>
-	 A resource that is both observable and an observer
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface>
-                  <Interface id="rx:IObservable"/>
-                  <Interface id="rx:IObserver"/>
-               </BaseInterface>
-               <Inheritance>
-                  <Inherit id=""/>
-               </Inheritance>
-               <Implements>
-                  <Implement id="rx:IObservable"/>
-                  <Implement id="rx:IObserver"/>
-               </Implements>
-               <Subclasses/>
-               <Implementors>
-                  <Implementor id="rx.subjects:AsyncSubject"/>
-                  <Implementor id="rx.subjects:ReplaySubject"/>
-                  <Implementor id="rx:Subject"/>
-               </Implementors>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:Pattern">
+      <apiClassifier id="raix.reactive:Pattern">
          <apiName>Pattern</apiName>
          <shortdesc>
 	 A combination of multiple IObservable sequences that can be combined 
@@ -1031,7 +1601,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Pattern,rx.Pattern,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="Pattern,raix.reactive.Pattern,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -1057,7 +1627,7 @@
             </Inheritancelist>
          </apiClassifierDetail>
       </apiClassifier>
-      <apiClassifier id="rx:IObserver">
+      <apiClassifier id="raix.reactive:IObserver">
          <apiName>IObserver</apiName>
          <shortdesc>
 	 An object that receives messages from an IObservable sequence
@@ -1067,7 +1637,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="IObserver,rx.IObserver,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
+               content="IObserver,raix.reactive.IObserver,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,bufferWithTimeOrCount,bufferWithTimeOrCount,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,chain,chain,combineLatest,combineLatest,concat,concat,concat,concatMany,concatMany,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,empty,error,expand,expand,filter,filter,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,groupBy,groupBy,groupByUntil,groupByUntil,groupJoin,groupJoin,ifElse,ignoreValues,ignoreValues,interval,join,join,last,last,lastOrDefault,lastOrDefault,let,let,log,log,lookup,map,map,mapMany,mapMany,materialize,materialize,merge,merge,merge,mergeMany,mergeMany,multiWindow,multiWindow,multicast,multicast,multicastDefer,multicastDefer,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,peek,peek,peekWith,peekWith,prune,prune,pruneDefer,pruneDefer,publish,publish,publishDefer,publishDefer,range,reduce,reduce,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayDefer,replayDefer,retry,retry,sample,sample,scan,scan,select,selectMany,selectMany,sequenceEqual,sequenceEqual,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,switchMany,switchMany,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,then,then,throttle,throttle,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toArray,toArray,toAsync,toObservable,uncaughtErrors,urlLoader,value,when,window,window,windowWithCount,windowWithCount,windowWithTime,windowWithTime,windowWithTimeOrCount,windowWithTimeOrCount,xml,zip,zip"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiInterface/>
@@ -1086,111 +1656,19 @@
                </Inheritance>
                <Implements/>
                <Subclasses/>
-               <Implementors/>
+               <Implementors>
+                  <Implementor id="raix.reactive.testing:MockObserver"/>
+               </Implementors>
                <Excludes/>
             </Inheritancelist>
          </apiClassifierDetail>
          <related-links>
-            <link href="rx.xml#Observer">
+            <link href="raix.reactive.xml#Observer">
                <linktext>Observer</linktext>
             </link>
          </related-links>
       </apiClassifier>
-      <apiClassifier id="rx:OnNext">
-         <apiName>OnNext</apiName>
-         <shortdesc>
-	 A Notification for an onNext call
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="OnNext,rx.OnNext,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 A Notification for an onNext call
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="rx:Notification"/>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:TimeoutError">
-         <apiName>TimeoutError</apiName>
-         <shortdesc>
-	 An error thrown by Observable.timeout by default
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords" content="TimeoutError,rx.TimeoutError"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>Error</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 An error thrown by Observable.timeout by default
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="Error"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:OnCompleted">
-         <apiName>OnCompleted</apiName>
-         <shortdesc>
-	 A Notification for an onCompleted call
-	 </shortdesc>
-         <prolog>
-            <asMetadata/>
-         </prolog>
-            <meta name="keywords"
-               content="OnCompleted,rx.OnCompleted,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass,accept,accept,accept,accept,acceptWith,add,aggregate,aggregate,all,all,amb,and,and,and,any,any,asObservable,asObservable,average,average,bufferWithCount,bufferWithCount,bufferWithTime,bufferWithTime,cancel,cancel,cancel,cancel,cast,cast,catchError,catchError,catchErrorDefer,catchErrorDefer,catchErrors,combineLatest,combineLatest,concat,concat,concat,contains,contains,count,count,create,create,create,createWithCancelable,defer,delay,delay,delayUntil,dematerialize,dematerialize,distinctUntilChanged,distinctUntilChanged,doAction,doAction,empty,finallyAction,finallyAction,first,first,firstOrDefault,firstOrDefault,forkJoin,forkJoin,forkJoin,fromArray,fromErrorEvent,fromErrorEvents,fromEvent,fromEvents,generate,ifElse,interval,join,last,last,lastOrDefault,lastOrDefault,let,let,lookup,materialize,materialize,merge,merge,merge,mergeMany,never,observeOn,observeOn,ofClass,ofClass,onCompleted,onCompleted,onError,onError,onErrorResumeNext,onErrorResumeNext,onErrorResumeNext,onNext,onNext,prune,prune,pruneAndConnect,pruneAndConnect,publish,publish,publishAndConnect,publishAndConnect,range,remove,removeTimeInterval,removeTimeInterval,removeTimestamp,removeTimestamp,repeat,repeat,repeatValue,replay,replay,replayAndConnect,replayAndConnect,retry,retry,returnValue,sample,sample,scan,scan,select,select,selectMany,selectMany,single,single,singleOrDefault,singleOrDefault,skip,skip,skipLast,skipLast,skipUntil,skipUntil,skipWhile,skipWhile,start,startWith,startWith,subscribe,subscribe,subscribeOn,subscribeOn,subscribeWith,subscribeWith,subscribeWith,sum,sum,take,take,takeLast,takeLast,takeUntil,takeUntil,takeWhile,takeWhile,then,throttle,throttle,throwError,timeInterval,timeInterval,timeout,timeout,timer,timestamp,timestamp,toAsync,types,urlLoader,where,where,xml,zip,zip"/>
-         <apiClassifierDetail>
-            <apiClassifierDef>
-               <apiAccess value="public"/>
-               <apiStatic/>
-               <apiBaseClassifier>rx:Notification</apiBaseClassifier>
-            </apiClassifierDef>
-            <apiDesc>
-	 A Notification for an onCompleted call
-	 </apiDesc>
-            <Inheritancelist>
-               <BaseInterface/>
-               <Inheritance>
-                  <Inherit id="rx:Notification"/>
-                  <Inherit id="Object"/>
-               </Inheritance>
-               <Implements/>
-               <Subclasses/>
-               <Implementors/>
-               <Excludes/>
-            </Inheritancelist>
-         </apiClassifierDetail>
-      </apiClassifier>
-      <apiClassifier id="rx:Plan">
+      <apiClassifier id="raix.reactive:Plan">
          <apiName>Plan</apiName>
          <shortdesc>
 	 A combination of IObservable sequences and a selector that will 
@@ -1199,7 +1677,7 @@
             <asMetadata/>
          </prolog>
             <meta name="keywords"
-               content="Plan,rx.Plan,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,innerCancelable,interval,isCanceled,kind,kind,kind,kind,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value,valueClass,valueClass,valueClass"/>
+               content="Plan,raix.reactive.Plan,ON_COMPLETED,ON_ERROR,ON_NEXT,cancelable,cancelables,count,empty,error,error,error,error,hasSubscriptions,hasValue,hasValue,hasValue,hasValue,interval,isCanceled,key,kind,kind,kind,kind,maxConcurrentLoaders,selector,sources,subscriptionCount,timestamp,value,value,value,value,value,value"/>
          <apiClassifierDetail>
             <apiClassifierDef>
                <apiAccess value="public"/>
@@ -1209,11 +1687,74 @@
             <apiDesc>
 	 A combination of IObservable sequences and a selector that will 
 	 map the values of those sequences to an output value. A plan is intended 
-	 to be used with Observable.join
+	 to be used with Observable.when
 	 
 	 <p>Generally, a Plan will be created using Pattern.then(), rather 
 	 than creating a Plan directly</p>
 	           </apiDesc>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+   </apiPackage>
+   <apiPackage id="raix.utils">
+      <apiName>raix.utils</apiName>
+      <apiDetail/>
+      <apiClassifier id="raix.utils:Filter">
+         <apiName>Filter</apiName>
+         <shortdesc/>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Filter,raix.utils.Filter,notNull,toLowerCase,toString,toUpperCase,not,property"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <Inheritancelist>
+               <BaseInterface/>
+               <Inheritance>
+                  <Inherit id="Object"/>
+               </Inheritance>
+               <Implements/>
+               <Subclasses/>
+               <Implementors/>
+               <Excludes/>
+            </Inheritancelist>
+         </apiClassifierDetail>
+      </apiClassifier>
+      <apiClassifier id="raix.utils:Projection">
+         <apiName>Projection</apiName>
+         <shortdesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </shortdesc>
+         <prolog>
+            <asMetadata/>
+         </prolog>
+            <meta name="keywords"
+               content="Projection,raix.utils.Projection,notNull,toLowerCase,toString,toUpperCase,not,property"/>
+         <apiClassifierDetail>
+            <apiClassifierDef>
+               <apiAccess value="public"/>
+               <apiStatic/>
+               <apiBaseClassifier>Object</apiBaseClassifier>
+            </apiClassifierDef>
+            <apiDesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </apiDesc>
             <Inheritancelist>
                <BaseInterface/>
                <Inheritance>

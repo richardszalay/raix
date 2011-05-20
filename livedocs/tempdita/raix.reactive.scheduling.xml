@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="raix.reactive.scheduling"><apiName>raix.reactive.scheduling</apiName><apiDetail/><apiClassifier id="raix.reactive.scheduling:GreenThreadScheduler"><apiName>GreenThreadScheduler</apiName><shortdesc>
+	 A scheduler that distributes work on a timer, limiting the total execution 
+	 time per 'switch' to maintain a framerate
+	 
+	 Adding more work results in the work taking longer to complete, but the 
+	 framerate remaining constant
+	 
+	 To benefit from GreenThreadScheduler, scheduled actions should execute in 
+	 this smallest possible time (ie.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A scheduler that distributes work on a timer, limiting the total execution 
+	 time per 'switch' to maintain a framerate
+	 
+	 <p>Adding more work results in the work taking longer to complete, but the 
+	 framerate remaining constant</p>
+	 
+	 <p>To benefit from GreenThreadScheduler, scheduled actions should execute in 
+	 this smallest possible time (ie. be designed to be run many times</p>
+	 </apiDesc></apiClassifierDetail><apiConstructor id="raix.reactive.scheduling:GreenThreadScheduler:GreenThreadScheduler"><apiName>GreenThreadScheduler</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>contextSwitchObservable</apiItemName><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="raix.reactive.scheduling:GreenThreadScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.reactive.scheduling:GreenThreadScheduler:contextSwitchTime:get"><apiName>contextSwitchTime</apiName><shortdesc>
+		 Gets or sets the amount of time, in milliseconds, to allocate to 
+		 execution on every context 'switch' 
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Gets or sets the amount of time, in milliseconds, to allocate to 
+		 execution on every context 'switch' 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:GreenThreadScheduler:instance:get"><apiName>instance</apiName><shortdesc>
+		 Gets the singleton instance of this scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:GreenThreadScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the singleton instance of this scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:GreenThreadScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.reactive.scheduling:Scheduler"><apiName>Scheduler</apiName><shortdesc>
+	 Provides static helpers to schedulers
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static helpers to schedulers
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.reactive.scheduling:Scheduler:scheduleRecursive"><apiName>scheduleRecursive</apiName><shortdesc>
+		 Schedules a recursive action on an IScheduler 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An ICancelable that can be used to cancel the recursive schedule at any time
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>raix.reactive.scheduling:IScheduler</apiOperationClassifier><apiDesc>The scheduler that will schedule each recursive call
+		 </apiDesc></apiParam><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The action to call. The action will be called with one argument: a Function that call be called to reschedule the original action
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The amount of time to delay the call to ation
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Schedules a recursive action on an IScheduler 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.reactive.scheduling:Scheduler:asynchronous:get"><apiName>asynchronous</apiName><shortdesc>
+		 Gets the default asynchronous scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default asynchronous scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:Scheduler:defaultScheduler:get"><apiName>defaultScheduler</apiName><shortdesc>
+		 Gets the default scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:Scheduler:greenThread:get"><apiName>greenThread</apiName><shortdesc>
+		 Gets the GreenThreadScheduler singleton instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:GreenThreadScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the GreenThreadScheduler singleton instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:Scheduler:immediate:get"><apiName>immediate</apiName><shortdesc>
+		 Gets the ImmediateScheduler singleton instance
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:ImmediateScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the ImmediateScheduler singleton instance
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:Scheduler:synchronous:get"><apiName>synchronous</apiName><shortdesc>
+		 Gets the default synchronous scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:IScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the default synchronous scheduler
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.reactive.scheduling:IScheduler"><apiName>IScheduler</apiName><shortdesc>
+	 Used to distribute workload
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Used to distribute workload
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.reactive.scheduling:IScheduler:raix.reactive.scheduling:IScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.reactive.scheduling:IScheduler:raix.reactive.scheduling:IScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.reactive.scheduling:ImmediateScheduler"><apiName>ImmediateScheduler</apiName><shortdesc>
+	 A scheduler that executes actions immediately, or immediately
+	 after their dueTime (if specified).</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive.scheduling:IScheduler</apiBaseInterface><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A scheduler that executes actions immediately, or immediately
+	 after their dueTime (if specified).
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.reactive.scheduling:ImmediateScheduler:schedule"><apiName>schedule</apiName><shortdesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An ICancelable that will stop the action from being run, if it hasn't already
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>action</apiItemName><apiType value="Function"/><apiDesc>The function to run
+		 </apiDesc></apiParam><apiParam><apiItemName>dueTime</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>The time, in milliseconds, after which action should be executed. If 0, action should be executed at the first available opportunity
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Schedules a function to be run, either immediately or in the future 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.reactive.scheduling:ImmediateScheduler:instance:get"><apiName>instance</apiName><shortdesc>
+		 Gets the singleton instance of this scheduler
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiValueClassifier>raix.reactive.scheduling:ImmediateScheduler</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the singleton instance of this scheduler
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.reactive.scheduling:ImmediateScheduler:now:get"><apiName>now</apiName><shortdesc>
+		 
+		 Gets the current Date and time
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Date"/></apiValueDef><apiDesc>
+		 
+		 Gets the current Date and time
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="raix.reactive.subjects"><apiName>raix.reactive.subjects</apiName><apiDetail/><apiClassifier id="raix.reactive.subjects:ConnectableObservable"><apiName>ConnectableObservable</apiName><shortdesc>
+	 Concrete implementation of IConnectableObservable
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive.subjects:IConnectableObservable</apiBaseInterface><apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Concrete implementation of IConnectableObservable
+	 </apiDesc></apiClassifierDetail><apiConstructor id="raix.reactive.subjects:ConnectableObservable:ConnectableObservable"><apiName>ConnectableObservable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>source</apiItemName><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiParam><apiParam><apiItemName>subject</apiItemName><apiOperationClassifier>raix.reactive:ISubject</apiOperationClassifier><apiData>null</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="raix.reactive.subjects:ConnectableObservable:connect"><apiName>connect</apiName><shortdesc>
+		 
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:ConnectableObservable:refCount"><apiName>refCount</apiName><shortdesc>
+		 
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:ConnectableObservable:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiDesc>An instance of ICancelable that can be used to unsubscribe at anytime by calling <codeph>cancel()</codeph> 
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>raix.reactive:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.reactive.subjects:AsyncSubject"><apiName>AsyncSubject</apiName><shortdesc>
+	 A subject that replays the last value (or error) received to observers that subscribe 
+	 after the sequence has completed
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive:ISubject</apiBaseInterface><apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 A subject that replays the last value (or error) received to observers that subscribe 
+	 after the sequence has completed
+	 </apiDesc></apiClassifierDetail><apiConstructor id="raix.reactive.subjects:AsyncSubject:AsyncSubject"><apiName>AsyncSubject</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>raix.reactive.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="raix.reactive.subjects:AsyncSubject:lastValue"><apiName>lastValue</apiName><shortdesc>
+		 Gets the last value received, or throws an IllegalOperationError if no value 
+		 has been received.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Object"/></apiReturn></apiOperationDef><apiDesc>
+		 Gets the last value received, or throws an IllegalOperationError if no value 
+		 has been received.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:AsyncSubject:onCompleted"><apiName>onCompleted</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has completed and 
+		 that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:AsyncSubject:onError"><apiName>onError</apiName><shortdesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>err</apiItemName><apiType value="Error"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that the sequence has halted with an error 
+		 and that no more messages will be received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:AsyncSubject:onNext"><apiName>onNext</apiName><shortdesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef><apiDesc>
+		 
+		 Notifies the subscriber that a value has been received
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:AsyncSubject:subscribeWith"><apiName>subscribeWith</apiName><shortdesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiDesc>An instance of ICancelable that can be used to unsubscribe at anytime by calling <codeph>cancel()</codeph> 
+		 </apiDesc><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>raix.reactive:IObserver</apiOperationClassifier></apiParam></apiOperationDef><apiDesc>
+		 
+		 Subscribes to this observable using the supplied observer
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.reactive.subjects:ReplaySubject"><apiName>ReplaySubject</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive:ISubject</apiBaseInterface><apiBaseClassifier>raix.reactive:AbsObservable</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="raix.reactive.subjects:ReplaySubject:ReplaySubject"><apiName>ReplaySubject</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>bufferSize</apiItemName><apiType value="uint"/><apiData>0</apiData></apiParam><apiParam><apiItemName>window</apiItemName><apiType value="uint"/><apiData>0</apiData></apiParam><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>raix.reactive.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="raix.reactive.subjects:ReplaySubject:onCompleted"><apiName>onCompleted</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:ReplaySubject:onError"><apiName>onError</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>err</apiItemName><apiType value="Error"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:ReplaySubject:onNext"><apiName>onNext</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:ReplaySubject:subscribeWith"><apiName>subscribeWith</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn><apiParam><apiItemName>observer</apiItemName><apiOperationClassifier>raix.reactive:IObserver</apiOperationClassifier></apiParam></apiOperationDef></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.reactive.subjects:IConnectableObservable"><apiName>IConnectableObservable</apiName><shortdesc>
+	 Represents a 'pending' hot observable.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive:IObservable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Represents a 'pending' hot observable. Calling connect will turn the observable 
+	 into a hot observable. Calling refCount will turn the observable into a hot observable 
+	 when the first observer subscribes
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.reactive.subjects:IConnectableObservable:raix.reactive.subjects:IConnectableObservable:connect"><apiName>connect</apiName><shortdesc>
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.reactive:ICancelable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Makes this observable 'hot', so that values will be 
+		 emitted whether there is a subscriber connected or not.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.reactive.subjects:IConnectableObservable:raix.reactive.subjects:IConnectableObservable:refCount"><apiName>refCount</apiName><shortdesc>
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Makes this observable 'hot' when an observer subscribes, and 
+		 will cancel the source subscription when the last observer unsubscribes
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier></apiPackage>

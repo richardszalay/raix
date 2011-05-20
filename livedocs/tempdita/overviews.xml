@@ -16,16 +16,16 @@
 	
 
 <packages>
-<package name="rx">
-<shortDescription>Primary classes used when working with RxAs</shortDescription><longDescription>Primary classes used when working with RxAs</longDescription>
+<package name="raix.interactive">
+<shortDescription>Classes for working with interactive / pull collections</shortDescription><longDescription>Classes for working with interactive / pull collections</longDescription>
 </package>
-<package name="rx.flex">
+<package name="raix.reactive.flex">
 <shortDescription>Flex integration classes</shortDescription><longDescription>Flex integration classes</longDescription>
 </package>
-<package name="rx.subjects">
+<package name="raix.reactive.subjects">
 <shortDescription>Subject implementations</shortDescription><longDescription>Subject implementations</longDescription>
 </package>
-<package name="rx.scheduling">
-<shortDescription>Classes that schedule execution for RxAs classes</shortDescription><longDescription>Classes that schedule execution for RxAs classes</longDescription>
+<package name="raix.reactive.scheduling">
+<shortDescription>Classes that schedule execution for raix classes</shortDescription><longDescription>Classes that schedule execution for raix classes</longDescription>
 </package>
 </packages></overviews>

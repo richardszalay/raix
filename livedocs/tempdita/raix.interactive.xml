@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="raix.interactive"><apiName>raix.interactive</apiName><apiDetail/><apiClassifier id="raix.interactive:IGrouping"><apiName>IGrouping</apiName><shortdesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Contains a list of grouped values and a key identifying the group
+	 </apiDesc></apiClassifierDetail><related-links><link href="" invalidHref="IEnumerable.groupBy.xml"><linktext>IEnumerable.groupBy</linktext></link></related-links><apiValue id="raix.interactive:IGrouping:raix.interactive:IGrouping:key:get"><apiName>key</apiName><shortdesc>
+		 Returns the key that identifies this grouping
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Returns the key that identifies this grouping
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.interactive:IOrderedEnumerable"><apiName>IOrderedEnumerable</apiName><shortdesc>
+	 An enumerable sequence that has ordering applied to it
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 An enumerable sequence that has ordering applied to it
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.interactive:IOrderedEnumerable:raix.interactive:IOrderedEnumerable:thenByDescending"><apiName>thenByDescending</apiName><shortdesc>
+		 Adds a secondary, descending, sort condition to the IOrderedEnumerable
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Adds a secondary, descending, sort condition to the IOrderedEnumerable
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.IOrderedObservable.xml"><linktext>raix.interactive.IOrderedObservable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IOrderedEnumerable:raix.interactive:IOrderedEnumerable:thenBy"><apiName>thenBy</apiName><shortdesc>
+		 Adds a secondary sort condition to the IOrderedEnumerable
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Adds a secondary sort condition to the IOrderedEnumerable
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.IOrderedObservable.xml"><linktext>raix.interactive.IOrderedObservable</linktext></link></related-links></apiOperation></apiClassifier><apiClassifier id="raix.interactive:IEnumerable"><apiName>IEnumerable</apiName><shortdesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.reactive:ICancelable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Represents a collection of values which can be enumerated using foreach, but 
+	 does not support random access
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:all"><apiName>all</apiName><shortdesc>
+		 Determines if the every value in the source sequence matches a predicate 
+		 function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if the sequence is empty or all the values in the sequence match the predicate; 
+		         false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>(optional) A function in the format: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if the every value in the source sequence matches a predicate 
+		 function.
+		 
+		 Uses immediate execution and stops enumerating when a negative match is found.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:any"><apiName>any</apiName><shortdesc>
+		 Determines if the predicate argument function returns true for any 
+		 item in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if a matching value is found or if predicate is null and the
+		              sequence contains any values; false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function in the format: function(element : TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if the predicate argument function returns true for any 
+		 item in the sequence. If no function is supplied, true will be returned 
+		 if the sequence contains any values 
+		 
+		 Uses immediate execution and stops enumerating when a match is found. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:average"><apiName>average</apiName><shortdesc>
+		 Retrieves the average value in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The average value of the sequence
+		 </apiDesc><apiType value="Number"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the numeric value of the element 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Retrieves the average value in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:concat"><apiName>concat</apiName><shortdesc>
+		 Returns a new sequence that will seemlessly enumerate a second sequence after 
+		 the first sequence completes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the values from the first and second sequence, in order
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>second</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to enumerate after the first sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that will seemlessly enumerate a second sequence after 
+		 the first sequence completes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:contains"><apiName>contains</apiName><shortdesc>
+		 Determines if the source sequence contains a specific value, optionally 
+		 using an equalityComparer function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if a match was found; false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to be compared
+		 </apiDesc></apiParam><apiParam><apiItemName>equalityComparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function to compare two 
+		        values: function(x : TElement, y : TValue) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines if the source sequence contains a specific value, optionally 
+		 using an equalityComparer function.
+		 
+		 Uses immediate execution and stops enumerating when a match is found
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:count"><apiName>count</apiName><shortdesc>
+		 Determines the number of elements in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The number of elements in the sequence
+		 </apiDesc><apiType value="uint"/></apiReturn></apiOperationDef><apiDesc>
+		 Determines the number of elements in the sequence. Uses immediate execution.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:defaultIfEmpty"><apiName>defaultIfEmpty</apiName><shortdesc>
+		 Returns a new sequence that will return the given defaultValue 
+		 
+		 Uses deferred execution
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new IEnumerable sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) The default value to use if the sequence is empty. 
+		        If not supplied, the value will be converted from null (int = 0, boolean = false, etc)
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that will return the given defaultValue 
+		 
+		 Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:distinct"><apiName>distinct</apiName><shortdesc>
+		 Returns a new sequence that only contains the unique values in the original sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the distinct values of the original sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		        function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that only contains the unique values in the original sequence.
+		 
+		 If the sequence contains values that are not natively comparable (String, u/int, Number, Boolean),
+		 a hashSelector should be specified to return a value that is. An example of this would be to return 
+		 the ID property of an entity.
+		 
+		 Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:elementAtOrDefault"><apiName>elementAtOrDefault</apiName><shortdesc>
+		 Returns the element at the given index or a default value if 
+		 the sequence does not contain that many elements.</shortdesc><prolog><asCustoms><defaultValue>The value to return if the sequence does not contain (index+1) elements
+		 </defaultValue></asCustoms></prolog><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The value at index
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/><apiDesc>The zero-based index of the value to return
+		 </apiDesc></apiParam><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the element at the given index or a default value if 
+		 the sequence does not contain that many elements. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:elementAt"><apiName>elementAt</apiName><shortdesc>
+		 Returns the element at the given index or throws an IllegalOperationError if 
+		 the sequence does not contain that many elements.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The value at index
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/><apiDesc>The zero-based index of the value to return
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the element at the given index or throws an IllegalOperationError if 
+		 the sequence does not contain that many elements. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:except"><apiName>except</apiName><shortdesc>
+		 Returns a new sequence that contains the values in the source sequence that 
+		 do not exist in the supplied sequence
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the values contained in the source sequence but 
+		         not the "right" sequence 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the except. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that contains the values in the source sequence that 
+		 do not exist in the supplied sequence
+		 
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.toEnumerable.xml"><linktext>raix.interactive.toEnumerable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:filter"><apiName>filter</apiName><shortdesc>
+		 Filters the source sequence based on a predicate function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains values from the source sequence for which predicate returned true
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines which elements should appear in the result:
+		     function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Filters the source sequence based on a predicate function. Uses deferred execution.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:firstOrDefault"><apiName>firstOrDefault</apiName><shortdesc>
+		 Returns the first element in the sequence or returns a default value 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the first element in the sequence or returns a default value 
+		 if the sequence is empty. If predicate is supplied, the first value to match the 
+		 predicate will be returned with the default value being returned if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:first"><apiName>first</apiName><shortdesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first value in the sequence or the first value in the sequence that matches predicate
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty. If predicate is supplied, the first value to match the 
+		 predicate will be returned with an IllegalOperationError being thrown if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:getEnumerator"><apiName>getEnumerator</apiName><shortdesc>
+		 Returns an object that can be used to enumerate through this sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IEnumerator 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerator</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Returns an object that can be used to enumerate through this sequence. Access to this method 
+		 is not generally required as IEnumerable sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:groupBy"><apiName>groupBy</apiName><shortdesc>
+		 Groups elements of a sequence using a key selector function
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type IGrouping, where each IGrouping is a sequence 
+		     of values of type TElement and a key
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for a value in the sequence:
+		     function(source : TSource) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, maps the source element to an element 
+		     to place in the grouping: function(source : TSource) : TElement
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a natively comparable value
+		     for a key in the sequence: function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Groups elements of a sequence using a key selector function
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:groupJoin"><apiName>groupJoin</apiName><shortdesc>
+		 Correlates the elements of two sequences based on keys and groups the results
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type TResult that are obtained by joining outer and inner
+		     sequences.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>inner</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to join to the first sequence. Can be any value that can be converted 
+		     to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>outerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the outer (source) sequence:
+		     function(element : TOuterElement) : TKey 
+		 </apiDesc></apiParam><apiParam><apiItemName>innerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the inner sequence:
+		     function(element : TInnerElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>Creates a result element from the source sequence and a sequnce of 
+		     matching values from the inner sequence:
+		     function(outer : TOuterElement, inner : IEnumerable.&lt;TInnerElement&gt;) : TResult
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) Returns a natively comparable value for a key:
+		     function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Correlates the elements of two sequences based on keys and groups the results
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.toEnumerable.xml"><linktext>raix.interactive.toEnumerable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:intersect"><apiName>intersect</apiName><shortdesc>
+		 Returns a new sequence that contains only the values contained in both sequences
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the unique values contained in both sequence 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the intersection. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that contains only the values contained in both sequences
+		 
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.toEnumerable.xml"><linktext>raix.interactive.toEnumerable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:join"><apiName>join</apiName><shortdesc>
+		 Correlates the elements of two sequences based on keys.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type TResult that are obtained by joining outer and inner
+		     sequences.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>inner</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to join to the first sequence. Can be any value that can be converted 
+		     to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>outerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the outer (source) sequence:
+		     function(element : TOuterElement) : TKey 
+		 </apiDesc></apiParam><apiParam><apiItemName>innerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the inner sequence:
+		     function(element : TInnerElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>Creates a result element from two matching elements:
+		     function(outer : TOuterElement, inner : TInnerElement) : TResult
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) Returns a natively comparable value for a key:
+		     function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Correlates the elements of two sequences based on keys.
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.toEnumerable.xml"><linktext>raix.interactive.toEnumerable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:lastOrDefault"><apiName>lastOrDefault</apiName><shortdesc>
+		 Returns the last element in the sequence or returns a default value 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The last matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the last element in the sequence or returns a default value 
+		 if the sequence is empty. If predicate is supplied, the last value to match the 
+		 predicate will be returned with the default value being returned if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:last"><apiName>last</apiName><shortdesc>
+		 Returns the last element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The last matching value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the last element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty. If predicate is supplied, the last value to match the 
+		 predicate will be returned with an IllegalOperationError being thrown if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:mapMany"><apiName>mapMany</apiName><shortdesc>
+		 Maps a sequence for each value in the source sequence and concatonates the results into 
+		 a single sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains values of type TResult if resultSelector is specified, 
+		     or TCollection if it is not.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>collectionSelector</apiItemName><apiType value="Function"/><apiDesc>A function to retrieve the sequence for a value in the source sequence: 
+		     function(element : TElement) : IEnumerable.&lt;TCollection&gt;
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that creates a result element from each source element 
+		     and each of its enumerated collection values: 
+		     function(element : TElement, value : TCollection) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Maps a sequence for each value in the source sequence and concatonates the results into 
+		 a single sequence. Uses deferred execution.
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:map"><apiName>map</apiName><shortdesc>
+		 Projects (converts) values using a selector function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the projected values of type TResult
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>Projects the values from the source sequence: 
+		     function(element : TElement) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Projects (converts) values using a selector function. Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:max"><apiName>max</apiName><shortdesc>
+		 Retrieves the maximum element in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The sequence element deemed to be the maximum value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the value to be 
+		        compared for each element in the sequence: function(element : TElement) : TValue
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, compares the value (either element 
+		        value or the value returned by valueSelector): 
+		        function(value : TValue) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Retrieves the maximum element in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty.
+		 
+		 If the comparison value (either the original element or the value returned by valueSelector)
+		 cannot be natively ordered (ie. is not String, u/int or Number), a comparer should be supplied 
+		 to compare the values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:min"><apiName>min</apiName><shortdesc>
+		 Retrieves the minimum element in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The sequence element deemed to be the minimum value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the value to be 
+		        compared for each element in the sequence: function(element : TElement) : TValue
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, compares the value (either element 
+		        value or the value returned by valueSelector): 
+		        function(value : TValue) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Retrieves the minimum element in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty
+		 
+		 If the comparison value (either the original element or the value returned by valueSelector)
+		 cannot be natively ordered (ie. is not String, u/int or Number), a comparer should be supplied 
+		 to compare the values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:ofType"><apiName>ofType</apiName><shortdesc>
+		 Filters values from a sequence based on their type
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains only elements from the source sequence that are of type 
+		     cls (or a subclass)
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>cls</apiItemName><apiType value="Class"/><apiDesc>A class on which to filter values from the source sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Filters values from a sequence based on their type
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:orderByDescending"><apiName>orderByDescending</apiName><shortdesc>
+		 Orders the values in the source sequence in descending order
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Orders the values in the source sequence in descending order
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.IOrderedObservable.xml"><linktext>raix.interactive.IOrderedObservable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:orderBy"><apiName>orderBy</apiName><shortdesc>
+		 Orders the values in the source sequence in ascending order
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Orders the values in the source sequence in ascending order
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.IOrderedObservable.xml"><linktext>raix.interactive.IOrderedObservable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:reduce"><apiName>reduce</apiName><shortdesc>
+		 Aggregates values in a sequence using functions passed as arguments.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The return value of resultSelector (if supplied) or the final accumulate value if 
+		         resultSelector is not supplied
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>seed</apiItemName><apiType value="Object"/><apiDesc>The initial value for the accumulation
+		 </apiDesc></apiParam><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that returns the new accumulated value: 
+		        function(accumulate : TAccumulate, element : TElement) : TAccumulate
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that maps the final accumulate value before being returned
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Aggregates values in a sequence using functions passed as arguments.
+		 
+		 Accumulates a value, starting with seed, by calling accumulator for each value in the source 
+		 sequence and using the return value as the new accumulated value. When the sequence completes, 
+		 the accumulated value is (optonally) mapped through resultSelector before being returned.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:repeat"><apiName>repeat</apiName><shortdesc>
+		 Repeats the source sequence a specified number of times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence containing values of the same type as the source
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>(optional) The number of times to repeat the sequence. If 0, the 
+		     sequence will be repeated indefinately
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Repeats the source sequence a specified number of times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:reverse"><apiName>reverse</apiName><shortdesc>
+		 Reverses the values in the source sequence
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the reversed values of the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Reverses the values in the source sequence
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:scan"><apiName>scan</apiName><shortdesc>
+		 Returns a sequence that aggregates values using functions passed as arguments, using 
+		 deferred execution and returning the values accumulated values as they are returned.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence of type TAccumulate that can be enumerated
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>seed</apiItemName><apiType value="Object"/><apiDesc>The initial value for the accumulation
+		 </apiDesc></apiParam><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that returns the new accumulated value: 
+		        function(accumulate : TAccumulate, element : TElement) : TAccumulate
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that maps the final accumulate value before being returned
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a sequence that aggregates values using functions passed as arguments, using 
+		 deferred execution and returning the values accumulated values as they are returned.
+		 
+		 Accumulates a value, starting with seed, by calling accumulator for each value in the 
+		 source sequence and using the return value as the new accumulated value. Each time  
+		 a new value is accumulated, the accumulated value is (optonally) mapped through 
+		 resultSelector before being returned.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:sequenceEqual"><apiName>sequenceEqual</apiName><shortdesc>
+		 Determines whether two sequences are equal.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if the sequences are of equal length and all of their values are equal
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>Ths sequence to compare to the source
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>A function that will determine equality between left and right values:
+		     function(left : TLeft, right : TRight) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Determines whether two sequences are equal. Uses immediate execution 
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:singleOrDefault"><apiName>singleOrDefault</apiName><shortdesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does contains multiple values, but returns a default value if 
+		 the sequence returns no values.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>A defaultValue to 
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does contains multiple values, but returns a default value if 
+		 the sequence returns no values. If predicate is supplied, the first value to match 
+		 the predicate will be returned with an IllegalOperationError 
+		 being thrown if the sequence contains more than one match and a default value being 
+		 returned if no matches are found
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:single"><apiName>single</apiName><shortdesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does not contain exactly one value.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first value in the sequence or the first value in the sequence that matches predicate
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does not contain exactly one value. If predicate is supplied, 
+		 the first value to match the predicate will be returned with an IllegalOperationError 
+		 being thrown if the sequence does not contain exactly one match
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:skipLast"><apiName>skipLast</apiName><shortdesc>
+		 Returns a new sequence that excludes the specified number of values from 
+		 the end of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to skip from the end of source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that excludes the specified number of values from 
+		 the end of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:skipWhile"><apiName>skipWhile</apiName><shortdesc>
+		 Returns a new sequence that skips values from the source sequence 
+		 until a specified predicate returns false, at which point values will be 
+		 returned from the rest of sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines whether values should still be skipped 
+		     from the source sequence: function(element:TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that skips values from the source sequence 
+		 until a specified predicate returns false, at which point values will be 
+		 returned from the rest of sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:skip"><apiName>skip</apiName><shortdesc>
+		 Returns a new sequence that excludes the specified number of values from 
+		 the start of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to skip from the source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that excludes the specified number of values from 
+		 the start of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:sum"><apiName>sum</apiName><shortdesc>
+		 Returns the total numeric value of every value in the sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The summed values of each element in the sequence
+		 </apiDesc><apiType value="Number"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, can be used to specify the numeric 
+		        value for each element in the sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the total numeric value of every value in the sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:takeLast"><apiName>takeLast</apiName><shortdesc>
+		 Returns a new sequence that includes a maximum number of elements to take from 
+		 the end of the first sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to take from the end of source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that includes a maximum number of elements to take from 
+		 the end of the first sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:takeWhile"><apiName>takeWhile</apiName><shortdesc>
+		 Returns a new sequence that includes values from the source sequence 
+		 until a specified predicate returns false, at which point the sequence will end 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines whether values should still be taken 
+		     from the source sequence: function(element:TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that includes values from the source sequence 
+		 until a specified predicate returns false, at which point the sequence will end 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:take"><apiName>take</apiName><shortdesc>
+		 Returns a new sequence that includes a maximum number of elements from the first sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to take from the source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that includes a maximum number of elements from the first sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:toArray"><apiName>toArray</apiName><shortdesc>
+		 Retrieves an array containing all the values in the sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An Array containing values of the same type as the source sequence
+		 </apiDesc><apiType value="Array"/></apiReturn></apiOperationDef><apiDesc>
+		 Retrieves an array containing all the values in the sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:toDictionary"><apiName>toDictionary</apiName><shortdesc>
+		 Converts the sequence to a Dictionary.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A Dictionary
+		 </apiDesc><apiType value="flash.utils:Dictionary"/></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for each element in the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, provides the "values"  
+		     in the lookup. If not specified, the original element will be used
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Converts the sequence to a Dictionary. Uses immediate execution
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:toLookup"><apiName>toLookup</apiName><shortdesc>
+		 Converts the sequence to an ILookup, which is simiular to a Dictionary with the following 
+		 differences:
+		 
+		 
+		 Supports null keys
+		 Returns an empty sequence for requests for keys that do not exist
+		 
+		 
+		 Uses immediate execution
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An ILookup
+		 </apiDesc><apiOperationClassifier>raix.interactive:ILookup</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for each element in the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, provides the "values"  
+		     in the lookup. If not specified, the original element will be used
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If the value returned by keySelector is not natively 
+		        comparable (ie. String, u/int, Number, Boolean), keyHashSelector can be used to 
+		        provide comparable values for the keys: function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Converts the sequence to an ILookup, which is simiular to a Dictionary with the following 
+		 differences:
+		 
+		 <ul>
+		 <li>Supports null keys</li>
+		 <li>Returns an empty sequence for requests for keys that do not exist</li>
+		 </ul>
+		 
+		 Uses immediate execution
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:toObservable"><apiName>toObservable</apiName><shortdesc>
+		 Converts the interactive sequence to an observable sequence, optionally using a scheduler 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An observable sequence that contains values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>raix.reactive.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData><apiDesc>(optional) The scheduler to use to distribute the values. Defaults to 
+		     Scheduler.asynchronous
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Converts the interactive sequence to an observable sequence, optionally using a scheduler 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:union"><apiName>union</apiName><shortdesc>
+		 Returns a new sequence that contains the unique values across two sequences
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the distinct values across both sequences 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the union. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a new sequence that contains the unique values across two sequences
+		 
+		 </apiDesc></apiOperationDetail><related-links><link href="" invalidHref="raix.interactive.toEnumerable.xml"><linktext>raix.interactive.toEnumerable</linktext></link></related-links></apiOperation><apiOperation id="raix.interactive:IEnumerable:raix.interactive:IEnumerable:zip"><apiName>zip</apiName><shortdesc>
+		 Pairs values from two sequences in order and uses a selector function to project the results
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence containing values of type TResult
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to pair with the left (source) sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>A function to map values from the left and right sequences:
+		     function(left : TLeft, right : TRight) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Pairs values from two sequences in order and uses a selector function to project the results
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.interactive:ILookup"><apiName>ILookup</apiName><shortdesc>
+	 Contains values grouped by keys
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Contains values grouped by keys
+	 </apiDesc></apiClassifierDetail><related-links><link href="" invalidHref="IEnumerable.toLookup.xml"><linktext>IEnumerable.toLookup</linktext></link></related-links><apiOperation id="raix.interactive:ILookup:raix.interactive:ILookup:containsKey"><apiName>containsKey</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>key</apiItemName><apiType value="Object"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:ILookup:raix.interactive:ILookup:getValues"><apiName>getValues</apiName><shortdesc>
+		 Returns a sequence of values for the specified key or 
+		 an empty sequence if the key has no values 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IEnumerable sequence of values
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>key</apiItemName><apiType value="Object"/><apiDesc>The key to lookup
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a sequence of values for the specified key or 
+		 an empty sequence if the key has no values 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.interactive:Enumerable"><apiName>Enumerable</apiName><shortdesc>
+	 Provides static methods that create IEnumerable sequences
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Provides static methods that create IEnumerable sequences
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.interactive:Enumerable:create"><apiName>create</apiName><shortdesc>
+		 Creates an enumerable sequence that uses callbacks 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An IEnumerable that contains values of type TElement 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>moveNext</apiItemName><apiType value="Function"/><apiDesc>Moves to the next item in the sequence, returning false when no more items exist:
+		     function():Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>getCurrent</apiItemName><apiType value="Function"/><apiDesc>Retrieves the current value in the sequence: function():TElement
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an enumerable sequence that uses callbacks 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:empty"><apiName>empty</apiName><shortdesc>
+		 Creates an empty sequence
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Creates an empty sequence
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:fromArray"><apiName>fromArray</apiName><shortdesc>
+		 Creates an enumerable sequence from an array 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An IEnumerable containing values of the same type as array
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>array</apiItemName><apiType value="Array"/><apiDesc>The array to enumerate
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an enumerable sequence from an array 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:fromProxy"><apiName>fromProxy</apiName><shortdesc>
+		 Creates a sequence from an enumerable proxy object
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>A sequence that will enumerate through the values in the proxy
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>proxy</apiItemName><apiType value="flash.utils:Proxy"/><apiDesc>A enumerable proxy
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence from an enumerable proxy object
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:generate"><apiName>generate</apiName><shortdesc>
+		 Creates an enumerable sequence by calling back to functions that mainpulate its state 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An IEnumerable sequence that contains values of type TResult
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>initialState</apiItemName><apiType value="Object"/><apiDesc>The initial state value
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function called once for every value (including initialState), returns true while 
+		     the sequence has more values: function(state : TState) : Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>iterate</apiItemName><apiType value="Function"/><apiDesc>A function called once for every value (excluding initialState) and returns the new 
+		     value for state: function(state : TState) : TState
+		 </apiDesc></apiParam><apiParam><apiItemName>resultMap</apiItemName><apiType value="Function"/><apiDesc>A function that maps the current state to a value: 
+		     function(state : TState) : TResult 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an enumerable sequence by calling back to functions that mainpulate its state 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:range"><apiName>range</apiName><shortdesc>
+		 Creates an enumerable sequence that contains the numbers in a 
+		 specified range 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An IEnumerable of int values in the specified range
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>start</apiItemName><apiType value="int"/><apiDesc>The start value
+		 </apiDesc></apiParam><apiParam><apiItemName>count</apiItemName><apiType value="int"/><apiDesc>The number of values to enumerate, including start
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an enumerable sequence that contains the numbers in a 
+		 specified range 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:repeat"><apiName>repeat</apiName><shortdesc>
+		 Creates an enumerable sequence that repeats a value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>An IEnumerable containing the repeated value
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>val</apiItemName><apiType value="Object"/><apiDesc>The value to repeat
+		 </apiDesc></apiParam><apiParam><apiItemName>count</apiItemName><apiType value="int"/><apiDesc>The number of times to repeat. A value of 0 will repeat indefinately
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates an enumerable sequence that repeats a value 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:Enumerable:value"><apiName>value</apiName><shortdesc>
+		 Creates a sequence that contains a single value 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>A sequence containing the specified value
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to wrap in a sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Creates a sequence that contains a single value 
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="raix.interactive:IEnumerator"><apiName>IEnumerator</apiName><shortdesc>
+	 Contains the state of an active enumeration.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 Contains the state of an active enumeration. This interface is rarely accessed 
+	 by client code as IEnumerable sequences can be used with `for each`
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.interactive:IEnumerator:raix.interactive:IEnumerator:moveNext"><apiName>moveNext</apiName><shortdesc>
+		 Moves to the next value in the sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if a new value is available; false if the end of the sequence has been reacheds
+		 </apiDesc><apiType value="Boolean"/></apiReturn></apiOperationDef><apiDesc>
+		 Moves to the next value in the sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.interactive:IEnumerator:raix.interactive:IEnumerator:current:get"><apiName>current</apiName><shortdesc>
+		 Returns the current value in the sequence
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Object"/></apiValueDef><apiDesc>
+		 Returns the current value in the sequence
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.interactive:AbsEnumerable"><apiName>AbsEnumerable</apiName><shortdesc>
+	 An abstract implementation of IEnumerable.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>raix.interactive:IEnumerable</apiBaseInterface><apiBaseClassifier>flash.utils:Proxy</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 An abstract implementation of IEnumerable. This class may be made inaccessible in future revisions.
+	 </apiDesc></apiClassifierDetail><apiConstructor id="raix.interactive:AbsEnumerable:AbsEnumerable"><apiName>AbsEnumerable</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="raix.interactive:AbsEnumerable:aggregate"><apiName>aggregate</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Object"/></apiReturn><apiParam><apiItemName>seed</apiItemName><apiType value="Object"/></apiParam><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:all"><apiName>all</apiName><shortdesc>
+		 
+		 Determines if the every value in the source sequence matches a predicate 
+		 function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if the sequence is empty or all the values in the sequence match the predicate; 
+		         false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>(optional) A function in the format: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if the every value in the source sequence matches a predicate 
+		 function.
+		 
+		 Uses immediate execution and stops enumerating when a negative match is found.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:any"><apiName>any</apiName><shortdesc>
+		 
+		 Determines if the predicate argument function returns true for any 
+		 item in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if a matching value is found or if predicate is null and the
+		              sequence contains any values; false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function in the format: function(element : TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if the predicate argument function returns true for any 
+		 item in the sequence. If no function is supplied, true will be returned 
+		 if the sequence contains any values 
+		 
+		 Uses immediate execution and stops enumerating when a match is found. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:average"><apiName>average</apiName><shortdesc>
+		 
+		 Retrieves the average value in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The average value of the sequence
+		 </apiDesc><apiType value="Number"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the numeric value of the element 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Retrieves the average value in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:cancel"><apiName>cancel</apiName><shortdesc>
+		 
+		 Cancels the operation
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Cancels the operation
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:concat"><apiName>concat</apiName><shortdesc>
+		 
+		 Returns a new sequence that will seemlessly enumerate a second sequence after 
+		 the first sequence completes
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the values from the first and second sequence, in order
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>other</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to enumerate after the first sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that will seemlessly enumerate a second sequence after 
+		 the first sequence completes
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:contains"><apiName>contains</apiName><shortdesc>
+		 
+		 Determines if the source sequence contains a specific value, optionally 
+		 using an equalityComparer function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if a match was found; false otherwise
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Object"/><apiDesc>The value to be compared
+		 </apiDesc></apiParam><apiParam><apiItemName>equalityComparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function to compare two 
+		        values: function(x : TElement, y : TValue) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines if the source sequence contains a specific value, optionally 
+		 using an equalityComparer function.
+		 
+		 Uses immediate execution and stops enumerating when a match is found
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:count"><apiName>count</apiName><shortdesc>
+		 
+		 Determines the number of elements in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The number of elements in the sequence
+		 </apiDesc><apiType value="uint"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Determines the number of elements in the sequence. Uses immediate execution.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:defaultIfEmpty"><apiName>defaultIfEmpty</apiName><shortdesc>
+		 
+		 Returns a new sequence that will return the given defaultValue 
+		 
+		 Uses deferred execution
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new IEnumerable sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) The default value to use if the sequence is empty. 
+		        If not supplied, the value will be converted from null (int = 0, boolean = false, etc)
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that will return the given defaultValue 
+		 
+		 Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:distinct"><apiName>distinct</apiName><shortdesc>
+		 
+		 Returns a new sequence that only contains the unique values in the original sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the distinct values of the original sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		        function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that only contains the unique values in the original sequence.
+		 
+		 If the sequence contains values that are not natively comparable (String, u/int, Number, Boolean),
+		 a hashSelector should be specified to return a value that is. An example of this would be to return 
+		 the ID property of an entity.
+		 
+		 Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:elementAtOrDefault"><apiName>elementAtOrDefault</apiName><shortdesc>
+		 
+		 Returns the element at the given index or a default value if 
+		 the sequence does not contain that many elements.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The value at index
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/><apiDesc>The zero-based index of the value to return
+		 </apiDesc></apiParam><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the element at the given index or a default value if 
+		 the sequence does not contain that many elements. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:elementAt"><apiName>elementAt</apiName><shortdesc>
+		 
+		 Returns the element at the given index or throws an IllegalOperationError if 
+		 the sequence does not contain that many elements.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The value at index
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/><apiDesc>The zero-based index of the value to return
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the element at the given index or throws an IllegalOperationError if 
+		 the sequence does not contain that many elements. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:except"><apiName>except</apiName><shortdesc>
+		 
+		 Returns a new sequence that contains the values in the source sequence that 
+		 do not exist in the supplied sequence
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the values contained in the source sequence but 
+		         not the "right" sequence 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the except. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that contains the values in the source sequence that 
+		 do not exist in the supplied sequence
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:filter"><apiName>filter</apiName><shortdesc>
+		 
+		 Filters the source sequence based on a predicate function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains values from the source sequence for which predicate returned true
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines which elements should appear in the result:
+		     function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Filters the source sequence based on a predicate function. Uses deferred execution.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:firstOrDefault"><apiName>firstOrDefault</apiName><shortdesc>
+		 
+		 Returns the first element in the sequence or returns a default value 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the first element in the sequence or returns a default value 
+		 if the sequence is empty. If predicate is supplied, the first value to match the 
+		 predicate will be returned with the default value being returned if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:first"><apiName>first</apiName><shortdesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first value in the sequence or the first value in the sequence that matches predicate
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty. If predicate is supplied, the first value to match the 
+		 predicate will be returned with an IllegalOperationError being thrown if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:getEnumerator"><apiName>getEnumerator</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.interactive:IEnumerator</apiOperationClassifier></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:groupBy"><apiName>groupBy</apiName><shortdesc>
+		 
+		 Groups elements of a sequence using a key selector function
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type IGrouping, where each IGrouping is a sequence 
+		     of values of type TElement and a key
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for a value in the sequence:
+		     function(source : TSource) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, maps the source element to an element 
+		     to place in the grouping: function(source : TSource) : TElement
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a natively comparable value
+		     for a key in the sequence: function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Groups elements of a sequence using a key selector function
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:groupJoin"><apiName>groupJoin</apiName><shortdesc>
+		 
+		 Correlates the elements of two sequences based on keys and groups the results
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type TResult that are obtained by joining outer and inner
+		     sequences.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>inner</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to join to the first sequence. Can be any value that can be converted 
+		     to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>outerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the outer (source) sequence:
+		     function(element : TOuterElement) : TKey 
+		 </apiDesc></apiParam><apiParam><apiItemName>innerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the inner sequence:
+		     function(element : TInnerElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>Creates a result element from the source sequence and a sequnce of 
+		     matching values from the inner sequence:
+		     function(outer : TOuterElement, inner : IEnumerable.&lt;TInnerElement&gt;) : TResult
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) Returns a natively comparable value for a key:
+		     function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Correlates the elements of two sequences based on keys and groups the results
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:intersect"><apiName>intersect</apiName><shortdesc>
+		 
+		 Returns a new sequence that contains only the values contained in both sequences
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the unique values contained in both sequence 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the intersection. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that contains only the values contained in both sequences
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:join"><apiName>join</apiName><shortdesc>
+		 
+		 Correlates the elements of two sequences based on keys.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that has elements of type TResult that are obtained by joining outer and inner
+		     sequences.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>inner</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to join to the first sequence. Can be any value that can be converted 
+		     to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>outerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the outer (source) sequence:
+		     function(element : TOuterElement) : TKey 
+		 </apiDesc></apiParam><apiParam><apiItemName>innerKeySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key from values in the inner sequence:
+		     function(element : TInnerElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>Creates a result element from two matching elements:
+		     function(outer : TOuterElement, inner : TInnerElement) : TResult
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) Returns a natively comparable value for a key:
+		     function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Correlates the elements of two sequences based on keys.
+		 
+		 Uses immediate execution on the inner sequence, uses deferred executino on the outer (source) 
+		 sequence
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:lastOrDefault"><apiName>lastOrDefault</apiName><shortdesc>
+		 
+		 Returns the last element in the sequence or returns a default value 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The last matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the last element in the sequence or returns a default value 
+		 if the sequence is empty. If predicate is supplied, the last value to match the 
+		 predicate will be returned with the default value being returned if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:last"><apiName>last</apiName><shortdesc>
+		 
+		 Returns the last element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The last matching value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the last element in the sequence or throws an IllegalOperationError 
+		 if the sequence is empty. If predicate is supplied, the last value to match the 
+		 predicate will be returned with an IllegalOperationError being thrown if no 
+		 values match the predicate
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:mapMany"><apiName>mapMany</apiName><shortdesc>
+		 
+		 Maps a sequence for each value in the source sequence and concatonates the results into 
+		 a single sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains values of type TResult if resultSelector is specified, 
+		     or TCollection if it is not.
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>collectionSelector</apiItemName><apiType value="Function"/><apiDesc>A function to retrieve the sequence for a value in the source sequence: 
+		     function(element : TElement) : IEnumerable.&lt;TCollection&gt;
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that creates a result element from each source element 
+		     and each of its enumerated collection values: 
+		     function(element : TElement, value : TCollection) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Maps a sequence for each value in the source sequence and concatonates the results into 
+		 a single sequence. Uses deferred execution.
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:map"><apiName>map</apiName><shortdesc>
+		 
+		 Projects (converts) values using a selector function.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence that contains the projected values of type TResult
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>selector</apiItemName><apiType value="Function"/><apiDesc>Projects the values from the source sequence: 
+		     function(element : TElement) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Projects (converts) values using a selector function. Uses deferred execution
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:max"><apiName>max</apiName><shortdesc>
+		 
+		 Retrieves the maximum element in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The sequence element deemed to be the maximum value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the value to be 
+		        compared for each element in the sequence: function(element : TElement) : TValue
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, compares the value (either element 
+		        value or the value returned by valueSelector): 
+		        function(value : TValue) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Retrieves the maximum element in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty.
+		 
+		 If the comparison value (either the original element or the value returned by valueSelector)
+		 cannot be natively ordered (ie. is not String, u/int or Number), a comparer should be supplied 
+		 to compare the values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:min"><apiName>min</apiName><shortdesc>
+		 
+		 Retrieves the minimum element in the sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The sequence element deemed to be the minimum value
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, determines the value to be 
+		        compared for each element in the sequence: function(element : TElement) : TValue
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, compares the value (either element 
+		        value or the value returned by valueSelector): 
+		        function(value : TValue) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Retrieves the minimum element in the sequence. Throws an IllegalOperationError 
+		 if the sequence is empty
+		 
+		 If the comparison value (either the original element or the value returned by valueSelector)
+		 cannot be natively ordered (ie. is not String, u/int or Number), a comparer should be supplied 
+		 to compare the values
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:flash_proxy:nextNameIndex"><apiName>nextNameIndex</apiName><shortdesc>
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="flash_proxy"/><apiIsOverride/><apiReturn><apiType value="int"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/></apiParam></apiOperationDef><apiDesc>
+		 </apiDesc></apiOperationDetail><apiInheritDoc/></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:flash_proxy:nextValue"><apiName>nextValue</apiName><shortdesc>
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="flash_proxy"/><apiIsOverride/><apiReturn><apiType value="any"/></apiReturn><apiParam><apiItemName>index</apiItemName><apiType value="int"/></apiParam></apiOperationDef><apiDesc>
+		 </apiDesc></apiOperationDetail><apiInheritDoc/></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:ofType"><apiName>ofType</apiName><shortdesc>
+		 
+		 Filters values from a sequence based on their type
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence that contains only elements from the source sequence that are of type 
+		     cls (or a subclass)
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>cls</apiItemName><apiType value="Class"/><apiDesc>A class on which to filter values from the source sequence.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Filters values from a sequence based on their type
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:orderByDescending"><apiName>orderByDescending</apiName><shortdesc>
+		 
+		 Orders the values in the source sequence in descending order
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Orders the values in the source sequence in descending order
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:orderBy"><apiName>orderBy</apiName><shortdesc>
+		 
+		 Orders the values in the source sequence in ascending order
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An IOrderedObservable that can be enumerated or further ordered using methods 
+		     available on IOrderedObservable
+		 </apiDesc><apiOperationClassifier>raix.interactive:IOrderedEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>A function that retrieves the key used to order the values in the source sequence:
+		     function(element : TElement) : TKey
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that compares key values. The return value should follow rules of 
+		     the compareFunction in Array.sort: function(x : TKey, y : TKey) : int
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Orders the values in the source sequence in ascending order
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:reduce"><apiName>reduce</apiName><shortdesc>
+		 
+		 Aggregates values in a sequence using functions passed as arguments.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The return value of resultSelector (if supplied) or the final accumulate value if 
+		         resultSelector is not supplied
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>seed</apiItemName><apiType value="Object"/><apiDesc>The initial value for the accumulation
+		 </apiDesc></apiParam><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that returns the new accumulated value: 
+		        function(accumulate : TAccumulate, element : TElement) : TAccumulate
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that maps the final accumulate value before being returned
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Aggregates values in a sequence using functions passed as arguments.
+		 
+		 Accumulates a value, starting with seed, by calling accumulator for each value in the source 
+		 sequence and using the return value as the new accumulated value. When the sequence completes, 
+		 the accumulated value is (optonally) mapped through resultSelector before being returned.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:repeat"><apiName>repeat</apiName><shortdesc>
+		 
+		 Repeats the source sequence a specified number of times 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence containing values of the same type as the source
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc>(optional) The number of times to repeat the sequence. If 0, the 
+		     sequence will be repeated indefinately
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Repeats the source sequence a specified number of times 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:reverse"><apiName>reverse</apiName><shortdesc>
+		 
+		 Reverses the values in the source sequence
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the reversed values of the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Reverses the values in the source sequence
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:scan"><apiName>scan</apiName><shortdesc>
+		 
+		 Returns a sequence that aggregates values using functions passed as arguments, using 
+		 deferred execution and returning the values accumulated values as they are returned.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence of type TAccumulate that can be enumerated
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>seed</apiItemName><apiType value="Object"/><apiDesc>The initial value for the accumulation
+		 </apiDesc></apiParam><apiParam><apiItemName>accumulator</apiItemName><apiType value="Function"/><apiDesc>A function that returns the new accumulated value: 
+		        function(accumulate : TAccumulate, element : TElement) : TAccumulate
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A function that maps the final accumulate value before being returned
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a sequence that aggregates values using functions passed as arguments, using 
+		 deferred execution and returning the values accumulated values as they are returned.
+		 
+		 Accumulates a value, starting with seed, by calling accumulator for each value in the 
+		 source sequence and using the return value as the new accumulated value. Each time  
+		 a new value is accumulated, the accumulated value is (optonally) mapped through 
+		 resultSelector before being returned.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:sequenceEqual"><apiName>sequenceEqual</apiName><shortdesc>
+		 
+		 Determines whether two sequences are equal.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if the sequences are of equal length and all of their values are equal
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>Ths sequence to compare to the source
+		 </apiDesc></apiParam><apiParam><apiItemName>comparer</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>A function that will determine equality between left and right values:
+		     function(left : TLeft, right : TRight) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Determines whether two sequences are equal. Uses immediate execution 
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:singleOrDefault"><apiName>singleOrDefault</apiName><shortdesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does contains multiple values, but returns a default value if 
+		 the sequence returns no values.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first matching value in the sequence or defaultValue
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>defaultValue</apiItemName><apiType value="Object"/><apiData>null</apiData><apiDesc>A defaultValue to 
+		 </apiDesc></apiParam><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does contains multiple values, but returns a default value if 
+		 the sequence returns no values. If predicate is supplied, the first value to match 
+		 the predicate will be returned with an IllegalOperationError 
+		 being thrown if the sequence contains more than one match and a default value being 
+		 returned if no matches are found
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:single"><apiName>single</apiName><shortdesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does not contain exactly one value.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The first value in the sequence or the first value in the sequence that matches predicate
+		 </apiDesc><apiType value="Object"/></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) A predicate used to match values: function(element : TElement) : Boolean
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the first element in the sequence or throws an IllegalOperationError 
+		 if the sequence does not contain exactly one value. If predicate is supplied, 
+		 the first value to match the predicate will be returned with an IllegalOperationError 
+		 being thrown if the sequence does not contain exactly one match
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:skipLast"><apiName>skipLast</apiName><shortdesc>
+		 
+		 Returns a new sequence that excludes the specified number of values from 
+		 the end of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to skip from the end of source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that excludes the specified number of values from 
+		 the end of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:skipWhile"><apiName>skipWhile</apiName><shortdesc>
+		 
+		 Returns a new sequence that skips values from the source sequence 
+		 until a specified predicate returns false, at which point values will be 
+		 returned from the rest of sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines whether values should still be skipped 
+		     from the source sequence: function(element:TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that skips values from the source sequence 
+		 until a specified predicate returns false, at which point values will be 
+		 returned from the rest of sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:skip"><apiName>skip</apiName><shortdesc>
+		 
+		 Returns a new sequence that excludes the specified number of values from 
+		 the start of the source sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to skip from the source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that excludes the specified number of values from 
+		 the start of the source sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:sum"><apiName>sum</apiName><shortdesc>
+		 
+		 Returns the total numeric value of every value in the sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The summed values of each element in the sequence
+		 </apiDesc><apiType value="Number"/></apiReturn><apiParam><apiItemName>valueSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, can be used to specify the numeric 
+		        value for each element in the sequence 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns the total numeric value of every value in the sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:takeLast"><apiName>takeLast</apiName><shortdesc>
+		 
+		 Returns a new sequence that includes a maximum number of elements to take from 
+		 the end of the first sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to take from the end of source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that includes a maximum number of elements to take from 
+		 the end of the first sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:takeWhile"><apiName>takeWhile</apiName><shortdesc>
+		 
+		 Returns a new sequence that includes values from the source sequence 
+		 until a specified predicate returns false, at which point the sequence will end 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>predicate</apiItemName><apiType value="Function"/><apiDesc>A function that determines whether values should still be taken 
+		     from the source sequence: function(element:TElement) : Boolean 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that includes values from the source sequence 
+		 until a specified predicate returns false, at which point the sequence will end 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:take"><apiName>take</apiName><shortdesc>
+		 
+		 Returns a new sequence that includes a maximum number of elements from the first sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>count</apiItemName><apiType value="uint"/><apiDesc>The number of elements to take from the source sequence
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that includes a maximum number of elements from the first sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:toArray"><apiName>toArray</apiName><shortdesc>
+		 
+		 Retrieves an array containing all the values in the sequence 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An Array containing values of the same type as the source sequence
+		 </apiDesc><apiType value="Array"/></apiReturn></apiOperationDef><apiDesc>
+		 
+		 Retrieves an array containing all the values in the sequence 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:toDictionary"><apiName>toDictionary</apiName><shortdesc>
+		 
+		 Converts the sequence to a Dictionary.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A Dictionary
+		 </apiDesc><apiType value="flash.utils:Dictionary"/></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for each element in the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, provides the "values"  
+		     in the lookup. If not specified, the original element will be used
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Converts the sequence to a Dictionary. Uses immediate execution
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:toLookup"><apiName>toLookup</apiName><shortdesc>
+		 
+		 Converts the sequence to an ILookup, which is simiular to a Dictionary with the following 
+		 differences:
+		 
+		 
+		 Supports null keys
+		 Returns an empty sequence for requests for keys that do not exist
+		 
+		 
+		 Uses immediate execution
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An ILookup
+		 </apiDesc><apiOperationClassifier>raix.interactive:ILookup</apiOperationClassifier></apiReturn><apiParam><apiItemName>keySelector</apiItemName><apiType value="Function"/><apiDesc>Retrieves the key for each element in the sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>elementSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, provides the "values"  
+		     in the lookup. If not specified, the original element will be used
+		 </apiDesc></apiParam><apiParam><apiItemName>keyHashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If the value returned by keySelector is not natively 
+		        comparable (ie. String, u/int, Number, Boolean), keyHashSelector can be used to 
+		        provide comparable values for the keys: function(key : TKey) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Converts the sequence to an ILookup, which is simiular to a Dictionary with the following 
+		 differences:
+		 
+		 <ul>
+		 <li>Supports null keys</li>
+		 <li>Returns an empty sequence for requests for keys that do not exist</li>
+		 </ul>
+		 
+		 Uses immediate execution
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:toObservable"><apiName>toObservable</apiName><shortdesc>
+		 
+		 Converts the interactive sequence to an observable sequence, optionally using a scheduler 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>An observable sequence that contains values of the same type as the source sequence
+		 </apiDesc><apiOperationClassifier>raix.reactive:IObservable</apiOperationClassifier></apiReturn><apiParam><apiItemName>scheduler</apiItemName><apiOperationClassifier>raix.reactive.scheduling:IScheduler</apiOperationClassifier><apiData>null</apiData><apiDesc>(optional) The scheduler to use to distribute the values. Defaults to 
+		     Scheduler.asynchronous
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Converts the interactive sequence to an observable sequence, optionally using a scheduler 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:union"><apiName>union</apiName><shortdesc>
+		 
+		 Returns a new sequence that contains the unique values across two sequences
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new sequence containing the distinct values across both sequences 
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiType value="any"/><apiDesc>The right side of the union. Can be any value that can be converted 
+		              to an IEnumerable using toEnumerable
+		 </apiDesc></apiParam><apiParam><apiItemName>hashSelector</apiItemName><apiType value="Function"/><apiData>null</apiData><apiDesc>(optional) If specified, returns a unique value for the element:
+		                     function(element : TElement) : THash
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Returns a new sequence that contains the unique values across two sequences
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="raix.interactive:AbsEnumerable:zip"><apiName>zip</apiName><shortdesc>
+		 
+		 Pairs values from two sequences in order and uses a selector function to project the results
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A sequence containing values of type TResult
+		 </apiDesc><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>right</apiItemName><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier><apiDesc>The sequence to pair with the left (source) sequence
+		 </apiDesc></apiParam><apiParam><apiItemName>resultSelector</apiItemName><apiType value="Function"/><apiDesc>A function to map values from the left and right sequences:
+		     function(left : TLeft, right : TRight) : TResult
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 
+		 Pairs values from two sequences in order and uses a selector function to project the results
+		 </apiDesc></apiOperationDetail></apiOperation></apiClassifier><apiOperation id="globalOperation:raix.interactive:toEnumerable"><apiName>toEnumerable</apiName><shortdesc>
+	 Converts a value to an IEnumerable sequence.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>raix.interactive:IEnumerable</apiOperationClassifier></apiReturn><apiParam><apiItemName>args</apiItemName><apiType value="restParam"/></apiParam></apiOperationDef><apiDesc>
+	 Converts a value to an IEnumerable sequence. It can be considered to have the following overloads:
+	 
+	 <ul>
+	 <li>function():IEnumerable - returns an empty sequence</li>
+	 <li>function(array : Array):IEnumerable - returns a sequence that wraps an array</li>
+	 <li>function(enumerable : IEnumerable):IEnumerable - returns enumerable</li>
+	 <li>function(proxy : Proxy):IEnumerable - returns enumerable that wraps an enumerable Proxy</li>
+	 <li>function(value : :IEnumerable - returns enumerable that contains a single value</li>
+	 </ul>
+	 </apiDesc></apiOperationDetail></apiOperation></apiPackage>

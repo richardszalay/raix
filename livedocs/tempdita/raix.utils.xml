@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="raix.utils"><apiName>raix.utils</apiName><apiDetail/><apiClassifier id="raix.utils:Filter"><apiName>Filter</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiOperation id="raix.utils:Filter:not"><apiName>not</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiType value="Function"/></apiReturn><apiParam><apiItemName>inner</apiItemName><apiType value="Function"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="raix.utils:Filter:notNull:get"><apiName>notNull</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="Function"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="raix.utils:Projection"><apiName>Projection</apiName><shortdesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 Contains common projection functions that can be used with IEnumerable.map 
+	 and other 
+	 </apiDesc></apiClassifierDetail><apiOperation id="raix.utils:Projection:property"><apiName>property</apiName><shortdesc>
+		 Returns a selector function that retrieves a property from an element.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiStatic/><apiReturn><apiDesc>A function that returns the property value of propertyName or null if the element was null
+		 </apiDesc><apiType value="Function"/></apiReturn><apiParam><apiItemName>propertyName</apiItemName><apiType value="String"/><apiDesc>The property to map from each element
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a selector function that retrieves a property from an element. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="raix.utils:Projection:toLowerCase:get"><apiName>toLowerCase</apiName><shortdesc>
+		 Returns a selector function that converts a string to lower case
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="Function"/></apiValueDef><apiDesc>
+		 Returns a selector function that converts a string to lower case
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.utils:Projection:toString:get"><apiName>toString</apiName><shortdesc>
+		 Returns a selector function that converts an object to a string
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="Function"/></apiValueDef><apiDesc>
+		 Returns a selector function that converts an object to a string
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="raix.utils:Projection:toUpperCase:get"><apiName>toUpperCase</apiName><shortdesc>
+		 Returns a selector function that converts a string to upper case
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="read"/><apiType value="Function"/></apiValueDef><apiDesc>
+		 Returns a selector function that converts a string to upper case
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

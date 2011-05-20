@@ -4,6 +4,9 @@ package raix.reactive.testing
 	import raix.reactive.ICancelable;
 	import raix.reactive.scheduling.IScheduler;
 	
+	/**
+	 * 
+	 */	
 	public class TestScheduler implements IScheduler
 	{
 		private var _scheduledActions : Array = new Array();
@@ -94,11 +97,21 @@ package raix.reactive.testing
 			_now = time;
 		}
 		
+		/**
+		 * Creates a sequence from "recorded" values that will start a new timeline for each susbcriber  
+		 * @param recordedNotifications An array of Recorded instances
+		 * @return An observable sequence that will start a new timeline for each susbcriber
+		 */
 		public function createColdObservable(recordedNotifications : Array) : ColdObservable
 		{
 			return new ColdObservable(this, recordedNotifications);
 		}
 		
+		/**
+		 * Creates a sequence from "recorded" values that will share a timeline between all subscribers  
+		 * @param recordedNotifications An array of Recorded instances
+		 * @return An observable sequence that will share a timeline between all subscribers
+		 */
 		public function createHotObservable(recordedNotifications : Array) : HotObservable
 		{
 			return new HotObservable(this, recordedNotifications);

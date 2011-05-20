@@ -2,6 +2,9 @@ package raix.interactive
 {
 	import flash.utils.*;
 	
+	/**
+	 * Provides static methods that create IEnumerable sequences
+	 */
 	public class Enumerable
 	{
 		/**

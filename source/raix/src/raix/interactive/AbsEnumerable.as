@@ -12,7 +12,7 @@ package raix.interactive
 	import raix.reactive.scheduling.IScheduler;
 	import raix.reactive.scheduling.Scheduler;
 	
-	/*
+	/**
 	 * An abstract implementation of IEnumerable. This class may be made inaccessible in future revisions.
 	 */
 	public class AbsEnumerable extends Proxy implements IEnumerable

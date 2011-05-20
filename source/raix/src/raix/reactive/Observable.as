@@ -17,7 +17,7 @@ package raix.reactive
 	import raix.reactive.subjects.ReplaySubject;
 
 	/**
-	 * Provides static methods that create observable sequences
+	 * Provides static methods that create IObservable sequences
 	 */
 	public class Observable
 	{

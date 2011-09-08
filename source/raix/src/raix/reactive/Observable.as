@@ -551,9 +551,12 @@ package raix.reactive
 		 * @param eventType The valueClass of event dispatched by eventDispatcher. Event will be used if this argument is null.
 		 * @param useCapture Whether to pass useCapture when subscribing to and unsubscribing from the event
 		 * @param priority The priority of the event
+		 * @param targetingOnly Whether to cancel the event at the targeting phase, or allow it to bubble back up the display list.
+		 * This only applies if the event is actually processed in the "targeting" phase, so events handled during the bubbling phase
+		 * won't be affected, even if the IObservable was created with <code>targetingOnly == true</code>
 		 * @return An observable sequence of eventType, or Event if eventType is null
 		 */		
-		public static function fromEvent(eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0):IObservable
+		public static function fromEvent(eventDispatcher:IEventDispatcher, eventType:String, useCapture:Boolean=false, priority:int=0, targetingOnly:Boolean=false):IObservable
 		{
 			if (eventDispatcher == null)
 			{
@@ -564,6 +567,11 @@ package raix.reactive
 			{
 				var listener : Function = function(event : Event) : void
 				{
+					if(targetingOnly && event.eventPhase == EventPhase.AT_TARGET)
+					{
+						event.stopPropagation();
+					}
+					
 					observer.onNext(event);
 				};
 				
@@ -584,12 +592,12 @@ package raix.reactive
 		 * @param priority The priority of the event
 		 * @return An observable sequence of commonValueClass, or Event if commonValueClass is null 
 		 */
-		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0):IObservable
+		public static function fromEvents(eventDispatcher:IEventDispatcher, eventTypes:Array, useCapture:Boolean=false, priority:int=0, targetingOnly:Boolean=false):IObservable
 		{
 			return Observable.fromArray(eventTypes)
 					.mapMany(function(eventType : String) : IObservable
 					{
-						return fromEvent(eventDispatcher, eventType, useCapture, priority);
+						return fromEvent(eventDispatcher, eventType, useCapture, priority, targetingOnly);
 					});
 		}
 		

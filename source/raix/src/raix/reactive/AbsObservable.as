@@ -451,6 +451,8 @@ package raix.reactive
 			{
 				throw new ArgumentError("count must be > 0");
 			}
+			
+			scheduler ||= Scheduler.synchronous;
 
 			var source : IObservable = this;
 			

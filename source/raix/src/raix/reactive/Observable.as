@@ -567,12 +567,17 @@ package raix.reactive
 			{
 				var listener : Function = function(event : Event) : void
 				{
-					if(targetingOnly && event.eventPhase == EventPhase.AT_TARGET)
+					if(targetingOnly == true)
 					{
-						event.stopPropagation();
+						if(event.eventPhase == EventPhase.AT_TARGET)
+						{
+							observer.onNext(event);
+						}
 					}
-					
-					observer.onNext(event);
+					else
+					{
+						observer.onNext(event);
+					}
 				};
 				
 				eventDispatcher.addEventListener(eventType, listener, useCapture, priority);
